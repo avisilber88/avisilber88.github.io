@@ -1,0 +1,137 @@
+body{
+	color:blue;
+background-color:#338284;
+}
+
+div {
+	//background-color:#668284;
+	
+	
+	//color:green;
+	margin:0px;
+}
+
+
+.ansbox{
+background-color:rgba(0, 0, 0, 0.5);
+
+height:100px;
+margin:10px;
+}
+
+#boxa {
+//background-color:#668284;
+text-align:center;
+//background-color:#668284;
+
+}
+#boxb {
+//background-color:#668284;
+text-align:center;
+//left:202px;
+//bottom:202px;
+//background-color:#668279;
+}
+#boxc {
+//background-color:#668284;
+text-align:center;
+//background-color:#668274;
+}
+#boxd {
+//background-color:#668284;
+text-align:center;
+//background-color:#668269;
+}
+
+
+
+
+
+table {
+clear:both;
+}
+
+p{
+clear:both
+}
+.button_font{
+
+text-align:center;
+color:white;
+font-size:40px;
+vertical-align:middle;
+}
+
+#footer{
+background-color:#FF22FF;
+text-align:center;
+color:black;
+font-size:50px;
+}
+
+#curq{
+background-color:white;
+}
+
+.theQuestion{
+//background-color:#FF22FF;
+font-size: 4vw
+//font-size:5vh
+}
+
+#q{
+font-size: 6vw
+
+}
+
+#num1{
+
+}
+#num2{
+}
+#den1{
+}
+#den2{
+}
+
+.line{
+//width:100px;
+height:0px;
+border-top: 3px solid black;
+}
+
+#f1{
+}
+
+#f2{
+}
+
+#equalsTop{
+}
+#equalsBottom{
+}
+
+
+
+.highlighted{
+background-color:green;
+}
+
+.wrong{
+background-color:red;
+}
+
+#score{
+//sfont-size:200%;
+//color:black;
+
+//left: 200px;
+}
+
+#scoremessage{
+//font-size:200%;
+//color:black;
+//left: 100px;
+color:#AAADDD;
+text-align: right;
+}

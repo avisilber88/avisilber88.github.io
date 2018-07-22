@@ -1,0 +1,15 @@
+body{
+	color:blue;
+}
+
+#blocka{
+color:yellow;
+background-color:yellow;
+position:absolute;
+width:200px;
+height:200px;
+}
+
+#highlighted{
+color:green;
+}

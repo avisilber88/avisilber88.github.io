@@ -1,0 +1,148 @@
+body{
+	color:blue;
+}
+
+div {
+	background-color:#668284;
+	width:200px;
+	height:200px;
+	color:green;
+	margin:2px;
+}
+
+#boxa {
+position:relative;
+//background-color:#668284;
+
+}
+#boxb {
+position:relative;
+left:202px;
+bottom:202px;
+//background-color:#668279;
+}
+#boxc {
+position:relative;
+left:404px;
+bottom:404px;
+//background-color:#668274;
+}
+#boxd {
+position:relative;
+left:606px;
+bottom:606px;
+//background-color:#668269;
+}
+
+table {
+clear:both;
+}
+
+p{
+clear:both
+}
+.button_font{
+position:absolute;
+top:10px;
+text-align:center;
+color:white;
+font-size:50px;
+vertical-align:middle;
+}
+
+#footer{
+background-color:#FF22FF;
+height:200px;
+width:808px;
+position:relative;
+bottom:606px;
+text-align:center;
+color:black;
+font-size:50px;
+}
+
+.theQuestion{
+font-size:50px;
+}
+
+#num1{
+position:absolute;
+text-align:none;
+bottom:40px;
+left:300px;
+
+}
+#num2{
+position:absolute;
+text-align:none;
+bottom:40px;
+left:500px;
+}
+#den1{
+position:absolute;
+text-align:none;
+bottom:-20px;
+left:300px;
+
+}
+#den2{
+position:absolute;
+text-align:none;
+bottom:-20px;
+left:500px;
+}
+
+.line{
+width:100px;
+height:0px;
+border-top: 3px solid black;
+}
+
+#f1{
+position: absolute;
+left:260px;
+}
+
+#f2{
+position: absolute;
+left:460px;
+}
+
+#equalsTop{
+width:40px;
+position: absolute;
+left:390px;
+bottom: 100px;
+}
+#equalsBottom{
+width:40px;
+position: absolute;
+bottom:80px;
+left:390px;
+
+}
+
+
+
+.highlighted{
+background-color:green;
+}
+
+.wrong{
+background-color:red;
+}
+
+#score{
+font-size:40px;
+color:black;
+position:absolute;
+top: +460px;
+//left: 200px;
+}
+
+#scoremessage{
+font-size:40px;
+color:black;
+position:absolute;
+top: +500px;
+}
