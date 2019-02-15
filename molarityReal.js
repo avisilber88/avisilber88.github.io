@@ -590,7 +590,7 @@ $('#num1').text("What is the molarity of a "+formulaName+" solution do we get wh
 $('body :not(script)').contents().filter(function() {
     return this.nodeType === 3;
 }).replaceWith(function() {
-    return this.nodeValue.replace(/[0123456789]/g, '<sub>$&</sub>');
+    return this.nodeValue.replace(/[0123456789.]/g, '<sub>$&</sub>');
 });
 
 //$('#num1').text("What is the molarity of a "+formulaName+" solution do we get when we mix " +toOurExponential(sigFigs(coeff1, 3))+ units1 " of "+ formulaName + " in " +  toOurExponential(sigFigs(coeff1, 3)) + units2 " of //water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)");
