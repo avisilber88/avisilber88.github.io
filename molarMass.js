@@ -124,10 +124,16 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 			// var answerString=Number(sigFigs(Number(molar),3))+"";
 			
 			var molarMass = cationArray[1]*balancedFormulaArray[1]+anionArray[1]*balancedFormulaArray[2];
-			var w1molarMass = cationArray[1]*balancedFormulaArray[2]+anionArray[1]*balancedFormulaArray[2]+1;
-			var w2molarMass = cationArray[1]*balancedFormulaArray[1]+anionArray[1]*balancedFormulaArray[1]+2;
-			var w3molarMass = cationArray[1]*balancedFormulaArray[2]+anionArray[1]*balancedFormulaArray[1]+3;
+			var w1molarMass = cationArray[1]*balancedFormulaArray[2]+anionArray[1]*balancedFormulaArray[2];
+			var w2molarMass = cationArray[1]*balancedFormulaArray[1]+anionArray[1]*balancedFormulaArray[1];
+			var w3molarMass = cationArray[1]*balancedFormulaArray[2]+anionArray[1]*balancedFormulaArray[1];
 			
+			if (balancedFormulaArray[1]==balancedFormulaArray[2]){
+			molarMass = cationArray[1]*balancedFormulaArray[1]+anionArray[1]*balancedFormulaArray[2];
+			w1molarMass = cationArray[1]*balancedFormulaArray[2]+anionArray[1]*balancedFormulaArray[2]+1*cationArray[1];
+			w2molarMass = cationArray[1]*balancedFormulaArray[1]+anionArray[1]*balancedFormulaArray[1]+1*anionArray[1];
+			w3molarMass = cationArray[1]*balancedFormulaArray[2]+anionArray[1]*balancedFormulaArray[1]+cationArray[1]-anionArray[1];
+			}
 			// balancedFormulaArray
 			
 			answer=Number(sigFigs(Number(molarMass),5))+" g/mol ";
