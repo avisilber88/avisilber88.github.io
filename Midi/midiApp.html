@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns = "http://www.w3.org/1999/xhtml">
+	<script src = 'https://cdn.jsdelivr.net/npm/web-midi-api-shim@1.4.20/build/WebMIDIAPI.min.js'></script>
+
+	<!--script src = "vendor/jquery-3.4.1.js"></script-->
+	<script type = "text/javascript" src = "vendor/jquery-3.4.1.js"></script>
+	<link type = "text/css" rel = "stylesheet" href = "MidiApp.css">
+	<script src = "MidiApp.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+	<!--script src = "timbre.js"></script-->
+	<head>
+
+	<!--LINK JQUERY-->
+
+	<!--PERSONAL SCRIPT JavaScript-->
+	</head>
+	<body data-step = "0">
+	<audio id = "sound-A1" src = "samples/_A2.wav" preload = "auto"></audio>
+	<audio id = "sound-Bb1" src = "samples/_Bb2.wav" preload = "auto"></audio>
+	<audio id = "sound-B1" src = "samples/_B2.wav" preload = "auto"></audio>
+	<audio id = "sound-C2" src = "samples/_C3.wav" preload = "auto"></audio>
+	<audio id = "sound-Db2" src = "samples/_Db3.wav" preload = "auto"></audio>
+	<audio id = "sound-D2" src = "samples/_D3.wav" preload = "auto"></audio>
+	<audio id = "sound-Eb2" src = "samples/_Eb3.wav" preload = "auto"></audio>
+	<audio id = "sound-E2" src = "samples/_E3.wav" preload = "auto"></audio>
+	<audio id = "sound-F2" src = "samples/_F3.wav" preload = "auto"></audio>
+	<audio id = "sound-Gb2" src = "samples/_Gb3.wav" preload = "auto"></audio>
+	<audio id = "sound-G2" src = "samples/_G3.wav" preload = "auto"></audio>
+	<audio id = "sound-Ab2" src = "samples/_Ab3.wav" preload = "auto"></audio>
+	<audio id = "sound-A2" src = "samples/A2.ogg" preload = "auto"></audio>
+	<audio id = "sound-Bb2" src = "samples/Bb2.ogg" preload = "auto"></audio>
+	<audio id = "sound-B2" src = "samples/B2.ogg" preload = "auto"></audio>
+	<audio id = "sound-Ab3" src = "samples/Ab3.ogg" preload = "auto"></audio>
+	<audio id = "sound-A3" src = "samples/A3.ogg" preload = "auto"></audio>
+	<audio id = "sound-Bb3" src = "samples/Bb3.ogg" preload = "auto"></audio>
+	<audio id = "sound-B3" src = "samples/B3.ogg" preload = "auto"></audio>
+	<audio id = "sound-C3" src = "samples/C3.ogg" preload = "auto"></audio>
+	<audio id = "sound-Db3" src = "samples/Db3.ogg" preload = "auto"></audio>
+	<audio id = "sound-D3" src = "samples/D3.ogg" preload = "auto"></audio>
+	<audio id = "sound-Eb3" src = "samples/Eb3.ogg" preload = "auto"></audio>
+	<audio id = "sound-E3" src = "samples/E3.ogg" preload = "auto"></audio>
+	<audio id = "sound-F3" src = "samples/F3.ogg" preload = "auto"></audio>
+	<audio id = "sound-Gb3" src = "samples/Gb3.ogg" preload = "auto"></audio>
+	<audio id = "sound-G3" src = "samples/G3.ogg" preload = "auto"></audio>
+	<audio id = "sound-Ab4" src = "samples/Ab4.ogg" preload = "auto"></audio>
+	<audio id = "sound-A4" src = "samples/A4.ogg" preload = "auto"></audio>
+	<audio id = "sound-Bb4" src = "samples/Bb4.ogg" preload = "auto"></audio>
+	<audio id = "sound-B4" src = "samples/B4.ogg" preload = "auto"></audio>
+	<audio id = "sound-C4" src = "samples/C4.ogg" preload = "auto"></audio>
+	<audio id = "sound-Db4" src = "samples/Db4.ogg" preload = "auto"></audio>
+	<audio id = "sound-D4" src = "samples/D4.ogg" preload = "auto"></audio>
+	<audio id = "sound-Eb4" src = "samples/Eb4.ogg" preload = "auto"></audio>
+	<audio id = "sound-E4" src = "samples/E4.ogg" preload = "auto"></audio>
+	<audio id = "sound-F4" src = "samples/F4.ogg" preload = "auto"></audio>
+	<audio id = "sound-Gb4" src = "samples/Gb4.ogg" preload = "auto"></audio>
+	<audio id = "sound-G4" src = "samples/G4.ogg" preload = "auto"></audio>
+	<audio id = "sound-C5" src = "samples/C5.ogg" preload = "auto"></audio>
+	<audio id = "sound-Db5" src = "samples/5_Db4_4.wav" preload = "auto"></audio>
+	<audio id = "sound-D5" src = "samples/5_D4_3.wav" preload = "auto"></audio>
+	<audio id = "sound-Eb5" src = "samples/5_Eb4_3.wav" preload = "auto"></audio>
+	<audio id = "sound-E5" src = "samples/5_E4_3.wav" preload = "auto"></audio>
+	<audio id = "sound-F5" src = "samples/5_F4_3.wav" preload = "auto"></audio>
+	<audio id = "sound-Gb5" src = "samples/5_Gb4_3.wav" preload = "auto"></audio>
+	<audio id = "sound-G5" src = "samples/5_G4_2.wav" preload = "auto"></audio>
+	<audio id = "sound-Ab5" src = "samples/5_Ab4_2.wav" preload = "auto"></audio>
+	<audio id = "sound-A5" src = "samples/5_A4_2.wav" preload = "auto"></audio>
+	<audio id = "sound-Bb5" src = "samples/5_Bb4_2.wav" preload = "auto"></audio>
+	<audio id = "sound-B5" src = "samples/5_B4_2.wav" preload = "auto"></audio>
+	<audio id = "sound-C6" src = "samples/5_C5_2.wav" preload = "auto"></audio>
+
+	<svg xmlns = "http://www.w3.org/2000/svg" style = "display: none;">
+	<defs>
+		<symbol id="note" viewBox="0 0 121 174">
+				<path d="M72.517 141.958c.741 13.022-12.003 26.182-30.168 30.376-19.642 4.534-38.183-3.132-41.414-17.123-3.23-13.992 10.075-29.01 29.716-33.545 7.576-1.749 14.988-1.683 21.42-.139L52 115.424V0c11.37 11.855 20.084 19.909 26.142 24.16 9.087 6.377 21.997 14.68 30.63 25.999 8.633 11.318 12.207 22.805 11.035 33.937-1.172 11.132-3.8 19.104-8.8 26.987-3.333 5.256-5.444 8.71-6.332 10.36 2.344-11.277 3.06-20.35 2.15-27.22-1.364-10.304-3.914-15.369-12.356-21.72-5.628-4.234-12.885-7.564-21.77-9.991v79.493l-.182-.047z" fill-rule="evenodd"/>
+		</symbol>
+	</defs>
+</svg>
+
+<div id="countdown">01:00</div>
+
+<div id="screen-wrapper">	
+	<div id="screens">
+
+		<div class="screen step0"></div>
+
+		<div class="screen step1">
+			<div class="lock-input">
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+			</div>
+			<p class="hint">Hint: "Amazing Grace" in F</p>
+		</div>
+
+		<div class="screen step2">
+			<div class="lock-input">
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+</div>
+
+	<p class = "hint">Hint: C7 in root position</p>
+	<p class = "keyboardImg"><img src = "Blank Keyboard.jpeg" id = "keyboardImg2"></img></p>
+
+
+	<div class = "screen step3">
+	<p>You win!!</p>
+	</div>
+	</div>
+	</div>
+	</body>
