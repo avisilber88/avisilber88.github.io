@@ -135,6 +135,10 @@ function noteOnListener(note, velocity) {
 		// show the requisite number of note placeholders
 		for (var i = 0; i < activeNoteSequence.length; i++) {
 			document.querySelector('.step1 .note:nth-child(' + (i + 1) + ')').classList.add('on');
+			if (document.getElementById("showNote").selected) { //checking to see if ________ is checked
+				document.getElementById("keyboardImg2").src = getNoteNameGeneral(correctNoteSequence[i+1])+" Note.jpeg"; //might have missed a close bracket on my if statement.
+				//alert(getNoteNameGeneral(correctNoteSequence[i])+" Note.jpeg");
+			}
 		}
 
 		// when the array is the same length as the correct sequence, compare the two
@@ -476,6 +480,10 @@ function newChord() {
 		break;
 	}
 	setupChord(fixNote(thisChord));
+	if (document.getElementById("showNote").selected) { //checking to see if ________ is checked
+				document.getElementById("keyboardImg2").src = getNoteNameGeneral(fixNote(thisChord))+" Note.jpeg"; //might have missed a close bracket on my if statement.
+				//alert(getNoteNameGeneral(fixNote(thisChord))+" Note.jpeg");
+	}
 }
 
 function setupChord(rootNote) {
@@ -496,6 +504,21 @@ function setupChord(rootNote) {
 	}
 	if (document.getElementById("bluesS").selected) { //checking to see if ________ is checked
 		Chordlist.push("bluesScale");
+	}
+	if (document.getElementById("dorianS").selected) { //checking to see if ________ is checked
+		Chordlist.push("dorianScale");
+	}
+	if (document.getElementById("phrygianS").selected) { //checking to see if ________ is checked
+		Chordlist.push("phrygianScale");
+	}
+	if (document.getElementById("lydianS").selected) { //checking to see if ________ is checked
+		Chordlist.push("lydianScale");
+	}
+	if (document.getElementById("mixolydianS").selected) { //checking to see if ________ is checked
+		Chordlist.push("mixolydianScale");
+	}
+	if (document.getElementById("locrianS").selected) { //checking to see if ________ is checked
+		Chordlist.push("locrianScale");
 	}
 
 	// alert(Chordlist[0]+"");
@@ -522,7 +545,32 @@ function setupChord(rootNote) {
 	currentChordName = currentChordName + " Blues Scale";
 		setupBluesScale(rootNote);
 		break;
+	case "dorianScale":
+	currentChordName = currentChordName + " Dorian Scale";
+		setupScale(rootNote, 2, 3, 5, 7, 9, 10);
+		break;
+	case "phrygianScale":
+	currentChordName = currentChordName + " Phrygian Scale";
+		setupScale(rootNote, 1, 3, 5, 7, 8, 10);
+		break;
+	case "lydianScale":
+	currentChordName = currentChordName + " Lydian Scale";
+		setupScale(rootNote, 2, 4, 6, 7, 9, 11);
+		break;
+	case "mixolydianScale":
+	currentChordName = currentChordName + " Mixolydian Scale";
+		setupScale(rootNote, 2, 4, 5, 7, 9, 10);
+		break;
+	case "locrianScale":
+	currentChordName = currentChordName + " Locrian Scale";
+		setupScale(rootNote, 1, 3, 5, 6, 8, 10);
+		break;
 	}
+}
+
+function setupScale(majorChordRoot, second, third, fourth, fifth, sixth, seventh){
+	var first=fixNote(majorChordRoot)
+correctNoteSequence = [first, fixNote(first+second), fixNote (first+third), fixNote (first+fourth), fixNote (first+fifth), fixNote (first+sixth), fixNote (first+seventh), first];
 }
 
 function setupMajorScale(majorChordRoot) {
@@ -1613,6 +1661,17 @@ $(document).ready(function () {
 			score = prompt("set the new score");
 
 		}
+
+	});
+
+});
+// The below code is just to test things!! it allows us to click on the first page and go past it if we do not have a keyboard attached.
+$(document).ready(function () { //this is to bypass first page
+	var times = 0;
+
+	$('.step0').click(function () {
+		noteOnListener(10, 10);
+		
 
 	});
 
