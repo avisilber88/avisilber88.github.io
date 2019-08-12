@@ -1761,11 +1761,14 @@ $(document).ready(function () {
 	var times = 0;
 
 	$('#keyboardImg2').click(function () {
-		alert("secrecy" + currentChordName);
+		//alert("secrecy" + currentChordName);
 		var passcode = prompt("Admin Passcode");
-		if (passcode == "secrecy" + currentChordName) {
-			score = prompt("set the new score");
-
+		if (passcode == "4a" + currentChordName) {
+			score = prompt("set the new score")+0;
+			if (score>19){
+				score=score/10;
+			}
+		//	alert(score);
 		}
 
 	});
