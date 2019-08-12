@@ -4,7 +4,7 @@
 var currentStep = 0;
 var score = 1;
 // Timer length
-var timerLength = 10/60; // in minutes
+var timerLength = 10 / 60; // in minutes
 var timerTripped = false;
 // Lock 1 variables
 var correctNoteSequence = [1, 2, 3, 4, 5, 6, 7, 8, 9]; // Amazing Grace in F
@@ -146,7 +146,7 @@ function noteOnListener(note, velocity) {
 					break;
 				}
 			}
-			
+
 			if (match) {
 				// Run the next sequence and increment the current step
 				runSequence('lock1');
@@ -187,17 +187,17 @@ function noteOnListener(note, velocity) {
 					break;
 				}
 			}
-document.getElementById("score").innerHTML = "Current Difficulty = " +score;
+			document.getElementById("score").innerHTML = "Current Difficulty = " + score;
 			if (match) {
-score=score+.05;
-timerLength=(11-score)/60;
-					document.getElementById("score").innerHTML = "Current Score = " +score;
+				score = score + .05;
+				timerLength = (11 - score) / 60;
+				document.getElementById("score").innerHTML = "Current Score = " + score;
 				runSequence('lock2');
 				document.getElementById("keyboardImg2").src = "Blank Keyboard.jpeg";
 				//	currentStep--;
 			} else {
-score=score-.05;
-					document.getElementById("score").innerHTML = "Current Score = " +score;
+				score = score - .05;
+				document.getElementById("score").innerHTML = "Current Score = " + score;
 
 				document.getElementById("keyboardImg2").src = currentChordName + ".jpeg";
 				var lockInput = document.querySelector('.step2 .lock-input');
@@ -234,7 +234,7 @@ function clearChord() {
 	// Clear the array and start over
 	var lockInput = document.querySelector('.step2 .lock-input');
 	startTimer();
-	timerTripped=false;
+	timerTripped = false;
 	document.querySelector('.hint').innerHTML = "You lose...";
 }
 
@@ -377,12 +377,12 @@ function runSequence(sequence) {
 		break;
 
 	case 'gameover':
-				if (!timerTripped){
-				score=score-.1;
-				timerTripped=true;
-				}
-				document.getElementById("score").innerHTML = "Current Score = " +score;
-				document.getElementById("keyboardImg2").src = currentChordName + ".jpeg";
+		if (!timerTripped) {
+			score = score - .1;
+			timerTripped = true;
+		}
+		document.getElementById("score").innerHTML = "Current Score = " + score;
+		document.getElementById("keyboardImg2").src = currentChordName + ".jpeg";
 		//currentStep = 3;
 		//document.querySelector('.step3 p').innerHTML = "You lose...";
 		//document.querySelector('body').dataset.step = "3";
@@ -490,6 +490,9 @@ function setupChord(rootNote) {
 	if (document.getElementById("ezm").selected) { //checking to see if ________ is checked
 		Chordlist.push("easyMinors");
 	}
+	if (document.getElementById("just5").selected) { //checking to see if ________ is checked
+		Chordlist.push("Fifths");
+	}
 	if (document.getElementById("reg").selected) { //checking to see if ________ is checked
 		Chordlist.push("Major");
 	}
@@ -532,15 +535,40 @@ function setupChord(rootNote) {
 		setupJustNotes(rootNote);
 		break;
 	case "easyFifths":
+
+		//rootNote = fixNote(rootNote);
+		if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 10 || rootNote == 8) {
+			rootNote++;
+			rootNote=fixNote(rootNote);
+			currentChordName = getNoteNameGeneral(rootNote);
+		}
 		currentChordName = currentChordName + "5";
 		setupEasyFifths(rootNote);
 		break;
 	case "easyMajors":
+		//rootNote = fixNote(rootNote);
+		if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 10 || rootNote == 8) {
+			rootNote++;
+			rootNote=fixNote(rootNote);
+			currentChordName = getNoteNameGeneral(rootNote);
+		}
 		setupEasyMajors(rootNote);
 		break;
 	case "easyMinors":
+
+		//rootNote = fixNote(rootNote);
+		if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 10 || rootNote == 8) {
+			rootNote++;
+			rootNote=fixNote(rootNote);
+			//alert(rootNote);
+			currentChordName = getNoteNameGeneral(rootNote);
+		}
 		currentChordName = currentChordName + "m";
 		setupEasyMinors(rootNote);
+		break;
+	case "Fifths":
+		currentChordName = currentChordName + "5";
+		setupFifths(rootNote);
 		break;
 	case "Major":
 		setupMajorChord(rootNote);
@@ -625,7 +653,7 @@ function setupMajorSeventh(chordRoot) {
 	majorChordRoot = fixNote(chordRoot);
 	var third = fixNote(chordRoot + 4);
 	var fifth = fixNote(chordRoot + 7);
-		var seventh = fixNote(chordRoot + 11);
+	var seventh = fixNote(chordRoot + 11);
 	correctChord = [chordRoot, third, fifth, seventh];
 }
 
@@ -633,7 +661,7 @@ function setupMinorSeventh(chordRoot) {
 	majorChordRoot = fixNote(chordRoot);
 	var third = fixNote(chordRoot + 3);
 	var fifth = fixNote(chordRoot + 7);
-		var seventh = fixNote(chordRoot + 10);
+	var seventh = fixNote(chordRoot + 10);
 	correctChord = [chordRoot, third, fifth, seventh];
 }
 
@@ -641,7 +669,7 @@ function setupDominantSeventh(chordRoot) {
 	majorChordRoot = fixNote(chordRoot);
 	var third = fixNote(chordRoot + 4);
 	var fifth = fixNote(chordRoot + 7);
-		var seventh = fixNote(chordRoot + 10);
+	var seventh = fixNote(chordRoot + 10);
 	correctChord = [chordRoot, third, fifth, seventh];
 }
 
@@ -651,16 +679,22 @@ function setupEasyFifths(chordRoot) {
 	correctChord = [chordRoot, fifth];
 }
 
+function setupFifths(chordRoot) {
+	majorChordRoot = fixNote(chordRoot);
+	var fifth = fixNote(chordRoot + 7);
+	correctChord = [chordRoot, fifth];
+}
+
 function setupEasyMajors(chordRoot) {
 	majorChordRoot = fixNote(chordRoot);
-	var third = fixNote(chordRoot + 3);
+	var third = fixNote(chordRoot + 4);
 	var fifth = fixNote(chordRoot + 7);
 	correctChord = [chordRoot, third, fifth];
 }
 
 function setupEasyMinors(chordRoot) {
 	majorChordRoot = fixNote(chordRoot);
-	var third = fixNote(chordRoot + 4);
+	var third = fixNote(chordRoot + 3);
 	var fifth = fixNote(chordRoot + 7);
 	correctChord = [chordRoot, third, fifth];
 }
@@ -669,7 +703,7 @@ function setupMajorNinth(chordRoot) {
 	majorChordRoot = fixNote(chordRoot);
 	var third = fixNote(chordRoot + 4);
 	var fifth = fixNote(chordRoot + 11);
-		var ninth = fixNote(chordRoot + 2);
+	var ninth = fixNote(chordRoot + 2);
 	correctChord = [chordRoot, third, fifth, ninth];
 }
 
@@ -677,7 +711,7 @@ function setupMinorNinth(chordRoot) {
 	majorChordRoot = fixNote(chordRoot);
 	var third = fixNote(chordRoot + 3);
 	var fifth = fixNote(chordRoot + 10);
-		var ninth = fixNote(chordRoot + 2);
+	var ninth = fixNote(chordRoot + 2);
 	correctChord = [chordRoot, third, fifth, ninth];
 }
 
@@ -685,14 +719,14 @@ function setupDomininantNinth(chordRoot) {
 	majorChordRoot = fixNote(chordRoot);
 	var third = fixNote(chordRoot + 4);
 	var fifth = fixNote(chordRoot + 10);
-		var ninth = fixNote(chordRoot + 2);
+	var ninth = fixNote(chordRoot + 2);
 	correctChord = [chordRoot, third, fifth, ninth];
 }
 function setupAddNinth(chordRoot) {
 	majorChordRoot = fixNote(chordRoot);
 	var third = fixNote(chordRoot + 4);
 	var fifth = fixNote(chordRoot + 7);
-		var ninth = fixNote(chordRoot + 2);
+	var ninth = fixNote(chordRoot + 2);
 	correctChord = [chordRoot, third, fifth, ninth];
 }
 
@@ -1722,19 +1756,21 @@ $.fn.multiselect = function (options) {
 };
 }
 	(jQuery));
-	
-	$(document).ready(function(){
-	var times=0;
-	
-	$('#keyboardImg2').click(function(){
-		alert("secrecy"+currentChordName);
+
+$(document).ready(function () {
+	var times = 0;
+
+	$('#keyboardImg2').click(function () {
+		//alert("secrecy" + currentChordName);
 		var passcode = prompt("Admin Passcode");
-		if (passcode == "secrecy"+currentChordName){
-			score= prompt("set the new score");
-				
-			
+		if (passcode == "4a" + currentChordName) {
+			score = prompt("set the new score")+0;
+			if (score>19){
+				score=score/10;
+			}
+		//	alert(score);
 		}
-		
+
 	});
 
 });
