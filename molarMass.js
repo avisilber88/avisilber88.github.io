@@ -124,16 +124,10 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 			// var answerString=Number(sigFigs(Number(molar),3))+"";
 			
 			var molarMass = cationArray[1]*balancedFormulaArray[1]+anionArray[1]*balancedFormulaArray[2];
-			var w1molarMass = cationArray[1]*balancedFormulaArray[2]+anionArray[1]*balancedFormulaArray[2];
-			var w2molarMass = cationArray[1]*balancedFormulaArray[1]+anionArray[1]*balancedFormulaArray[1];
-			var w3molarMass = cationArray[1]*balancedFormulaArray[2]+anionArray[1]*balancedFormulaArray[1];
+			var w1molarMass = cationArray[1]*balancedFormulaArray[2]+anionArray[1]*balancedFormulaArray[2]+1;
+			var w2molarMass = cationArray[1]*balancedFormulaArray[1]+anionArray[1]*balancedFormulaArray[1]+2;
+			var w3molarMass = cationArray[1]*balancedFormulaArray[2]+anionArray[1]*balancedFormulaArray[1]+3;
 			
-			if (balancedFormulaArray[1]==balancedFormulaArray[2]){
-			molarMass = cationArray[1]*balancedFormulaArray[1]+anionArray[1]*balancedFormulaArray[2];
-			w1molarMass = cationArray[1]*balancedFormulaArray[2]+anionArray[1]*balancedFormulaArray[2]+1*cationArray[1];
-			w2molarMass = cationArray[1]*balancedFormulaArray[1]+anionArray[1]*balancedFormulaArray[1]+1*anionArray[1];
-			w3molarMass = cationArray[1]*balancedFormulaArray[2]+anionArray[1]*balancedFormulaArray[1]+cationArray[1]-anionArray[1];
-			}
 			// balancedFormulaArray
 			
 			answer=Number(sigFigs(Number(molarMass),5))+" g/mol ";
@@ -730,11 +724,12 @@ return polyCheck;
 
 	var resetQuestion=function(){
 		// the below code is for ion picking
-		var randomunitnum3=(Math.floor(Math.random()*2)+1);
-		var cationCharge = randomunitnum3+1;
+		var randomunitnum3=(Math.floor(Math.random()*3)+1);
+		var cationCharge = randomunitnum3;
+		//alert (cationCharge);
 		var cationArray = getRandomCation(cationCharge);
-		var randomunitnum2=(Math.floor(Math.random()*2)+1);
-		var anionCharge = randomunitnum2+1;
+		var randomunitnum2=(Math.floor(Math.random()*3)+1);
+		var anionCharge = randomunitnum2;
 		var anionArray = getRandomAnion(anionCharge);	
 		var balancedFormulaArray = getBalancedIonicCompound (cationArray, cationCharge, anionArray, anionCharge);
 		
