@@ -11,10 +11,10 @@ var correctNoteSequence = [1, 2, 3, 4, 5, 6, 7, 8, 9]; // Amazing Grace in F
 var activeNoteSequence = [];
 
 // Lock 2 variables
-var correctChord = [11, 4, 5, 7]; // C7 chord starting on middle C
+var correctChord = [11, 4, 5, 7, 15]; // C7 chord starting on middle C
 var activeChord = [];
 var currentChordName = "Wait for the first chord";
-
+var bassMatched = 0;
 if (navigator.requestMIDIAccess) {
 	console.log('This browser supports WebMIDI!');
 
@@ -171,8 +171,15 @@ function noteOnListener(note, velocity) {
 
 	case 2:
 		// add the note to the active chord array
-		activeChord.push(arrangeNote(note));
-
+		//alert((arrangeNote(note)+"" +correctChord[0]));
+		if (activeChord.includes(arrangeNote(note)) == false) {
+			activeChord.push(arrangeNote(note));
+		} else if ((arrangeNote(note) == correctChord[0]) && (bassMatched > 0) && (bassMatched < 3)) {
+			activeChord.push(bassMatched+12);
+			//alert (bassMatched+12); //spot1
+			bassMatched++
+		}
+		//alert(activeChord.length);
 		// show the number of active notes
 		for (var i = 0; i < activeChord.length; i++) {
 			document.querySelector('.step2 .note:nth-child(' + (i + 1) + ')').classList.add('on');
@@ -331,12 +338,17 @@ function getNoteNameGeneral(genNoteNum) {
 }
 
 function noteOffListener(note) {
-
+//alert (note);
 	switch (currentStep) {
 	case 2:
 		// Remove the note value from the active chord array
+		//alert(activeChord.length);
+		//alert (arrangeNote(note)==correctChord[0]);
 		activeChord.splice(activeChord.indexOf(note), 1);
-
+		if (arrangeNote(note)==correctChord[0]&&bassMatched>1){
+			bassMatched--;
+		}
+		//spot2
 		// Hide the last note shown
 		document.querySelector('.step2 .note:nth-child(' + (activeChord.length + 1) + ')').classList.remove('on');
 		break;
@@ -478,6 +490,11 @@ function setupChord(rootNote) {
 	var Chordlist = [];
 
 	// alert(document.getElementById("ez5").selected);
+	if (document.getElementById("doubleBass").selected) { //checking to see if ________ is checked
+		bassMatched = 1;
+	} else {
+		bassMatched = 0;
+	}
 	if (document.getElementById("jln").selected) { //checking to see if ________ is checked
 		Chordlist.push("justNotes");
 	}
@@ -569,17 +586,16 @@ function setupChord(rootNote) {
 			//alert(rootNote);
 			currentChordName = getNoteNameGeneral(rootNote);
 		}
-		
+
 		currentChordName = currentChordName + "m";
 		setupEasyMinors(rootNote);
 		break;
 	case "romanC":
 		//rootNote = fixNote(rootNote);
-		if (rootNote==10){
-			rootNote=5;
+		if (rootNote == 10) {
+			rootNote = 5;
 			currentChordName = getNoteNameGeneral(rootNote);
-		}
-		else if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 8 || rootNote == 11) {
+		} else if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 8 || rootNote == 11) {
 			rootNote++;
 			rootNote = fixNote(rootNote);
 
@@ -591,17 +607,16 @@ function setupChord(rootNote) {
 		break;
 	case "romanA":
 		//rootNote = fixNote(rootNote);
-		if (rootNote==10){
-			rootNote=5;
+		if (rootNote == 10) {
+			rootNote = 5;
 			currentChordName = getNoteNameGeneral(rootNote);
-		}
-		else if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 11 || rootNote == 8) {
+		} else if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 11 || rootNote == 8) {
 			rootNote++;
 			rootNote = fixNote(rootNote);
 			//alert(rootNote);
 			currentChordName = getNoteNameGeneral(rootNote);
 		}
-		
+
 		//alert(rootNote);
 		setupMinRoman(rootNote);
 		//currentChordName = currentChordName + "m";
@@ -654,6 +669,12 @@ function setupChord(rootNote) {
 		setupAddNinth(rootNote);
 		break;
 	}
+
+	if (bassMatched > 0) {
+		//	alert("tested");
+		correctChord.push(13);
+		correctChord.push(14);
+	}
 }
 
 function setupMajRoman(rN) {
@@ -705,7 +726,7 @@ function setupMajRoman(rN) {
 		correctChord = [rN, third, fifth];
 		break;
 	}
-	alert (currentChordName);
+	//alert (currentChordName);
 }
 function setupMinRoman(rN) {
 	switch (rN) {
