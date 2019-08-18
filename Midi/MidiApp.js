@@ -526,6 +526,12 @@ function setupChord(rootNote) {
 	if (document.getElementById("add9").selected) { //checking to see if ________ is document.getElementById"jln".selected
 		Chordlist.push("addNinth");
 	}
+	if (document.getElementById("romanc").selected) { //checking to see if ________ is checked
+		Chordlist.push("romanC");
+	}
+	if (document.getElementById("romana").selected) { //checking to see if ________ is checked
+		Chordlist.push("romanA");
+	}
 	// alert(Chordlist[0]+"");
 	var chordType = Chordlist[Math.floor(Math.random() * Chordlist.length)];
 
@@ -539,7 +545,7 @@ function setupChord(rootNote) {
 		//rootNote = fixNote(rootNote);
 		if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 10 || rootNote == 8) {
 			rootNote++;
-			rootNote=fixNote(rootNote);
+			rootNote = fixNote(rootNote);
 			currentChordName = getNoteNameGeneral(rootNote);
 		}
 		currentChordName = currentChordName + "5";
@@ -549,7 +555,7 @@ function setupChord(rootNote) {
 		//rootNote = fixNote(rootNote);
 		if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 10 || rootNote == 8) {
 			rootNote++;
-			rootNote=fixNote(rootNote);
+			rootNote = fixNote(rootNote);
 			currentChordName = getNoteNameGeneral(rootNote);
 		}
 		setupEasyMajors(rootNote);
@@ -559,12 +565,46 @@ function setupChord(rootNote) {
 		//rootNote = fixNote(rootNote);
 		if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 10 || rootNote == 8) {
 			rootNote++;
-			rootNote=fixNote(rootNote);
+			rootNote = fixNote(rootNote);
 			//alert(rootNote);
 			currentChordName = getNoteNameGeneral(rootNote);
 		}
+		
 		currentChordName = currentChordName + "m";
 		setupEasyMinors(rootNote);
+		break;
+	case "romanC":
+		//rootNote = fixNote(rootNote);
+		if (rootNote==10){
+			rootNote=5;
+			currentChordName = getNoteNameGeneral(rootNote);
+		}
+		else if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 8 || rootNote == 11) {
+			rootNote++;
+			rootNote = fixNote(rootNote);
+
+			currentChordName = getNoteNameGeneral(rootNote);
+		}
+		//alert(rootNote);
+		setupMajRoman(rootNote);
+		//setupEasyMajors(rootNote);
+		break;
+	case "romanA":
+		//rootNote = fixNote(rootNote);
+		if (rootNote==10){
+			rootNote=5;
+			currentChordName = getNoteNameGeneral(rootNote);
+		}
+		else if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 11 || rootNote == 8) {
+			rootNote++;
+			rootNote = fixNote(rootNote);
+			//alert(rootNote);
+			currentChordName = getNoteNameGeneral(rootNote);
+		}
+		
+		//alert(rootNote);
+		setupMinRoman(rootNote);
+		//currentChordName = currentChordName + "m";
 		break;
 	case "Fifths":
 		currentChordName = currentChordName + "5";
@@ -616,6 +656,105 @@ function setupChord(rootNote) {
 	}
 }
 
+function setupMajRoman(rN) {
+	switch (rN) {
+	case 12:
+		currentChordName = "I in C";
+		rN = fixNote(rN);
+		var third = fixNote(rN + 4);
+		var fifth = fixNote(rN + 7);
+		correctChord = [rN, third, fifth];
+		// majorChordRoot = fixNote(rN);
+		// var third = fixNote(majorChordRoot + 4);
+		// var fifth = fixNote(majorChordRoot + 7);
+		// correctChord = [majorChordRoot, third, fifth];
+		break;
+	case 2:
+		currentChordName = "ii in C"
+			rN = fixNote(rN);
+		var third = fixNote(rN + 3);
+		var fifth = fixNote(rN + 7);
+		correctChord = [rN, third, fifth];
+		break;
+	case 4:
+		currentChordName = "iii in C"
+			rN = fixNote(rN);
+		var third = fixNote(rN + 3);
+		var fifth = fixNote(rN + 7);
+		correctChord = [rN, third, fifth];
+		break;
+	case 5:
+		currentChordName = "IV in C"
+			rN = fixNote(rN);
+		var third = fixNote(rN + 4);
+		var fifth = fixNote(rN + 7);
+		correctChord = [rN, third, fifth];
+		break;
+	case 7:
+		currentChordName = "V in C"
+			rN = fixNote(rN);
+		var third = fixNote(rN + 4);
+		var fifth = fixNote(rN + 7);
+		correctChord = [rN, third, fifth];
+		break;
+	case 9:
+		currentChordName = "vi in C"
+			rN = fixNote(rN);
+		var third = fixNote(rN + 3);
+		var fifth = fixNote(rN + 7);
+		correctChord = [rN, third, fifth];
+		break;
+	}
+	alert (currentChordName);
+}
+function setupMinRoman(rN) {
+	switch (rN) {
+	case 9:
+		currentChordName = "i in A";
+		rN = fixNote(rN);
+		var third = fixNote(rN + 3);
+		var fifth = fixNote(rN + 7);
+		correctChord = [rN, third, fifth];
+		break;
+	case 12:
+		currentChordName = "III in A"
+			rN = fixNote(rN);
+		rN = fixNote(rN);
+		var third = fixNote(rN + 4);
+		var fifth = fixNote(rN + 7);
+		correctChord = [rN, third, fifth];
+		break;
+	case 2:
+		currentChordName = "iv in A"
+			rN = fixNote(rN);
+		var third = fixNote(rN + 3);
+		var fifth = fixNote(rN + 7);
+		correctChord = [rN, third, fifth];
+		break;
+	case 4:
+		currentChordName = "v in A"
+			rN = fixNote(rN);
+		var third = fixNote(rN + 3);
+		var fifth = fixNote(rN + 7);
+		correctChord = [rN, third, fifth];
+		break;
+	case 5:
+		currentChordName = "VI in A"
+			rN = fixNote(rN);
+		var third = fixNote(rN + 4);
+		var fifth = fixNote(rN + 7);
+		correctChord = [rN, third, fifth];
+		break;
+	case 7:
+		currentChordName = "VII in A"
+			rN = fixNote(rN);
+		var third = fixNote(rN + 4);
+		var fifth = fixNote(rN + 7);
+		correctChord = [rN, third, fifth];
+		break;
+	}
+
+}
 function setupMajorChord(majorChordRoot) {
 	majorChordRoot = fixNote(majorChordRoot);
 	var third = fixNote(majorChordRoot + 4);
@@ -1764,11 +1903,11 @@ $(document).ready(function () {
 		//alert("secrecy" + currentChordName);
 		var passcode = prompt("Admin Passcode");
 		if (passcode == "4a" + currentChordName) {
-			score = prompt("set the new score")+0;
-			if (score>19){
-				score=score/10;
+			score = prompt("set the new score") + 0;
+			if (score > 19) {
+				score = score / 10;
 			}
-		//	alert(score);
+			//	alert(score);
 		}
 
 	});
