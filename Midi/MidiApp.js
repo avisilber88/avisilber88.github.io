@@ -295,7 +295,7 @@ function getNoteName(noteNum) {
 }
 
 function getNoteNameGeneral(genNoteNum) {
-	var genNoteName = "blank";
+	var genNoteName = "C";
 	switch (genNoteNum) {
 	case 1:
 		genNoteName = "Db";

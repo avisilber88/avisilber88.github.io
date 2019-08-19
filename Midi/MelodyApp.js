@@ -136,7 +136,7 @@ function noteOnListener(note, velocity) {
 		for (var i = 0; i < activeNoteSequence.length; i++) {
 			document.querySelector('.step1 .note:nth-child(' + (i + 1) + ')').classList.add('on');
 			if (document.getElementById("showNote").selected) { //checking to see if ________ is checked
-				document.getElementById("keyboardImg2").src = getNoteNameGeneral(correctNoteSequence[i+1])+" Note.jpeg"; //might have missed a close bracket on my if statement.
+				document.getElementById("keyboardImg2").src = getNoteNameGeneral(correctNoteSequence[i + 1]) + " Note.jpeg"; //might have missed a close bracket on my if statement.
 				//alert(getNoteNameGeneral(correctNoteSequence[i])+" Note.jpeg");
 			}
 		}
@@ -153,7 +153,7 @@ function noteOnListener(note, velocity) {
 
 			if (match) {
 				// Run the next sequence and increment the current step
-					score = score + .05;
+				score = score + .05;
 				timerLength = (11 - score) / 60;
 				document.getElementById("score").innerHTML = "Current Score = " + score;
 				runSequence('lock1');
@@ -232,6 +232,10 @@ function clearSequence() {
 		note.classList.remove('on');
 	}
 	//}, 500);
+	if (document.getElementById("showNote").selected) { //checking to see if ________ is checked
+		document.getElementById("keyboardImg2").src = getNoteNameGeneral(fixNote(correctNoteSequence[0])) + " Note.jpeg"; //might have missed a close bracket on my if statement.
+		//alert(getNoteNameGeneral(fixNote(thisChord))+" Note.jpeg");
+	}
 	startTimer();
 
 	document.querySelector('.hint').innerHTML = "You lose...";
@@ -353,6 +357,9 @@ function noteOffListener(note) {
 function runSequence(sequence) {
 	switch (sequence) {
 	case 'gamestart':
+	document.getElementById("reset").addEventListener("click", function(){
+  clearSequence();
+});
 		// Now we'll start a countdown timer...
 		startTimer();
 
@@ -369,7 +376,7 @@ function runSequence(sequence) {
 		//advanceScreen();
 		clearSequence();
 		document.querySelector('.step3 p').innerHTML = "You lose...";
-			newChord();
+		newChord();
 		successFlicker();
 		break;
 
@@ -481,8 +488,8 @@ function newChord() {
 	}
 	setupChord(fixNote(thisChord));
 	if (document.getElementById("showNote").selected) { //checking to see if ________ is checked
-				document.getElementById("keyboardImg2").src = getNoteNameGeneral(fixNote(thisChord))+" Note.jpeg"; //might have missed a close bracket on my if statement.
-				//alert(getNoteNameGeneral(fixNote(thisChord))+" Note.jpeg");
+		document.getElementById("keyboardImg2").src = getNoteNameGeneral(fixNote(thisChord)) + " Note.jpeg"; //might have missed a close bracket on my if statement.
+		//alert(getNoteNameGeneral(fixNote(thisChord))+" Note.jpeg");
 	}
 }
 
@@ -501,6 +508,9 @@ function setupChord(rootNote) {
 	}
 	if (document.getElementById("pentaS").selected) { //checking to see if ________ is checked
 		Chordlist.push("pentatonicScale");
+	}
+	if (document.getElementById("boogieS").selected) { //checking to see if ________ is checked
+		Chordlist.push("boogieWoogieScale");
 	}
 	if (document.getElementById("bluesS").selected) { //checking to see if ________ is checked
 		Chordlist.push("bluesScale");
@@ -534,43 +544,53 @@ function setupChord(rootNote) {
 		setupNaturalMinorScale(rootNote);
 		break;
 	case "harmonicMinorScale":
-	currentChordName = currentChordName + " Harmonic Minor Scale";
+		currentChordName = currentChordName + " Harmonic Minor Scale";
 		setupHarmonicMinorScale(rootNote);
 		break;
 	case "pentatonicScale":
 		currentChordName = currentChordName + " Pentatonic Minor Scale";
 		setupPentatonicScale(rootNote);
 		break;
+	case "boogieWoogieScale":
+		currentChordName = currentChordName + " Boogie-Woogie Scale";
+		setupBoogieWoogieScale(rootNote);
+		break;
 	case "bluesScale":
-	currentChordName = currentChordName + " Blues Scale";
+		currentChordName = currentChordName + " Blues Scale";
 		setupBluesScale(rootNote);
 		break;
 	case "dorianScale":
-	currentChordName = currentChordName + " Dorian Scale";
+		currentChordName = currentChordName + " Dorian Scale";
 		setupScale(rootNote, 2, 3, 5, 7, 9, 10);
 		break;
 	case "phrygianScale":
-	currentChordName = currentChordName + " Phrygian Scale";
+		currentChordName = currentChordName + " Phrygian Scale";
 		setupScale(rootNote, 1, 3, 5, 7, 8, 10);
 		break;
 	case "lydianScale":
-	currentChordName = currentChordName + " Lydian Scale";
+		currentChordName = currentChordName + " Lydian Scale";
 		setupScale(rootNote, 2, 4, 6, 7, 9, 11);
 		break;
 	case "mixolydianScale":
-	currentChordName = currentChordName + " Mixolydian Scale";
+		currentChordName = currentChordName + " Mixolydian Scale";
 		setupScale(rootNote, 2, 4, 5, 7, 9, 10);
 		break;
 	case "locrianScale":
-	currentChordName = currentChordName + " Locrian Scale";
+		currentChordName = currentChordName + " Locrian Scale";
 		setupScale(rootNote, 1, 3, 5, 6, 8, 10);
 		break;
 	}
+	if (document.getElementById("upDown").selected) {
+		var chordLength=correctNoteSequence.length;
+		for (var index = 1; index < (chordLength); index++) {
+				correctNoteSequence.push(correctNoteSequence[chordLength-index-1]);
+		}
+	}
 }
 
-function setupScale(majorChordRoot, second, third, fourth, fifth, sixth, seventh){
-	var first=fixNote(majorChordRoot)
-correctNoteSequence = [first, fixNote(first+second), fixNote (first+third), fixNote (first+fourth), fixNote (first+fifth), fixNote (first+sixth), fixNote (first+seventh), first];
+function setupScale(majorChordRoot, second, third, fourth, fifth, sixth, seventh) {
+	var first = fixNote(majorChordRoot)
+		correctNoteSequence = [first, fixNote(first + second), fixNote(first + third), fixNote(first + fourth), fixNote(first + fifth), fixNote(first + sixth), fixNote(first + seventh), first];
 }
 
 function setupMajorScale(majorChordRoot) {
@@ -615,8 +635,16 @@ function setupPentatonicScale(majorChordRoot) {
 	correctNoteSequence = [majorChordRoot, third, fourth, fifth, sixth, majorChordRoot];
 }
 
+function setupBoogieWoogieScale(majorChordRoot) {
+	majorChordRoot = fixNote(majorChordRoot);
+	var third = fixNote(majorChordRoot + 4);
+	var fourth = fixNote(majorChordRoot + 7);
+	var fifth = fixNote(majorChordRoot + 9);
+	var sixth = fixNote(majorChordRoot + 10);
+	correctNoteSequence = [majorChordRoot, third, fourth, fifth, sixth];
+}
 function setupBluesScale(majorChordRoot) {
-majorChordRoot = fixNote(majorChordRoot);
+	majorChordRoot = fixNote(majorChordRoot);
 	var third = fixNote(majorChordRoot + 3);
 	var fourth = fixNote(majorChordRoot + 5);
 	var fifth = fixNote(majorChordRoot + 6);
@@ -1671,7 +1699,6 @@ $(document).ready(function () { //this is to bypass first page
 
 	$('.step0').click(function () {
 		noteOnListener(10, 10);
-		
 
 	});
 

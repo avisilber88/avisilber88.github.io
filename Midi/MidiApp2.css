@@ -46,11 +46,38 @@ body.gameover::after {
     z-index: 1;
     width: 30ch;
 }
+#resetButton {
+	position: fixed;
+	z-index: 9;
+	left: 35vw;
+	width: 30ch;
+	HEIGHT: 4vh;
+}
+#chordSenseLink {
+	position: fixed;
+    z-index: 9;
+	right: 0vw;
+	width: 30vw;
+	HEIGHT: 4vh;
+}
 
+#chordLink {
+position: right;
+    z-index: 9;
+    width: 30ch;
+	HEIGHT: 4ch;
+}
+
+#reset {
+ 	position: right;
+    z-index: 9;
+    width: 30ch;
+	HEIGHT: 4ch;
+	}
 #countdown {
     height: 20vh;
     position: absolute;
-    top: 0;
+    top: .5ch;
     left: 0;
     color: #fff;
     text-align: center;
@@ -117,12 +144,12 @@ body.gameover::after {
 .note svg {
     width: 55px;
     height: 75px;
-    transform: translateY(150px);
+    transform: translateY(250px);
     transition: 150ms cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 
 .note.on svg {
-    transform: translateY(0px);
+    transform: translateY(50px);
 }
 
 .step0, .step3 {

@@ -95,9 +95,15 @@
 	<option value="addNinth" id = "add9">Add Ninth</option>
 	<option value="romC" id = "romanc">Roman Numerals in C</option>
 	<option value="romA" id = "romana">Roman Numerals in A</option>
-		<option value="dubB" id = "doubleBass">Look for two additional root notes in the Bass</option>
+	<option value="dubB" id = "doubleBass">Look for two additional root notes in the Bass</option>
     </select>
 </p></div>
+<div id ="chordSenseLink"><p><p><button type="button"  id = "chordLink" onclick="myFunction()">Practice Scales</button></p></div>
+<script>
+function myFunction() {
+  window.location.replace("melodies.html");
+}
+</script>
 <script>
     $(function () {
         $('select[multiple].active.3col').multiselect({

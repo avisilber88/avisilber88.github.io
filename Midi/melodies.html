@@ -81,15 +81,24 @@
 	<option value="naturalMinorScale" id = "minS">Natural Minor Scale</option>
 	<option value="harmonicMinor" id = "harmS">Harmonic Minor</option>
 	<option value="pentatonicScale" id = "pentaS">Pentatonic Scale</option>
-	<option value="bluesScale" id = "bluesS">Blues Scale</option>
+	<option value="boogiewoogieScale" id = "boogieS">Boogie-Woogie Blues Scale</option>
+	<option value="bluesScale" id = "bluesS">Pentatonic Blues Scale</option>
 	<option value="dorianScale" id = "dorianS">dorian Scale</option>
 	<option value="phrygianScale" id = "phrygianS">phrygian Scale</option>
 	<option value="lydianScale" id = "lydianS">lydian Scale</option>
 	<option value="mixolydianScale" id = "mixolydianS">mixolydian Scale</option>
 	<option value="locrianScale" id = "locrianS">locrian Scale</option>
 	<option value="showNoteHelper" id = "showNote">show Note Helper</option>
+	<option value="upNDown" id = "upDown">Go up then down the scale</option>
     </select>
 </p></div>
+<div id ="resetButton"><p><button type="button" id = "reset">Reset Chord</button></p></div>
+<div id ="chordSenseLink"><p><button type="button" id = "chordLink" onclick="myFunction()">Practice Chords</button></p></div>
+<script>
+function myFunction() {
+  window.location.replace("ChordSense.html");
+}
+</script>
 <script>
     $(function () {
         $('select[multiple].active.3col').multiselect({
@@ -117,7 +126,17 @@
 		<div class="screen step0"></div>
 
 		<div class="screen step1">
+		
 			<div class="lock-input">
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
 				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
 				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
 				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
@@ -130,6 +149,7 @@
 			</div>
 			<p class="hint">Hint: "Amazing Grace"  in F</p>
 				<p class="hint" id = "score" id = "th">Hint: C7 in root position</p>
+				
 	<p class = "keyboardImg"><img src = "Blank Keyboard.jpeg" id = "keyboardImg2"></img></p>
 		</div>
 
