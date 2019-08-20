@@ -33,7 +33,7 @@ $(window).resize(function(){
 //$('#blockc').css('left',$('blocka').width*2);
 //$('#blockd').css('left',$('blocka').width*3);
 
-$('.thequestion').css('font-size', window.innerWidth/100);
+//$('.thequestion').css('font-size', window.innerWidth/100);
 });
 	// var wrongAnswer4;
 	// $('#bwordb').text(35);
@@ -134,11 +134,11 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 			// balancedFormulaArray
 		//	$('#num1').text("What is the molar mass of " + balancedFormulaArray[0]+"?");
 
-$('body :not(script)').contents().filter(function() {
-    return this.nodeType === 3;
-}).replaceWith(function() {
-    return this.nodeValue.replace(/[0123456789.]/g, '<sub>$&</sub>');
-});
+// $('body :not(script)').contents().filter(function() {
+    // return this.nodeType === 3;
+// }).replaceWith(function() {
+    // return this.nodeValue.replace(/[0123456789.]/g, '<sub>$&</sub>');
+// });
 
 			answer=balancedFormulaArray[0]+"";//Number(sigFigs(Number(molarMass),5))+" g/mol ";
 			wrongAnswer1=wrongCompound1[0]+"";//Number(sigFigs(Number(w3molarMass),5))+" g/mol ";

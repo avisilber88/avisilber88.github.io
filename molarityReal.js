@@ -512,19 +512,19 @@ var getCorrectChemicalFormula=function(moleculeName){
 		var newName="";
 		//randomunitnum=(Math.floor(Math.random()*6));
 		if (moleculeName=="CaCl2"){
-			newName="CaCl"+("2");
+			newName="CaCl"+("2").sub();
 		}
 		else if (moleculeName=="NaCl"){
-			newName="CaCl"+("2");
+			newName="CaCl"+("2").sub();
 		}
 		else if (moleculeName=="C6H12O6"){
-			newName="C"+("6")+"H"+("12")+"O"+("6");
+			newName="C"+("6").sub()+"H"+("12").sub()+"O"+("6").sub();
 		}
 		else if (moleculeName=="(NH4)3N"){
-			newName="(NH"+("4")+")"+("3")+"N";
+			newName="(NH"+("4").sub()+")"+("3").sub()+"N";
 		}
 		else if (moleculeName=="H2SO4"){
-			newName="H"+("2")+"SO"+("4");
+			newName="H"+("2").sub()+"SO"+("4").sub();
 		}
 		else if (moleculeName=="KBr"){
 			newName="KBr";
@@ -584,14 +584,14 @@ var getCorrectChemicalFormula=function(moleculeName){
 
 		// $('#num1').text(toOurExponential(sigFigs(finalNum, 3)));		
 		// $('#den1').text(toOurExponential(sigFigs(finalNumtwo, 3)));
+document.getElementById("num1").innerHTML = "What is the molarity of a "+formulaName+" solution do we get when we mix " + number +" "+ units1 +" of "+ formulaName + " in " +  numbertwo+" " + units2 + " of water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)";
+//$('#num1').text("What is the molarity of a "+formulaName+" solution do we get when we mix " + number +" "+ units1 +" of "+ formulaName + " in " +  numbertwo+" " + units2 + " of water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)");
 
-$('#num1').text("What is the molarity of a "+formulaName+" solution do we get when we mix " + number +" "+ units1 +" of "+ formulaName + " in " +  numbertwo+" " + units2 + " of water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)");
-
-$('body :not(script)').contents().filter(function() {
-    return this.nodeType === 3;
-}).replaceWith(function() {
-    return this.nodeValue.replace(/[0123456789.]/g, '<sub>$&</sub>');
-});
+// $('body :not(script)').contents().filter(function() {
+    // return this.nodeType === 3;
+// }).replaceWith(function() {
+    // return this.nodeValue.replace(/[0123456789]/g, '<sub>$&</sub>');
+// });
 
 //$('#num1').text("What is the molarity of a "+formulaName+" solution do we get when we mix " +toOurExponential(sigFigs(coeff1, 3))+ units1 " of "+ formulaName + " in " +  toOurExponential(sigFigs(coeff1, 3)) + units2 " of //water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)");
 
