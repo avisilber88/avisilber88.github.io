@@ -238,7 +238,7 @@ function clearSequence() {
 	}
 	startTimer();
 
-	document.querySelector('.hint').innerHTML = "You lose...";
+	//document.querySelector('.hint').innerHTML = "You lose...";
 }
 
 function clearChord() {
@@ -246,7 +246,7 @@ function clearChord() {
 	var lockInput = document.querySelector('.step2 .lock-input');
 	startTimer();
 	timerTripped = false;
-	document.querySelector('.hint').innerHTML = "You lose...";
+	//document.querySelector('.hint').innerHTML = "You lose...";
 }
 
 function arrangeNote(a) {
@@ -384,7 +384,7 @@ runSequence('lock1');
 		// code to trigger animations and give clue for the next lock
 		//advanceScreen();
 		clearSequence();
-		document.querySelector('.step3 p').innerHTML = "You lose...";
+		//document.querySelector('.step3 p').innerHTML = "You lose...";
 		newChord();
 		successFlicker();
 		break;
@@ -394,7 +394,7 @@ runSequence('lock1');
 		//backScreen();
 		//activeNoteSequence = [];
 		clearChord();
-		document.querySelector('.step3 p').innerHTML = "You lose...";
+		//document.querySelector('.step3 p').innerHTML = "You lose...";
 		newChord();
 		successFlicker();
 		//successFlicker();
