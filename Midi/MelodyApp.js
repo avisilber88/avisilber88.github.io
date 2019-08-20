@@ -360,6 +360,15 @@ function runSequence(sequence) {
 	document.getElementById("reset").addEventListener("click", function(){
   clearSequence();
 });
+	document.getElementById("dropdown").addEventListener("click", function(){
+	//	alert("got");
+	if (score >4){
+		score=score-3;
+	}
+runSequence('lock1');
+});
+
+
 		// Now we'll start a countdown timer...
 		startTimer();
 

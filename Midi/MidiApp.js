@@ -15,6 +15,9 @@ var correctChord = [11, 4, 5, 7, 15]; // C7 chord starting on middle C
 var activeChord = [];
 var currentChordName = "Wait for the first chord";
 var bassMatched = 0;
+
+//document.getElementById("ez5").addEventListener(select
+
 if (navigator.requestMIDIAccess) {
 	console.log('This browser supports WebMIDI!');
 
@@ -44,8 +47,18 @@ jQuery(function ($) {
 		} else {
 			element.addClass('visible');
 		}
+		resetChord();
 	});
 });
+
+//$("#ez5").change(resetChord());
+
+function resetChord(){
+	
+	//alert ("done");
+	clearChord();
+	newChord();
+}
 function onMIDIFailure() {
 	document.querySelector('.step0').innerHTML = 'Error: Could not access MIDI devices. Connect a device and refresh to try again.';
 }
@@ -356,6 +369,13 @@ function noteOffListener(note) {
 }
 
 function runSequence(sequence) {
+	document.getElementById("dropdown").addEventListener("click", function(){
+	//	alert("got");
+	if (score >4){
+		score=score-3;
+	}
+resetChord();
+});
 	switch (sequence) {
 	case 'gamestart':
 		// Now we'll start a countdown timer...
@@ -373,7 +393,7 @@ function runSequence(sequence) {
 		// code to trigger animations and give clue for the next lock
 		advanceScreen();
 		//clearSequence();
-		document.querySelector('.step3 p').innerHTML = "You lose...";
+		//document.querySelector('.step3 p').innerHTML = "You lose...";
 		successFlicker();
 		break;
 
@@ -382,7 +402,7 @@ function runSequence(sequence) {
 		//backScreen();
 		//activeNoteSequence = [];
 		clearChord();
-		document.querySelector('.step3 p').innerHTML = "You lose...";
+		//document.querySelector('.step3 p').innerHTML = "You lose...";
 		newChord();
 		successFlicker();
 		//successFlicker();
@@ -408,6 +428,7 @@ function getChordName() {
 }
 
 function newChord() {
+		document.getElementById("keyboardImg2").src = "Blank Keyboard.jpeg";
 	var thisChord = Math.floor(Math.random() * 24) + 1;
 	switch (thisChord) {
 	case 12:
