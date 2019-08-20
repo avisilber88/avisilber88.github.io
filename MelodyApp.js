@@ -238,7 +238,7 @@ function clearSequence() {
 	}
 	startTimer();
 
-	document.querySelector('.hint').innerHTML = "You lose...";
+	//document.querySelector('.hint').innerHTML = "You lose...";
 }
 
 function clearChord() {
@@ -246,7 +246,7 @@ function clearChord() {
 	var lockInput = document.querySelector('.step2 .lock-input');
 	startTimer();
 	timerTripped = false;
-	document.querySelector('.hint').innerHTML = "You lose...";
+	//document.querySelector('.hint').innerHTML = "You lose...";
 }
 
 function arrangeNote(a) {
