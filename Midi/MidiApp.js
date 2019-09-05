@@ -1,7 +1,7 @@
 // Variable which tell us what step of the game we're on.
 // We'll use this later when we parse noteOn/Off messages
 
-var currentStep = 0;
+var currentStep = -1;
 var score = 1;
 // Timer length
 var timerLength = 10 / 60; // in minutes
@@ -19,17 +19,17 @@ var bassMatched = 0;
 //document.getElementById("ez5").addEventListener(select
 
 if (navigator.requestMIDIAccess) {
-	console.log('This browser supports WebMIDI!');
+	//console.log('This browser supports WebMIDI!');
 
 	navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
 
 } else {
-	console.log('WebMIDI is not supported in this browser.');
+	//console.log('WebMIDI is not supported in this browser.');
 	document.querySelector('.step0').innerHTML = 'Error: This browser does not support WebMIDI.';
 }
 
 function onMIDISuccess(midiAccess) {
-	document.querySelector('.step0').innerHTML = 'Press any note to begin...';
+	document.querySelector('.step0').innerHTML = 'Click here to begin...';
 	var inputs = midiAccess.inputs;
 	var outputs = midiAccess.outputs;
 
@@ -71,6 +71,7 @@ function getMIDIMessage(message) {
 	switch (command) {
 	case 144: // noteOn
 		var audio = document.getElementById(soundId(getNoteName(note)));
+	//	alert (""+soundId(getNoteName(note)));
 		// if audio(const playPromise = audio.play();
 		// if (playPromise !== null) {
 		// playPromise.catch(() => {
@@ -95,7 +96,18 @@ function getMIDIMessage(message) {
 				audio.volume = 1.0;
 				if (audio.readyState >= 2) {
 					audio.currentTime = 0;
-					audio.play();
+					var promise = audio.play();
+					
+		if (promise !== undefined) {
+			promise.then(_ => {
+        // Autoplay started!
+			}).catch(error => {
+		//alert ("it worked");
+        // Autoplay was prevented.
+        // Show a "Play" button so that user can start playback.
+			});
+			}
+
 				}
 			}
 			noteOnListener(note, velocity);
@@ -1941,17 +1953,11 @@ $.fn.multiselect = function (options) {
 $(document).ready(function () {
 	var times = 0;
 
-	$('#keyboardImg2').click(function () {
+	$('.step0').click(function () {
 		//alert("secrecy" + currentChordName);
-		var passcode = prompt("Admin Passcode");
-		if (passcode == "4a" + currentChordName) {
-			score = prompt("set the new score") + 0;
-			if (score > 19) {
-				score = score / 10;
-			}
-			//	alert(score);
-		}
+		currentStep++;
+		noteOnListener(0, 0);
 
 	});
-
+	
 });
