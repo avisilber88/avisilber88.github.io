@@ -219,17 +219,17 @@ function noteOnListener(note, velocity) {
 					break;
 				}
 			}
-			document.getElementById("score").innerHTML = "Current Difficulty = " + score;
+			document.getElementById("score").innerHTML = "Current Difficulty = " + score.toFixed(2);
 			if (match) {
 				score = score + .05;
-				timerLength = (11 - score) / 60;
-				document.getElementById("score").innerHTML = "Current Score = " + score;
+				timerLength = (11.0 - score) / 60.0;
+				document.getElementById("score").innerHTML = "Current Score = " + score.toFixed(2);
 				runSequence('lock2');
 				document.getElementById("keyboardImg2").src = "Blank Keyboard.jpeg";
 				//	currentStep--;
 			} else {
 				score = score - .05;
-				document.getElementById("score").innerHTML = "Current Score = " + score;
+				document.getElementById("score").innerHTML = "Current Score = " + score.toFixed(2);
 
 				document.getElementById("keyboardImg2").src = currentChordName + ".jpeg";
 				var lockInput = document.querySelector('.step2 .lock-input');
@@ -385,7 +385,9 @@ function runSequence(sequence) {
 	//	alert("got");
 	if (score >4){
 		score=score-3;
+		document.getElementById("sp").innerHTML = " ";
 	}
+	
 resetChord();
 });
 	switch (sequence) {
@@ -415,8 +417,9 @@ resetChord();
 		//activeNoteSequence = [];
 		clearChord();
 		//document.querySelector('.step3 p').innerHTML = "You lose...";
-		newChord();
 		successFlicker();
+		newChord();
+		
 		//successFlicker();
 		break;
 
@@ -425,7 +428,7 @@ resetChord();
 			score = score - .1;
 			timerTripped = true;
 		}
-		document.getElementById("score").innerHTML = "Current Score = " + score;
+		document.getElementById("score").innerHTML = "Current Score = " + score.toFixed(2);
 		document.getElementById("keyboardImg2").src = currentChordName + ".jpeg";
 		//currentStep = 3;
 		//document.querySelector('.step3 p').innerHTML = "You lose...";
@@ -942,7 +945,7 @@ function successFlicker() {
 		b.classList.add('success');
 	window.setTimeout(function () {
 		b.classList.remove('success');
-	}, 2500);
+	}, 500);
 }
 
 function startTimer() {
@@ -1959,5 +1962,30 @@ $(document).ready(function () {
 		noteOnListener(0, 0);
 
 	});
+		// $('#keyboardImg2').click(function () {
+		// //alert("secrecy" + currentChordName);
+		// var passcode = prompt("Admin Passcode");
+		// if (passcode == "4a" + currentChordName) {
+			// score = prompt("set the new score") + 0;
+			// if (score > 19) {
+				// score = score / 10;
+			// }
+			// //	alert(score);
+		// document.getElementById("sp").innerHTML = "Set to " + score;
+		// }
+		$('#keyboardImg2').click(function () {
+		//alert("secrecy" + currentChordName);
+	
+		
+			score = parseFloat(prompt("set the new score"));
+			if (score > 19) {
+				score = score / 10;
+			}
+			//	alert(score);
+		document.getElementById("sp").innerHTML = "Set to " + score;
+	
+	
+	});
 	
 });
+
