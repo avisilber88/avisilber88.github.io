@@ -15,7 +15,7 @@ var correctChord = [11, 4, 5, 7, 15]; // C7 chord starting on middle C
 var activeChord = [];
 var currentChordName = "Wait for the first chord";
 var bassMatched = 0;
-
+var currentImageName = "Blank Keyboard.jpeg"
 //document.getElementById("ez5").addEventListener(select
 
 if (navigator.requestMIDIAccess) {
@@ -231,7 +231,7 @@ function noteOnListener(note, velocity) {
 				score = score - .05;
 				document.getElementById("score").innerHTML = "Current Score = " + score.toFixed(2);
 
-				document.getElementById("keyboardImg2").src = currentChordName + ".jpeg";
+				document.getElementById("keyboardImg2").src = currentImageName + ".jpeg";
 				var lockInput = document.querySelector('.step2 .lock-input');
 
 				lockInput.classList.add('error');
@@ -429,7 +429,7 @@ resetChord();
 			timerTripped = true;
 		}
 		document.getElementById("score").innerHTML = "Current Score = " + score.toFixed(2);
-		document.getElementById("keyboardImg2").src = currentChordName + ".jpeg";
+		document.getElementById("keyboardImg2").src = currentImageName + ".jpeg";
 		//currentStep = 3;
 		//document.querySelector('.step3 p').innerHTML = "You lose...";
 		//document.querySelector('body').dataset.step = "3";
@@ -448,75 +448,100 @@ function newChord() {
 	switch (thisChord) {
 	case 12:
 		currentChordName = "C";
+		currentImageName = "C";
 		break;
 	case 1:
 		currentChordName = "Db";
+		currentImageName = "Db";
 		break;
 	case 2:
 		currentChordName = "D";
+		currentImageName = "D";
 		break;
 	case 3:
 		currentChordName = "Eb";
+		currentImageName = "Eb";
 		break;
 	case 4:
 		currentChordName = "E";
+		currentImageName = "E";
 		break;
 	case 5:
 		currentChordName = "F";
+		currentImageName = "F";
 		break;
 	case 6:
 		currentChordName = "Gb";
+		currentImageName = "Gb";
 		break;
 	case 7:
 		currentChordName = "G";
+		currentImageName = "G";
 		break;
 	case 8:
 		currentChordName = "Ab";
+		currentImageName = "Ab";
 		break;
 	case 9:
 		currentChordName = "A";
+		currentImageName = "Db";
 		break;
 	case 10:
 		currentChordName = "Bb";
+		currentImageName = "Bb";
 		break;
 	case 11:
 		currentChordName = "B";
+		currentImageName = "B";
 		break;
 	case 24:
 		currentChordName = "C";
+		currentImageName = "C";
 		break;
 	case 13:
-		currentChordName = "Db";
+		currentChordName = "C#";
+		currentImageName = "Db";
 		break;
 	case 14:
 		currentChordName = "D";
+		currentImageName = "D";
 		break;
 	case 15:
-		currentChordName = "Eb";
+		currentChordName = "D#";
+		currentImageName = "Eb";
 		break;
 	case 16:
 		currentChordName = "E";
+		currentImageName = "E";
 		break;
 	case 17:
 		currentChordName = "F";
+		currentImageName = "F";
 		break;
 	case 18:
-		currentChordName = "Gb";
+		currentChordName = "F#";
+		
+		currentImageName = "Gb";
 		break;
 	case 19:
 		currentChordName = "G";
+		currentImageName = "G";
 		break;
 	case 20:
-		currentChordName = "Ab";
+		currentChordName = "G#";
+		currentImageName = "Ab";
 		break;
 	case 21:
 		currentChordName = "A";
+		currentImageName = "A";
 		break;
 	case 22:
-		currentChordName = "Bb";
+		currentChordName = "A#";
+		currentImageName = "Bb";
 		break;
 	case 23:
 		currentChordName = "B";
+		currentImageName = "B";
 		break;
 	}
 	setupChord(fixNote(thisChord));
@@ -591,6 +616,8 @@ function setupChord(rootNote) {
 	switch (chordType) {
 	case "justNotes":
 		currentChordName = currentChordName + " Note";
+		
+		currentImageName = currentImageName + " Note";
 		setupJustNotes(rootNote);
 		break;
 	case "easyFifths":
@@ -602,6 +629,7 @@ function setupChord(rootNote) {
 			currentChordName = getNoteNameGeneral(rootNote);
 		}
 		currentChordName = currentChordName + "5";
+		currentImageName = currentImageName + "5";
 		setupEasyFifths(rootNote);
 		break;
 	case "easyMajors":
@@ -610,6 +638,7 @@ function setupChord(rootNote) {
 			rootNote++;
 			rootNote = fixNote(rootNote);
 			currentChordName = getNoteNameGeneral(rootNote);
+			currentImageName = getNoteNameGeneral(rootNote);
 		}
 		setupEasyMajors(rootNote);
 		break;
@@ -621,6 +650,8 @@ function setupChord(rootNote) {
 			rootNote = fixNote(rootNote);
 			//alert(rootNote);
 			currentChordName = getNoteNameGeneral(rootNote);
+			
+			currentImageName = getNoteNameGeneral(rootNote);
 		}
 
 		currentChordName = currentChordName + "m";
@@ -636,6 +667,8 @@ function setupChord(rootNote) {
 			rootNote = fixNote(rootNote);
 
 			currentChordName = getNoteNameGeneral(rootNote);
+			
+			currentImageName = getNoteNameGeneral(rootNote);
 		}
 		//alert(rootNote);
 		setupMajRoman(rootNote);
@@ -651,7 +684,8 @@ function setupChord(rootNote) {
 			rootNote = fixNote(rootNote);
 			//alert(rootNote);
 			currentChordName = getNoteNameGeneral(rootNote);
-		}
+			currentImageName = getNoteNameGeneral(rootNote);
+			}
 
 		//alert(rootNote);
 		setupMinRoman(rootNote);
@@ -659,6 +693,8 @@ function setupChord(rootNote) {
 		break;
 	case "Fifths":
 		currentChordName = currentChordName + "5";
+		
+		currentImageName = currentImageName + "5";
 		setupFifths(rootNote);
 		break;
 	case "Major":
@@ -666,42 +702,53 @@ function setupChord(rootNote) {
 		break;
 	case "Minor":
 		currentChordName = currentChordName + "m";
+		
+		currentImageName = currentImageName + "m";
 		setupMinorChord(rootNote);
 		break;
 	case "sus2":
 		currentChordName = currentChordName + "sus2";
+		currentImageName = currentImageName + "sus2";
 		setupSus2(rootNote);
 		break;
 	case "sus":
 		currentChordName = currentChordName + "sus";
+		currentImageName = currentImageName + "sus";
 		setupSus(rootNote);
 		break;
 	case "minorSeventh":
 		currentChordName = currentChordName + "m7";
+		currentImageName = currentImageName + "m7";
 		setupMinorSeventh(rootNote);
 		break;
 	case "majorSeventh":
 		currentChordName = currentChordName + "maj7";
+		currentImageName = currentImageName + "maj7";
 		setupMajorSeventh(rootNote);
 		break;
 	case "dominantSeventh":
 		currentChordName = currentChordName + "7";
+		currentImageName = currentImageName + "7";
 		setupDominantSeventh(rootNote);
 		break;
 	case "minorNinth":
 		currentChordName = currentChordName + "m9";
+		currentImageName = currentImageName + "m9";
 		setupMinorNinth(rootNote);
 		break;
 	case "majorNinth":
 		currentChordName = currentChordName + "maj9";
+		currentImageName = currentImageName + "maj9";
 		setupMajorNinth(rootNote);
 		break;
 	case "dominantNinth":
 		currentChordName = currentChordName + "9";
+		currentImageName = currentImageName + "9";
 		setupDominantNinth(rootNote);
 		break;
 	case "addNinth":
 		currentChordName = currentChordName + "madd9";
+		currentImageName = currentImageName + "madd9";
 		setupAddNinth(rootNote);
 		break;
 	}
