@@ -358,6 +358,42 @@ function getNoteNameGeneral(genNoteNum) {
 	case 12:
 		genNoteName = "C";
 		break;
+	case 13:
+		genNoteName = "Db";
+		break;
+	case 14:
+		genNoteName = "D";
+		break;
+	case 15:
+		genNoteName = "Eb";
+		break;
+	case 16:
+		genNoteName = "E";
+		break;
+	case 17:
+		genNoteName = "F";
+		break;
+	case 18:
+		genNoteName = "Gb";
+		break;
+	case 19:
+		genNoteName = "G";
+		break;
+	case 20:
+		genNoteName = "Ab";
+		break;
+	case 21:
+		genNoteName = "A";
+		break;
+	case 22:
+		genNoteName = "Bb";
+		break;
+	case 23:
+		genNoteName = "B";
+		break;
+	case 24:
+		genNoteName = "C";
+		break;
 	}
 	return genNoteName;
 }
@@ -623,7 +659,7 @@ function setupChord(rootNote) {
 	case "easyFifths":
 
 		//rootNote = fixNote(rootNote);
-		if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 10 || rootNote == 8) {
+		if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 10 || rootNote == 8 || rootNote == 13 || rootNote == 15 || rootNote == 18 || rootNote == 20 || rootNote == 22) {
 			rootNote++;
 			rootNote = fixNote(rootNote);
 			currentChordName = getNoteNameGeneral(rootNote);
@@ -634,7 +670,7 @@ function setupChord(rootNote) {
 		break;
 	case "easyMajors":
 		//rootNote = fixNote(rootNote);
-		if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 10 || rootNote == 8) {
+		if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 10 || rootNote == 8 || rootNote == 13 || rootNote == 15 || rootNote == 18 || rootNote == 20 || rootNote == 22) {
 			rootNote++;
 			rootNote = fixNote(rootNote);
 			currentChordName = getNoteNameGeneral(rootNote);
@@ -645,7 +681,7 @@ function setupChord(rootNote) {
 	case "easyMinors":
 
 		//rootNote = fixNote(rootNote);
-		if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 10 || rootNote == 8) {
+		if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 10 || rootNote == 8 || rootNote == 13 || rootNote == 15 || rootNote == 18 || rootNote == 20 || rootNote == 22) {
 			rootNote++;
 			rootNote = fixNote(rootNote);
 			//alert(rootNote);
@@ -659,10 +695,11 @@ function setupChord(rootNote) {
 		break;
 	case "romanC":
 		//rootNote = fixNote(rootNote);
-		if (rootNote == 10) {
+if (rootNote == 10 || rootNote == 22) {
 			rootNote = 5;
 			currentChordName = getNoteNameGeneral(rootNote);
-		} else if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 8 || rootNote == 11) {
+			currentImageName = getNoteNameGeneral(rootNote);
+		} else if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 8 || rootNote == 11 || rootNote == 13 || rootNote == 15 || rootNote == 18 || rootNote == 20 || rootNote == 23) {
 			rootNote++;
 			rootNote = fixNote(rootNote);
 
@@ -670,16 +707,18 @@ function setupChord(rootNote) {
 			
 			currentImageName = getNoteNameGeneral(rootNote);
 		}
+		
 		//alert(rootNote);
 		setupMajRoman(rootNote);
 		//setupEasyMajors(rootNote);
 		break;
 	case "romanA":
 		//rootNote = fixNote(rootNote);
-		if (rootNote == 10) {
+		if (rootNote == 10 || rootNote == 22) {
 			rootNote = 5;
 			currentChordName = getNoteNameGeneral(rootNote);
-		} else if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 11 || rootNote == 8) {
+			currentImageName = getNoteNameGeneral(rootNote);
+		} else if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 11 || rootNote == 8 || rootNote == 13 || rootNote == 15 || rootNote == 18 || rootNote == 20 || rootNote == 23) {
 			rootNote++;
 			rootNote = fixNote(rootNote);
 			//alert(rootNote);
@@ -761,9 +800,11 @@ function setupChord(rootNote) {
 }
 
 function setupMajRoman(rN) {
+	rN=fixNote(rN);
 	switch (rN) {
 	case 12:
 		currentChordName = "I in C";
+		currentImageName = "I in C";
 		rN = fixNote(rN);
 		var third = fixNote(rN + 4);
 		var fifth = fixNote(rN + 7);
@@ -775,6 +816,7 @@ function setupMajRoman(rN) {
 		break;
 	case 2:
 		currentChordName = "ii in C"
+		currentImageName = "ii in C"
 			rN = fixNote(rN);
 		var third = fixNote(rN + 3);
 		var fifth = fixNote(rN + 7);
@@ -782,6 +824,7 @@ function setupMajRoman(rN) {
 		break;
 	case 4:
 		currentChordName = "iii in C"
+		currentImageName = "iii in C"
 			rN = fixNote(rN);
 		var third = fixNote(rN + 3);
 		var fifth = fixNote(rN + 7);
@@ -789,6 +832,7 @@ function setupMajRoman(rN) {
 		break;
 	case 5:
 		currentChordName = "IV in C"
+		currentImageName = "IV in C"
 			rN = fixNote(rN);
 		var third = fixNote(rN + 4);
 		var fifth = fixNote(rN + 7);
@@ -796,6 +840,7 @@ function setupMajRoman(rN) {
 		break;
 	case 7:
 		currentChordName = "V in C"
+		currentImageName = "V in C"
 			rN = fixNote(rN);
 		var third = fixNote(rN + 4);
 		var fifth = fixNote(rN + 7);
@@ -803,6 +848,7 @@ function setupMajRoman(rN) {
 		break;
 	case 9:
 		currentChordName = "vi in C"
+		currentImageName = "vi in C"
 			rN = fixNote(rN);
 		var third = fixNote(rN + 3);
 		var fifth = fixNote(rN + 7);
@@ -815,6 +861,7 @@ function setupMinRoman(rN) {
 	switch (rN) {
 	case 9:
 		currentChordName = "i in A";
+		currentImageName = "i in A";
 		rN = fixNote(rN);
 		var third = fixNote(rN + 3);
 		var fifth = fixNote(rN + 7);
@@ -822,6 +869,7 @@ function setupMinRoman(rN) {
 		break;
 	case 12:
 		currentChordName = "III in A"
+		currentImageName = "III in A"
 			rN = fixNote(rN);
 		rN = fixNote(rN);
 		var third = fixNote(rN + 4);
@@ -830,6 +878,7 @@ function setupMinRoman(rN) {
 		break;
 	case 2:
 		currentChordName = "iv in A"
+		currentImageName = "iv in A"
 			rN = fixNote(rN);
 		var third = fixNote(rN + 3);
 		var fifth = fixNote(rN + 7);
@@ -837,6 +886,7 @@ function setupMinRoman(rN) {
 		break;
 	case 4:
 		currentChordName = "v in A"
+		currentImageName = "v in A"
 			rN = fixNote(rN);
 		var third = fixNote(rN + 3);
 		var fifth = fixNote(rN + 7);
@@ -844,6 +894,7 @@ function setupMinRoman(rN) {
 		break;
 	case 5:
 		currentChordName = "VI in A"
+		currentImageName = "VI in A"
 			rN = fixNote(rN);
 		var third = fixNote(rN + 4);
 		var fifth = fixNote(rN + 7);
@@ -851,6 +902,7 @@ function setupMinRoman(rN) {
 		break;
 	case 7:
 		currentChordName = "VII in A"
+		currentImageName = "VII in A"
 			rN = fixNote(rN);
 		var third = fixNote(rN + 4);
 		var fifth = fixNote(rN + 7);
