@@ -484,7 +484,7 @@ function newChord() {
 		break;
 	case 9:
 		currentChordName = "A";
-		currentImageName = "Db";
+		currentImageName = "A";
 		break;
 	case 10:
 		currentChordName = "Bb";
