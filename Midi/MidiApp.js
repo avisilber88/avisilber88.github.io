@@ -663,6 +663,7 @@ function setupChord(rootNote) {
 			rootNote++;
 			rootNote = fixNote(rootNote);
 			currentChordName = getNoteNameGeneral(rootNote);
+			currentImageName = getNoteNameGeneral(rootNote);
 		}
 		currentChordName = currentChordName + "5";
 		currentImageName = currentImageName + "5";
@@ -674,8 +675,9 @@ function setupChord(rootNote) {
 			rootNote++;
 			rootNote = fixNote(rootNote);
 			currentChordName = getNoteNameGeneral(rootNote);
-			currentImageName = getNoteNameGeneral(rootNote);
+			//currentImageName = getNoteNameGeneral(rootNote);
 		}
+		currentImageName = getNoteNameGeneral(rootNote);
 		setupEasyMajors(rootNote);
 		break;
 	case "easyMinors":
@@ -691,6 +693,7 @@ function setupChord(rootNote) {
 		}
 
 		currentChordName = currentChordName + "m";
+		currentImageName = currentChordName + "m";
 		setupEasyMinors(rootNote);
 		break;
 	case "romanC":
