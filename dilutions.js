@@ -633,7 +633,7 @@ var getCorrectChemicalFormula=function(moleculeName){
 		// $('#den1').text(toOurExponential(sigFigs(finalNumtwo, 3)));
 //document.getElementById("num1").innerHTML = "What is the molarity of a "+formulaName+" solution do we get when we mix " + number +" "+ units1 +" of "+ formulaName + " in " +  numbertwo+" " + units2 + " of water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)";
 var questionType = Math.floor(Math.random()*3)+1;
-alert (questionType);
+//alert (questionType);
 switch (questionType) {
 	case 1:
 		document.getElementById("num1").innerHTML = "How many " + units4+ " of "+ number + units1 + " stock solution of "+ formulaName+ " will we need to make " + numbertwo + " "+units3+" of "+ numberThree + " " +units2+" "+ formulaName +" solution?";
