@@ -520,7 +520,7 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 	
 	var getRandomConcentrationType=function(){
 		var unitName="";
-		randomunitnum=(Math.floor(Math.random()*6));
+		randomunitnum=(Math.floor(Math.random()*7));
 		if (randomunitnum==0){
 			unitName="X";
 		}
@@ -538,6 +538,8 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 		}
 		else if (randomunitnum==5){
 			unitName="ppm";
+		}	else if (randomunitnum==6){
+			unitName=":";
 		}
 		return unitName;
 	};
@@ -618,12 +620,14 @@ var getCorrectChemicalFormula=function(moleculeName){
 			mag2=0;
 		}
 			
-			
 		var units1 = getUnit(mag1)+conctype;
 		var units2 = getUnit(mag2)+conctype;
 		var units3 = getUnit(mag3)+"L";
 		var units4 = getUnit(mag4) + "L";
 
+		if (conctype == ":"){
+			//number=1;
+		}
 		//units1 = number+"grams";
 		//units2 = numbertwo+"Liters";
 //		var units3 = getMolaraMassText(getRandomMolecule());
@@ -633,6 +637,12 @@ var getCorrectChemicalFormula=function(moleculeName){
 		// $('#den1').text(toOurExponential(sigFigs(finalNumtwo, 3)));
 //document.getElementById("num1").innerHTML = "What is the molarity of a "+formulaName+" solution do we get when we mix " + number +" "+ units1 +" of "+ formulaName + " in " +  numbertwo+" " + units2 + " of water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)";
 var questionType = Math.floor(Math.random()*3)+1;
+if (conctype==":"){
+	//alert ("it");
+	questionType=4;
+	number=Math.floor(number);
+	numberThree=1;
+	}
 //alert (questionType);
 switch (questionType) {
 	case 1:
@@ -644,9 +654,9 @@ switch (questionType) {
 	case 3:
 		document.getElementById("num1").innerHTML = "Calculate the volume in " + units4+ " of a "+ number + units1 + " " + formulaName+ " stock solution required to make "+ numbertwo + " " + units3+" with a final concentration of " + formulaName + " at "+ numberThree + " " + units2 + ".";
 	break;
-	// case 4:
-		// //document.getElementById("num1").innerHTML = "We have a "+ cOne + units1 + " stock solution of "+ formulaName+ " How much will we need of it to make " + vTwo + " of "+ cTwo + " " + formulaName " solution?"
-		// break;
+	case 4:
+		document.getElementById("num1").innerHTML = "A technician is asked to prepare a dilution of a common laboratory disinfectant. The label indicates that a "+numberThree+":"+number+" dilution in water is required prior to use. Calculate the volume in " +units4 +" of disinfectant required to make "+numbertwo + " " +units3;
+	break;
 }
 
 
