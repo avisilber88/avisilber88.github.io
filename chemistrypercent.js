@@ -95,11 +95,19 @@ var getSigFigs = function (num) {
 }
 
 function sigFigs(n, sig) {
+	if (n> Math.pow(10, sig)){
+		return toOurExponential(n);
+	}
+	else{
 n=Math.abs(n);
     var mult = Math.pow(10,
         sig - Math.floor(Math.log(n) / Math.LN10) - 1);
+		//alert ("n is " +n + " sig is " + sig);
+
     return Math.round(n * mult) / mult;
-}
+	}
+} 
+//sigfigspot
 
 var toOurExponential=function(n1){ //returns a string including the *10^ exoitebct
 
@@ -107,13 +115,21 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 	var answerString=n1.toExponential()+"";
 //	answerString=round(answerString,3)+"";
 	var eSpot=answerString.indexOf("e");
+	
 	var exponency=answerString.substring(eSpot+1, answerString.length);
 	if (exponency.substring(0,1)==="+"){
 		exponency=exponency.substring(1,exponency.length);
 	}
-
+	if (eSpot>5){
+	var eSpot=5;
+}
 	var nakedAnswer=answerString.substring(0,eSpot);
-	var answerStringFinal=answerString.substring(0,eSpot)+"*10^"+exponency;
+	
+	var longerAnswer=nakedAnswer;
+	nakedAnswer=Number(nakedAnswer);
+	nakedAnswer=nakedAnswer.toFixed(2);
+	var answerStringFinal=nakedAnswer+"*10^"+exponency;
+	//alert (answerStringFinal + " " + exponency + " " + nakedAnswer + " " + eSpot + "longer "+longerAnswer);
 	return answerStringFinal;
 };
 
@@ -174,11 +190,11 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 			if (m4==0){
 				moles=molar*Math.pow(10, m3);
 			}
-			var answerString=Number(sigFigs(Number(molar),3))+"";
+			var answerString=(sigFigs(Number(molar),3))+"";
 			answer=answerString+" "+getUnit(m4) + "g";
-			wrongAnswer1=Number(sigFigs(Number(moles),3))+getUnit(m4) + "g";
-			wrongAnswer2=Number(sigFigs(Number(1/moles),3))+getUnit(m4) + "g";
-			wrongAnswer3=Number(sigFigs(Number(1/molar),3))+getUnit(m4) + "g";
+			wrongAnswer1=(sigFigs(Number(moles),3))+" "+getUnit(m4) + "g";
+			wrongAnswer2=(sigFigs(Number(1/moles),3))+" "+getUnit(m4) + "g";
+			wrongAnswer3=(sigFigs(Number(1/molar),3))+" "+getUnit(m4) + "g";
 			
 			
 			// var moles = n1*Math.pow(10, m1)/mW;
@@ -650,7 +666,7 @@ var questionType = Math.floor(Math.random()*1)+1;
 //alert (questionType);
 switch (questionType) {
 	case 1:
-		document.getElementById("num1").innerHTML = "Calculate the mass in " + units4 + " required to make "+numbertwo+" "+units3+" of a "+numberThree + " "+ units2 + " solution.";
+		document.getElementById("num1").innerHTML = "Calculate the mass in " + units4 + " required to make "+numbertwo+""+units3+" of a "+numberThree + ""+ units2 + " solution.";
 		break;
 	case 2:
 	//	document.getElementById("num1").innerHTML = "Calculate the volume in " + units4+ " of "+ number + units1 + " "+ formulaName+ " required to make " + numbertwo + " "+units3+" of a "+ numberThree + " " +units2+" solution of "+ formulaName +" in water?";

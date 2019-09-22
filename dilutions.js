@@ -95,10 +95,17 @@ var getSigFigs = function (num) {
 }
 
 function sigFigs(n, sig) {
+if (n> Math.pow(10, sig)){
+		return toOurExponential(n);
+	}
+	else{
 n=Math.abs(n);
     var mult = Math.pow(10,
         sig - Math.floor(Math.log(n) / Math.LN10) - 1);
+		//alert ("n is " +n + " sig is " + sig);
+
     return Math.round(n * mult) / mult;
+	}
 }
 
 var toOurExponential=function(n1){ //returns a string including the *10^ exoitebct
@@ -107,13 +114,21 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 	var answerString=n1.toExponential()+"";
 //	answerString=round(answerString,3)+"";
 	var eSpot=answerString.indexOf("e");
+	
 	var exponency=answerString.substring(eSpot+1, answerString.length);
 	if (exponency.substring(0,1)==="+"){
 		exponency=exponency.substring(1,exponency.length);
 	}
-
+	if (eSpot>5){
+	var eSpot=5;
+}
 	var nakedAnswer=answerString.substring(0,eSpot);
-	var answerStringFinal=answerString.substring(0,eSpot)+"*10^"+exponency;
+	
+	var longerAnswer=nakedAnswer;
+	nakedAnswer=Number(nakedAnswer);
+	nakedAnswer=nakedAnswer.toFixed(2);
+	var answerStringFinal=nakedAnswer+"*10^"+exponency;
+	//alert (answerStringFinal + " " + exponency + " " + nakedAnswer + " " + eSpot + "longer "+longerAnswer);
 	return answerStringFinal;
 };
 
@@ -170,11 +185,11 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 			if (m4==0){
 				moles=molar*Math.pow(10, m3);
 			}
-			var answerString=Number(sigFigs(Number(molar),3))+"";
+			var answerString=(sigFigs(Number(molar),3))+"";
 			answer=answerString+" "+getUnit(m4) + "L";
-			wrongAnswer1=Number(sigFigs(Number(moles),3))+getUnit(m4) + "L";
-			wrongAnswer2=Number(sigFigs(Number(1/moles),3))+getUnit(m4) + "L";
-			wrongAnswer3=Number(sigFigs(Number(1/molar),3))+getUnit(m4) + "L";
+			wrongAnswer1=(sigFigs(Number(moles),3))+" "+getUnit(m4) + "L";
+			wrongAnswer2=(sigFigs(Number(1/moles),3))+" "+getUnit(m4) + "L";
+			wrongAnswer3=(sigFigs(Number(1/molar),3))+" "+getUnit(m4) + "L";
 			
 			
 			// var moles = n1*Math.pow(10, m1)/mW;
@@ -195,7 +210,7 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 			
 			for (j=0; j<answers.length; j++){
 				if ((j!=i)&&(answers[i]===answers[j])){
-					setupAnswers(m1, m2, m3, m4, n1, n2, n3, ct, fN);
+				resetQuestion();//	setupAnswers(m1, m2, m3, m4, n1, n2, n3, ct, fN);
 				}	
 			}
 		}
@@ -601,7 +616,11 @@ var getCorrectChemicalFormula=function(moleculeName){
 		var numberThree=(Math.floor(Math.random()*200));
 		// var finalNumtwo = numbertwo*Math.pow(10, -1*Math.floor(Math.random()*11));
 		// finalNumtwo=Number(Math.round(finalNumtwo+'e3')+'e-3');
-
+if (numberThree>number){
+	var placeHolderNumber=number;
+	number=numberThree;
+	numberThree=placeHolderNumber;
+}
 		var coeff1=((Math.random()*59.9999999-50));
 		var mag1=getMagnitude(11);
 		var mag2=getMagnitude(mag1);
@@ -646,16 +665,16 @@ if (conctype==":"){
 //alert (questionType);
 switch (questionType) {
 	case 1:
-		document.getElementById("num1").innerHTML = "How many " + units4+ " of "+ number + units1 + " stock solution of "+ formulaName+ " will we need to make " + numbertwo + " "+units3+" of "+ numberThree + " " +units2+" "+ formulaName +" solution?";
+		document.getElementById("num1").innerHTML = "How many " + units4+ " of "+ number + units1 + " stock solution of "+ formulaName+ " will we need to make " + numbertwo + " "+units3+" of "+ numberThree + "" +units2+" "+ formulaName +" solution?";
 		break;
 	case 2:
-		document.getElementById("num1").innerHTML = "Calculate the volume in " + units4+ " of "+ number + units1 + " "+ formulaName+ " required to make " + numbertwo + " "+units3+" of a "+ numberThree + " " +units2+" solution of "+ formulaName +" in water?";
+		document.getElementById("num1").innerHTML = "Calculate the volume in " + units4+ " of "+ number + units1 + " "+ formulaName+ " required to make " + numbertwo + " "+units3+" of a "+ numberThree + "" +units2+" solution of "+ formulaName +" in water?";
 	break;
 	case 3:
-		document.getElementById("num1").innerHTML = "Calculate the volume in " + units4+ " of a "+ number + units1 + " " + formulaName+ " stock solution required to make "+ numbertwo + " " + units3+" with a final concentration of " + formulaName + " at "+ numberThree + " " + units2 + ".";
+		document.getElementById("num1").innerHTML = "Calculate the volume in " + units4+ " of a "+ number + units1 + " " + formulaName+ " stock solution required to make "+ numbertwo + "" + units3+" with a final concentration of " + formulaName + " at "+ numberThree + "" + units2 + ".";
 	break;
 	case 4:
-		document.getElementById("num1").innerHTML = "A technician is asked to prepare a dilution of a common laboratory disinfectant. The label indicates that a "+numberThree+":"+number+" dilution in water is required prior to use. Calculate the volume in " +units4 +" of disinfectant required to make "+numbertwo + " " +units3;
+		document.getElementById("num1").innerHTML = "A technician is asked to prepare a dilution of a common laboratory disinfectant. The label indicates that a "+numberThree+":"+number+" dilution in water is required prior to use. Calculate the volume in " +units4 +" of disinfectant required to make "+numbertwo + "" +units3;
 	break;
 }
 
