@@ -12,8 +12,14 @@
 	<!--script src = "vendor/jquery-3.4.1.js"></script-->
 	<script type = "text/javascript" src = "vendor/jquery-3.4.1.js"></script>
 	<link type = "text/css" rel = "stylesheet" href = "MidiApp2.css">
-
-
+<script>
+function myFunction() {
+if (location.protocol != 'https:')
+{
+ location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+}
+}
+</script>
 	<!--script src = "timbre.js"></script-->
 	<head>
 	
