@@ -325,7 +325,7 @@ answerStringFinal=answerString.substring(0,eSpot)+"*10"+(""+exponency).sup();
 
 
 	// $('btna').attr('checked')=false;
-	$('div').hover(function(){
+	$('.ansbox').hover(function(){
 		// $(this).text("hi");
 		$(this).addClass("highlighted");
 

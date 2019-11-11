@@ -317,13 +317,13 @@ var getSigFigs = function (num) {
 	if($('#num1:contains(704)')){
 		// $('#bwordb').text(35);
 		resetQuestion();
-	};
+	}
 
 
 
 
 	// $('btna').attr('checked')=false;
-	$('div').hover(function(){
+	$('.ansbox').hover(function(){
 		// $(this).text("hi");
 		$(this).addClass("highlighted");
 
