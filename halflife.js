@@ -647,7 +647,7 @@ var questionType = Math.floor(Math.random()*4)+1;
 //alert (questionType);
 switch (questionType) {
 	case 1:
-		document.getElementById("num1").innerHTML = "An isotope has a half-life of "+halfLifeTime+" "+ timeUnit+" . If you start with "+startingMass+" g, how many will remain after "+totalTime + " "+timeUnit+"?";
+		document.getElementById("num1").innerHTML = "An isotope has a half-life of "+halfLifeTime+" "+ timeUnit+". If you start with "+startingMass+" g, how many will remain after "+totalTime + " "+timeUnit+"?";
 		break;
 	case 2:
 		document.getElementById("num1").innerHTML = "After " + totalTime + " "+timeUnit+ " a radioactive isotope has only "+fractionRemaining+" of its original sample remaining. What is the half-life of this radioactive isotope?";
