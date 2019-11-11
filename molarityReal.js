@@ -60,7 +60,7 @@ function specialMessage(score){
 
 }
 
-var getSigFigs = function (num) {
+var get` = function (num) {
   if (!isFinite(Number(num))) {
     return -1;
   }
@@ -561,7 +561,7 @@ var getCorrectChemicalFormula=function(moleculeName){
 		var number=(Math.floor(Math.random()*200));
 		// var finalNum = number*Math.pow(10, -1*Math.floor(Math.random()*11));
 		// finalNum=Number(Math.round(finalNum+'e3')+'e-3');
-		var numbertwo=(Math.floor(Math.random()*200));
+		var numbertwo=(Math.floor(Math.random()*200))+1;
 		// var finalNumtwo = numbertwo*Math.pow(10, -1*Math.floor(Math.random()*11));
 		// finalNumtwo=Number(Math.round(finalNumtwo+'e3')+'e-3');
 
