@@ -793,7 +793,7 @@ $(document).ready(function () {
 		//alert (thisAnswer);
 		var givenAnswer = document.getElementById("givenAnswer").value;
 		if (givenAnswer != null) {
-			if (("" + givenAnswer) == ("" + thisAnswer)) {
+			if (("" + givenAnswer).toUpperCase() == ("" + thisAnswer).toUpperCase()) {
 				score = score + 1;
 				$('#score').text("Score = " + score);
 				$('#scoremessage').text(specialMessage(score));
