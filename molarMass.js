@@ -595,7 +595,7 @@ randomunitnum=(Math.floor(Math.random()*5));
 			cation = ["H", 1.01, false];
 		}
 		else if (randomunitnum==4){
-			cation = ["NH4", 18.05, true];
+			cation = ["NH<sub>4</sub>", 18.05, true];
 		}
 }
 else if (charge==2){
@@ -642,10 +642,10 @@ randomunitnum=(Math.floor(Math.random()*5));
 			anion = ["Cl", 39.10, false];
 		}
 		else if (randomunitnum==2){
-			anion = ["NO3", 6.94, true];
+			anion = ["NO<sub>3</sub>", 6.94, true];
 		}
 		else if (randomunitnum==3){
-			anion = ["NO2", 1.01, true];
+			anion = ["NO<sub>2</sub>", 1.01, true];
 		}
 		else if (randomunitnum==4){
 			anion = ["Br", 18.05, false];
@@ -660,16 +660,16 @@ randomunitnum=(Math.floor(Math.random()*6));
 			anion = ["S", 32.06, false];
 		}
 		else if (randomunitnum==2){
-			anion = ["SO4", 96.06, true];
+			anion = ["SO<sub>4</sub>", 96.06, true];
 		}
 		else if (randomunitnum==3){
-			anion = ["SO3", 80.06, true];
+			anion = ["SO<sub>3</sub>", 80.06, true];
 		}
 		else if (randomunitnum==4){
-			anion = ["CO3", 60.01, true];
+			anion = ["CO<sub>3</sub>", 60.01, true];
 		}
 		else if (randomunitnum==5){
-			anion = ["CrO4", 116.00, true];
+			anion = ["CrO<sub>4</sub>", 116.00, true];
 		}
 }
 else if (charge==3){
@@ -681,10 +681,10 @@ randomunitnum=(Math.floor(Math.random()*4));
 			anion = ["P", 30.97, false];
 		}
 		else if (randomunitnum==2){
-			anion = ["PO4", 94.97, true];
+			anion = ["PO<sub>4</sub>", 94.97, true];
 		}
 		else if (randomunitnum==3){
-			anion = ["PO3", 78.97, true];
+			anion = ["PO<sub>3</sub>", 78.97, true];
 		}
 }
 return anion;
@@ -715,8 +715,8 @@ var getBalancedIonicCompound=function(cation, cationCharge, anion, anionCharge){
 		}
 		catNum = anionCharge;
 		anNum = cationCharge;
-		balancedFormula= ""+cation[0]+catSub+anion[0]+anSub;
-	}
+balancedFormula= ""+cation[0]+"<sub>"+catSub+"</sub>"+anion[0]+"<sub>"+anSub+"</sub>";
+		}
 	var balancedArray = [balancedFormula, catNum, anNum];
 	return balancedArray;
 	//return balancedFormula;
@@ -774,13 +774,13 @@ return polyCheck;
 		// $('#den1').text(toOurExponential(sigFigs(finalNumtwo, 3)));
 
 // $('#num1').text("What is the molarity of a "+formulaName+" solution do we get when we mix " + number +" "+ units1 +" of "+ formulaName + " in " +  numbertwo+" " + units2 + " of water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)");
-$('#num1').text("What is the molar mass of " + balancedFormulaArray[0]+"?");
+document.getElementById("num1").innerHTML = ("What is the molar mass of " + balancedFormulaArray[0]+"?");
 
-$('body :not(script)').contents().filter(function() {
-    return this.nodeType === 3;
-}).replaceWith(function() {
-    return this.nodeValue.replace(/[0123456789.]/g, '<sub>$&</sub>');
-});
+// $('body :not(script)').contents().filter(function() {
+    // return this.nodeType === 3;
+// }).replaceWith(function() {
+    // return this.nodeValue.replace(/[0123456789.]/g, '<sub>$&</sub>');
+// });
 
 //$('#num1').text("What is the molarity of a "+formulaName+" solution do we get when we mix " +toOurExponential(sigFigs(coeff1, 3))+ units1 " of "+ formulaName + " in " +  toOurExponential(sigFigs(coeff1, 3)) + units2 " of //water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)");
 
