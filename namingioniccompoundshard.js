@@ -619,7 +619,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 				anion = ["ClO<sub>3</sub>", 18.05, true, "Chlorate"];
 			}
 		} else if (charge == 2) {
-			randomunitnum = (Math.floor(Math.random() * 9));
+			randomunitnum = (Math.floor(Math.random() * 8));
 			if (randomunitnum == 0) {
 				anion = ["O", 16.00, false, "Oxide"];
 			} else if (randomunitnum == 1) {
@@ -636,8 +636,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 				anion = ["Cr<sub>2</sub>O<sub>7</sub>", 116.00, true, "Dichromate"];
 			} else if (randomunitnum == 7) {
 				anion = ["CO<sub>3</sub>", 116.00, true, "Carbonate"];
-			} else if (randomunitnum == 8) {
-				anion = ["ClO<sub>3</sub>", 116.00, true, "Chlorite"];
+			
 			} 
 		} else if (charge == 3) {
 			randomunitnum = (Math.floor(Math.random() * 4));

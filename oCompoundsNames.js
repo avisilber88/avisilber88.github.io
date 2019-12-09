@@ -432,11 +432,11 @@ answer=getOrganicPrefix(carbonNumber)+getOrganicSuffix(organicQuality);
 		document.getElementById("bworda").innerHTML=(wrongAnswer3);
 		$('#boxd').addClass('answer');
 		}
-		$('body :not(script)').contents().filter(function() {
-    return this.nodeType === 3;
-}).replaceWith(function() {
-    return this.nodeValue.replace(/[0123456789.]/g, '<sub>$&</sub>');
-});
+		// $('body :not(script)').contents().filter(function() {
+    // return this.nodeType === 3;
+// }).replaceWith(function() {
+    // return this.nodeValue.replace(/[0123456789.]/g, '<sub>$&</sub>');
+// });
 //check above
 	};
 	// $('#num2').text($('#num1').val());
