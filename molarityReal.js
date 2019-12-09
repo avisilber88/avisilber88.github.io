@@ -1,12 +1,12 @@
 $(document).ready(function(){
-	var whatnameis = prompt ("What is your name?");
-	document.getElementById("nameis").innerHTML = whatnameis;
 		n =  new Date();
 y = n.getFullYear();
 m = n.getMonth() + 1;
 d = n.getDate();
 document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;		
 
+	var whatnameis = prompt ("What is your name?");
+	document.getElementById("nameis").innerHTML = whatnameis;
 	var times=0;
 	var numer1;
 	var numer2;
@@ -68,7 +68,7 @@ function specialMessage(score){
 
 }
 
-var get` = function (num) {
+var getSigFigs = function (num) {
   if (!isFinite(Number(num))) {
     return -1;
   }
