@@ -1,5 +1,14 @@
 $(document).ready(function(){
-	var times=0;
+	
+	var whatnameis = prompt ("What is your name?");
+	document.getElementById("nameis").innerHTML = whatnameis;
+	
+		n =  new Date();
+y = n.getFullYear();
+m = n.getMonth() + 1;
+d = n.getDate();
+document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;		
+var times=0;
 	var numer1;
 	var numer2;
 	var denom1;

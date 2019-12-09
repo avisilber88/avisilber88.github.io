@@ -1,4 +1,12 @@
 $(document).ready(function () {
+		var whatnameis = prompt ("What is your name?");
+	document.getElementById("nameis").innerHTML = whatnameis;
+		n =  new Date();
+y = n.getFullYear();
+m = n.getMonth() + 1;
+d = n.getDate();
+document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;		
+
 	var times = 0;
 	var numer1;
 	var numer2;
@@ -530,7 +538,7 @@ $(document).ready(function () {
 			} else if (randomunitnum == 3) {
 				cation = ["Cu", 63.546, false, "Copper (I)"];
 			} else if (randomunitnum == 4) {
-				cation = ["NH4", 18.05, true, "Ammonium"];
+				cation = ["NH<sub>4</sub>", 18.05, true, "Ammonium"];
 			} else if (randomunitnum == 5) {
 				cation = ["Ag", 63.546, false, "Silver"];
 			} else if (randomunitnum == 5) {
@@ -590,9 +598,9 @@ $(document).ready(function () {
 			} else if (randomunitnum == 1) {
 				anion = ["Cl", 39.10, false, "Chloride"];
 			} else if (randomunitnum == 2) {
-				anion = ["NO3", 6.94, true, "Nitrate"];
+				anion = ["NO<sub>3</sub>", 6.94, true, "Nitrate"];
 			} else if (randomunitnum == 3) {
-				anion = ["NO2", 1.01, true, "Nitrite"];
+				anion = ["NO<sub>2</sub>", 1.01, true, "Nitrite"];
 			} else if (randomunitnum == 4) {
 				anion = ["Br", 18.05, false, "Bromide"];
 			} else if (randomunitnum == 5) {
@@ -602,13 +610,13 @@ $(document).ready(function () {
 			} else if (randomunitnum == 7) {
 				anion = ["OH", 18.05, true, "Hydroxide"];
 			} else if (randomunitnum == 8) {
-				anion = ["ClO4", 18.05, true, "Perchlorate"];
+				anion = ["ClO<sub>4</sub>", 18.05, true, "Perchlorate"];
 			} else if (randomunitnum == 9) {
-				anion = ["ClO4", 18.05, true, "Permanganate"];
+				anion = ["MnO<sub>4</sub>", 18.05, true, "Permanganate"];
 			} else if (randomunitnum == 10) {
-				anion = ["ClO2", 18.05, true, "Chlorite"];
+				anion = ["ClO<sub>2</sub>", 18.05, true, "Chlorite"];
 			} else if (randomunitnum == 11) {
-				anion = ["ClO3", 18.05, true, "Chlorate"];
+				anion = ["ClO<sub>3</sub>", 18.05, true, "Chlorate"];
 			}
 		} else if (charge == 2) {
 			randomunitnum = (Math.floor(Math.random() * 9));
@@ -617,19 +625,19 @@ $(document).ready(function () {
 			} else if (randomunitnum == 1) {
 				anion = ["S", 32.06, false, "Sulfide"];
 			} else if (randomunitnum == 2) {
-				anion = ["SO4", 96.06, true, "Sulfate"];
+				anion = ["SO<sub>4</sub>", 96.06, true, "Sulfate"];
 			} else if (randomunitnum == 3) {
-				anion = ["SO3", 80.06, true, "Sulfite"];
+				anion = ["SO<sub>3</sub>", 80.06, true, "Sulfite"];
 			} else if (randomunitnum == 4) {
-				anion = ["CO3", 60.01, true, "Carbonate"];
+				anion = ["CO<sub>3</sub>", 60.01, true, "Carbonate"];
 			} else if (randomunitnum == 5) {
-				anion = ["CrO4", 116.00, true, "Chromate"];
+				anion = ["CrO<sub>4</sub>", 116.00, true, "Chromate"];
 			} else if (randomunitnum == 6) {
-				anion = ["Cr2O7", 116.00, true, "Dichromate"];
+				anion = ["Cr<sub>2</sub>O<sub>7</sub>", 116.00, true, "Dichromate"];
 			} else if (randomunitnum == 7) {
-				anion = ["CO3", 116.00, true, "Carbonate"];
+				anion = ["CO<sub>3</sub>", 116.00, true, "Carbonate"];
 			} else if (randomunitnum == 8) {
-				anion = ["ClO3", 116.00, true, "Chlorite"];
+				anion = ["ClO<sub>3</sub>", 116.00, true, "Chlorite"];
 			} 
 		} else if (charge == 3) {
 			randomunitnum = (Math.floor(Math.random() * 4));
@@ -638,9 +646,9 @@ $(document).ready(function () {
 			} else if (randomunitnum == 1) {
 				anion = ["P", 30.97, false, "Phosphide"];
 			} else if (randomunitnum == 2) {
-				anion = ["PO4", 94.97, true, "Phosphate"];
+				anion = ["PO<sub>4</sub>", 94.97, true, "Phosphate"];
 			} else if (randomunitnum == 3) {
-				anion = ["PO3", 78.97, true, "Phosphite"];
+				anion = ["PO<sub>3</sub>", 78.97, true, "Phosphite"];
 			}
 		}
 		return anion;
@@ -670,7 +678,7 @@ $(document).ready(function () {
 			}
 			catNum = anionCharge;
 			anNum = cationCharge;
-			balancedFormula = "" + cation[0] + catSub + anion[0] + anSub;
+			balancedFormula = "" + cation[0] + "<sub>"+catSub+"</sub>" + anion[0]+ "<sub>" + anSub+"</sub>";
 		}
 		var balancedArray = [balancedFormula, catNum, anNum];
 		return balancedArray;
@@ -685,6 +693,11 @@ $(document).ready(function () {
 	};
 
 	var resetQuestion = function () {
+				n =  new Date();
+y = n.getFullYear();
+m = n.getMonth() + 1;
+d = n.getDate();
+document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 		// the below code is for ion picking
 		var randomunitnum3 = (Math.floor(Math.random() * 4) + 1);
 		var cationCharge = randomunitnum3;
@@ -739,11 +752,11 @@ $(document).ready(function () {
 			}
 			//$('#num1').text("What ionic compound do you get from " + cationArray[0] + romanNumeral+" and "+ anionArray[0]+"?");
 		}
-		document.getElementById("num1").innerHTML = "What is the name of the ionic compound: " + balancedFormulaArray[0] + "?";
+		document.getElementById("num1").innerHTML = ("What is the name of the ionic compound: " + balancedFormulaArray[0] + "?");
 
 		// removed this because it didn't have the charges built in. $('#num1').text("What ionic compound do you get from " + cationArray[0] + cationCharge+ "+ and "+ anionArray[0]+anionCharge+"-?");
 
-		$('body :not(script)').contents().filter(function () {
+		$('#num1 :not(script)').contents().filter(function () {
 			return this.nodeType === 3;
 		}).replaceWith(function () {
 			return this.nodeValue.replace(/[0123456789.]/g, '<sub>$&</sub>');
@@ -792,6 +805,7 @@ $(document).ready(function () {
 	$('#submitButton').click(function () {
 		//alert (thisAnswer);
 		var givenAnswer = document.getElementById("givenAnswer").value;
+
 		if (givenAnswer != null) {
 			if (("" + givenAnswer).toUpperCase() == ("" + thisAnswer).toUpperCase()) {
 				score = score + 1;
