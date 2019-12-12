@@ -498,7 +498,7 @@ document.getElementById("num1").innerHTML=("Convert "+toOurExponential(sigFigs(c
 		if	($(this).hasClass('answer')){//children('p').contains(answer)){// p.innerHTML=("hello"));
 			// $('#bwordb').innerHTML=(answer);
 			score=score+1;
-			$('#score').innerHTML=("Score = " +score);
+			document.getElementById("score").innerHTML=("Score = " +score + "lkj");
 			$('#scoremessage').innerHTML=(specialMessage(score));
 			$(this).removeClass("highlighted");
 			resetQuestion();
@@ -509,7 +509,7 @@ document.getElementById("num1").innerHTML=("Convert "+toOurExponential(sigFigs(c
 			$(this).addClass('wrong');
 			$(this).removeClass('wrongAnswer');
 			score=score-1;
-			$('#score').innerHTML=("Score = " +score);
+			document.getElementById("score").innerHTML=("Score = " +score + "lkj");
 			$('#scoremessage').innerHTML=(specialMessage(score));
 			// $('#bwordb').innerHTML=(35);
 		}
