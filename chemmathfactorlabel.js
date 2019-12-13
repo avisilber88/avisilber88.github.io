@@ -464,8 +464,14 @@ if (exponency.substring(0,1)==="+"){
 
 		// $('#num1').innerHTML=(toOurExponential(sigFigs(finalNum, 3)));		
 		// $('#den1').innerHTML=(toOurExponential(sigFigs(finalNumtwo, 3)));
+if (score>19){
+	document.getElementById("num1").innerHTML=("convert "+toOurExponential(sigFigs(coeff1, 3))+" "+units1+" to "+units2);
 
-document.getElementById("num1").innerHTML=("Convert "+toOurExponential(sigFigs(coeff1, 3))+" "+units1+" to "+units2);
+		}
+		else{
+			document.getElementById("num1").innerHTML=("Convert "+toOurExponential(sigFigs(coeff1, 3))+" "+units1+" to "+units2);
+
+		}
 
 			setupAnswers(coeff1*Math.pow(10,mag1), Math.pow(10, mag2), units2);
 	};
@@ -543,4 +549,9 @@ document.getElementById("num1").innerHTML=("Convert "+toOurExponential(sigFigs(c
 	// 	$('#choiced').innerHTML=("yayyd");
 	// 	}
 	});
+		var thisAppNum = 7;
+		$('#scoreButton').click(function () {
+		//alert (thisAnswer);
+		alert (" You, "+whatnameis+" got a score of "+score + " on "+ m + " / " + d + " / " + y +" on app " + thisAppNum);
+		});
 });

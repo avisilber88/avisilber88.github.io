@@ -951,8 +951,13 @@ return polyCheck;
 
 		// $('#num1').text(toOurExponential(sigFigs(finalNum, 3)));		
 		// $('#den1').text(toOurExponential(sigFigs(finalNumtwo, 3)));
-
+if (score>19){
+	document.getElementById("num1").innerHTML=("what is the chemical name for "+getOrganicFormula(carbonNumber, organicQuality)+"?");		
+}
+else {
+	
 document.getElementById("num1").innerHTML=("What is the chemical name for "+getOrganicFormula(carbonNumber, organicQuality)+"?");		
+}
 
 
 //$('#num1').text("What is the molarity of a "+formulaName+" solution do we get when we mix " +toOurExponential(sigFigs(coeff1, 3))+ units1 " of "+ formulaName + " in " +  toOurExponential(sigFigs(coeff1, 3)) + units2 " of //water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)");
@@ -1036,4 +1041,9 @@ document.getElementById("num1").innerHTML=("What is the chemical name for "+getO
 	// 	$('#choiced').text("yayyd");
 	// 	}
 	});
+		var thisAppNum = 14;
+		$('#scoreButton').click(function () {
+		//alert (thisAnswer);
+		alert (" You, "+whatnameis+" got a score of "+score + " on "+ m + " / " + d + " / " + y +" on app " + thisAppNum);
+		});
 });

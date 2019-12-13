@@ -774,8 +774,13 @@ return polyCheck;
 		// $('#den1').text(toOurExponential(sigFigs(finalNumtwo, 3)));
 
 // $('#num1').text("What is the molarity of a "+formulaName+" solution do we get when we mix " + number +" "+ units1 +" of "+ formulaName + " in " +  numbertwo+" " + units2 + " of water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)");
-document.getElementById("num1").innerHTML = ("What is the molar mass of " + balancedFormulaArray[0]+"?");
-
+if (score>19){
+	document.getElementById("num1").innerHTML = ("what is the molar mass of " + balancedFormulaArray[0]+"?");
+}
+else {
+	
+	document.getElementById("num1").innerHTML = ("What is the molar mass of " + balancedFormulaArray[0]+"?");
+}
 // $('body :not(script)').contents().filter(function() {
     // return this.nodeType === 3;
 // }).replaceWith(function() {
@@ -863,4 +868,9 @@ document.getElementById("num1").innerHTML = ("What is the molar mass of " + bala
 	// 	$('#choiced').text("yayyd");
 	// 	}
 	});
+		var thisAppNum = 9;
+		$('#scoreButton').click(function () {
+		//alert (thisAnswer);
+		alert (" You, "+whatnameis+" got a score of "+score + " on "+ m + " / " + d + " / " + y +" on app " + thisAppNum);
+		});
 });

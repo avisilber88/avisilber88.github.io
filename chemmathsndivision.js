@@ -435,4 +435,9 @@ if (exponency.substring(0,1)==="+"){
 	// 	$('#choiced').text("yayyd");
 	// 	}
 	});
+		var thisAppNum = 6;
+		$('#scoreButton').click(function () {
+		//alert (thisAnswer);
+		alert (" You, "+whatnameis+" got a score of "+score + " on "+ m + " / " + d + " / " + y +" on app " + thisAppNum);
+		});
 });

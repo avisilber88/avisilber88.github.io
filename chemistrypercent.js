@@ -1,4 +1,6 @@
 $(document).ready(function(){
+
+	
 	var whatnameis = prompt ("What is your name?");
 	document.getElementById("nameis").innerHTML = whatnameis;
 		n =  new Date();
@@ -674,8 +676,15 @@ var questionType = Math.floor(Math.random()*1)+1;
 //alert (questionType);
 switch (questionType) {
 	case 1:
-		document.getElementById("num1").innerHTML = "Calculate the mass in " + units4 + " required to make "+numbertwo+""+units3+" of a "+numberThree + ""+ units2 + " solution.";
-		break;
+		
+		if (score > 19) {
+			document.getElementById("num1").innerHTML = "calculate the mass in " + units4 + " required to make "+numbertwo+""+units3+" of a "+numberThree + ""+ units2 + " solution.";
+		
+			} else {
+			document.getElementById("num1").innerHTML = "Calculate the mass in " + units4 + " required to make "+numbertwo+""+units3+" of a "+numberThree + ""+ units2 + " solution.";
+		
+			}
+			break;
 	case 2:
 	//	document.getElementById("num1").innerHTML = "Calculate the volume in " + units4+ " of "+ number + units1 + " "+ formulaName+ " required to make " + numbertwo + " "+units3+" of a "+ numberThree + " " +units2+" solution of "+ formulaName +" in water?";
 	break;
@@ -775,4 +784,10 @@ switch (questionType) {
 	// 	$('#choiced').text("yayyd");
 	// 	}
 	});
+	
+		var thisAppNum = 12;
+		$('#scoreButton').click(function () {
+		//alert (thisAnswer);
+		alert (" You, "+whatnameis+" got a score of "+score + " on "+ m + " / " + d + " / " + y +" on app " + thisAppNum);
+		});
 });

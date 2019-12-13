@@ -1,11 +1,11 @@
 $(document).ready(function () {
-		var whatnameis = prompt ("What is your name?");
+	var whatnameis = prompt("What is your name?");
 	document.getElementById("nameis").innerHTML = whatnameis;
-		n =  new Date();
-y = n.getFullYear();
-m = n.getMonth() + 1;
-d = n.getDate();
-document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;		
+	n = new Date();
+	y = n.getFullYear();
+	m = n.getMonth() + 1;
+	d = n.getDate();
+	document.getElementById("date").innerHTML = "</sub>" + m + " / " + d + " / " + y;
 
 	var times = 0;
 	var numer1;
@@ -186,19 +186,19 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 		} else if (questionType == 4) {
 			var nums = elements.length;
 			var answerPosition = elements.indexOf(atomicNumber);
-			var wrongElement1 = answerPosition+3;
+			var wrongElement1 = answerPosition + 3;
 			if (wrongElement1 > nums) {
 				wrongElement1 = wrongElement1 - nums;
 			}
-			var wrongElement2 = answerPosition-2;
+			var wrongElement2 = answerPosition - 2;
 			if (wrongElement1 < 0) {
 				wrongElement1 = wrongElement1 + nums;
 			}
-			var wrongElement3 = answerPosition+1
-			if (wrongElement1 > nums) {
-				wrongElement1 = wrongElement1 - nums;
-			}			
-			answer = getLostOrGained(getGroupNumber(atomicNumber));
+			var wrongElement3 = answerPosition + 1
+				if (wrongElement1 > nums) {
+					wrongElement1 = wrongElement1 - nums;
+				}
+				answer = getLostOrGained(getGroupNumber(atomicNumber));
 			wrongAnswer1 = getLostOrGained(getGroupNumber(elements[wrongElement1]));
 			wrongAnswer2 = getLostOrGained(getGroupNumber(elements[wrongElement2]));
 			wrongAnswer3 = getLostOrGained(getGroupNumber(elements[wrongElement3]));
@@ -963,19 +963,52 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 		//alert (questionType);
 		switch (questionType) {
 		case 1:
-			document.getElementById("num1").innerHTML = "What group is " + getAtomicName(atomicNumber) + " in?";
+			if (score > 19) {
+				document.getElementById("num1").innerHTML = "what group is " + getAtomicName(atomicNumber) + " in?";
+
+			} else {
+				document.getElementById("num1").innerHTML = "What group is " + getAtomicName(atomicNumber) + " in?";
+
+			}
 			break;
 		case 2:
-			document.getElementById("num1").innerHTML = "How many valence electrons does " + getAtomicName(atomicNumber) + " have?";
+			if (score > 19) {
+				document.getElementById("num1").innerHTML = "how many valence electrons does " + getAtomicName(atomicNumber) + " have?";
+
+			} else {
+				document.getElementById("num1").innerHTML = "How many valence electrons does " + getAtomicName(atomicNumber) + " have?";
+
+			}
 			break;
 		case 3:
-			document.getElementById("num1").innerHTML = "What charge does " + getAtomicName(atomicNumber) + " have when it is stable?";
+			if (score > 19) {
+				document.getElementById("num1").innerHTML = "what charge does " + getAtomicName(atomicNumber) + " have when it is stable?";
+
+			} else {
+				document.getElementById("num1").innerHTML = "What charge does " + getAtomicName(atomicNumber) + " have when it is stable?";
+
+			}
+
 			break;
 		case 4:
-			document.getElementById("num1").innerHTML = "How many electrons does " + getAtomicName(atomicNumber) + " gain or lose to become stable?";
+			if (score > 19) {
+				document.getElementById("num1").innerHTML = "how many electrons does " + getAtomicName(atomicNumber) + " gain or lose to become stable?";
+
+			} else {
+				document.getElementById("num1").innerHTML = "How many electrons does " + getAtomicName(atomicNumber) + " gain or lose to become stable?";
+
+			}
+
 			break;
 		case 5:
-			document.getElementById("num1").innerHTML = "What period is " + getAtomicName(atomicNumber) + " in?";
+			if (score > 19) {
+				document.getElementById("num1").innerHTML = "what period is " + getAtomicName(atomicNumber) + " in?";
+
+			} else {
+				document.getElementById("num1").innerHTML = "What period is " + getAtomicName(atomicNumber) + " in?";
+
+			}
+
 			break;
 		}
 
@@ -992,7 +1025,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 
 		setupAnswers(questionType, atomicNumber);
 	};
-var resetQuestionAgain = function (questionType) {
+	var resetQuestionAgain = function (questionType) {
 		// $('#boxb').text(35);
 		// $('#bwordb').text(35);
 		var number = (Math.floor(Math.random() * elements.length));
@@ -1132,4 +1165,9 @@ var resetQuestionAgain = function (questionType) {
 		// 	$('#choiced').text("yayyd");
 		// 	}
 	});
+		var thisAppNum = 8;
+		$('#scoreButton').click(function () {
+		//alert (thisAnswer);
+		alert (" You, "+whatnameis+" got a score of "+score + " on "+ m + " / " + d + " / " + y +" on app " + thisAppNum);
+		});
 });

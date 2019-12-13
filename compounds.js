@@ -782,7 +782,15 @@ if (cationArray[0].includes("Fe")){
 	}
 //$('#num1').text("What ionic compound do you get from " + cationArray[0] + romanNumeral+" and "+ anionArray[0]+"?");
 }
+
+if (score>19){
+document.getElementById("num1").innerHTML = ("what ionic compound do you get from " + cationArray[0] + romanNumeral+" and "+ anionArray[0]+"?");
+}
+else {
+	
 document.getElementById("num1").innerHTML = ("What ionic compound do you get from " + cationArray[0] + romanNumeral+" and "+ anionArray[0]+"?");
+}
+
 
 
 // removed this because it didn't have the charges built in. $('#num1').text("What ionic compound do you get from " + cationArray[0] + cationCharge+ "+ and "+ anionArray[0]+anionCharge+"-?");
@@ -874,4 +882,9 @@ document.getElementById("num1").innerHTML = ("What ionic compound do you get fro
 	// 	$('#choiced').text("yayyd");
 	// 	}
 	});
+		var thisAppNum = 16;
+		$('#scoreButton').click(function () {
+		//alert (thisAnswer);
+		alert (" You, "+whatnameis+" got a score of "+score + " on "+ m + " / " + d + " / " + y +" on app " + thisAppNum);
+		});
 });

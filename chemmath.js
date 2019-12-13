@@ -413,4 +413,9 @@ else{
 	// 	$('#choiced').text("yayyd");
 	// 	}
 	});
+		var thisAppNum = 1;
+		$('#scoreButton').click(function () {
+		//alert (thisAnswer);
+		alert (" You, "+whatnameis+" got a score of "+score + " on "+ m + " / " + d + " / " + y +" on app " + thisAppNum);
+	});
 });

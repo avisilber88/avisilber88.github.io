@@ -587,4 +587,9 @@ if($('#num1:contains(704)')){
 	// 	$('#choiced').text("yayyd");
 	// 	}
 	});
+		var thisAppNum = 3;
+		$('#scoreButton').click(function () {
+		//alert (thisAnswer);
+		alert (" You, "+whatnameis+" got a score of "+score + " on "+ m + " / " + d + " / " + y +" on app " + thisAppNum);
+		});
 });

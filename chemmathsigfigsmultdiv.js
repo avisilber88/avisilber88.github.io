@@ -530,5 +530,11 @@ if($('#num1:contains(704)')){
 	// }if ($('#btnd').attr("checked", true)){
 	// 	$('#choiced').text("yayyd");
 	// 	}
+	
 	});
+	var thisAppNum = 4;
+		$('#scoreButton').click(function () {
+		//alert (thisAnswer);
+		alert (" You, "+whatnameis+" got a score of "+score + " on "+ m + " / " + d + " / " + y +" on app " + thisAppNum);
+		});
 });

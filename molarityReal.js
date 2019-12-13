@@ -592,7 +592,13 @@ var getCorrectChemicalFormula=function(moleculeName){
 
 		// $('#num1').text(toOurExponential(sigFigs(finalNum, 3)));		
 		// $('#den1').text(toOurExponential(sigFigs(finalNumtwo, 3)));
+if (score>19){
+document.getElementById("num1").innerHTML = "what is the molarity of a "+formulaName+" solution do we get when we mix " + number +" "+ units1 +" of "+ formulaName + " in " +  numbertwo+" " + units2 + " of water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)";
+}
+else {
+	
 document.getElementById("num1").innerHTML = "What is the molarity of a "+formulaName+" solution do we get when we mix " + number +" "+ units1 +" of "+ formulaName + " in " +  numbertwo+" " + units2 + " of water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)";
+}
 //$('#num1').text("What is the molarity of a "+formulaName+" solution do we get when we mix " + number +" "+ units1 +" of "+ formulaName + " in " +  numbertwo+" " + units2 + " of water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)");
 
 // $('body :not(script)').contents().filter(function() {
@@ -680,4 +686,9 @@ document.getElementById("num1").innerHTML = "What is the molarity of a "+formula
 	// 	$('#choiced').text("yayyd");
 	// 	}
 	});
+		var thisAppNum = 10;
+		$('#scoreButton').click(function () {
+		//alert (thisAnswer);
+		alert (" You, "+whatnameis+" got a score of "+score + " on "+ m + " / " + d + " / " + y +" on app " + thisAppNum);
+		});
 });
