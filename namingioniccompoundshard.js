@@ -545,7 +545,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 				cation = ["Au", 63.546, false, "Gold (I)"];
 			}
 		} else if (charge == 2) {
-			randomunitnum = (Math.floor(Math.random() * 10));
+			randomunitnum = (Math.floor(Math.random() * 11));
 			if (randomunitnum == 0) {
 				cation = ["Ca", 40.08, false, "Calcium"];
 			} else if (randomunitnum == 1) {
@@ -566,18 +566,18 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 				cation = ["Co", 9.01, false, "Cobalt (II)"];
 			} else if (randomunitnum == 9) {
 				cation = ["Cu", 9.01, false, "Copper (II)"];
+			}else if (randomunitnum == 10) {
+				cation = ["Au", 55.85, false, "Gold (II)"];
 			}
 		} else if (charge == 3) {
-			randomunitnum = (Math.floor(Math.random() * 4));
+			randomunitnum = (Math.floor(Math.random() * 3));
 			if (randomunitnum == 0) {
 				cation = ["Al", 26.98, false, "Aluminum"];
 			} else if (randomunitnum == 1) {
 				cation = ["B", 10.81, false, "Boron"];
 			} else if (randomunitnum == 2) {
 				cation = ["Fe", 55.85, false, "Iron (III)"];
-			} else if (randomunitnum == 3) {
-				cation = ["Au", 55.85, false, "Gold (III)"];
-			}
+			} 
 		} else if (charge == 4) {
 			randomunitnum = (Math.floor(Math.random() * 2));
 			if (randomunitnum == 0) {
