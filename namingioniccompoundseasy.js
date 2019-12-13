@@ -773,6 +773,8 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 			}
 		}
 	}
+	//str = str.replace(/\s/g, '');
+	
 	$('#givenAnswer').keypress(function (e) {
 		if (e.keyCode == 13)
 			$('#submitButton').click();
@@ -781,7 +783,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 		//alert (thisAnswer);
 		var givenAnswer = document.getElementById("givenAnswer").value;
 		if (givenAnswer != null) {
-			if (("" + givenAnswer).toUpperCase() == ("" + thisAnswer).toUpperCase()) {
+			if (("" + givenAnswer).toUpperCase().replace(/\s/g, '') == ("" + thisAnswer).toUpperCase().replace(/\s/g, '')) {
 				score = score + 1;
 				$('#score').text("Score = " + score);
 				$('#scoremessage').text(specialMessage(score));

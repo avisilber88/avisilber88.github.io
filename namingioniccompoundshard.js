@@ -814,7 +814,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 		var givenAnswer = document.getElementById("givenAnswer").value;
 
 		if (givenAnswer != null) {
-			if (("" + givenAnswer).toUpperCase() == ("" + thisAnswer).toUpperCase()) {
+			if (("" + givenAnswer).toUpperCase().replace(/\s/g, '') == ("" + thisAnswer).toUpperCase().replace(/\s/g, '')) {
 				score = score + 1;
 				$('#score').text("Score = " + score);
 				$('#scoremessage').text(specialMessage(score));
