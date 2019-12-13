@@ -606,7 +606,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 			} else if (randomunitnum == 5) {
 				anion = ["CN", 18.05, true, "Cyanide"];
 			} else if (randomunitnum == 6) {
-				anion = ["CLO", 18.05, true, "Hypochlorite"];
+				anion = ["ClO", 18.05, true, "Hypochlorite"];
 			} else if (randomunitnum == 7) {
 				anion = ["OH", 18.05, true, "Hydroxide"];
 			} else if (randomunitnum == 8) {
@@ -662,7 +662,10 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 		if (cationCharge == anionCharge) {
 			balancedFormula = "" + cation[0] + anion[0];
 
-		} else {
+		} 
+	
+		
+		else {
 			if (cationCharge > 1) {
 				if ((checkPolyatomicIon(anion)) && (!anion[0].includes("("))) {
 					anion[0] = "(" + anion[0] + ")";
@@ -675,8 +678,13 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 				}
 				catSub = anionCharge;
 			}
+			
 			catNum = anionCharge;
 			anNum = cationCharge;
+			if ((cationCharge == 4)&&(anionCharge==2)){
+				catSub = "";
+				anSub = "2";
+			}
 			balancedFormula = "" + cation[0] + "<sub>"+catSub+"</sub>" + anion[0]+ "<sub>" + anSub+"</sub>";
 		}
 		var balancedArray = [balancedFormula, catNum, anNum];
