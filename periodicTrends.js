@@ -167,7 +167,7 @@ function shuffle(array) {
 	};
 	
 	var periodWithoutNobles = function(periodArray){
-		var newPeriodArray = periodArray.slice();
+		var newPeriodArray = periodArray.slice(0);
 		newPeriodArray.pop();
 		return newPeriodArray;
 	};
@@ -195,55 +195,55 @@ var pickAGroupOrPeriod = function(elementNumber, choices){
 	var elementArray = new Array;
 	switch (elementNumber) {
 		case 1:
-			elementArray = period2.splice(0);
+			elementArray = period2.slice(0);
 			if (choices==11){
 			elementArray.pop();
 			}
 			break;
 		case 2:
-			elementArray = period3.splice(0);
+			elementArray = period3.slice(0);
 			if (choices==11){
 			elementArray.pop();
 			}
 			break;
 		case 3:
-			elementArray = period4.splice(0);
+			elementArray = period4.slice(0);
 			if (choices==11){
 			elementArray.pop();
 			}
 			break;
 		case 4:
-			elementArray = period5.splice(0);
+			elementArray = period5.slice(0);
 			if (choices==11){
 			elementArray.pop();
 			}
 			break;
 		case 5:
-			elementArray = period6.splice(0);
+			elementArray = period6.slice(0);
 			if (choices==11){
 			elementArray.pop();
 			}
 			break;
 		case 6:
-			elementArray = group1.splice(0);
+			elementArray = group1.slice(0);
 			break;
 		case 7:
-			elementArray = group2.splice(0);
+			elementArray = group2.slice(0);
 			break;
 		case 8:
-			elementArray = group13.splice(0);
+			elementArray = group13.slice(0);
 			break;
 		case 9:
-			elementArray = group15.splice(0);
+			elementArray = group15.slice(0);
 			break;
 		case 10:
-			elementArray = group16.splice(0);
+			elementArray = group16.slice(0);
 			break;
 		case 11:
-			elementArray = group17.splice(0);
+			elementArray = group17.slice(0);
 			break;
 		case 12:
-			elementArray = group18.splice(0);
+			elementArray = group18.slice(0);
 			break;
 		}
 return (shuffle(elementArray)).splice(0,4);
@@ -274,7 +274,9 @@ return (shuffle(elementArray)).splice(0,4);
 		if ((questionType == 1)||(questionType==3)||(questionType==6)) {
 			if (!period){
 			largestArrayElements=smallestFirst(largestArrayElements);
+			//alert ("done");
 			}
+			//alert (questionType+" and "+largestArrayElements);
 			answer = getAtomicSymbol(largestArrayElements[0]);
 			wrongAnswer1 = getAtomicSymbol(largestArrayElements[1]);
 			wrongAnswer2 = getAtomicSymbol(largestArrayElements[2]);
