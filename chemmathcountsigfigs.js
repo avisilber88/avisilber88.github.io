@@ -318,8 +318,13 @@ var getSigFigs = function (num) {
 		var finalNum = number//*Math.pow(10, -1*Math.floor(Math.random()*0))
 		//finalNum=Number(round(finalNum, Math.floor(Math.random()*5)))*Math.pow(10, -1*Math.floor(Math.random()*10)-3);
 		finalNum=Number(finalNum.toPrecision(Math.floor(Math.random()*7)+1))*Math.pow(10, -1*Math.floor(Math.random()*10)-3);
-		$('#num1').text("How many sig figs are in "+finalNum+" ");		
-
+if (score>19){
+	document.getElementById("num1").innerHTML = ("how many sig figs are in "+finalNum+"?");
+}
+else {
+	
+	document.getElementById("num1").innerHTML = ("How many sig figs are in "+finalNum+"?");
+}
 			setupAnswers(finalNum);
 	};
 

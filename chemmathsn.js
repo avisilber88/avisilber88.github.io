@@ -319,8 +319,12 @@ answerStringFinal=answerString.substring(0,eSpot)+"*10"+(""+exponency).sup();
 
 		var finalNum = number*Math.pow(10, -1*Math.floor(Math.random()*11))
 		finalNum=round(finalNum, Math.floor(Math.random()*8));
-		document.getElementById("num1").innerHTML=("What is "+finalNum +" in scientific notation?");		
-
+	if (score>19){
+	document.getElementById("num1").innerHTML=("what is "+finalNum +" in scientific notation?");		
+}
+else {
+	document.getElementById("num1").innerHTML=("What is "+finalNum +" in scientific notation?");		
+}
 			setupAnswers(finalNum);
 	};
 
