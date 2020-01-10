@@ -636,19 +636,19 @@ var anion = ["", 0, false]; //where "" is anion and "" is molar mass;
 if (charge==1){
 randomunitnum=(Math.floor(Math.random()*5));
 		if (randomunitnum==0){
-			anion = ["F", 22.99, false];
+			anion = ["F", 18.99, false];
 		}
 		else if (randomunitnum==1){
-			anion = ["Cl", 39.10, false];
+			anion = ["Cl", 35.453, false];
 		}
 		else if (randomunitnum==2){
-			anion = ["NO<sub>3</sub>", 6.94, true];
+			anion = ["NO<sub>3</sub>", 62.00, true];
 		}
 		else if (randomunitnum==3){
-			anion = ["NO<sub>2</sub>", 1.01, true];
+			anion = ["NO<sub>2</sub>", 46.00, true];
 		}
 		else if (randomunitnum==4){
-			anion = ["Br", 18.05, false];
+			anion = ["Br", 79.904, false];
 		}
 }
 else if (charge==2){
