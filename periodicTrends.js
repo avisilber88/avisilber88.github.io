@@ -199,6 +199,9 @@ var pickAGroupOrPeriod = function(elementNumber, choices){
 			if (choices==11){
 			elementArray.pop();
 			}
+			if (choices==12){
+			
+			}
 			break;
 		case 2:
 			elementArray = period3.slice(0);
@@ -259,8 +262,11 @@ return (shuffle(elementArray)).splice(0,4);
 		// // alert(""+periodtest+"" +frog);
 		var coinFlip = Math.floor(Math.random() * 0) + 1;
 		var choices = 12;
-		if ((questionType ==3)||(questionType==4)){
+		if ((questionType ==3)||(questionType==4)||(questionType==5)||(questionType==6)){
 			choices =11;
+		}
+		if (questionType ==5){
+			
 		}
 		var elementNumber = Math.floor(Math.random() * choices) + 1;
 		var period=false;
@@ -272,24 +278,35 @@ return (shuffle(elementArray)).splice(0,4);
 		}
 		var largestArrayElements=largestFirst(pickAGroupOrPeriod(elementNumber, choices));
 		if ((questionType == 1)||(questionType==3)||(questionType==6)) {
-			if (!period){
+			if (!period){//&&((largestArrayElements.includes('18'))||(largestArrayElements.includes('10')||(largestArrayElements.includes('36'))||(largestArrayElements.includes('54'))||(largestArrayElements.includes('86'))))){
 			largestArrayElements=smallestFirst(largestArrayElements);
 			//alert ("done");
+			}
+			if ((questionType==6)&&(period)&&((largestArrayElements.includes('18'))||(largestArrayElements.includes('10')||(largestArrayElements.includes('36'))||(largestArrayElements.includes('54'))||(largestArrayElements.includes('86'))))){
+			//	alert ("hi");
 			}
 			//alert (questionType+" and "+largestArrayElements);
 			answer = getAtomicSymbol(largestArrayElements[0]);
 			wrongAnswer1 = getAtomicSymbol(largestArrayElements[1]);
 			wrongAnswer2 = getAtomicSymbol(largestArrayElements[2]);
-			wrongAnswer3 = getAtomicSymbol(largestArrayElements[3]);
+			wrongAnswer3 = getAtomicSymbol(largestArrayElements[3])
+			//alert (answer);;
 		} else {
-			if (period){
+			if (period){//&&(!((largestArrayElements.includes('18'))||(largestArrayElements.includes('10')||(largestArrayElements.includes('36'))||(largestArrayElements.includes('54'))||(largestArrayElements.includes('86')))))){
 			largestArrayElements=smallestFirst(largestArrayElements);
+			//alert ("hi");
+			}
+			if (questionType==5){
+			//alert (largestArrayElements);
+			}
+			if ((questionType==5)&&(period)&&((largestArrayElements.includes('18'))||(largestArrayElements.includes('10')||(largestArrayElements.includes('36'))||(largestArrayElements.includes('54'))||(largestArrayElements.includes('86'))))){
+			//alert ("hi");
 			}
 			answer = getAtomicSymbol(largestArrayElements[0]);
 			wrongAnswer1 = getAtomicSymbol(largestArrayElements[1]);
 			wrongAnswer2 = getAtomicSymbol(largestArrayElements[2]);
 			wrongAnswer3 = getAtomicSymbol(largestArrayElements[3]);
-		
+			//alert (answer);
 		};
 
 		// var moles = n1*Math.pow(10, m1)/mW;
