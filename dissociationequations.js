@@ -775,6 +775,9 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 	if (score>19){
 		document.getElementById("num1").innerHTML = "find the coefficients and charges for the dissociation equation of "+balancedFormulaArray[0] + ". <br>" + balancedFormulaArray[0] + "<sub>(s)</sub> ->  ___" + cationArray[0].replace(/[()]/g, '') + "<sup>___</sup><sub>(aq)</sub> + ___ " + anionArray[0].replace(/[()]/g, '') + "<sup>___</sup><sub>(aq)</sub>?";
 		}
+		else if (score >9){
+		document.getElementById("num1").innerHTML = "Find the coefficients and charges for the dissociation equation of "+balancedFormulaArray[0] + ". <br>" + balancedFormulaArray[0] + "<sub>(s)</sub> ->  ___" + cationArray[0].replace(/[()]/g, '') + "<sup>___</sup><sub>(aq)</sub> + ___ " + anionArray[0].replace(/[()]/g, '') + "<sup>___</sup><sub>(aq)</sub>.?";
+		}
 		else{
 		document.getElementById("num1").innerHTML = "Find the coefficients and charges for the dissociation equation of "+balancedFormulaArray[0] + ". <br>" + balancedFormulaArray[0] + "<sub>(s)</sub> ->  ___" + cationArray[0].replace(/[()]/g, '') + "<sup>___</sup><sub>(aq)</sub> + ___ " + anionArray[0].replace(/[()]/g, '') + "<sup>___</sup><sub>(aq)</sub>?";
 		}
@@ -924,10 +927,10 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 				$('#score').text("Score = " + score);
 				$('#scoremessage').text(specialMessage(score));
 				//anotherQuestion();
-				document.getElementById("cationcoefficient").value = "cation coefficient";
-				document.getElementById("anioncoefficient").value = "anion coefficient";
-				document.getElementById("cationcharge").value = "cation charge";
-				document.getElementById("anioncharge").value = "anion charge";
+				document.getElementById("cationcoefficient").value = "cation coefficient?";
+				document.getElementById("anioncoefficient").value = "anion coefficient?";
+				document.getElementById("cationcharge").value = "cation charge?";
+				document.getElementById("anioncharge").value = "anion charge?";
 				
 			}
 			resetQuestion();
