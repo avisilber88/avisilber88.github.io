@@ -38,6 +38,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 	var anCoefficientAnswer = "";
 	var cationArray;
 	var anionArray;
+	var balancedFormulaArray;
 	$(window).resize(function () {
 		//$('.ansbox').css('width',window.innerWidth/4-2);
 		//$('.ansbox').css('height',window.innerWidth/4-2);
@@ -721,7 +722,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 		var randomunitnum2 = (Math.floor(Math.random() * 3) + 1);
 		var anionCharge = randomunitnum2;
 		anionArray = getRandomAnion(anionCharge);
-		var balancedFormulaArray = getBalancedIonicCompound(cationArray, cationCharge, anionArray, anionCharge);
+	balancedFormulaArray = getBalancedIonicCompound(cationArray, cationCharge, anionArray, anionCharge);
 		wrongCompound1 = getBalancedIonicCompound(cationArray, (Math.floor(Math.random() * 3) + 1), anionArray, (Math.floor(Math.random() * 3) + 1)); //gohere813
 		wrongCompound2 = getBalancedIonicCompound(anionArray, (Math.floor(Math.random() * 3) + 1), cationArray, (Math.floor(Math.random() * 3) + 1)); //gohere813
 		wrongCompound3 = getBalancedIonicCompound(anionArray, (Math.floor(Math.random() * 3) + 1), cationArray, (Math.floor(Math.random() * 3) + 1)); //gohere813
@@ -887,6 +888,8 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 	});
 	$('#submitButton').click(function () {
 		//alert (thisAnswer);
+			document.getElementById("correctanswer").innerHTML= "The answer to your previous question was:     "+balancedFormulaArray[0] + "<sub>(s)</sub> -> " + (""+catCoefficientAnswer).replace(/1/g, '')+ cationArray[0].replace(/[()]/g, '') + (catChargeAnswer+"+").sup()+"<sub>(aq)</sub> + " + (anCoefficientAnswer+"").replace(/1/g, '')+anionArray[0].replace(/[()]/g, '') + (anChargeAnswer+"-").sup()+"<sub>(aq)</sub>";
+			
 		var cationcoefficient = document.getElementById("cationcoefficient").value;
 		var anioncoefficient = document.getElementById("anioncoefficient").value;
 		var cationcharge = document.getElementById("cationcharge").value;
@@ -913,7 +916,10 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 				if(((""+anCoefficientAnswer).length)==0){
 				anCoefficientAnswer=1;
 				}
-				alert("You wrote: Cation coefficient:" + cationcoefficient + ", Cation charge:"+cationcharge+" Anion coefficient: " + anioncoefficient+", and anion Charge:"+ anioncharge+". The correct answer was Cation coefficient:" + catCoefficientAnswer + ", Cation charge:"+catChargeAnswer+" Anion coefficient: " + anCoefficientAnswer+", and anion Charge:"+ anChargeAnswer+".");
+				//document.getElementById("correctanswer").innerHTML= ""+balancedFormulaArray[0] + "<sub>(s)</sub> -> " + catCoefficientAnswer+ cationArray[0].replace(/[()]/g, '') + (catChargeAnswer+"+").sup()+"<sub>(aq)</sub> + " + anCoefficientAnswer+anionArray[0].replace(/[()]/g, '') + (anChargeAnswer+"-").sup()+"<sub>(aq)</sub>";
+			
+				alert("You wrote: Cation coefficient:" + cationcoefficient + ", Cation charge:"+cationcharge+" Anion coefficient: " + anioncoefficient+", and anion Charge:"+ anioncharge+".                                    The correct answer equation will be written on the page after you click okay.                       But what you should have written in the boxes was...Cation coefficient:" + catCoefficientAnswer + ", Cation charge:"+catChargeAnswer+" Anion coefficient: " + anCoefficientAnswer+", and anion Charge:"+ anChargeAnswer+".");
+				//document.getElementById("correctanswer").innerHTML= ""+balancedFormulaArray[0] + "<sub>(s)</sub> -> " + catCoefficientAnswer+ cationArray[0].replace(/[()]/g, '') + (catChargeAnswer+"+").sup()+"<sub>(aq)</sub> + " + anCoefficientAnswer+anionArray[0].replace(/[()]/g, '') + (anChargeAnswer+"-").sup()+"<sub>(aq)</sub>";
 				score = score - 1;
 				$('#score').text("Score = " + score);
 				$('#scoremessage').text(specialMessage(score));
