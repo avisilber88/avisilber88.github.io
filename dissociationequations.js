@@ -826,6 +826,49 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 			}
 		}
 	}
+	
+	$('#cationcoefficient').click(function (e) {
+	if (document.getElementById("cationcoefficient").value == "cation coefficient?"){
+	document.getElementById("cationcoefficient").value = "";
+	}	
+	});
+	$('#cationcoefficient').blur(function (e) {
+	if (document.getElementById("cationcoefficient").value == ""){
+	document.getElementById("cationcoefficient").value = "cation coefficient?";
+	}	
+	});
+	$('#anioncoefficient').click(function (e) {
+
+	if (document.getElementById("anioncoefficient").value == "anion coefficient?"){
+	
+	document.getElementById("anioncoefficient").value = "";
+	}	
+	});
+	$('#anioncoefficient').blur(function (e) {
+	if (document.getElementById("anioncoefficient").value == ""){
+	document.getElementById("anioncoefficient").value = "anion coefficient?";
+	}	
+	});
+	$('#cationcharge').click(function (e) {
+	if (document.getElementById("cationcharge").value == "cation charge?"){
+	document.getElementById("cationcharge").value = "";
+	}	
+	});
+	$('#cationcharge').blur(function (e) {
+	if (document.getElementById("cationcharge").value == ""){
+	document.getElementById("cationcharge").value = "cation charge?";
+	}	
+	});
+	$('#anioncharge').click(function (e) {
+	if (document.getElementById("anioncharge").value == "anion charge?"){
+	document.getElementById("anioncharge").value = "";
+	}	
+	});
+	$('#anioncharge').blur(function (e) {
+	if (document.getElementById("anioncharge").value == ""){
+	document.getElementById("anioncharge").value = "anion charge?";
+	}	
+	});
 	$('#cationcoefficient').keypress(function (e) {
 		if (e.keyCode == 13)
 			$('#submitButton').click();
