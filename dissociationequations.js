@@ -903,7 +903,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 				$('#score').text("Score = " + score);
 				$('#scoremessage').text(specialMessage(score));
 				document.getElementById("cationcoefficient").value = "cation coefficient?";
-				document.getElementById("anioncoefficient").value = "anion coefficent?";
+				document.getElementById("anioncoefficient").value = "anion coefficient?";
 				document.getElementById("cationcharge").value = "cation charge?";
 				document.getElementById("anioncharge").value = "anion charge?";
 			} else {
