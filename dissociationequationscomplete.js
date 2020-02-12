@@ -39,11 +39,29 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 	var cationArray;
 	var anionArray;
 	var balancedFormulaArray;
+	function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
 	var generateIons=function (cationArray, anionArray){
 			
 			$('#cations').empty();
 			$('#anions').empty();
-			var completeArray = cationArray.concat(anionArray);
+			var completeArray = shuffle(cationArray.concat(anionArray));
 			for (index = 0; index < completeArray.length; index++) { 
 				addCationOption(completeArray[index]);
 				addAnionOption(completeArray[index]);			
@@ -638,7 +656,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 			} else if (randomunitnum == 3) {
 				anion = ["NO&#8322", 1.01, true, "Nitrite", ["NO&#8322", "N", "O"]];
 			} else if (randomunitnum == 4) {
-				anion = ["Br", 18.05, false, "Bromide"];
+				anion = ["Br", 18.05, false, "Bromide", ["Br"]];
 			} else if (randomunitnum == 5) {
 				anion = ["CN", 18.05, true, "Cyanide", ["CN", "C", "N"]];
 			} else if (randomunitnum == 6) {
@@ -669,7 +687,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 			} else if (randomunitnum == 5) {
 				anion = ["CrO&#8324", 116.00, true, "Chromate", ["CrO&#8324", "Cr", "O"]];
 			} else if (randomunitnum == 6) {
-				anion = ["Cr&#8322O&#8327", 116.00, true, "Dichromate", ["Cr&#8322O<sub>7</sub>", "Cr", "O"]];
+				anion = ["Cr&#8322O&#8327", 116.00, true, "Dichromate", ["Cr&#8322O&#8327", "Cr", "O"]];
 			} else if (randomunitnum == 7) {
 				anion = ["CO&#8323", 116.00, true, "Carbonate", ["CO&#8323", "C", "O"]];
 			
