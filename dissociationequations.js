@@ -1005,7 +1005,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 		// 	$('#choiced').text("yayyd");
 		// 	}
 	});
-		var thisAppNum = 19;
+		var thisAppNum = 20;
 		$('#scoreButton').click(function () {
 		//alert (thisAnswer);
 		alert (" You, "+whatnameis+" got a score of "+score + " on "+ m + " / " + d + " / " + y +" on app " + thisAppNum);
