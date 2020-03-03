@@ -688,7 +688,7 @@ document.getElementById("num1").innerHTML = "What is the molarity of a "+formula
 	// 	$('#choiced').text("yayyd");
 	// 	}
 	});
-		var thisAppNum = 10;
+		var thisAppNum = 24;
 		$('#scoreButton').click(function () {
 		//alert (thisAnswer);
 		alert (" You, "+whatnameis+" got a score of "+score + " on "+ m + " / " + d + " / " + y +" on app " + thisAppNum);

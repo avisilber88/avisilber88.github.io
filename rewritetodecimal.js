@@ -80,8 +80,15 @@ $(document).ready(function () {
 	};
 
 	function round(value, exp) {
+		var valueSign=1;
+		if (value<0){
+		value = -1*value;
+		valueSign=-1;
+		}
+		
+		
 		if (typeof exp === 'undefined' || +exp === 0)
-			return Math.round(value);
+			return valueSign*(Math.round(value));
 
 		value = +value;
 		exp = +exp;
@@ -92,7 +99,7 @@ $(document).ready(function () {
 		// Shift
 		value = value.toString().split('e');
 		value = Math.round( + (value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp)));
-
+		value = value*valueSign;
 		// Shift back
 		value = value.toString().split('e');
 		return  + (value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp));
@@ -168,25 +175,35 @@ $(document).ready(function () {
 	};
 	// $('#num2').text($('#num1').val());
 
-	function round(value, exp) {
-		if (typeof exp === 'undefined' || +exp === 0)
-			return Math.round(value);
+	// function round(value, exp) {
+		
+		
+		// var valueSign=1;
+		// if (value<0){
+		// value = -1*value;
+		// valueSign=-1;
+		// }
+		
+		
+		// if (typeof exp === 'undefined' || +exp === 0)
+			// return Math.round(value);
 
-		value = +value;
-		exp = +exp;
+		// value = +value;
+		// exp = +exp;
 
-		if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+		// if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0))
+			// return NaN;
 
-			return NaN;
-		}
-		// Shift
-		value = value.toString().split('e');
-		value = Math.round( + (value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp)));
-
-		// Shift back
-		value = value.toString().split('e');
-		return  + (value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp));
-	}
+		// // Shift
+		// value = value.toString().split('e');
+		// value = Math.round( + (value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp)));
+		// value = value*valueSign;
+		// // Shift back
+		// value = value.toString().split('e');
+		// return  + (value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp));
+		
+		
+	// }
 	function decimalPlaces(num) {
 		var match = ('' + num).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
 		if (!match) {
@@ -203,7 +220,8 @@ $(document).ready(function () {
 		// $('#boxb').text(35);
 		// $('#bwordb').text(35);
 		number = (Math.floor(Math.random() * 200000000 - 100000000));
-
+		//number = -.011;
+		//number = -.011;
 		finalNum = number; //*Math.pow(10, -1*Math.floor(Math.random()*0))
 		//finalNum=Number(round(finalNum, Math.floor(Math.random()*5)))*Math.pow(10, -1*Math.floor(Math.random()*10)-3);
 		finalNum = Number(finalNum.toPrecision(Math.floor(Math.random() * 7) + 1)) * Math.pow(10, -1 * Math.floor(Math.random() * 10) - 3);
@@ -309,9 +327,10 @@ $(document).ready(function () {
 			// if (thisAnswer.length>10){
 			// thisAnswer=""+round(thisAnswer, 0);
 			// }
-			if ((givenAnswer.substring(0, 1) != "0") && (thisAnswer.substring(0, 1) == "0")) {
+			if (((givenAnswer.substring(0, 1) != "0")&&(givenAnswer.substring(0,1) !="-")) && (thisAnswer.substring(0, 1) == "0")) {
 				givenAnswer = "0" + givenAnswer;
 			} else if ((givenAnswer.substring(0, 2) != "-0") && (thisAnswer.substring(0, 2) == "-0")) {
+				//alert ("happened");
 				givenAnswer = "-0" + givenAnswer.substring(1);
 			}
 			//	alert ("answer is" + round(thisAnswer, 0));
