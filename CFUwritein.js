@@ -225,8 +225,9 @@ $(document).ready(function () {
 			resetQuestion();
 
 		}
-
-		document.getElementById("num1").innerHTML = document.getElementById("num1").innerHTML + (" to " + numberOfSigFigsToCount + " sig figs below.");
+		if ((document.getElementById("num1").innerHTML.includes("sig"))==false){	
+		document.getElementById("num1").innerHTML = document.getElementById("num1").innerHTML + (" Round your answer to " + numberOfSigFigsToCount + " sig figs below.");
+		}
 		setupAnswersSigFigs(finalNum, numberOfSigFigsToCount);
 
 		//number = -.011;
