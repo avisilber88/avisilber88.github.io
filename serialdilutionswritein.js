@@ -26,6 +26,13 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 	var mag1;
 	var coeff2;
 	var mag2;
+	var numberOfDecimalsToCount;
+	var thisisanswer;
+	var thisisanswerfigs;
+	var thisisdiff
+	var finalNum
+	var thisAnswer;
+	var givenAnswer;
 $(window).resize(function(){
 //$('.ansbox').css('width',window.innerWidth/4-2);
 //$('.ansbox').css('height',window.innerWidth/4-2);
@@ -84,23 +91,49 @@ var getSigFigs = function (num) {
 
 
 	function round(value, exp) {
- 		if (typeof exp === 'undefined' || +exp === 0)
-    			return Math.round(value);
+		var valueSign=1;
+		if (value<0){
+		value = -1*value;
+		valueSign=-1;
+		}
+		
+		
+		if (typeof exp === 'undefined' || +exp === 0)
+			return valueSign*(Math.round(value));
 
 		value = +value;
-  		exp  = +exp;
+		exp = +exp;
 
 		if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0))
-    			return NaN;
+			return NaN;
 
 		// Shift
-  		value = value.toString().split('e');
-  		value = Math.round(+(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp)));
+		value = value.toString().split('e');
+		value = Math.round( + (value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp)));
+		value = value*valueSign;
+		// Shift back
+		value = value.toString().split('e');
+		return  + (value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp));
+	}
+	function getSigDigits(n) {
 
-  		// Shift back
-  		value = value.toString().split('e');
-  		return +(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp));
-}
+		if ((decimalPlaces(n) == 0) || (decimalPlaces(n) == NaN)) {
+			//	$('#score').text(Number(parseInt(Number(n), 10).toString().length)+" ");
+			var digitAmount = Number(parseInt(Number(n), 10).toString().length);
+			if (n < 1) {
+				digitAmount = digitAmount - 1;
+			}
+
+			return getSigFigs(n) - digitAmount;
+
+		} else {
+			//$('#score').text(decimalPlaces(n)+" ");
+
+			return decimalPlaces(n);
+
+		}
+
+	}
 
 function sigFigs(n, sig) {
 n=Math.abs(n);
@@ -173,7 +206,7 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 			wrongAnswer1=Number(sigFigs(Number(moles),3))+" M ";
 			wrongAnswer2=Number(sigFigs(Number(1/moles),3))+" M ";
 			wrongAnswer3=Number(sigFigs(Number(1/molar),3))+" M ";
-			
+			var serialDilution = Math.pow(n2, n1);
 			
 			// var moles = n1*Math.pow(10, m1)/mW;
 			// var molar = moles/(n2*Math.pow(10,m2));
@@ -183,205 +216,62 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 			// wrongAnswer2=Number(sigFigs(Number(1/moles),3))+" M " + fN +" solution";
 			// wrongAnswer3=Number(sigFigs(Number(1/molar),3))+" M " + fN + " solution";
 			
-		var answers = [];
-		answers[0]=answer;
-		answers[1]=wrongAnswer1;
-		answers[2]=wrongAnswer2;
-		answers[3]=wrongAnswer3;
+	resetQuestionDecimals(Number(serialDilution));
+	};
+	
+	var resetQuestionDecimals = function (input) {
+		// $('#boxb').text(35);
+		// $('#bwordb').text(35);
+		number = (Math.floor(Math.random() * 200000000 - 100000000));
+		//number = -.011;
+		//number = -.011;
+		finalNum = input; //*Math.pow(10, -1*Math.floor(Math.random()*0))
+		//finalNum=Number(round(finalNum, Math.floor(Math.random()*5)))*Math.pow(10, -1*Math.floor(Math.random()*10)-3);
+		//finalNum = sigFigs(finalNum, 4); //Number(finalNum.toPrecision(Math.floor(Math.random() * 7) + 1)) * Math.pow(10, -1 * Math.floor(Math.random() * 10) - 3);
+		//alert (finalNum);
+		////thisisanswerfigs = getSigFigs(finalNum);
+		//thisisanswer = getSigDigits(finalNum);
+		//thisisdiff = thisisanswer - thisisanswerfigs;
+		// if (thisisdiff < 0) {
+			// thisisdiff = 0;
+		// } else {
+			// thisisanswer = thisisanswerfigs;
+		// }
+	//	numberOfDecimalsToCount = (Math.floor(Math.random() * thisisanswer)) + thisisdiff;
+		//	alert (finalNum+" has "+thisisanswer + " and " + numberOfDecimalsToCount);
+		// if ((numberOfDecimalsToCount==null)||(numberOfDecimalsToCount==0)){
+		// resetQuestion();
+		// }
 		
-		for (i=0; i<answers.length; i++){
-			
-			for (j=0; j<answers.length; j++){
-				if ((j!=i)&&(answers[i]===answers[j])){
-					setupAnswers(m1, m2, n1, n2, mW, fN);
-				}	
-			}
-		}
-
-
-		$("*").removeClass('answer');
-		$("*").removeClass('wrongAnswer');
-		$("*").removeClass('wrong');
-		$("#boxa").addClass('wrongAnswer');
-		$("#boxb").addClass('wrongAnswer');
-		$("#boxc").addClass('wrongAnswer');
-		$("#boxd").addClass('wrongAnswer');
+		// NOTE THE LINE BELOW IS THE ONE THAT ADDED ON THE DECIMAL STUFF BEFORE TO THE QUESTION
+		//	document.getElementById("num1").innerHTML = document.getElementById("num1").innerHTML + (" to " + numberOfDecimalsToCount + " decimal places below.");
 		
-
-		var random3 = Math.floor(Math.random()*24);
-		if (random3===0){
-		$('#bworda').text(answer);
-		$('#bwordb').text(wrongAnswer1);
-		$('#bwordc').text(wrongAnswer2);
-		$('#bwordd').text(wrongAnswer3);
-		$('#boxa').addClass('answer');
-		}
-		else if (random3===1){
-		$('#bworda').text(answer);
-		$('#bwordc').text(wrongAnswer1);
-		$('#bwordb').text(wrongAnswer2);
-		$('#bwordd').text(wrongAnswer3);
-		$('#boxa').addClass('answer');
-		}
-		else if (random3===2){
-		$('#bworda').text(answer);
-		$('#bwordc').text(wrongAnswer1);
-		$('#bwordd').text(wrongAnswer2);
-		$('#bwordb').text(wrongAnswer3);
-		$('#boxa').addClass('answer');
-		}
-		else if (random3===3){
-		$('#bworda').text(answer);
-		$('#bwordd').text(wrongAnswer1);
-		$('#bwordb').text(wrongAnswer2);
-		$('#bwordc').text(wrongAnswer3);
-		$('#boxa').addClass('answer');
-		}
-		else if (random3===4){
-		$('#bworda').text(answer);
-		$('#bwordb').text(wrongAnswer1);
-		$('#bwordd').text(wrongAnswer2);
-		$('#bwordc').text(wrongAnswer3);
-		$('#boxa').addClass('answer');
-		}
-		else if (random3===5){
-		$('#bworda').text(answer);
-		$('#bwordd').text(wrongAnswer1);
-		$('#bwordc').text(wrongAnswer2);
-		$('#bwordb').text(wrongAnswer3);
-		$('#boxa').addClass('answer');
-		}
-		else if (random3===6){
-		$('#bwordb').text(answer);
-		$('#bworda').text(wrongAnswer1);
-		$('#bwordc').text(wrongAnswer2);
-		$('#bwordd').text(wrongAnswer3);
-		$('#boxb').addClass('answer');
-		}
-		else if (random3===7){
-		$('#bwordb').text(answer);
-		$('#bworda').text(wrongAnswer1);
-		$('#bwordd').text(wrongAnswer2);
-		$('#bwordc').text(wrongAnswer3);
-		$('#boxb').addClass('answer');
-		}
-		else if (random3===8){
-		$('#bwordb').text(answer);
-		$('#bwordc').text(wrongAnswer1);
-		$('#bwordd').text(wrongAnswer2);
-		$('#bworda').text(wrongAnswer3);
-		$('#boxb').addClass('answer');
-		}
-		else if (random3===9){
-		$('#bwordb').text(answer);
-		$('#bwordc').text(wrongAnswer1);
-		$('#bworda').text(wrongAnswer2);
-		$('#bwordd').text(wrongAnswer3);
-		$('#boxb').addClass('answer');
-		}
-		else if (random3===10){
-		$('#bwordb').text(answer);
-		$('#bwordd').text(wrongAnswer1);
-		$('#bworda').text(wrongAnswer2);
-		$('#bwordc').text(wrongAnswer3);
-		$('#boxb').addClass('answer');
-		}
-		else if (random3===11){
-		$('#bwordb').text(answer);
-		$('#bwordd').text(wrongAnswer1);
-		$('#bwordc').text(wrongAnswer2);
-		$('#bworda').text(wrongAnswer3);
-		$('#boxb').addClass('answer');
-		}
-		else if (random3===12){
-		$('#bwordc').text(answer);
-		$('#bworda').text(wrongAnswer1);
-		$('#bwordb').text(wrongAnswer2);
-		$('#bwordd').text(wrongAnswer3);
-		$('#boxc').addClass('answer');
-		}
-		else if (random3===13){
-		$('#bwordc').text(answer);
-		$('#bworda').text(wrongAnswer1);
-		$('#bwordd').text(wrongAnswer2);
-		$('#bwordb').text(wrongAnswer3);
-		$('#boxc').addClass('answer');
-		}
-		else if (random3===14){
-		$('#bwordc').text(answer);
-		$('#bwordb').text(wrongAnswer1);
-		$('#bwordd').text(wrongAnswer2);
-		$('#bworda').text(wrongAnswer3);
-		$('#boxc').addClass('answer');
-		}
-		else if (random3===15){
-		$('#bwordc').text(answer);
-		$('#bwordb').text(wrongAnswer1);
-		$('#bworda').text(wrongAnswer2);
-		$('#bwordd').text(wrongAnswer3);
-		$('#boxc').addClass('answer');
-		}
-		else if (random3===16){
-		$('#bwordc').text(answer);
-		$('#bwordd').text(wrongAnswer1);
-		$('#bworda').text(wrongAnswer2);
-		$('#bwordb').text(wrongAnswer3);
-		$('#boxc').addClass('answer');
-		}
-		else if (random3===17){
-		$('#bwordc').text(answer);
-		$('#bwordd').text(wrongAnswer1);
-		$('#bwordb').text(wrongAnswer2);
-		$('#bworda').text(wrongAnswer3);
-		$('#boxc').addClass('answer');
-		}
-		else if (random3===18){
-		$('#bwordd').text(answer);
-		$('#bworda').text(wrongAnswer1);
-		$('#bwordb').text(wrongAnswer2);
-		$('#bwordc').text(wrongAnswer3);
-		$('#boxd').addClass('answer');
-		}
-		else if (random3===19){
-		$('#bwordd').text(answer);
-		$('#bworda').text(wrongAnswer1);
-		$('#bwordc').text(wrongAnswer2);
-		$('#bwordb').text(wrongAnswer3);
-		$('#boxd').addClass('answer');
-		}
-		else if (random3===20){
-		$('#bwordd').text(answer);
-		$('#bwordb').text(wrongAnswer1);
-		$('#bworda').text(wrongAnswer2);
-		$('#bwordc').text(wrongAnswer3);
-		$('#boxd').addClass('answer');
-		}
-		else if (random3===21){
-		$('#bwordd').text(answer);
-		$('#bwordb').text(wrongAnswer1);
-		$('#bwordc').text(wrongAnswer2);
-		$('#bworda').text(wrongAnswer3);
-		$('#boxd').addClass('answer');
-		}
-		else if (random3===22){
-		$('#bwordd').text(answer);
-		$('#bwordc').text(wrongAnswer1);
-		$('#bworda').text(wrongAnswer2);
-		$('#bwordb').text(wrongAnswer3);
-		$('#boxd').addClass('answer');
-		}
-		else if (random3===23){
-		$('#bwordd').text(answer);
-		$('#bwordc').text(wrongAnswer1);
-		$('#bwordb').text(wrongAnswer2);
-		$('#bworda').text(wrongAnswer3);
-		$('#boxd').addClass('answer');
-		}
+		setupAnswersDecimals(finalNum, 0);//numberOfDecimalsToCount);
+	};
+	var setupAnswersDecimals = function (n1, n2) {
+		// 
+				thisAnswer = "1/"+n1 + "";
+				//alert(thisAnswer);
+				//answer=getSigFigs(n1);
+				//alert (n1 + " who has " + numSigs1);
+			
+		
 
 	};
 	// $('#num2').text($('#num1').val());
 	
-	
+	function decimalPlaces(num) {
+		var match = ('' + num).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
+		if (!match) {
+			return 0;
+		}
+		return Math.max(
+			0,
+			// Number of digits right of decimal point.
+			(match[1] ? match[1].length : 0)
+			// Adjust for scientific notation.
+			 - (match[2] ? +match[2] : 0));
+	}
 	var getMagnitude=function(othermag){
 		var thismag = othermag;
 		while (thismag==othermag){
@@ -566,16 +456,18 @@ var getCorrectChemicalFormula=function(moleculeName){
 	var resetQuestion=function(){
 		// $('#boxb').text(35);
 		// $('#bwordb').text(35);
-		var number=(Math.floor(Math.random()*200));
+		var number=(Math.floor(Math.random()*10))+1; //number of steps.
 		// var finalNum = number*Math.pow(10, -1*Math.floor(Math.random()*11));
 		// finalNum=Number(Math.round(finalNum+'e3')+'e-3');
-		var numbertwo=(Math.floor(Math.random()*200))+1;
+		var numbertwo=(Math.floor(Math.random()*10))+1; //number of folds..
 		// var finalNumtwo = numbertwo*Math.pow(10, -1*Math.floor(Math.random()*11));
 		// finalNumtwo=Number(Math.round(finalNumtwo+'e3')+'e-3');
-
+		var numberThree =(Math.floor(Math.random()*100))+1;
 		var coeff1=((Math.random()*59.9999999-50));
 		var mag1=getMagnitude(11);
 		var mag2=getMagnitude(mag1);
+		//var mag1=0;
+		//var mag2=0;
 		var solute = getRandomMolecule();
 		var molarMass = getMolarMassText(solute);
 		var formulaName = getCorrectChemicalFormula(solute);
@@ -589,15 +481,15 @@ var getCorrectChemicalFormula=function(moleculeName){
 		//units2 = numbertwo+"Liters";
 //		var units3 = getMolaraMassText(getRandomMolecule());
 
-
+	
 		// $('#num1').text(toOurExponential(sigFigs(finalNum, 3)));		
 		// $('#den1').text(toOurExponential(sigFigs(finalNumtwo, 3)));
 if (score>19){
-document.getElementById("num1").innerHTML = "what is the molarity of a "+formulaName+" solution do we get when we mix " + number +" "+ units1 +" of "+ formulaName + " in " +  numbertwo+" " + units2 + " of water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)";
+document.getElementById("num1").innerHTML = "your supervisor provides you with a "+numberThree+" "+units1+"/"+units2+" of " + formulaName + " solution, and asks you to make a "+number+"-step "+numbertwo+"-fold dilution ("+numbertwo+"<sup>-1</sup> at each step). <br><br> After you have performed the "+number+"-step "+numbertwo+"-fold dilution ("+numbertwo+"<sup>-1</sup> at each step) as requested, what is the dilution factor at the final step (step "+number+")? <br>(make sure to frame it as a fraction ex: '1/4')";
 }
 else {
 	
-document.getElementById("num1").innerHTML = "What is the molarity of a "+formulaName+" solution do we get when we mix " + number +" "+ units1 +" of "+ formulaName + " in " +  numbertwo+" " + units2 + " of water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)";
+document.getElementById("num1").innerHTML = "Your supervisor provides you with a "+numberThree+" "+units1+"/"+units2+" of " + formulaName + " solution, and asks you to make a "+number+"-step "+numbertwo+"-fold dilution ("+numbertwo+"<sup>-1</sup> at each step). <br><br> After you have performed the "+number+"-step "+numbertwo+"-fold dilution ("+numbertwo+"<sup>-1</sup> at each step) as requested, what is the dilution factor at the final step (step "+number+")? <br>(make sure to frame it as a fraction ex: '1/4')";
 }
 //$('#num1').text("What is the molarity of a "+formulaName+" solution do we get when we mix " + number +" "+ units1 +" of "+ formulaName + " in " +  numbertwo+" " + units2 + " of water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)");
 
@@ -686,7 +578,44 @@ document.getElementById("num1").innerHTML = "What is the molarity of a "+formula
 	// 	$('#choiced').text("yayyd");
 	// 	}
 	});
-		var thisAppNum = 26;
+	$('#givenAnswer').keypress(function (e) {
+		if (e.keyCode == 13)
+			$('#submitButton').click();
+	});
+	$('#submitButton').click(function () {
+		//alert (thisAnswer);
+		givenAnswer = document.getElementById("givenAnswer").value;
+
+		if (givenAnswer != null) {
+			//alert (givenAnswer.substring(0, 1)+ " and "+ thisAnswer.substring(0, 1));
+			// if (thisAnswer.length>10){
+			// thisAnswer=""+round(thisAnswer, 0);
+			// }
+			if (((givenAnswer.substring(0, 1) != "0")&&(givenAnswer.substring(0,1) !="-")) && (thisAnswer.substring(0, 1) == "0")) {
+				givenAnswer = "0" + givenAnswer;
+			} else if ((givenAnswer.substring(0, 2) != "-0") && (thisAnswer.substring(0, 2) == "-0")) {
+				//alert ("happened");
+				givenAnswer = "-0" + givenAnswer.substring(1);
+			}
+			//	alert ("answer is" + round(thisAnswer, 0));
+			if (("" + givenAnswer).toUpperCase().replace(/\s/g, '') == ("" + thisAnswer).toUpperCase().replace(/\s/g, '')) {
+				score = score + 1;
+				$('#score').text("Score = " + score);
+				$('#scoremessage').text(specialMessage(score));
+				document.getElementById("givenAnswer").value = "";
+			} else {
+				alert("You wrote: " + givenAnswer + ". The correct answer was " + thisAnswer);
+				score = score - 1;
+				$('#score').text("Score = " + score);
+				$('#scoremessage').text(specialMessage(score));
+				//anotherQuestion();
+				document.getElementById("givenAnswer").value = "";
+			}
+			resetQuestion();
+		}
+
+	});
+		var thisAppNum = 10;
 		$('#scoreButton').click(function () {
 		//alert (thisAnswer);
 		alert (" You, "+whatnameis+" got a score of "+score + " on "+ m + " / " + d + " / " + y +" on app " + thisAppNum);

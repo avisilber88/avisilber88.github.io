@@ -1323,7 +1323,7 @@ $(document).ready(function () {
 		// 	$('#choiced').text("yayyd");
 		// 	}
 	});
-	var thisAppNum = 26;
+	var thisAppNum = 22;
 	$('#scoreButton').click(function () {
 		//alert (thisAnswer);
 		alert(" You, " + whatnameis + " got a score of " + score + " on " + m + " / " + d + " / " + y + " on app " + thisAppNum);
