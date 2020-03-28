@@ -117,6 +117,7 @@ function getMIDIMessage(message) {
 
 		break;
 	case 128: // noteOff
+			noteOffListener(note);
 		return function () {
 			var audio = document.getElementById("sound-A3");
 			if (playPromise !== null) {
