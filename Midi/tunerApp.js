@@ -7,6 +7,7 @@ var noteToSing= "";
 var newQuestionTime= false;
 var beginning=true;
 var previousNote="";
+var audioArray=[];
 ! function(e) {
     "use strict";
 
@@ -1439,46 +1440,50 @@ function findNote(e) { //Avi thinks this determines what note frequency the note
 }
 
 function harmonizeBecauseYouRight(){
-var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));
-	//	alert (""+soundId(getNoteName(note)));
-		// if audio(const playPromise = audio.play();
-		// if (playPromise !== null) {
-		// playPromise.catch(() => {
-		// audio.pause();
-		// audio.volume = 1.0;
-		// if (audio.readyState >= 2) {
-		// audio.currentTime = 0;
-		// // audio.play();
-		// }
-		// })
-		// }
-		// if (audio) {
+	playANote(randomNoteNum);
+//	setTimeout(stopAllNotes, 0);
+	//setTimeout(alert ("hi"), 5000);
+// var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));
 
-		// }
+	// //	alert (""+soundId(getNoteName(note)));
+		// // if audio(const playPromise = audio.play();
+		// // if (playPromise !== null) {
+		// // playPromise.catch(() => {
+		// // audio.pause();
+		// // audio.volume = 1.0;
+		// // if (audio.readyState >= 2) {
+		// // audio.currentTime = 0;
+		// // // audio.play();
+		// // }
+		// // })
+		// // }
+		// // if (audio) {
 
-		//press();
-		//playNote(midiNoteToFrequency(note));
-		//press(note);
-		//if (velocity > 0) {
-			if (audio) {
-				audio.pause();
-				audio.volume = 1.0;
-				if (audio.readyState >= 2) {
-					audio.currentTime = 0;
-					var promise = audio.play();
+		// // }
+
+		// //press();
+		// //playNote(midiNoteToFrequency(note));
+		// //press(note);
+		// //if (velocity > 0) {
+			// if (audio) {
+				// audio.pause();
+				// audio.volume = 1.0;
+				// if (audio.readyState >= 2) {
+					// audio.currentTime = 0;
+					// var promise = audio.play();
 					
-		if (promise !== undefined) {
-			promise.then(_ => {
-        // Autoplay started!
-			}).catch(error => {
-		//alert ("it worked");
-        // Autoplay was prevented.
-        // Show a "Play" button so that user can start playback.
-			});
-		}
+		// if (promise !== undefined) {
+			// promise.then(_ => {
+        // // Autoplay started!
+			// }).catch(error => {
+		// //alert ("it worked");
+        // // Autoplay was prevented.
+        // // Show a "Play" button so that user can start playback.
+			// });
+		// }
 
-				}
-			}
+				// }
+			// }
 };
 function soundId(id) {
 	return 'sound-' + id;
@@ -1558,55 +1563,109 @@ return newInterval;
 };
 
 function playMajorScale (scaleRootArrayPlace){
-	beginning=false;
-setTimeout(playANote(getNoteNumMajorScale(0)+scaleRootArrayPlace), 0);
-alert ("do");
-setTimeout(playANote(getNoteNumMajorScale(1)+scaleRootArrayPlace), 0);
-alert ("re");
-setTimeout(playANote(getNoteNumMajorScale(2)+scaleRootArrayPlace), 0);
-alert ("mi");
-setTimeout(playANote(getNoteNumMajorScale(3)+scaleRootArrayPlace), 0);
-alert ("fa");
-setTimeout(playANote(getNoteNumMajorScale(4)+scaleRootArrayPlace), 0);
-alert ("sol");
-setTimeout(playANote(getNoteNumMajorScale(5)+scaleRootArrayPlace), 0);
-alert ("la");
-setTimeout(playANote(getNoteNumMajorScale(6)+scaleRootArrayPlace), 0);
-alert ("ti");
-setTimeout(playANote(12+scaleRootArrayPlace), 0);
-alert ("do");
-alert ("now begin");
+beginning=false;
+// (playANote(getNoteNumMajorScale(0)+scaleRootArrayPlace));
+	// var audio = document.getElementById(soundId(noteArray[getNoteNumMajorScale(0)+scaleRootArrayPlace][1]));
+	// if (audio) {
+		// audio.pause();
+		// audio.volume = 1.0;
+		// if (audio.readyState >= 2) {
+			// audio.currentTime = 0;
+			// var promise = audio.play();
+
+			// if (promise !== undefined) {
+				// promise.then(_ => {}).catch(error => {});
+			// }
+		// }
+		
+		// //alert ("do");
+		
+	// }
+// audio.onended=function(){
+		// //alert ("do");
+	// var audio2 = document.getElementById(soundId(noteArray[getNoteNumMajorScale(1)+scaleRootArrayPlace][1]));
+	// if (audio2) {
+		// audio2.pause();
+		// audio2.volume = 1.0;
+		// if (audio2.readyState >= 2) {
+			// audio2.currentTime = 0;
+			// var promise = audio2.play();
+
+			// if (promise !== undefined) {
+				// promise.then(_ => {}).catch(error => {});
+			// }
+		// }
+		// alert ("now begin");
 
 		newQuestionTime=true;
-}
+	// }
+		};
+// setTimeout(playANote(getNoteNumMajorScale(1)+scaleRootArrayPlace), 0);
+// alert ("re");
+// setTimeout(playANote(getNoteNumMajorScale(2)+scaleRootArrayPlace), 0);
+// alert ("mi");
+// setTimeout(playANote(getNoteNumMajorScale(3)+scaleRootArrayPlace), 0);
+// alert ("fa");
+// setTimeout(playANote(getNoteNumMajorScale(4)+scaleRootArrayPlace), 0);
+// alert ("sol");
+// setTimeout(playANote(getNoteNumMajorScale(5)+scaleRootArrayPlace), 0);
+// alert ("la");
+// setTimeout(playANote(getNoteNumMajorScale(6)+scaleRootArrayPlace), 0);
+// alert ("ti");
+// setTimeout(playANote(12+scaleRootArrayPlace), 0);
+// alert ("do");
 
-function playANote(arrayPlace){
-	console.log (noteArray[arrayPlace][1]);
-var audio = document.getElementById(soundId(noteArray[arrayPlace][1]));
-if (audio) {
-				audio.pause();
-				audio.volume = 1.0;
-				if (audio.readyState >= 2) {
-					audio.currentTime = 0;
-					var promise = audio.play();
-					
-		if (promise !== undefined) {
-			promise.then(_ => {
-        // Autoplay started!
-			}).catch(error => {
-		//alert ("it worked");
-        // Autoplay was prevented.
-        // Show a "Play" button so that user can start playback.
-			});
+
+function stopAllNotes(){
+	try{
+for (var i = 0; i < audioArray.length; i++) {
+	try{
+		audioArray[i][0].pause();
+	}
+	catch(error){
+	}
+	}}
+	catch (error){
+	}
+}
+function playANote(arrayPlace) {
+	console.log(noteArray[arrayPlace][1]);
+	var audio = document.getElementById(soundId(noteArray[arrayPlace][1]));
+	var newNote=true;
+try{
+for (var i = 0; i < audioArray.length; i++) {
+			// console.log(audioArray[i].includes(noteArray[arrayPlace][1]));}
+			 console.log(audioArray.length);
+			if ((audioArray[i].includes(noteArray[arrayPlace][1]))==true){
+			//	console.log("hi");
+				console.log(audioArray[i][0]);
+				audioArray[i][0].pause();
+				newNote=false;
+			audioArray[i]=[audio, noteArray[arrayPlace][1]];
+			}
+			}
+document.querySelector('.step2 .note:nth-child(' + (i + 1) + ')').classList.add('on');
 		}
 
-				}
-		
-			}
 
-//setTimeout(audio.stop(), 1000);
-	
-	
+catch (error){}
+if (newNote==true){
+	audioArray.push([audio, noteArray[arrayPlace][1]])
+}
+//console.log(audioArray.toString());
+	if (audio) {
+		audio.pause();
+		audio.volume = 1.0;
+		if (audio.readyState >= 2) {
+			audio.currentTime = 0;
+			var promise = audio.play();
+
+			if (promise !== undefined) {
+				promise.then(_ => {}).catch(error => {});
+			}
+		}
+	}
+
 }
 
 function repeatOnFrame() {
@@ -1619,13 +1678,20 @@ function repeatOnFrame() {
 		
 	}
 	if (newQuestionTime==true){
-
+			stopAllNotes();
 			var randomScaleNum=Math.floor(Math.random()*7);
 			randomNoteNum = getNoteNumMajorScale(randomScaleNum)+noteAdapter;
 			//console.log(randomNoteNum);
 //			console.log (randomNoteArray+" "+noteArray[findNote(randomNoteNum)][1]);
 		console.log (randomScaleNum+" "+getNoteNumMajorScale(randomScaleNum)+" "+randomNoteNum+" "+noteArray[randomNoteNum][1]+"");
 		document.getElementById("referenceText").innerHTML = "Your reference Note is "+noteArray[randomNoteNum][1]+", <p>Sing one third above that ("+noteArray[(randomNoteNum)+getNoteUpInterval((randomNoteNum-noteAdapter),3)][1]+") in the key of C<p>Your last note was "+previousNote;
+		r=randomNoteNum;
+		gauge.update({
+			majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
+			units: noteArray[r][1]//sets the 3 notes in there.
+		});
+			//alert ("hi");
+			
 		var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));
 	//	alert (""+soundId(getNoteName(note)));
 		// if audio(const playPromise = audio.play();
@@ -1842,7 +1908,7 @@ var lightColor = "#ffa500",
     minDrawMLength = measureLength * minDrawRate,
     oST = "ghost",
     measurements = [],
-    startTime, gaugeAccuracy = 16,
+    startTime, gaugeAccuracy = 5, // Avi says lower is less accurate sensitive, higher requires higher accuracy. It used to be set at 16.
     gaugeNear = 1.4,
     tunerWidth = Math.floor($("#tunerframe").width() - 0);
 tunerWidth > 600 && (tunerWidth = 600), $("#tunerback").css({
@@ -1911,15 +1977,22 @@ function inTimeOut(){
 newQuestionTime=true;
 alert ("now sing with the note! After you press okay you'll get your next note.");
 };
-
+function basicNote(complexNote){
+	var newNote=complexNote;
+	while (newNote>11){
+		newNote=newNote-12;
+	}
+	return newNote;
+};
 function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
     frequenceEnhancedTech || (e += e * (enhancedFreq(0, 20) - 15) / 1e3);
     var r = findNote(e); //converting the noteArray
 	var thanote = findNote(e);
 	//console.log((thanote)+","+(findNote(randomNoteNum)+4))
 	var legalInterval=getNoteUpInterval((randomNoteNum-noteAdapter),3);
+	//console.log(basicNote(thanote));
 	//console.log(noteArray[randomNoteNum+legalInterval][1]);
-	if ((thanote)==((randomNoteNum)+legalInterval)){
+	if ((basicNote(thanote))==(basicNote((randomNoteNum)+legalInterval))){
 		console.log("awesome");
 		previousNote=noteArray[((randomNoteNum)+legalInterval)][1];
 		harmonizeBecauseYouRight();
@@ -1930,10 +2003,10 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
     if (-1 != r) {
 			
         var t = (noteArray[r + 1] || [2093])[0] - noteArray[r][0],
-            o = noteArray[r][0] - t,
-            n = noteArray[r][0] + t,
-            a = noteArray[r][0] - t / gaugeAccuracy,
-            i = noteArray[r][0] + t / gaugeAccuracy,
+            o = noteArray[r][0] - t,  //lower orange limit I think
+            n = noteArray[r][0] + t,  //higher orange limit I think
+            a = noteArray[r][0] - t / gaugeAccuracy, //lower green
+            i = noteArray[r][0] + t / gaugeAccuracy, //higher green
             u = lightColor,
             c = "#000000",
             l = "normal";
@@ -1946,7 +2019,7 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
             colorNeedleCircleOuterEnd: u,
             colorUnits: c,
             fontUnitsWeight: l,
-            majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
+            majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""], //sets the 3 notes in there.
             highlights: [{
                 from: o + (a - o) / gaugeNear,
                 to: a,
@@ -2088,48 +2161,94 @@ var noteArray = [
     [1975.5, "B6"]
 ];
 
+$('#doButton').click(function () {
+	(playANote(getNoteNumMajorScale(0)+(noteAdapter)));
+});
+$('#reButton').click(function () {
+	(playANote(getNoteNumMajorScale(1)+(noteAdapter)));
+});
+$('#miButton').click(function () {
+	(playANote(getNoteNumMajorScale(2)+(noteAdapter)));
+});
+$('#faButton').click(function () {
+	(playANote(getNoteNumMajorScale(3)+(noteAdapter)));
+});
+$('#solButton').click(function () {
+	(playANote(getNoteNumMajorScale(4)+(noteAdapter)));
+});
+$('#laButton').click(function () {
+	(playANote(getNoteNumMajorScale(5)+(noteAdapter)));
+});
+$('#tiButton').click(function () {
+	(playANote(getNoteNumMajorScale(6)+(noteAdapter)));
+});
+$('#do2Button').click(function () {
+	(playANote(12+(noteAdapter)));
+});
 
+$('#octave2').click(function () {
+noteAdapter=12;
+	});
+	
+$('#octave3').click(function () {
+noteAdapter=24;
+	});
+	
+$('#octave4').click(function () {
+noteAdapter=36;
+	});
+	
+$('#octave5').click(function () {
+noteAdapter=48;
+	});
+	
 $('#playAgainButton').click(function () {
-var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));
-	//	alert (""+soundId(getNoteName(note)));
-		// if audio(const playPromise = audio.play();
-		// if (playPromise !== null) {
-		// playPromise.catch(() => {
-		// audio.pause();
-		// audio.volume = 1.0;
-		// if (audio.readyState >= 2) {
-		// audio.currentTime = 0;
-		// // audio.play();
-		// }
-		// })
-		// }
-		// if (audio) {
+	r=randomNoteNum;
+		gauge.update({
+			majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
+			units: noteArray[r][1]//sets the 3 notes in there.
+		});
+		playANote(randomNoteNum);
+// var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));
+	// //	alert (""+soundId(getNoteName(note)));
+		// // if audio(const playPromise = audio.play();
+		// // if (playPromise !== null) {
+		// // playPromise.catch(() => {
+		// // audio.pause();
+		// // audio.volume = 1.0;
+		// // if (audio.readyState >= 2) {
+		// // audio.currentTime = 0;
+		// // // audio.play();
+		// // }
+		// // })
+		// // }
+		// // if (audio) {
 
-		// }
+		// // }
 
-		//press();
-		//playNote(midiNoteToFrequency(note));
-		//press(note);
-		//if (velocity > 0) {
-			if (audio) {
-				audio.pause();
-				audio.volume = 1.0;
-				if (audio.readyState >= 2) {
-					audio.currentTime = 0;
-					var promise = audio.play();
+		// //press();
+		// //playNote(midiNoteToFrequency(note));
+		// //press(note);
+		// //if (velocity > 0) {
+			// if (audio) {
+				// audio.pause();
+				// audio.volume = 1.0;
+				// if (audio.readyState >= 2) {
+					// audio.currentTime = 0;
+					// var promise = audio.play();
 					
-		if (promise !== undefined) {
-			promise.then(_ => {
-        // Autoplay started!
-			}).catch(error => {
-		//alert ("it worked");
-        // Autoplay was prevented.
-        // Show a "Play" button so that user can start playback.
-			});
-		}
+		// if (promise !== undefined) {
+			// promise.then(_ => {
+        // // Autoplay started!
+			// }).catch(error => {
+		// //alert ("it worked");
+        // // Autoplay was prevented.
+        // // Show a "Play" button so that user can start playback.
+			// });
+		// }
 
-				}
-			}
+				// }
+			// }
 	});
 initTuner();
 window.tuner_rand = 8319731;
