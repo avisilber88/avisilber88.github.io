@@ -4,10 +4,12 @@ var noteKeyRange=7;
 var noteAdapter=24; // limited by the lower limit of my audio files, 10 is the lowest you should go.
 var testing= "yep";
 var noteToSing= "";
+var instrument="synth";
 var newQuestionTime= false;
 var beginning=true;
 var previousNote="";
 var audioArray=[];
+var synth=new Tone.Synth().toMaster();
 ! function(e) {
     "use strict";
 
@@ -1630,6 +1632,11 @@ for (var i = 0; i < audioArray.length; i++) {
 }
 function playANote(arrayPlace) {
 	console.log(noteArray[arrayPlace][1]);
+	if (instrument=="synth"){
+	synth.triggerRelease();
+	synth.triggerAttackRelease(noteArray[arrayPlace][1], '10');
+	}
+else {
 	var audio = document.getElementById(soundId(noteArray[arrayPlace][1]));
 	var newNote=true;
 try{
@@ -1665,7 +1672,7 @@ if (newNote==true){
 			}
 		}
 	}
-
+}
 }
 
 function repeatOnFrame() {
@@ -1691,49 +1698,49 @@ function repeatOnFrame() {
 			units: noteArray[r][1]//sets the 3 notes in there.
 		});
 			//alert ("hi");
-			
-		var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));
-	//	alert (""+soundId(getNoteName(note)));
-		// if audio(const playPromise = audio.play();
-		// if (playPromise !== null) {
-		// playPromise.catch(() => {
-		// audio.pause();
-		// audio.volume = 1.0;
-		// if (audio.readyState >= 2) {
-		// audio.currentTime = 0;
-		// // audio.play();
-		// }
-		// })
-		// }
-		// if (audio) {
+			playANote(randomNoteNum);
+		// var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));
+	// //	alert (""+soundId(getNoteName(note)));
+		// // if audio(const playPromise = audio.play();
+		// // if (playPromise !== null) {
+		// // playPromise.catch(() => {
+		// // audio.pause();
+		// // audio.volume = 1.0;
+		// // if (audio.readyState >= 2) {
+		// // audio.currentTime = 0;
+		// // // audio.play();
+		// // }
+		// // })
+		// // }
+		// // if (audio) {
 
-		// }
+		// // }
 
-		//press();
-		//playNote(midiNoteToFrequency(note));
-		//press(note);
-		//if (velocity > 0) {
-			if (audio) {
-				audio.pause();
-				audio.volume = 1.0;
-				if (audio.readyState >= 2) {
-					audio.currentTime = 0;
-					var promise = audio.play();
+		// //press();
+		// //playNote(midiNoteToFrequency(note));
+		// //press(note);
+		// //if (velocity > 0) {
+			// if (audio) {
+				// audio.pause();
+				// audio.volume = 1.0;
+				// if (audio.readyState >= 2) {
+					// audio.currentTime = 0;
+					// var promise = audio.play();
 					
-		if (promise !== undefined) {
-			promise.then(_ => {
-        // Autoplay started!
-			}).catch(error => {
-		//alert ("it worked");
-        // Autoplay was prevented.
-        // Show a "Play" button so that user can start playback.
-			});
-		}
+		// if (promise !== undefined) {
+			// promise.then(_ => {
+        // // Autoplay started!
+			// }).catch(error => {
+		// //alert ("it worked");
+        // // Autoplay was prevented.
+        // // Show a "Play" button so that user can start playback.
+			// });
+		// }
 
-				}
+				// }
 				newQuestionTime=false;
 		
-			}
+			// }
 
 			//noteOnListener(note, velocity); //
 		//} else {
@@ -2186,6 +2193,14 @@ $('#do2Button').click(function () {
 	(playANote(12+(noteAdapter)));
 });
 
+$('#useSynth').click(function () {
+instrument="synth";
+	});
+	
+$('#usePiano').click(function () {
+instrument="piano";
+	});
+	
 $('#octave2').click(function () {
 noteAdapter=12;
 	});
