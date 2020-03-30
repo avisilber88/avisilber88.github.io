@@ -11,6 +11,7 @@ var previousNote="";
 var audioArray=[];
 var synth=new Tone.Synth().toMaster();
 var score=0;
+var intervalDirection="up";
 ! function(e) {
     "use strict";
 
@@ -1565,6 +1566,19 @@ newInterval=3;
 return newInterval;
 };
 
+function getNoteDownInterval(currentNoteNum, intervalUp){
+//0C, 2D,, 4E, 5F, 7G, 9A, 11B
+//03, 23, 44, 53, 73, 94, 114
+var newInterval=-4;
+if ((currentNoteNum==4)||(currentNoteNum==9)||(currentNoteNum==11)){ //major thirds
+}
+else if ((currentNoteNum==0)||(currentNoteNum==2)||(currentNoteNum==5)||(currentNoteNum==7)){ //minor thirds
+newInterval=-3;
+}
+return newInterval;
+};
+
+
 function playMajorScale (scaleRootArrayPlace){
 beginning=false;
 // (playANote(getNoteNumMajorScale(0)+scaleRootArrayPlace));
@@ -1692,7 +1706,12 @@ function repeatOnFrame() {
 			//console.log(randomNoteNum);
 //			console.log (randomNoteArray+" "+noteArray[findNote(randomNoteNum)][1]);
 		console.log (randomScaleNum+" "+getNoteNumMajorScale(randomScaleNum)+" "+randomNoteNum+" "+noteArray[randomNoteNum][1]+"");
+		if (intervalDirection=="up"){
 		document.getElementById("referenceText").innerHTML = "Your reference Note is "+noteArray[randomNoteNum][1]+", <p>Sing one third above that ("+noteArray[(randomNoteNum)+getNoteUpInterval((randomNoteNum-noteAdapter),3)][1]+") in the key of C<p>Your last note was "+previousNote;
+		}
+		else{
+		document.getElementById("referenceText").innerHTML = "Your reference Note is "+noteArray[randomNoteNum][1]+", <p>Sing one third below that ("+noteArray[(randomNoteNum)+getNoteDownInterval((randomNoteNum-noteAdapter),3)][1]+") in the key of C<p>Your last note was "+previousNote;
+		}
 		r=randomNoteNum;
 		gauge.update({
 			majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
@@ -1997,7 +2016,13 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
     var r = findNote(e); //converting the noteArray
 	var thanote = findNote(e);
 	//console.log((thanote)+","+(findNote(randomNoteNum)+4))
-	var legalInterval=getNoteUpInterval((randomNoteNum-noteAdapter),3);
+	
+	if (intervalDirection=="up"){
+		var legalInterval=getNoteUpInterval((randomNoteNum-noteAdapter),3);
+	}
+	else {
+		var legalInterval=getNoteDownInterval((randomNoteNum-noteAdapter),3);
+	}
 	//console.log(basicNote(thanote));
 	//console.log(noteArray[randomNoteNum+legalInterval][1]);
 	if ((basicNote(thanote))==(basicNote((randomNoteNum)+legalInterval))){
@@ -2177,7 +2202,12 @@ var noteArray = [
     [1864.7, "A6#"],
     [1975.5, "B6"]
 ];
-
+$('#thirdUp').click(function () {
+	intervalDirection="up";
+});
+$('#thirdDown').click(function () {
+	intervalDirection="down";
+});
 $('#doButton').click(function () {
 	(playANote(getNoteNumMajorScale(0)+(noteAdapter)));
 });
@@ -2209,6 +2239,11 @@ instrument="synth";
 	
 $('#usePiano').click(function () {
 instrument="piano";
+try{
+synth.triggerRelease();
+}
+catch (error){
+}
 	});
 	
 $('#octave2').click(function () {
