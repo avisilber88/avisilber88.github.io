@@ -10,6 +10,7 @@ var beginning=true;
 var previousNote="";
 var audioArray=[];
 var synth=new Tone.Synth().toMaster();
+var score=0;
 ! function(e) {
     "use strict";
 
@@ -1695,7 +1696,7 @@ function repeatOnFrame() {
 		r=randomNoteNum;
 		gauge.update({
 			majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
-			units: noteArray[r][1]//sets the 3 notes in there.
+			units: (noteArray[r][1]+ " "+score)//sets the 3 notes in there.
 		});
 			//alert ("hi");
 			playANote(randomNoteNum);
@@ -2001,9 +2002,18 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
 	//console.log(noteArray[randomNoteNum+legalInterval][1]);
 	if ((basicNote(thanote))==(basicNote((randomNoteNum)+legalInterval))){
 		console.log("awesome");
+		score++;
+		if (score==100){
+			score = 0;
 		previousNote=noteArray[((randomNoteNum)+legalInterval)][1];
 		harmonizeBecauseYouRight();
 		setTimeout(inTimeOut(), 3000);
+		}
+	}
+	else
+	{
+	
+	score=0;
 	}
 		//console.log(noteArray[43][1]); // Here Avi is writing down what note is being played based on the find note thing.
 	//alert (r+"");
@@ -2018,7 +2028,7 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
             c = "#000000",
             l = "normal";
         i >= e && e >= a && (u = darkColor, c = darkColor, l = "bold"), gauge.update({
-            units: noteArray[r][1],
+            units: noteArray[r][1] +" " + score,
             value: e,
             minValue: o,
             maxValue: n,
@@ -2221,7 +2231,7 @@ $('#playAgainButton').click(function () {
 	r=randomNoteNum;
 		gauge.update({
 			majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
-			units: noteArray[r][1]//sets the 3 notes in there.
+			units: (noteArray[r][1]+ " "+score)//sets the 3 notes in there.
 		});
 		playANote(randomNoteNum);
 // var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));
