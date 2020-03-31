@@ -1244,17 +1244,17 @@ $(document).ready(function () {
 		}
 	};
 	var resetQuestion = function () {
-		// if (startedNumber == 0) {
-			// // alert ("hi");
-			// $('#reactionTypes').empty();
-			// generateQuestionTypes("Single Replacement");
-			// generateQuestionTypes("Double Replacement");
-			// generateQuestionTypes("Combustion");
-			// generateQuestionTypes("Decomposition");
-			// generateQuestionTypes("Synthesis");
-			// stardedNumber = 1;
-		// }
-		// var selected = $('#reactionTypes').find('option:selected');
+		if (startedNumber == 0) {
+			// alert ("hi");
+			$('#reactionTypes').empty();
+			generateQuestionTypes("Single Replacement");
+			generateQuestionTypes("Double Replacement");
+			generateQuestionTypes("Combustion");
+			generateQuestionTypes("Decomposition");
+			generateQuestionTypes("Synthesis");
+			stardedNumber = 1;
+		}
+		var selected = $('#reactionTypes').find('option:selected');
 		questionTypeNumber = Math.floor(Math.random() * 5) + 1;
 		switch (questionTypeNumber) {
 		case 1:
@@ -1274,7 +1274,7 @@ $(document).ready(function () {
 			break;
 
 		}
-		questionType = "singleDisplacement";
+		// questionType = "singleDisplacement";
 		if (questionType == "synthesis") {
 			setupInputs();
 			// document.getElementById("coefficientNumOne").innerHTML = ""; //<input type='text'  name='organicCompoundCoefficient' id = 'organicCompoundCoefficient' value='coefficient?'></input>"; //<font color= 'white'>";
@@ -2049,7 +2049,7 @@ $(document).ready(function () {
 };
 
 	var getQuestionTypeFromName = function () {
-	// var selectInfo = "" + document.getElementById("reactionTypes").options[document.getElementById("reactionTypes").selectedIndex].value;
+	var selectInfo = "" + document.getElementById("reactionTypes").options[document.getElementById("reactionTypes").selectedIndex].value;
 	// alert (selectInfo);
 	var questionName = "";
 	if (selectInfo == "Combustion") {
@@ -2068,13 +2068,13 @@ $(document).ready(function () {
 
 	$('#submitButton').click(function () {
 		//alert (thisAnswer);
-		// if (questionType != getQuestionTypeFromName()) {
-			// alert("You selected '" + document.getElementById("reactionTypes").options[document.getElementById("reactionTypes").selectedIndex].value + "' as your reaction type, that was incorrect. You may try again.");
-			// score = score - 1;
-			// $('#score').text("Score = " + score);
-			// $('#scoremessage').text(specialMessage(score));
-			// // console.log(questionType + " given " + getQuestionTypeFromName());
-		// } else {
+		if (questionType != getQuestionTypeFromName()) {
+			alert("You selected '" + document.getElementById("reactionTypes").options[document.getElementById("reactionTypes").selectedIndex].value + "' as your reaction type, that was incorrect. You may try again.");
+			score = score - 1;
+			$('#score').text("Score = " + score);
+			$('#scoremessage').text(specialMessage(score));
+			// console.log(questionType + " given " + getQuestionTypeFromName());
+		} else {
 			if (questionType == "synthesis") {
 				var cationcoefficient = document.getElementById("cationcoefficient").value;
 				// var anioncoefficient = document.getElementById("anioncoefficient").value;
@@ -2698,7 +2698,7 @@ $(document).ready(function () {
 				}
 				resetQuestion();
 			}
-		// }
+		}
 	});
 
 	if ($('#num1:contains(704)')) {
