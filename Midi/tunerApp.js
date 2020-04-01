@@ -1,5 +1,6 @@
 var randomNoteNum
 var noteRange=1*12;
+var keyOf=0;
 var noteKeyRange=7;
 var noteAdapter=24; // limited by the lower limit of my audio files, 10 is the lowest you should go.
 var testing= "yep";
@@ -12,6 +13,7 @@ var audioArray=[];
 var synth=new Tone.Synth().toMaster();
 var score=0;
 var intervalDirection="up";
+var randomScaleNum;
 ! function(e) {
     "use strict";
 
@@ -455,7 +457,8 @@ var intervalDirection="up";
     function U(e, t, i, r, o, n) {
         t.barProgress && F(e, t, "progress", i, r, o, n)
     }
-
+	
+	
     function q(e, t) {
         var i = e.barDimensions,
             r = i.isVertical,
@@ -1701,16 +1704,16 @@ function repeatOnFrame() {
 	}
 	if (newQuestionTime==true){
 			stopAllNotes();
-			var randomScaleNum=Math.floor(Math.random()*7);
+			randomScaleNum=Math.floor(Math.random()*7);
 			randomNoteNum = getNoteNumMajorScale(randomScaleNum)+noteAdapter;
 			//console.log(randomNoteNum);
 //			console.log (randomNoteArray+" "+noteArray[findNote(randomNoteNum)][1]);
 		console.log (randomScaleNum+" "+getNoteNumMajorScale(randomScaleNum)+" "+randomNoteNum+" "+noteArray[randomNoteNum][1]+"");
 		if (intervalDirection=="up"){
-		document.getElementById("referenceText").innerHTML = "Your reference Note is "+noteArray[randomNoteNum][1]+", <p>Sing one third above that ("+noteArray[(randomNoteNum)+getNoteUpInterval((randomNoteNum-noteAdapter),3)][1]+") in the key of C<p>Your last note was "+previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note is "+noteArray[randomNoteNum][1]+" ("+toSolFej(keyOf, randomScaleNum)+"), <p>Sing one third above that ("+noteArray[(randomNoteNum)+getNoteUpInterval((randomNoteNum-noteAdapter),3)][1]+" aka "+toSolFej(keyOf, (randomScaleNum+2))+"), in the key of C<p>Your last note was "+previousNote;
 		}
 		else{
-		document.getElementById("referenceText").innerHTML = "Your reference Note is "+noteArray[randomNoteNum][1]+", <p>Sing one third below that ("+noteArray[(randomNoteNum)+getNoteDownInterval((randomNoteNum-noteAdapter),3)][1]+") in the key of C<p>Your last note was "+previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note is "+noteArray[randomNoteNum][1]+" ("+toSolFej(keyOf, randomScaleNum)+"), <p>Sing one third below that ("+noteArray[(randomNoteNum)+getNoteDownInterval((randomNoteNum-noteAdapter),3)][1]+" aka "+toSolFej(keyOf, (randomScaleNum+5))+"), in the key of C<p>Your last note was "+previousNote;
 		}
 		r=randomNoteNum;
 		gauge.update({
@@ -2080,6 +2083,40 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
 
 }
 
+function toSolFej(keyOfWhat, scaleNumOfNote){
+var scaleNumHere=keyOfWhat+scaleNumOfNote;
+// alert (scaleNumHere);
+while (scaleNumHere>6){
+	scaleNumHere=scaleNumHere-7;
+}
+var solFej ="";
+switch (scaleNumHere) {
+	case 0:
+		solFej="Do";
+	break;
+	case 1:
+		solFej="Re";
+	break;
+	case 2:
+		solFej="Mi";
+	break;
+	case 3:
+		solFej="Fa";
+	break;
+	case 4:
+		solFej="Sol";
+	break;
+	case 5:
+		solFej="La";
+	break;
+	case 6:
+		solFej="Ti";
+	break;
+}
+return solFej;
+
+}
+
 function beginAudio(e) { //Avi thinks It all begins here.
     window.globk = 1;
     var msg = "Access to the microphone is not supported by this browser.";
@@ -2204,9 +2241,21 @@ var noteArray = [
 ];
 $('#thirdUp').click(function () {
 	intervalDirection="up";
+	if (intervalDirection=="up"){
+		document.getElementById("referenceText").innerHTML = "Your reference Note is "+noteArray[randomNoteNum][1]+" ("+toSolFej(keyOf, randomScaleNum)+"), <p>Sing one third above that ("+noteArray[(randomNoteNum)+getNoteUpInterval((randomNoteNum-noteAdapter),3)][1]+" aka "+toSolFej(keyOf, (randomScaleNum+2))+"), in the key of C<p>Your last note was "+previousNote;
+		}
+		else{
+		document.getElementById("referenceText").innerHTML = "Your reference Note is "+noteArray[randomNoteNum][1]+" ("+toSolFej(keyOf, randomScaleNum)+"), <p>Sing one third below that ("+noteArray[(randomNoteNum)+getNoteDownInterval((randomNoteNum-noteAdapter),3)][1]+" aka "+toSolFej(keyOf, (randomScaleNum+5))+"), in the key of C<p>Your last note was "+previousNote;
+		}
 });
 $('#thirdDown').click(function () {
 	intervalDirection="down";
+	if (intervalDirection=="up"){
+		document.getElementById("referenceText").innerHTML = "Your reference Note is "+noteArray[randomNoteNum][1]+" ("+toSolFej(keyOf, randomScaleNum)+"), <p>Sing one third above that ("+noteArray[(randomNoteNum)+getNoteUpInterval((randomNoteNum-noteAdapter),3)][1]+" aka "+toSolFej(keyOf, (randomScaleNum+2))+"), in the key of C<p>Your last note was "+previousNote;
+		}
+		else{
+		document.getElementById("referenceText").innerHTML = "Your reference Note is "+noteArray[randomNoteNum][1]+" ("+toSolFej(keyOf, randomScaleNum)+"), <p>Sing one third below that ("+noteArray[(randomNoteNum)+getNoteDownInterval((randomNoteNum-noteAdapter),3)][1]+" aka "+toSolFej(keyOf, (randomScaleNum+5))+"), in the key of C<p>Your last note was "+previousNote;
+		}
 });
 $('#doButton').click(function () {
 	(playANote(getNoteNumMajorScale(0)+(noteAdapter)));
@@ -2248,18 +2297,22 @@ catch (error){
 	
 $('#octave2').click(function () {
 noteAdapter=12;
+randomNoteNum = getNoteNumMajorScale(randomScaleNum)+noteAdapter;
 	});
 	
 $('#octave3').click(function () {
 noteAdapter=24;
+randomNoteNum = getNoteNumMajorScale(randomScaleNum)+noteAdapter;
 	});
 	
 $('#octave4').click(function () {
 noteAdapter=36;
+randomNoteNum = getNoteNumMajorScale(randomScaleNum)+noteAdapter;
 	});
 	
 $('#octave5').click(function () {
 noteAdapter=48;
+randomNoteNum = getNoteNumMajorScale(randomScaleNum)+noteAdapter;
 	});
 	
 $('#playAgainButton').click(function () {

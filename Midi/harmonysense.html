@@ -19,12 +19,16 @@
 
 <div class="all-wide">
 <div class="content">
+<h2> Welcome to Harmony Sense, Practice Singing in Harmony! </h2>
+<h3> Press "Turn on the Tuner" to Begin, there are adjustable settings both above and below the tuner on the page</h3>
  <button type ='button' id ="usePiano">Use Piano</button>
  <button type ='button' id ="useSynth">Use Synth</button>
+  <span style="font-size:16px">select your tone: Piano(short tones), synth (long tones)</span>
  <p>
  
  <button type ='button' id ="thirdDown">3rd down</button>
  <button type ='button' id ="thirdUp">3rd up</button>
+  <span style="font-size:16px">select whether to harmonize a 3rd above or below</span>
  <p>
  <button type ='button' id ="doButton">Do</button>
   <button type ='button' id ="reButton">Re</button>
@@ -33,7 +37,8 @@
 	 <button type ='button' id ="solButton">Sol</button>
 	  <button type ='button' id ="laButton">La</button>
 	   <button type ='button' id ="tiButton">Ti</button>
-	    <button type ='button' id ="do2Button">Do(high)</button>
+	    <button type ='button' id ="do2Button">Do(high)</button>  
+		<span style="font-size:16px">play notes in key for reference</span>
 <div id="tunerframe"><div id="tunerback"><img id="preloader" alt="Loading..." src="anim.gif" style="display: block;margin-left: auto;margin-right: auto;" ><canvas id="tunercanvas"></canvas></div></div>
 <script>
 (function (d, e) {
@@ -43,9 +48,12 @@ var t=d.createElement("script");t.type="text/javascript",t.async=!0,t.src=e;var 
 	<h2 id="referenceText">Your reference Note is blank, sing one third above that (blanketyblank) in the key of C</h2>
  <button type ='button' id ="playAgainButton">Play Reference Note Again</button>
 <p>
- <button type ='button' id ="ocatve2">Octave 2</button>
+ <button type ='button' id ="octave2">Octave 2</button>
   <button type ='button' id ="octave3">Octave 3</button>
    <button type ='button' id ="octave4">Octave 4</button>
+     <p>
+	 <span style="font-size:16px">Select above what octave you would like your reference note played in.
+	 <p> Note: You can still sing in any octave as long as your relative interval is correct.</span>
     
 <audio id = "sound-A1" src = "samples/_A2.wav" preload = "auto"></audio>
 	<audio id = "sound-Bb1" src = "samples/_Bb2.wav" preload = "auto"></audio>
