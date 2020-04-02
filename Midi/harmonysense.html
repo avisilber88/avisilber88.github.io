@@ -22,13 +22,20 @@
 <h2> Welcome to Harmony Sense, Practice Singing in Harmony! </h2>
 <h3> Press "Turn on the Tuner" to Begin, there are adjustable settings both above and below the tuner on the page</h3>
  <button type ='button' id ="usePiano">Use Piano</button>
- <button type ='button' id ="useSynth">Use Synth</button>
-  <span style="font-size:16px">select your tone: Piano(short tones), synth (long tones)</span>
+ <button type ='button' id ="useSynth" style=background:#00cc00>Use Synth (selected)</button>
+  <span style="font-size:16px">Select your tone: Piano(short tones), Synth (long tones)</span>
  <p>
  
  <button type ='button' id ="thirdDown">3rd down</button>
- <button type ='button' id ="thirdUp">3rd up</button>
-  <span style="font-size:16px">select whether to harmonize a 3rd above or below</span>
+ <button type ='button' id ="thirdUp" style=background:#00cc00>3rd up (selected)</button>
+  <span style="font-size:16px">Select whether to harmonize a 3rd above or below</span>
+ <p>
+ <button type ='button' id ="majorScale" style=background:#00cc00>Major Scale (selected)</button>
+ <button type ='button' id ="natMinorScale">Natural Minor Scale</button>
+ <span style="font-size:16px">Choose your Reference Scale Type</span>
+ <p>
+ <select id = "referenceKeySelect" name = "referenceKeySelect"> <option value = "C"> C </option> <option value = "C#/Db"> C#/Db </option><option value = "D"> D </option><option value = "D#/Eb"> D#/Eb </option> <option value = "E"> E </option> <option value = "F"> F </option><option value = "F#/Gb"> F#/Gb </option><option value = "G"> G </option> <option value = "G#/Ab"> G#/Ab </option><option value = "A"> A </option><option value = "A#/Bb"> A#/Bb </option> <option value = "B"> B </option></select>
+ <span style="font-size:16px">Choose your Reference Key</span>
  <p>
  <button type ='button' id ="doButton">Do</button>
   <button type ='button' id ="reButton">Re</button>
@@ -49,8 +56,8 @@ var t=d.createElement("script");t.type="text/javascript",t.async=!0,t.src=e;var 
  <button type ='button' id ="playAgainButton">Play Reference Note Again</button>
 <p>
  <button type ='button' id ="octave2">Octave 2</button>
-  <button type ='button' id ="octave3">Octave 3</button>
-   <button type ='button' id ="octave4">Octave 4</button>
+  <button type ='button' id ="octave3" style=background:#00cc00>Octave 3 (selected)</button>
+     <button type ='button' id ="octave4">Octave 4</button>
      <p>
 	 <span style="font-size:16px">Select above what octave you would like your reference note played in.
 	 <p> Note: You can still sing in any octave as long as your relative interval is correct.</span>
