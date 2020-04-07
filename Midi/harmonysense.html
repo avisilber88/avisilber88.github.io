@@ -23,7 +23,8 @@
 <h3> Press "Turn on the Tuner" to Begin, there are adjustable settings both above and below the tuner on the page</h3>
  <button type ='button' id ="usePiano">Use Piano</button>
  <button type ='button' id ="useSynth" style=background:#00cc00>Use Synth (selected)</button>
-  <span style="font-size:16px">Select your tone: Piano (short tones), Synth (long tones)</span>
+ <button type ='button' id ="useHumanVoice">Use Human Voice</button>
+  <span style="font-size:16px">Select your tone: Piano (short tones), Human Voice (medium tones), Synth (long tones)</span>
  <p>
  
  <button type ='button' id ="thirdDown">3rd down</button>
@@ -58,6 +59,7 @@ var t=d.createElement("script");t.type="text/javascript",t.async=!0,t.src=e;var 
  <button type ='button' id ="octave2">Octave 2</button>
   <button type ='button' id ="octave3" style=background:#00cc00>Octave 3 (selected)</button>
      <button type ='button' id ="octave4">Octave 4</button>
+	 <button type ='button' id ="octave5">Octave 5</button>
      <p>
 	 <span style="font-size:16px">Select above what octave you would like your reference note played in.
 	 <p> Note: You can still sing in any octave as long as your relative interval is correct.</span>
@@ -114,6 +116,59 @@ var t=d.createElement("script");t.type="text/javascript",t.async=!0,t.src=e;var 
 	<audio id = "sound-Bb5" src = "samples/5_Bb4_2.wav" preload = "auto"></audio>
 	<audio id = "sound-B5" src = "samples/5_B4_2.wav" preload = "auto"></audio>
 	<audio id = "sound-C6" src = "samples/5_C5_2.wav" preload = "auto"></audio>
+	
+	<audio id = "vsound-A1" src = "samples/vA3.wav" preload = "auto"></audio>
+	<audio id = "vsound-Bb1" src = "samples/vBb3.wav" preload = "auto"></audio>
+	<audio id = "vsound-B1" src = "samples/vB3.wav" preload = "auto"></audio>
+	<audio id = "vsound-C2" src = "samples/vC3.wav" preload = "auto"></audio>
+	<audio id = "vsound-Db2" src = "samples/vDb3.wav" preload = "auto"></audio>
+	<audio id = "vsound-D2" src = "samples/vD3.wav" preload = "auto"></audio>
+	<audio id = "vsound-Eb2" src = "samples/vD#3-Eb2.wav" preload = "auto"></audio>
+	<audio id = "vsound-E2" src = "samples/vE3.wav" preload = "auto"></audio>
+	<audio id = "vsound-F2" src = "samples/vF3.wav" preload = "auto"></audio>
+	<audio id = "vsound-Gb2" src = "samples/vF#3-Gb3.wav" preload = "auto"></audio>
+	<audio id = "vsound-G2" src = "samples/vG3.wav" preload = "auto"></audio>
+	<audio id = "vsound-Ab2" src = "samples/vG#3-Ab3.wav" preload = "auto"></audio>
+	<audio id = "vsound-A2" src = "samples/vA2.wav" preload = "auto"></audio>
+	<audio id = "vsound-Bb2" src = "samples/vA#2-Bb2.wav" preload = "auto"></audio>
+	<audio id = "vsound-B2" src = "samples/vB2.wav" preload = "auto"></audio>
+	<audio id = "vsound-Ab3" src = "samples/vG#3-Ab3.wav" preload = "auto"></audio>
+	<audio id = "vsound-A3" src = "samples/vA3.wav" preload = "auto"></audio>
+	<audio id = "vsound-Bb3" src = "samples/vA#3-Bb3.wav" preload = "auto"></audio>
+	<audio id = "vsound-B3" src = "samples/vB3.wav" preload = "auto"></audio>
+	<audio id = "vsound-C3" src = "samples/vC3.wav" preload = "auto"></audio>
+	<audio id = "vsound-Db3" src = "samples/vC#3-Db3.wav" preload = "auto"></audio>
+	<audio id = "vsound-D3" src = "samples/vD3.wav" preload = "auto"></audio>
+	<audio id = "vsound-Eb3" src = "samples/vD#3-Eb3.wav" preload = "auto"></audio>
+	<audio id = "vsound-E3" src = "samples/vE3.wav" preload = "auto"></audio>
+	<audio id = "vsound-F3" src = "samples/vF3.wav" preload = "auto"></audio>
+	<audio id = "vsound-Gb3" src = "samples/vF#3-Gb3.wav" preload = "auto"></audio>
+	<audio id = "vsound-G3" src = "samples/vG3.wav" preload = "auto"></audio>
+	<audio id = "vsound-Ab4" src = "samples/vG#4-Ab4.wav" preload = "auto"></audio>
+	<audio id = "vsound-A4" src = "samples/vA4.wav" preload = "auto"></audio>
+	<audio id = "vsound-Bb4" src = "samples/vA#4-Bb4.wav" preload = "auto"></audio>
+	<audio id = "vsound-B4" src = "samples/vB4.wav" preload = "auto"></audio>
+	<audio id = "vsound-C4" src = "samples/vC4.wav" preload = "auto"></audio>
+	<audio id = "vsound-Db4" src = "samples/vC#4-Db4.wav" preload = "auto"></audio>
+	<audio id = "vsound-D4" src = "samples/vD4.wav" preload = "auto"></audio>
+	<audio id = "vsound-Eb4" src = "samples/vD#4-Eb4.wav" preload = "auto"></audio>
+	<audio id = "vsound-E4" src = "samples/vE4.wav" preload = "auto"></audio>
+	<audio id = "vsound-F4" src = "samples/vF4.wav" preload = "auto"></audio>
+	<audio id = "vsound-Gb4" src = "samples/vF#4-Gb4.wav" preload = "auto"></audio>
+	<audio id = "vsound-G4" src = "samples/vG4.wav" preload = "auto"></audio>
+	<audio id = "vsound-C5" src = "samples/vC5.wav" preload = "auto"></audio>
+	<audio id = "vsound-Db5" src = "samples/vC#5-Db5.wav" preload = "auto"></audio>
+	<audio id = "vsound-D5" src = "samples/vD5.wav" preload = "auto"></audio>
+	<audio id = "vsound-Eb5" src = "samples/vD#5-Eb5.wav" preload = "auto"></audio>
+	<audio id = "vsound-E5" src = "samples/vE5.wav" preload = "auto"></audio>
+	<audio id = "vsound-F5" src = "samples/vF5.wav" preload = "auto"></audio>
+	<audio id = "vsound-Gb5" src = "samples/vF#5-Gb5.wav" preload = "auto"></audio>
+	<audio id = "vsound-G5" src = "samples/vG5.wav" preload = "auto"></audio>
+	<audio id = "vsound-Ab5" src = "samples/vG#5-Ab5.wav" preload = "auto"></audio>
+	<audio id = "vsound-A5" src = "samples/vA5.wav" preload = "auto"></audio>
+	<audio id = "vsound-Bb5" src = "samples/vA#5-Bb5.wav" preload = "auto"></audio>
+	<audio id = "vsound-B5" src = "samples/vB5.wav" preload = "auto"></audio>
+	<audio id = "vsound-C6" src = "samples/vC6.wav" preload = "auto"></audio>
 <div style="clear:both;"></div>
 </div>
 </div>
