@@ -1,6 +1,8 @@
 // Variable which tell us what step of the game we're on.
 // We'll use this later when we parse noteOn/Off messages
-
+var inversions = false;
+var inversionAddOn = "";
+var pickedInversion = 0;
 var currentStep = -1;
 var score = 1;
 // Timer length
@@ -13,9 +15,11 @@ var activeNoteSequence = [];
 // Lock 2 variables
 var correctChord = [11, 4, 5, 7, 15]; // C7 chord starting on middle C
 var activeChord = [];
+var specificActiveChord = [];
 var currentChordName = "Wait for the first chord";
 var bassMatched = 0;
 var currentImageName = "Blank Keyboard.jpeg"
+var slashRoot=0;
 //document.getElementById("ez5").addEventListener(select
 
 if (navigator.requestMIDIAccess) {
@@ -106,11 +110,11 @@ function getMIDIMessage(message) {
         // Autoplay was prevented.
         // Show a "Play" button so that user can start playback.
 			});
-			}
+		}
 
 				}
 			}
-			noteOnListener(note, velocity);
+			noteOnListener(note, velocity); //
 		} else {
 			noteOffListener(note);
 		}
@@ -198,8 +202,14 @@ function noteOnListener(note, velocity) {
 	case 2:
 		// add the note to the active chord array
 		//alert((arrangeNote(note)+"" +correctChord[0]));
-		if (activeChord.includes(arrangeNote(note)) == false) {
+		
+		if (specificActiveChord.includes(note) == false) {
+			specificActiveChord.push(note);
+			specificActiveChord.sort();
+		}			
+		if (activeChord.includes(arrangeNote(note)) == false) { //4/9/2020 I think I may need to add a new activeChordlisting that includes the actual note and not just the arrangenote, so I can be certain the note order in addition here. Avi
 			activeChord.push(arrangeNote(note));
+			console.log(arrangeNote(specificActiveChord[0]));
 		} else if ((arrangeNote(note) == correctChord[0]) && (bassMatched > 0) && (bassMatched < 3)) {
 			activeChord.push(bassMatched+12);
 			//alert (bassMatched+12); //spot1
@@ -208,6 +218,8 @@ function noteOnListener(note, velocity) {
 		//alert(activeChord.length);
 		// show the number of active notes
 		for (var i = 0; i < activeChord.length; i++) {
+			
+			
 			document.querySelector('.step2 .note:nth-child(' + (i + 1) + ')').classList.add('on');
 		}
 
@@ -219,6 +231,10 @@ function noteOnListener(note, velocity) {
 					match = false;
 					break;
 				}
+			}
+	
+			if ((inversions)&(arrangeNote(specificActiveChord[0]) != correctChord[pickedInversion])){
+				match=false;
 			}
 			document.getElementById("score").innerHTML = "Current Difficulty = " + score.toFixed(2);
 			if (match) {
@@ -406,9 +422,10 @@ function noteOffListener(note) {
 		// Remove the note value from the active chord array
 		//alert(activeChord.length);
 		//alert (arrangeNote(note)==correctChord[0]);
+		specificActiveChord.splice(specificActiveChord.indexOf(note), 1);
 		activeChord.splice(activeChord.indexOf(note), 1);
-		if (arrangeNote(note)==correctChord[0]&&bassMatched>1){
-			bassMatched--;
+		if (arrangeNote(note)==correctChord[0]&&bassMatched>1){ // what it does: if the note played is the same as the bass note, and it's still looking for more bass notes. does something with octaves, this might be a place for doing the bass note thing
+			bassMatched--; //more notes from above Avi 4/9/2020, correctChord[1] is the /3, correctChord [2] is the /5, correctChord [3] in a 7th would be the /7.
 		}
 		//spot2
 		// Hide the last note shown
@@ -474,6 +491,18 @@ resetChord();
 		break;
 	}
 }
+
+function setupInversions(theChord) {
+if (inversions==true){
+		pickedInversion= Math.floor(Math.random()*theChord.length);	
+		inversionAddOn= "/"+getNoteNameGeneral(theChord[pickedInversion]);
+}
+else {
+		pickedInversion=0;
+		inversionAddOn="";
+}
+}
+
 
 function getChordName() {
 	return currentChordName;
@@ -593,6 +622,11 @@ function setupChord(rootNote) {
 	} else {
 		bassMatched = 0;
 	}
+	if (document.getElementById("slashChords").selected) { //checking to see if ________ is checked
+		inversions=true;
+	}else{
+		inversions=false;
+	}
 	if (document.getElementById("jln").selected) { //checking to see if ________ is checked
 		Chordlist.push("justNotes");
 	}
@@ -675,8 +709,9 @@ function setupChord(rootNote) {
 		if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 10 || rootNote == 8 || rootNote == 13 || rootNote == 15 || rootNote == 18 || rootNote == 20 || rootNote == 22) {
 			rootNote++;
 			rootNote = fixNote(rootNote);
-			currentChordName = getNoteNameGeneral(rootNote);
+			currentChordName = getNoteNameGeneral(rootNote)
 			//currentImageName = getNoteNameGeneral(rootNote);
+			
 		}
 		currentImageName = getNoteNameGeneral(rootNote);
 		setupEasyMajors(rootNote);
@@ -920,6 +955,8 @@ function setupMajorChord(majorChordRoot) {
 	var third = fixNote(majorChordRoot + 4);
 	var fifth = fixNote(majorChordRoot + 7);
 	correctChord = [majorChordRoot, third, fifth];
+		setupInversions(correctChord);
+	currentChordName = currentChordName+inversionAddOn;
 }
 
 function setupMinorChord(chordRoot) {
@@ -927,6 +964,8 @@ function setupMinorChord(chordRoot) {
 	var third = fixNote(chordRoot + 3);
 	var fifth = fixNote(chordRoot + 7);
 	correctChord = [chordRoot, third, fifth];
+		setupInversions(correctChord);
+	currentChordName = currentChordName+inversionAddOn;
 }
 
 function setupJustNotes(chordRoot) {
@@ -954,6 +993,8 @@ function setupMajorSeventh(chordRoot) {
 	var fifth = fixNote(chordRoot + 7);
 	var seventh = fixNote(chordRoot + 11);
 	correctChord = [chordRoot, third, fifth, seventh];
+		setupInversions(correctChord);
+	currentChordName = currentChordName+inversionAddOn;
 }
 
 function setupMinorSeventh(chordRoot) {
@@ -962,6 +1003,8 @@ function setupMinorSeventh(chordRoot) {
 	var fifth = fixNote(chordRoot + 7);
 	var seventh = fixNote(chordRoot + 10);
 	correctChord = [chordRoot, third, fifth, seventh];
+		setupInversions(correctChord);
+	currentChordName = currentChordName+inversionAddOn;
 }
 
 function setupDominantSeventh(chordRoot) {
@@ -970,6 +1013,8 @@ function setupDominantSeventh(chordRoot) {
 	var fifth = fixNote(chordRoot + 7);
 	var seventh = fixNote(chordRoot + 10);
 	correctChord = [chordRoot, third, fifth, seventh];
+		setupInversions(correctChord);
+	currentChordName = currentChordName+inversionAddOn;
 }
 
 function setupEasyFifths(chordRoot) {
@@ -989,6 +1034,8 @@ function setupEasyMajors(chordRoot) {
 	var third = fixNote(chordRoot + 4);
 	var fifth = fixNote(chordRoot + 7);
 	correctChord = [chordRoot, third, fifth];
+	setupInversions(correctChord);
+	currentChordName = currentChordName+inversionAddOn;
 }
 
 function setupEasyMinors(chordRoot) {
@@ -996,6 +1043,8 @@ function setupEasyMinors(chordRoot) {
 	var third = fixNote(chordRoot + 3);
 	var fifth = fixNote(chordRoot + 7);
 	correctChord = [chordRoot, third, fifth];
+	setupInversions(correctChord);
+	currentChordName = currentChordName+inversionAddOn;
 }
 
 function setupMajorNinth(chordRoot) {
@@ -1004,6 +1053,8 @@ function setupMajorNinth(chordRoot) {
 	var fifth = fixNote(chordRoot + 11);
 	var ninth = fixNote(chordRoot + 2);
 	correctChord = [chordRoot, third, fifth, ninth];
+		setupInversions(correctChord);
+	currentChordName = currentChordName+inversionAddOn;
 }
 
 function setupMinorNinth(chordRoot) {
@@ -1012,6 +1063,8 @@ function setupMinorNinth(chordRoot) {
 	var fifth = fixNote(chordRoot + 10);
 	var ninth = fixNote(chordRoot + 2);
 	correctChord = [chordRoot, third, fifth, ninth];
+	setupInversions(correctChord);
+	currentChordName = currentChordName+inversionAddOn;
 }
 
 function setupDomininantNinth(chordRoot) {
@@ -1020,6 +1073,8 @@ function setupDomininantNinth(chordRoot) {
 	var fifth = fixNote(chordRoot + 10);
 	var ninth = fixNote(chordRoot + 2);
 	correctChord = [chordRoot, third, fifth, ninth];
+		setupInversions(correctChord);
+	currentChordName = currentChordName+inversionAddOn;
 }
 function setupAddNinth(chordRoot) {
 	majorChordRoot = fixNote(chordRoot);
@@ -1027,6 +1082,8 @@ function setupAddNinth(chordRoot) {
 	var fifth = fixNote(chordRoot + 7);
 	var ninth = fixNote(chordRoot + 2);
 	correctChord = [chordRoot, third, fifth, ninth];
+		setupInversions(correctChord);
+	currentChordName = currentChordName+inversionAddOn;
 }
 
 function fixNote(noteNumber) { //makes the note between 1 and 12

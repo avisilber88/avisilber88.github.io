@@ -101,6 +101,7 @@ if (location.protocol != 'https:')
 	<option value="addNinth" id = "add9">Add Ninth</option>
 	<option value="romC" id = "romanc">Roman Numerals in C</option>
 	<option value="romA" id = "romana">Roman Numerals in A</option>
+	<option value="sChords" id = "slashChords">Require specific inversions as "Slash Chords"</option>
 	<option value="dubB" id = "doubleBass">Look for two additional root notes in the Bass</option>
     </select>
 </p></div>
@@ -137,7 +138,7 @@ function myFunction() {
 		<div class="screen step0"></div>
 
 		<div class="screen step1">
-			<div class="lock-input">
+			<div class="lock-input" id="lockinput">
 				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
 				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
 				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
