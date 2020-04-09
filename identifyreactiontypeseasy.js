@@ -1467,7 +1467,7 @@ $(document).ready(function () {
 			//above is ubiquitous
 			//below make our first reactant
 			var randomunitnum4 = (Math.floor(Math.random() * 10) + 1);
-			var randomunitnum3 = (Math.floor(Math.random() * 4) + 1);
+			var randomunitnum3 = (Math.floor(Math.random() * 3) + 1);
 			cationCharge = randomunitnum3;
 			cationArray = getRandomCation(cationCharge);
 			var randomunitnum2 = (Math.floor(Math.random() * 3) + 1);
@@ -1480,7 +1480,7 @@ $(document).ready(function () {
 			cationTwoCharge = randomunitnum6;
 			cationTwoArray = getRandomCation(cationTwoCharge);
 			while (cationTwoArray[0] == cationArray[0]) {
-				var randomunitnum6 = (Math.floor(Math.random() * 4) + 1);
+				var randomunitnum6 = (Math.floor(Math.random() * 3) + 1);
 				cationTwoCharge = randomunitnum6;
 				cationTwoArray = getRandomCation(cationTwoCharge);
 			}
