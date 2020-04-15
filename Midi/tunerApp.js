@@ -1,4 +1,7 @@
 var randomNoteNum
+var totalScore=0;
+var timerLength = 10 / 60; // in minutes
+var timerTripped = false;
 var keyType = "major";
 var noteRange = 1 * 12;
 var keyOf = 0;
@@ -18,6 +21,46 @@ var intervalDirection = "up";
 var randomScaleNum;
 var buttonColor = '#00cc00';
 var buttonNormalColor = 'buttonface';
+
+function startTimer() {
+	// set timer for 60 minutes from start
+	var now = new Date();
+	timeEnd = new Date(now.getTime());
+
+	updateTimer();
+}
+/**
+ * Function to update the time remaining every second
+ */
+function updateTimer() {
+	var now = new Date();
+	var distance = now.getTime()-timeEnd.getTime();
+	var minutes = Math.floor(distance / (1000 * 60));
+	var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+	
+	var distance2 = distance/(totalScore+1);
+	var minutes2 = Math.floor(distance2 / (1000 * 60));
+	var seconds2 = Math.floor((distance2 % (1000 * 60)) / 1000);
+	
+	if (minutes < 10)
+		minutes = "0" + minutes;
+	if (seconds < 10)
+		seconds = "0" + seconds;
+
+		document.querySelector('#countdown').innerText =minutes + ":" + seconds + " ";
+		document.getElementById("averagetime").innerText=minutes2 + ":" + seconds2 + " ";
+		if (minutes > 0 || seconds > 0) {
+			window.setTimeout(function () {
+				updateTimer();
+			}, 1000);
+		} else if (minutes == 0 && seconds == 0) {
+				window.setTimeout(function () {
+				updateTimer();
+			}, 1000);
+			}
+	
+}
+
 !function (e) {
 	"use strict";
 
@@ -1940,7 +1983,7 @@ function harmonizeBecauseYouRight() {
 	// }
 };
 function soundId(id) {
-	if (instrument == "humanVoice") {
+	if (instrument == humanVoice) {
 		return 'vsound-' + id;
 	} else {
 		return 'sound-' + id;
@@ -2527,6 +2570,8 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
 		score++;
 		if (score == 100) {
 			score = 0;
+			totalScore++;
+			document.getElementById("totalscore").innerHTML="#Correct = "+totalScore;
 			previousNote = noteArray[((randomNoteNum) + legalInterval)][1];
 			harmonizeBecauseYouRight();
 			setTimeout(inTimeOut(), 3000);
@@ -2638,6 +2683,7 @@ function toSolFej(keyOfWhat, scaleNumOfNote) {
 }
 
 function beginAudio(e) { //Avi thinks It all begins here.
+startTimer();
 	window.globk = 1;
 	var msg = "Access to the microphone is not supported by this browser.";
 	var msg2 = "You did not allow access to the microphone. Reload the page and try again. If reloading does not help, open the browser settings and remove the ban on using the microphone.";
@@ -2883,7 +2929,6 @@ $('#majorScale').click(function () {
 });
 
 $('#doButton').click(function () {
-		stopAllNotes();
 	if (keyType == "major") {
 		(playANote(getNoteNumMajorScale(0) + (noteAdapter + scaleAdapter)));
 	} else {
@@ -2891,7 +2936,6 @@ $('#doButton').click(function () {
 	}
 });
 $('#reButton').click(function () {
-		stopAllNotes();
 	if (keyType == "major") {
 		(playANote(getNoteNumMajorScale(1) + (noteAdapter + scaleAdapter)));
 	} else {
@@ -2899,7 +2943,6 @@ $('#reButton').click(function () {
 	}
 });
 $('#miButton').click(function () {
-		stopAllNotes();
 	if (keyType == "major") {
 		console.log("it's a " + getNoteNumMinorScale(2) + " octave " + noteAdapter + " scale note " + scaleAdapter);
 		(playANote(getNoteNumMajorScale(2) + (noteAdapter + scaleAdapter)));
@@ -2910,7 +2953,6 @@ $('#miButton').click(function () {
 	}
 });
 $('#faButton').click(function () {
-		stopAllNotes();
 	if (keyType == "major") {
 		(playANote(getNoteNumMajorScale(3) + (noteAdapter + scaleAdapter)));
 	} else {
@@ -2918,7 +2960,6 @@ $('#faButton').click(function () {
 	}
 });
 $('#solButton').click(function () {
-		stopAllNotes();
 	if (keyType == "major") {
 		(playANote(getNoteNumMajorScale(4) + (noteAdapter + scaleAdapter)));
 	} else {
@@ -2926,7 +2967,6 @@ $('#solButton').click(function () {
 	}
 });
 $('#laButton').click(function () {
-		stopAllNotes();
 	if (keyType == "major") {
 		(playANote(getNoteNumMajorScale(5) + (noteAdapter + scaleAdapter)));
 	} else {
@@ -2934,7 +2974,6 @@ $('#laButton').click(function () {
 	}
 });
 $('#tiButton').click(function () {
-		stopAllNotes();
 	if (keyType == "major") {
 		(playANote(getNoteNumMajorScale(6) + (noteAdapter + scaleAdapter)));
 	} else {
@@ -2942,7 +2981,6 @@ $('#tiButton').click(function () {
 	}
 });
 $('#do2Button').click(function () {
-		stopAllNotes();
 	if (keyType == "major") {
 		(playANote(12 + (noteAdapter + scaleAdapter)));
 	} else {
@@ -2994,9 +3032,6 @@ $('#octave2').click(function () {
 	document.getElementById("octave2").style.background = buttonColor;
 	document.getElementById("octave3").style.background = buttonNormalColor;
 	document.getElementById("octave4").style.background = buttonNormalColor;
-	
-	document.getElementById("octave5").innerHTML = "Octave 5";
-	document.getElementById("octave5").style.background = buttonNormalColor;
 	noteAdapter = 12;
 	updateReferences();
 });
@@ -3008,9 +3043,6 @@ $('#octave3').click(function () {
 	document.getElementById("octave2").innerHTML = "Octave 2";
 	document.getElementById("octave3").innerHTML = "Octave 3 (selected)";
 	document.getElementById("octave4").innerHTML = "Octave 4";
-	
-	document.getElementById("octave5").innerHTML = "Octave 5";
-	document.getElementById("octave5").style.background = buttonNormalColor;
 	noteAdapter = 24;
 	updateReferences();
 });
@@ -3022,24 +3054,11 @@ $('#octave4').click(function () {
 	document.getElementById("octave2").innerHTML = "Octave 2";
 	document.getElementById("octave3").innerHTML = "Octave 3";
 	document.getElementById("octave4").innerHTML = "Octave 4 (selected)";
-	
-	document.getElementById("octave5").innerHTML = "Octave 5";
-	document.getElementById("octave5").style.background = buttonNormalColor;
 	noteAdapter = 36;
 	updateReferences();
 });
 
 $('#octave5').click(function () {
-	document.getElementById("octave2").style.background = buttonNormalColor;
-	document.getElementById("octave4").style.background = buttonNormalColor;
-	document.getElementById("octave3").style.background = buttonNormalColor;
-	
-	document.getElementById("octave5").innerHTML = "Octave 5 (selected)";
-	document.getElementById("octave5").style.background = buttonColor;
-	document.getElementById("octave2").innerHTML = "Octave 2";
-	document.getElementById("octave3").innerHTML = "Octave 3";
-	document.getElementById("octave4").innerHTML = "Octave 4";
-	document.getElementById("octave5").innerHTML = "Octave 5 (selected)";
 	noteAdapter = 48;
 	updateReferences();
 });
