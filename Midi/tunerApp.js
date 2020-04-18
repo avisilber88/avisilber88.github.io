@@ -2232,13 +2232,15 @@ function repeatOnFrame() {
 		//console.log(randomNoteNum);
 		//			console.log (randomNoteArray+" "+noteArray[findNote(randomNoteNum)][1]);
 		console.log(randomScaleNum + " " + getNoteNumMajorScale(randomScaleNum) + " " + randomNoteNum + " " + noteArray[randomNoteNum][1] + "");
-		if (intervalDirection == "up") {
+			if (intervalDirection == "up") {
+		document.getElementById("referenceText").innerHTML = "Your reference Note is " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + "), <p>Sing one third above that (" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 2)) + "), in the key of C<p>Your last note was " + previousNote;
+	} else if (intervalDirection =="down") {
+		document.getElementById("referenceText").innerHTML = "Your reference Note is " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + "), <p>Sing one third below that (" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 5)) + "), in the key of C<p>Your last note was " + previousNote;
+	} else if (intervalDirection=="unison"){
+			document.getElementById("referenceText").innerHTML = "Your reference Note is " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + "), <p>Sing that";
 
-			// alert(randomNoteNum+ " " + noteAdapter + " " + scaleAdapter + " hi "+((randomNoteNum) + getNoteUpInterval(randomNoteNum - (noteAdapter + scaleAdapter), 3)));
-			document.getElementById("referenceText").innerHTML = "Your reference Note is " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + "), <p>Sing one third above that (" + noteArray[((randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3))][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 2)) + "), in the key of C<p>Your last note was " + previousNote;
-		} else {
-			document.getElementById("referenceText").innerHTML = "Your reference Note is " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + "), <p>Sing one third below that (" + noteArray[((randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3))][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 5)) + "), in the key of C<p>Your last note was " + previousNote;
-		}
+	}
+	
 		r = randomNoteNum;
 		gauge.update({
 			majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
@@ -2560,8 +2562,10 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
 
 	if (intervalDirection == "up") {
 		var legalInterval = getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
-	} else {
+	} else if (intervalDirection == "down") {
 		var legalInterval = getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
+	} else if (intervalDirection == "unison"){
+		var legalInterval = 0;//getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 0);
 	}
 	//console.log(basicNote(thanote));
 	//console.log(noteArray[randomNoteNum+legalInterval][1]);
@@ -2818,6 +2822,8 @@ $('#thirdUp').click(function () {
 	document.getElementById("thirdUp").innerHTML = "3rd up (selected)";
 	document.getElementById("thirdUp").style.background = buttonColor;
 	document.getElementById("thirdDown").style.background = buttonNormalColor;
+	document.getElementById("unison").innerHTML = "unison";
+	document.getElementById("unison").style.background = buttonNormalColor;
 	intervalDirection = "up";
 	if (intervalDirection == "up") {
 		document.getElementById("referenceText").innerHTML = "Your reference Note is " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + "), <p>Sing one third above that (" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 2)) + "), in the key of C<p>Your last note was " + previousNote;
@@ -2830,6 +2836,8 @@ $('#thirdDown').click(function () {
 	document.getElementById("thirdUp").innerHTML = "3rd up";
 	document.getElementById("thirdDown").style.background = buttonColor;
 	document.getElementById("thirdUp").style.background = buttonNormalColor;
+	document.getElementById("unison").innerHTML = "unison";
+	document.getElementById("unison").style.background = buttonNormalColor;
 	intervalDirection = "down";
 	if (intervalDirection == "up") {
 		document.getElementById("referenceText").innerHTML = "Your reference Note is " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + "), <p>Sing one third above that (" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 2)) + "), in the key of C<p>Your last note was " + previousNote;
@@ -2837,6 +2845,25 @@ $('#thirdDown').click(function () {
 		document.getElementById("referenceText").innerHTML = "Your reference Note is " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + "), <p>Sing one third below that (" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 5)) + "), in the key of C<p>Your last note was " + previousNote;
 	}
 });
+$('#unison').click(function () {
+	document.getElementById("thirdDown").innerHTML = "3rd down";
+	document.getElementById("thirdUp").innerHTML = "3rd up";
+	document.getElementById("unison").innerHTML = "unison (selected)";
+	document.getElementById("unison").style.background = buttonColor;
+	document.getElementById("thirdDown").style.background = buttonNormalColor;
+	document.getElementById("thirdUp").style.background = buttonNormalColor;
+	intervalDirection = "unison";
+	if (intervalDirection == "up") {
+		document.getElementById("referenceText").innerHTML = "Your reference Note is " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + "), <p>Sing one third above that (" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 2)) + "), in the key of C<p>Your last note was " + previousNote;
+	} else if (intervalDirection =="down") {
+		document.getElementById("referenceText").innerHTML = "Your reference Note is " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + "), <p>Sing one third below that (" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 5)) + "), in the key of C<p>Your last note was " + previousNote;
+	} else if (intervalDirection=="unison"){
+			document.getElementById("referenceText").innerHTML = "Your reference Note is " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + "), <p>Sing that";
+
+	}
+	
+});
+
 
 $(function () {
 	$('#referenceKeySelect').change(function () {
