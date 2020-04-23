@@ -16,12 +16,23 @@ var newQuestionTime = false;
 var beginning = true;
 var previousNote = "";
 var audioArray = [];
-var synth = new Tone.Synth().toMaster();
+var synth = new Tone.PolySynth(1, Tone.Synth).toMaster();
 var score = 0;
 var intervalDirection = "up";
-var randomScaleNum;
+var randomScaleNum=0;
 var buttonColor = '#00cc00';
 var buttonNormalColor = 'buttonface';
+var accompaniment = true;
+var chordIsDone=true;
+var lastReferenceInversion=false;
+var referenceInversion=false;
+var lastReference=0;
+var lastRandomScaleNum=0;
+var firstChordOver=false;
+var inversionsAreOn=true;
+var newLastRandomScaleNum=0;
+var referenceVolume=50;
+var accompanimentVolume=50;
 
 function startTimer() {
 	// set timer for 60 minutes from start
@@ -1939,6 +1950,17 @@ function findNote(e) { //Avi thinks this determines what note frequency the note
 
 function harmonizeBecauseYouRight() {
 	playANote(randomNoteNum);
+	lastReference=randomNoteNum+0;
+	if (referenceInversion){
+	lastReferenceInversion=true;
+	}
+	else {
+	lastReferenceInversion=false;
+	}
+	lastRandomScaleNum=newLastRandomScaleNum-scaleAdapter-noteAdapter;
+	
+	referenceInversion=false;
+	firstChordOver=true;
 	//	setTimeout(stopAllNotes, 0);
 	//setTimeout(alert ("hi"), 5000);
 	// var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));
@@ -1999,6 +2021,9 @@ function getNoteNumMajorScale(scaleNum) {
 	while (scaleNum > 6) {
 		scaleNum = scaleNum - 7;
 	}
+	while (scaleNum < 0){
+	scaleNum = scaleNum+7;
+	}
 	var noteNumReturn = 0;
 
 	switch (scaleNum) {
@@ -2030,6 +2055,9 @@ function getNoteNumMajorScale(scaleNum) {
 function getNoteNumMinorScale(scaleNum) {
 	while (scaleNum > 6) {
 		scaleNum = scaleNum - 7;
+	}
+	while (scaleNum < 0){
+	scaleNum = scaleNum+7;
 	}
 	var noteNumReturn = 0;
 	switch (scaleNum) {
@@ -2169,17 +2197,39 @@ function stopAllNotes() {
 		}
 	} catch (error) {}
 }
+
+function amplifyMedia(mediaElem, multiplier) {
+  var context = new (window.AudioContext || window.webkitAudioContext),
+      result = {
+        context: context,
+        source: context.createMediaElementSource(mediaElem),
+        gain: context.createGain(),
+        media: mediaElem,
+        amplify: function(multiplier) { result.gain.gain.value = multiplier; },
+        getAmpLevel: function() { return result.gain.gain.value; }
+      };
+  result.source.connect(result.gain);
+  result.gain.connect(context.destination);
+  result.amplify(multiplier);
+  return result;
+}
+
 function playANote(arrayPlace) {
 	console.log(arrayPlace + " " + noteArray[arrayPlace][1]);
 	if (instrument == "synth") {
 		var noteStr = noteArray[arrayPlace][1];
 		noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
 		synth.triggerRelease();
-		synth.triggerAttackRelease(noteStr, '10');
+		synth.set("volume", (referenceVolume/10)-17);//(((0.01+referenceVolume))/100-.0001));
+		// synth.volume=(((0.01+referenceVolume))/100-.0001);
+		console.log("it is" +(((0.01+referenceVolume))/100-.0001));
+		synth.triggerAttackRelease(noteStr, '10');// ((0.01+referenceVolume))/100-.0001);
 	} else {
 		var noteStr = noteArray[arrayPlace][2];
 		noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
-		var audio = document.getElementById(soundId(noteStr));
+		var audio = (document.getElementById(soundId(noteStr)));
+		// var audioContextual= amplifyMedia(audio, 1);
+		audio.crossOrigin = "anonymous";
 		var newNote = true;
 		try {
 			for (var i = 0; i < audioArray.length; i++) {
@@ -2202,8 +2252,13 @@ function playANote(arrayPlace) {
 		}
 		//console.log(audioArray.toString());
 		if (audio) {
+			try{
 			audio.pause();
-			audio.volume = 1.0;
+			}
+			catch (error) {}
+			// audioContextual.amplify(accompanimentVolume/50);//1.0;
+			console.log("volume setting "+(((0.01+accompanimentVolume)/100)-.0001));
+			audio.volume=((0.01+accompanimentVolume))/100-.0001;//accompanimentVolume/50;
 			if (audio.readyState >= 2) {
 				audio.currentTime = 0;
 				var promise = audio.play();
@@ -2214,7 +2269,131 @@ function playANote(arrayPlace) {
 			}
 		}
 	}
+	if ((accompaniment)&&(chordIsDone)){
+		chordIsDone=false;
+		// alert ("you should hear a chord");
+		let currentInstrument=instrument+"";
+		instrument="piano";
+		let randomNoteLocal=randomNoteNum+0;
+		let randomScaleLocal=randomScaleNum+0;
+		if (intervalDirection=="fourthUp"){
+			randomScaleLocal=randomScaleLocal+3;
+		}	else if (intervalDirection=="fourthDown"){
+			randomScaleLocal=randomScaleLocal;
+		}	else if (intervalDirection=="up"){
+			randomScaleLocal=randomScaleLocal;
+		}	else if (intervalDirection=="down"){
+			randomScaleLocal=randomScaleLocal-2;
+		}	else if (intervalDirection=="fourthUp"){
+			randomScaleLocal=randomScaleLocal;
+		}
+		if (randomScaleLocal > 6) {
+			randomScaleLocal = randomScaleLocal - 7;
+		}
+		if (randomScaleLocal < 0){
+			randomScaleLocal = randomScaleLocal+7;
+		}
+		if 	((keyType=="major")&&(randomScaleLocal==6)){ // if it would be a diminished chord, let's swap it out for something else
+
+			randomScaleLocal=4;
+		}
+		else if	((keyType=="minor")&&(randomScaleLocal==1)){
+			randomScaleLocal = 6;
+		}
+		if (keyType=="major"){
+			randomNoteLocal = getNoteNumMajorScale(randomScaleLocal) + noteAdapter + scaleAdapter;
+		}
+		else if (keyType=="minor"){
+			randomNoteLocal = getNoteNumMinorScale(randomScaleLocal) + noteAdapter + scaleAdapter;
+		}
+		let rootDifference = randomNoteLocal-lastReference+0;
+		let scaleDifference = randomScaleLocal-lastRandomScaleNum+0;
+		let scaleAbsDifference = Math.abs(randomScaleLocal-lastRandomScaleNum)+0;//Avi 4-22-2020 you are going to need to update this so you don't screw up the inversions.
+		let rootAbsDifference = Math.abs(randomNoteLocal-lastReference)+0; //the difference between the root note for now, might change later to be the bottom note.
+		if (((scaleAbsDifference)>2)&&(!lastReferenceInversion)&&(firstChordOver)&&(inversionsAreOn)){ //these are the rules for thirdup, and usually assuming the reference is the root.
+			console.log("inversion time");
+			referenceInversion=true;
+			// if (keyType == "major") {
+			let chordRoot=randomNoteLocal+0;
+			newLastRandomScaleNum=chordRoot+0;
+			switch (scaleDifference){
+				case (-6):
+					chordRoot=randomNoteLocal+12;
+					playANote((chordRoot));
+					playANote((chordRoot) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3));
+					playANote((chordRoot) + 7);
+					newLastRandomScaleNum=chordRoot+0;
+				break;
+				case (-5):
+					chordRoot=randomNoteLocal+12;
+					playANote((chordRoot));
+					playANote((chordRoot) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3));
+					playANote((chordRoot) + 7 - 12);
+					newLastRandomScaleNum=chordRoot+7-12;
+				break;
+				case (-4):
+					chordRoot=randomNoteLocal+12;
+					playANote((chordRoot));
+					playANote((chordRoot) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3));
+					playANote((chordRoot) + 7-12);
+					newLastRandomScaleNum=chordRoot+7-12;
+				break;
+				case (-3):
+					chordRoot=randomNoteLocal+12;
+					playANote((chordRoot));
+					playANote((chordRoot-12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3));
+					playANote((chordRoot-12) + 7);
+					newLastRandomScaleNum=(chordRoot-12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3);
+				break;
+				case (3):
+					chordRoot=randomNoteLocal;
+					playANote((chordRoot));
+					playANote((chordRoot) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3));
+					playANote((chordRoot) + 7-12);
+					newLastRandomScaleNum=chordRoot+7-12;
+				break;
+				case (4):
+					chordRoot=randomNoteLocal;
+					playANote((chordRoot));
+					playANote((chordRoot-12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3));
+					playANote((chordRoot-12) + 7);
+					newLastRandomScaleNum=(chordRoot-12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3);
+				break;
+				case (5):
+					chordRoot=randomNoteLocal;
+					playANote((chordRoot));
+					playANote((chordRoot-12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3));
+					playANote((chordRoot-12) + 7);
+					newLastRandomScaleNum=(chordRoot-12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3);
+				break;	
+				case (6):
+					chordRoot=randomNoteLocal-12;
+					playANote((chordRoot));
+					playANote((chordRoot) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3));
+					playANote((chordRoot) + 7);
+					newLastRandomScaleNum=chordRoot+0;
+				break;				
+				// randomNoteLocal = getNoteNumMajorScale(randomScaleLocal) + noteAdapter + scaleAdapter;
+			// } else {
+			// alert ("hi");
+			// randomNoteLocal = getNoteNumMinorScale(randomScaleLocal) + noteAdapter + scaleAdapter;
+			}
+		}
+		else{
+			console.log("normal time");
+			playANote((randomNoteLocal));
+			playANote((randomNoteLocal) + getNoteUpInterval((randomNoteLocal - (noteAdapter + scaleAdapter)), 3));
+			playANote((randomNoteLocal) + 7);
+					newLastRandomScaleNum=randomNoteLocal+0;
+		}
+	instrument=currentInstrument;
+	chordIsDone=true;
+	}
+	
 }
+
+
+
 
 function repeatOnFrame() {
 	if (beginning == true) {
@@ -2851,6 +3030,45 @@ $('#thirdUp').click(function () {
 		document.getElementById("referenceText").innerHTML = "Your reference Note is " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + "), <p>Sing one third below that (" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 5)) + "), in the key of C<p>Your last note was " + previousNote;
 	}
 });
+$( function() {
+		$( "#slider-horizontal" ).slider({
+			orientation: "horizontal",
+			range: "min",
+			min: 0,
+			max: 100,
+			value: 60,
+			slide: function( event, ui ) {
+				$( "#amount" ).val( ui.value );
+							accompanimentVolume=Number(document.getElementById("amount").value)+0;
+			console.log("set to "+accompanimentVolume);
+			}
+		});
+		$( "#amount" ).val( $( "#slider-horizontal" ).slider( "value" ) );
+			accompanimentVolume=Number(document.getElementById("amount").value)+0;
+			console.log("set to "+accompanimentVolume);
+});
+
+$( function() {
+		$( "#slider-horizontal-reference" ).slider({
+			orientation: "horizontal",
+			range: "min",
+			min: 0,
+			max: 100,
+			value: 60,
+			slide: function( event, ui ) {
+				$( "#referenceamount" ).val( ui.value );
+							referenceVolume=Number(document.getElementById("referenceamount").value)+0;
+			}
+		});
+		$( "#referenceamount" ).val( $( "#slider-horizontal-reference" ).slider( "value" ) );
+			referenceVolume=Number(document.getElementById("referenceamount").value)+0;
+
+});
+// $('#amount').change(function () {
+	// accompanimentVolume=Number(document.getElementById("amount").value)+0;
+	// console.log("set to "+accompanimentVolume);
+// });
+
 $('#thirdDown').click(function () {
 	document.getElementById("thirdDown").innerHTML = "3rd down (selected)";
 	document.getElementById("thirdUp").innerHTML = "3rd up";
@@ -3111,6 +3329,36 @@ $('#do2Button').click(function () {
 		(playANote(12 + (noteAdapter + scaleAdapter)));
 	}
 });
+
+$('#accompanimentOn').click(function () {
+	document.getElementById("accompanimentOff").innerHTML = "Off";
+	document.getElementById("accompanimentOn").innerHTML = "On (selected)";
+	document.getElementById("accompanimentOn").style.background = buttonColor;
+	document.getElementById("accompanimentOff").style.background = buttonNormalColor;
+	accompaniment=true;
+});
+$('#accompanimentOff').click(function () {
+	document.getElementById("accompanimentOff").innerHTML = "Off (selected)";
+	document.getElementById("accompanimentOn").innerHTML = "On";
+	document.getElementById("accompanimentOn").style.background = buttonNormalColor;
+	document.getElementById("accompanimentOff").style.background = buttonColor;
+	accompaniment=false;
+});
+$('#inversionsOn').click(function () {
+	document.getElementById("inversionsOff").innerHTML = "Off";
+	document.getElementById("inversionsOn").innerHTML = "On (selected)";
+	document.getElementById("inversionsOn").style.background = buttonColor;
+	document.getElementById("inversionsOff").style.background = buttonNormalColor;
+	inversionsAreOn=true;
+});
+$('#inversionsOff').click(function () {
+	document.getElementById("inversionsOff").innerHTML = "Off (selected)";
+	document.getElementById("inversionsOn").innerHTML = "On";
+	document.getElementById("inversionsOn").style.background = buttonNormalColor;
+	document.getElementById("inversionsOff").style.background = buttonColor;
+	inversionsAreOn=false;
+});
+
 
 $('#useSynth').click(function () {
 	document.getElementById("usePiano").innerHTML = "Use Piano";

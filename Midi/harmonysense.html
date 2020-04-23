@@ -26,6 +26,14 @@
  <button type ='button' id ="useHumanVoice">Use Human Voice</button>
   <span style="font-size:16px">Select your tone: Piano (short tones), Human Voice (medium tones), Synth (long tones)</span>
  <p>
+ <button type ='button' id ="accompanimentOn"style=background:#00cc00>On (selected)</button>
+ <button type ='button' id ="accompanimentOff" >Off</button>
+ <span style="font-size:16px">Select whether or not to have chordal accompaniment</span>
+ <p>
+ <button type ='button' id ="inversionsOn"style=background:#00cc00>On (selected)</button>
+ <button type ='button' id ="inversionsOff" >Off</button>
+  <span style="font-size:16px">Select whether to vary inversions in accompaniment</span>
+ <p>
  
  <button type ='button' id ="thirdDown">3rd down</button>
  <button type ='button' id ="thirdUp" style=background:#00cc00>3rd up (selected)</button>
@@ -54,15 +62,24 @@
 <p>
 Time = <span id="countdown">01:00</span>
 |   <span id="totalscore"># Correct = 0</span>
-| Avg Time = <span id="averagetime"></span> seconds
+| Avg Time = <span id="averagetime"></span> seconds 
 
-
+<div class="all-wide">
+<div id="slider-horizontal" style="width:200px;"></div><label for="amount">Accompaniment Volume:</label>
+<input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+<p>
+<div id="slider-horizontal-reference" style="width:200px;"></div><label for="referenceamount">Reference Volume:</label>
+<input type="text" id="referenceamount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+</div>
 <div id="tunerframe"><div id="tunerback"><img id="preloader" alt="Loading..." src="anim.gif" style="display: block;margin-left: auto;margin-right: auto;" ><canvas id="tunercanvas"></canvas></div></div>
 <script>
 (function (d, e) {
 var t=d.createElement("script");t.type="text/javascript",t.async=!0,t.src=e;var n=d.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n)
 })(document, 'tunerApp.js');
 </script>
+	
+
+
 	<h2 id="referenceText">Your reference Note is blank, sing one third above that (blanketyblank) in the key of C</h2>
  <button type ='button' id ="playAgainButton">Play Reference Note Again</button>
 <p>
@@ -74,8 +91,8 @@ var t=d.createElement("script");t.type="text/javascript",t.async=!0,t.src=e;var 
 	 <span style="font-size:16px">Select above what octave you would like your reference note played in.
 	 <p> Note: You can still sing in any octave as long as your relative interval is correct.</span>
     
-<audio id = "sound-A1" src = "samples/_A2.wav" preload = "auto"></audio>
-	<audio id = "sound-Bb1" src = "samples/_Bb2.wav" preload = "auto"></audio>
+	<audio id = "sound-A1" src = "samples/_A2.wav" preload = "auto"></audio>
+	<audio id = "sound-Bb1" src = "samples/_Bb2.wav" preload = "auto" ></audio>
 	<audio id = "sound-B1" src = "samples/_B2.wav" preload = "auto"></audio>
 	<audio id = "sound-C2" src = "samples/_C3.wav" preload = "auto"></audio>
 	<audio id = "sound-Db2" src = "samples/_Db3.wav" preload = "auto"></audio>
