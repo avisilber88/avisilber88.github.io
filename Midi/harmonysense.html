@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" prefix="og: http://ogp.me/ns#">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Practice Harmonizing in Thirds</title>
 <meta name="robots" content="index, follow" >
 <meta name="viewport" content="width=device-width, user-scalable=yes" >
 <meta name="theme-color" content="#5F3FBC" >
 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="style31.css" type="text/css">
 </head>
 <body class="tuner">
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>	
 	
     <script src="vendor/Tone.js"></script>
 	    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
@@ -24,7 +29,7 @@
  <button type ='button' id ="usePiano">Use Piano</button>
  <button type ='button' id ="useSynth" style=background:#00cc00>Use Synth (selected)</button>
  <button type ='button' id ="useHumanVoice">Use Human Voice</button>
-  <span style="font-size:16px">Select your tone: Piano (short tones), Human Voice (medium tones), Synth (long tones)</span>
+  <span style="font-size:16px">Select a reference tone: Piano (short tones), Human Voice (in-beta), Synth (long tones)</span>
  <p>
  <button type ='button' id ="accompanimentOn"style=background:#00cc00>On (selected)</button>
  <button type ='button' id ="accompanimentOff" >Off</button>
@@ -64,32 +69,74 @@ Time = <span id="countdown">01:00</span>
 |   <span id="totalscore"># Correct = 0</span>
 | Avg Time = <span id="averagetime"></span> seconds 
 
-<div class="all-wide">
-<div id="slider-horizontal" style="width:200px;"></div><label for="amount">Accompaniment Volume:</label>
-<input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-<p>
-<div id="slider-horizontal-reference" style="width:200px;"></div><label for="referenceamount">Reference Volume:</label>
-<input type="text" id="referenceamount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-</div>
-<div id="tunerframe"><div id="tunerback"><img id="preloader" alt="Loading..." src="anim.gif" style="display: block;margin-left: auto;margin-right: auto;" ><canvas id="tunercanvas"></canvas></div></div>
-<script>
-(function (d, e) {
-var t=d.createElement("script");t.type="text/javascript",t.async=!0,t.src=e;var n=d.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n)
-})(document, 'tunerApp.js');
-</script>
+<!-- <div class = "container justify-content-start"> -->
+  <div class="row justify-content-start">
+	<div class = "col-xs-offset-0 col-xs-7 col-sm-7 col-md-7 col-lg-7" style=>
+		<div id="tunerframe">
+			<div id="tunerback"style="width:80%;">
+				<img id="preloader" alt="Loading..." src="anim.gif" style="display: block;margin-left: auto;margin-right: auto;" >
+				<canvas id="tunercanvas" style="width:80%;">
+				</canvas>
+			</div>
+		</div>
+		<script>
+		(function (d, e) {
+		var t=d.createElement("script");t.type="text/javascript",t.async=!0,t.src=e;var n=d.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n)
+		})(document, 'tunerApp.js');
+		</script>
+	</div>
+	<div class="col-xs-offset-0 col-xs-4 col-sm-5 justify-content-start">
+		<!-- <div class="all-wide"> -->
+		<div class="row justify-content-start">
+		
+			
+			<span id="referenceText" style="font-size: 16px;">Your reference Note is blank, sing one third above that:(blanketyblank) in the key of C </span>
+			<p>
+			
+			<button type ='button' id ="playAgainButton">Play Reference Note Again</button>
+			<p>
+		</div>
+			<div class="row justify-content-start">
+			<p>
+				<!-- <div class = "col-sm-4"> -->
+					
+					<div id="slider-horizontal" style="width:90%; max-width:300px;"></div>
+					<label for="amount" style="width:auto;">Accompaniment Volume:</label>
+					<input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div><div class = "col-sm-4"> -->
+			</div>	
+			<p>
+			<div class="row justify-content-start">
+			
+					<div id="slider-horizontal-reference" style="width:90%; max-width:300px;"></div><label for="referenceamount">Reference Volume:</label>
+					<input type="text" id="referenceamount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div> -->
+			</div>
+			
+			<div class="row justify-content-start">
+ <button type ='button' id ="continuousOn">On</button>
+ <button type ='button' id ="continuousOff"style=background:#00cc00>Off (selected)</button>
+ 			<span style="font-size:16px">Continuous Mode</span>
+ </div>
+		<!-- </div> -->
+		<p>
+
+
+	</div>
 	
+	</div>
+			<div class="row justify-content-start">
+			<button type ='button' id ="octave2">Octave 2</button>
+			<button type ='button' id ="octave3" style=background:#00cc00>Octave 3 (selected)</button>
+			<button type ='button' id ="octave4">Octave 4</button>
+			<button type ='button' id ="octave5">Octave 5</button>
+			<p>
+			<span style="font-size:16px">Select above what octave you would like your reference note played in.
+			<p> Note: You can still sing in any octave as long as your relative interval is correct.</span>
+		</div>
+ <p>
+ 
 
-
-	<h2 id="referenceText">Your reference Note is blank, sing one third above that (blanketyblank) in the key of C</h2>
- <button type ='button' id ="playAgainButton">Play Reference Note Again</button>
-<p>
- <button type ='button' id ="octave2">Octave 2</button>
-  <button type ='button' id ="octave3" style=background:#00cc00>Octave 3 (selected)</button>
-     <button type ='button' id ="octave4">Octave 4</button>
-	 <button type ='button' id ="octave5">Octave 5</button>
-     <p>
-	 <span style="font-size:16px">Select above what octave you would like your reference note played in.
-	 <p> Note: You can still sing in any octave as long as your relative interval is correct.</span>
     
 	<audio id = "sound-A1" src = "samples/_A2.wav" preload = "auto"></audio>
 	<audio id = "sound-Bb1" src = "samples/_Bb2.wav" preload = "auto" ></audio>
@@ -199,24 +246,6 @@ var t=d.createElement("script");t.type="text/javascript",t.async=!0,t.src=e;var 
 <div style="clear:both;"></div>
 </div>
 </div>
-</div>
-
-<script>
-var mdash=!1;$('span.menu-heading').click(function(){if(mdash||/dashed/i.test($("span.menu-heading").css("border-bottom"))){mdash=!0;$("ul.menu").toggle()}});
-function newplaysound(id,p){
-if (p){
-document.getElementById('sound'+id).play();$( "#"+"pause"+id ).parent().addClass("playing");
-(dataLayer = window.dataLayer || []).push({'eCategory':'sound', 'eAction':'play','eLabel':id,'eValue':'','cd':['',''],'eNI':false,'event': 'UAEvent'});
-} else {
-document.getElementById('sound'+id).pause();document.getElementById('sound'+id).currentTime = 0;$( "#"+"pause"+id ).parent().removeClass("playing");
-(dataLayer = window.dataLayer || []).push({'eCategory':'sound', 'eAction':'pause','eLabel':id,'eValue':'','cd':['',''],'eNI':false,'event': 'UAEvent'});
-}}
-$( ".playbutton" ).click(function() {try {$( "li.playing .pausebutton" ).each(function( i ) { newplaysound($(this).attr('id').replace('pause',''),false); });} catch(e) { } newplaysound($(this).attr('id').replace('play',''),true);});
-$( ".pausebutton" ).click(function() {newplaysound($(this).attr('id').replace('pause',''),false);});
-(dataLayer = window.dataLayer || []).push({'lang':'en', 'canonical':'https://tuner-online.com/'});
-(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-
 
 
 </body>

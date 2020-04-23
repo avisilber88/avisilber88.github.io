@@ -21,10 +21,10 @@ div.bottom_left{display:table-cell; vertical-align: bottom;padding-left: 20px;}
 div.bottom_right{display:table-cell; vertical-align: bottom;padding-right: 20px;}
 div.bottom_middle{display:table-cell; vertical-align: bottom;width: 100%;}
 .footer-search-box{margin-left: auto;margin-right: auto;width:80%;margin-bottom:25px; max-width:600px;}
-#tunerframe{width: 100%;max-width: 450px;margin-top:10px;margin-bottom:30px;min-height: 370px}
+#tunerframe{width: 100%;max-width: 450px;margin-top:10px;margin-bottom:30px;min-height: 0px}
 .altern #tunerframe{max-width: 360px;}
-#tunerback{border: 1px solid #5F3FBC;margin-left: auto;margin-right: auto;margin-bottom:10px;min-height: 276px;max-width: 600px;background-color: #fff;cursor:pointer;}
-.tuneron{cursor: pointer; display: block; transition: all .2s; font-size: 24px; border: 1px solid #5F3FBC; color: #fff; background: #5F3FBC; text-decoration: none; border-radius: 8px; padding: 23px 32px; margin-left: auto; margin-right: auto; width: 302px;}
+#tunerback{border: 1px solid #5F3FBC;margin-left: auto;margin-right: auto;margin-bottom:10px;min-height: 0px;min-width:0px;max-width: 600px;background-color: #fff;cursor:pointer;}
+.tuneron{cursor: pointer; display: block; transition: all .2s; font-size: 24px; border: 1px solid #5F3FBC; color: #fff; background: #5F3FBC; text-decoration: none; border-radius: 8px; padding: 23px 32px; margin-left: auto; margin-right: auto; width: auto;}
 .tuneron:active,.tuneron:hover{color:#fff;background:#0B8043;border:1px solid #0B8043}
 ul.player{padding-bottom:20px;padding-left: 0;}
 ul.player li {background: none;padding: 6px 0 3px 1px;list-style: none;font-size: 18px;}
