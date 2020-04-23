@@ -34,7 +34,7 @@ var newLastRandomScaleNum=0;
 var referenceVolume=50;
 var accompanimentVolume=50;
 var justPlayingScaleFam=false;
-var continuous=true;
+var continuous=false;
 function startTimer() {
 	// set timer for 60 minutes from start
 	var now = new Date();
