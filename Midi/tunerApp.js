@@ -33,6 +33,7 @@ var inversionsAreOn=true;
 var newLastRandomScaleNum=0;
 var referenceVolume=50;
 var accompanimentVolume=50;
+var justPlayingScaleFam=false;
 
 function startTimer() {
 	// set timer for 60 minutes from start
@@ -2007,6 +2008,7 @@ function harmonizeBecauseYouRight() {
 };
 function soundId(id) {
 	if (instrument == "humanVoice") {
+		// alert ("human");
 		return 'vsound-' + id;
 	} else {
 		return 'sound-' + id;
@@ -2227,9 +2229,10 @@ function playANote(arrayPlace) {
 	} else {
 		var noteStr = noteArray[arrayPlace][2];
 		noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
-		var audio = (document.getElementById(soundId(noteStr)));
+		let audio = (document.getElementById(soundId(noteStr)));
+		
 		// var audioContextual= amplifyMedia(audio, 1);
-		audio.crossOrigin = "anonymous";
+		// audio.crossOrigin = "anonymous";
 		var newNote = true;
 		try {
 			for (var i = 0; i < audioArray.length; i++) {
@@ -2254,11 +2257,18 @@ function playANote(arrayPlace) {
 		if (audio) {
 			try{
 			audio.pause();
+			if (!chordIsDone){
+				console.log("playa");
+				audio.volume=((0.01+referenceVolume))/100-.0001;//accompanimentVolume/50;
+			// console.log("volume setting "+(((0.01+accompanimentVolume)/100)-.0001));
+			}
+			else{
+				audio.volume=((0.01+accompanimentVolume))/100-.0001;//accompanimentVolume/50;
+			}
 			}
 			catch (error) {}
 			// audioContextual.amplify(accompanimentVolume/50);//1.0;
-			console.log("volume setting "+(((0.01+accompanimentVolume)/100)-.0001));
-			audio.volume=((0.01+accompanimentVolume))/100-.0001;//accompanimentVolume/50;
+			
 			if (audio.readyState >= 2) {
 				audio.currentTime = 0;
 				var promise = audio.play();
@@ -2269,6 +2279,7 @@ function playANote(arrayPlace) {
 			}
 		}
 	}
+	if (!justPlayingScaleFam){
 	if ((accompaniment)&&(chordIsDone)){
 		chordIsDone=false;
 		// alert ("you should hear a chord");
@@ -2388,6 +2399,9 @@ function playANote(arrayPlace) {
 		}
 	instrument=currentInstrument;
 	chordIsDone=true;
+	}
+	}else {
+	justPlayingScaleFam=false;
 	}
 	
 }
@@ -3271,6 +3285,7 @@ $('#majorScale').click(function () {
 });
 
 $('#doButton').click(function () {
+	justPlayingScaleFam=true;
 	if (keyType == "major") {
 		(playANote(getNoteNumMajorScale(0) + (noteAdapter + scaleAdapter)));
 	} else {
@@ -3278,6 +3293,7 @@ $('#doButton').click(function () {
 	}
 });
 $('#reButton').click(function () {
+	justPlayingScaleFam=true;
 	if (keyType == "major") {
 		(playANote(getNoteNumMajorScale(1) + (noteAdapter + scaleAdapter)));
 	} else {
@@ -3285,6 +3301,7 @@ $('#reButton').click(function () {
 	}
 });
 $('#miButton').click(function () {
+	justPlayingScaleFam=true;
 	if (keyType == "major") {
 		console.log("it's a " + getNoteNumMinorScale(2) + " octave " + noteAdapter + " scale note " + scaleAdapter);
 		(playANote(getNoteNumMajorScale(2) + (noteAdapter + scaleAdapter)));
@@ -3295,6 +3312,7 @@ $('#miButton').click(function () {
 	}
 });
 $('#faButton').click(function () {
+	justPlayingScaleFam=true;
 	if (keyType == "major") {
 		(playANote(getNoteNumMajorScale(3) + (noteAdapter + scaleAdapter)));
 	} else {
@@ -3302,6 +3320,7 @@ $('#faButton').click(function () {
 	}
 });
 $('#solButton').click(function () {
+	justPlayingScaleFam=true;
 	if (keyType == "major") {
 		(playANote(getNoteNumMajorScale(4) + (noteAdapter + scaleAdapter)));
 	} else {
@@ -3309,6 +3328,7 @@ $('#solButton').click(function () {
 	}
 });
 $('#laButton').click(function () {
+	justPlayingScaleFam=true;
 	if (keyType == "major") {
 		(playANote(getNoteNumMajorScale(5) + (noteAdapter + scaleAdapter)));
 	} else {
@@ -3316,6 +3336,7 @@ $('#laButton').click(function () {
 	}
 });
 $('#tiButton').click(function () {
+	justPlayingScaleFam=true;
 	if (keyType == "major") {
 		(playANote(getNoteNumMajorScale(6) + (noteAdapter + scaleAdapter)));
 	} else {
@@ -3323,6 +3344,7 @@ $('#tiButton').click(function () {
 	}
 });
 $('#do2Button').click(function () {
+	justPlayingScaleFam=true;
 	if (keyType == "major") {
 		(playANote(12 + (noteAdapter + scaleAdapter)));
 	} else {
@@ -3379,6 +3401,7 @@ $('#useHumanVoice').click(function () {
 	document.getElementById("useHumanVoice").style.background = buttonColor;
 	document.getElementById("usePiano").style.background = buttonNormalColor;
 	instrument = "humanVoice";
+	// alert ("human");
 	try {
 		synth.triggerRelease();
 	} catch (error) {}

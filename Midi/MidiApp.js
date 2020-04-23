@@ -235,9 +235,11 @@ function noteOnListener(note, velocity) {
 	
 			if ((inversions)&(arrangeNote(specificActiveChord[0]) != correctChord[pickedInversion])){
 				match=false;
+				document.getElementById("warning").innerHTML = "<style='fontSize:15px;'>Remember, Your root note should be "+getNoteNameGeneral(correctChord[pickedInversion]);//(arrangeNote(specificActiveChord[0]));
 			}
 			document.getElementById("score").innerHTML = "Current Difficulty = " + score.toFixed(2);
 			if (match) {
+				document.getElementById("warning").innerHTML = "<style='fontSize:0px;'>"
 				score = score + .05;
 				timerLength = (11.0 - score) / 60.0;
 				document.getElementById("score").innerHTML = "Current Score = " + score.toFixed(2);
@@ -727,9 +729,9 @@ function setupChord(rootNote) {
 			
 			currentImageName = getNoteNameGeneral(rootNote);
 		}
-
+		
 		currentChordName = currentChordName + "m";
-		currentImageName = currentChordName + "m";
+		currentImageName = currentImageName + "m";
 		setupEasyMinors(rootNote);
 		break;
 	case "romanC":
