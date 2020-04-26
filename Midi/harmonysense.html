@@ -29,7 +29,7 @@
  <button type ='button' id ="usePiano">Use Piano</button>
  <button type ='button' id ="useSynth" style=background:#00cc00>Use Synth (selected)</button>
  <button type ='button' id ="useHumanVoice">Use Human Voice</button>
-  <span style="font-size:16px">Select a reference tone: Piano (short tones), Human Voice (in-beta), Synth (long tones)</span>
+  <span style="font-size:16px">Select a reference tone: Piano (short tones), Human Voice (long tones), Synth (long tones)</span>
  <p>
  <button type ='button' id ="accompanimentOn"style=background:#00cc00>On (selected)</button>
  <button type ='button' id ="accompanimentOff" >Off</button>
@@ -106,13 +106,20 @@ Time = <span id="countdown">01:00</span>
 				<!-- </div><div class = "col-sm-4"> -->
 			</div>	
 			<p>
+
 			<div class="row justify-content-start">
 			
 					<div id="slider-horizontal-reference" style="width:90%; max-width:300px;"></div><label for="referenceamount">Reference Volume:</label>
 					<input type="text" id="referenceamount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
 				<!-- </div> -->
 			</div>
+			<p>
+			<div class="row justify-content-start">
 			
+					<div id="slider-horizontal-timeRequirement" style="width:90%; max-width:300px;"></div><label for="timeRequirementAmount">Seconds to hold note:</label>
+					<input type="text" id="timeRequirementAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div> -->
+			</div>
 			<div class="row justify-content-start">
  <button type ='button' id ="continuousOn">On</button>
  <button type ='button' id ="continuousOff"style=background:#00cc00>Off (selected)</button>

@@ -35,6 +35,7 @@ var referenceVolume=50;
 var accompanimentVolume=50;
 var justPlayingScaleFam=false;
 var continuous=false;
+var timeRequirement=2;
 function startTimer() {
 	// set timer for 60 minutes from start
 	var now = new Date();
@@ -2329,19 +2330,19 @@ function playANote(arrayPlace) {
 				// console.log(audioArray[i].includes(noteArray[arrayPlace][1]));}
 				// console.log(audioArray.length);
 
-				if ((audioArray[i].includes(noteStr)) == true) {
+				if ((audioArray[i].includes([noteStr, (instrument+"")])) == true) {
 					//	console.log("hi");
 					console.log(audioArray[i][0]);
 					audioArray[i][0].pause();
 					newNote = false;
 					0
-					audioArray[i] = [audio, noteStr];
+					audioArray[i] = [audio, [noteStr, (instrument+"")]];
 				}
 			}
 			document.querySelector('.step2 .note:nth-child(' + (i + 1) + ')').classList.add('on');
 		} catch (error) {}
 		if (newNote == true) {
-			audioArray.push([audio, noteArray[arrayPlace][1]])
+			audioArray.push([audio, [noteArray[arrayPlace][1], (instrument+"")]])
 		}
 		//console.log(audioArray.toString());
 		if (audio) {
@@ -2349,12 +2350,25 @@ function playANote(arrayPlace) {
 			audio.pause();
 			if (!chordIsDone){
 				// console.log("chordisplaying");
-				audio.volume=((0.01+referenceVolume))/100-.0001;//accompanimentVolume/50;
+				console.log(instrument);
+				if ((instrument=="piano")||(instrument=="pianoAccompaniment")){
+				audio.volume=((0.01+accompanimentVolume))/100-.0001;//accompanimentVolume/50;
+				}
+				else if (instrument=="humanVoice"){
+				audio.volume=((0.01+accompanimentVolume))/500.0-.0001;//accompanimentVolume/50;
+				}
 			// console.log("volume setting "+(((0.01+accompanimentVolume)/100)-.0001));
 			}
 			else{
-				audio.volume=((0.01+accompanimentVolume))/100-.0001;//accompanimentVolume/50;
-			}
+				if (instrument=="piano"){
+				audio.volume=((0.01+referenceVolume))/100-.0001;//accompanimentVolume/50;
+				}
+				else if (instrument=="humanVoice"){
+				
+				audio.volume=((0.01+referenceVolume))/300.0-.0001;//accompanimentVolume/50;
+				}
+
+		}
 			}
 			catch (error) {}
 			// audioContextual.amplify(accompanimentVolume/50);//1.0;
@@ -2374,7 +2388,12 @@ function playANote(arrayPlace) {
 		chordIsDone=false;
 		// alert ("you should hear a chord");
 		let currentInstrument=instrument+"";
-		instrument="piano";
+		if (currentInstrument=="piano"){
+			instrument="humanVoice";
+		}
+		else{
+		instrument="pianoAccompaniment";
+		}
 		let randomNoteLocal=randomNoteNum+0;
 		let randomScaleLocal=randomScaleNum+0;
 		if (intervalDirection=="fourthUp"){
@@ -2543,7 +2562,7 @@ function repeatOnFrame() {
 		r = randomNoteNum;
 		gauge.update({
 			majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
-			units: (noteArray[r][1] + " " + score) //sets the 3 notes in there.
+			units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
 		});
 		//alert ("hi");
 		if (!newQuestionTime){
@@ -2876,8 +2895,8 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
 	// console.log(noteArray[randomNoteNum+legalInterval][1]);
 	if ((basicNote(thanote)) == (basicNote((randomNoteNum) + legalInterval))) {
 		console.log("awesome");
-		score++;
-		if (score == 100) {
+		score=score+2/timeRequirement;
+		if (score >= 100) { //100 is 2 seconds... 200 is 4 seconds.
 			score = 0;
 			totalScore++;
 			document.getElementById("totalscore").innerHTML = "#Correct = " + totalScore;
@@ -2903,7 +2922,7 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
 		l = "normal";
 		i >= e && e >= a && (u = darkColor, c = darkColor, l = "bold"),
 		gauge.update({
-			units: noteArray[r][1] + " " + score,
+			units: noteArray[r][1] + " " + Math.floor(score),
 			value: e,
 			minValue: o,
 			maxValue: n,
@@ -3185,6 +3204,23 @@ $( function() {
 		});
 		$( "#referenceamount" ).val( $( "#slider-horizontal-reference" ).slider( "value" ) );
 			referenceVolume=Number(document.getElementById("referenceamount").value)+0;
+
+});
+
+$( function() {
+		$( "#slider-horizontal-timeRequirement" ).slider({
+			orientation: "horizontal",
+			range: "min",
+			min: 1,
+			max: 4,
+			value: 2,
+			slide: function( event, ui ) {
+				$( "#timeRequirementAmount" ).val( ui.value );
+							timeRequirement=Number(document.getElementById("timeRequirementAmount").value)+0;
+			}
+		});
+		$( "#timeRequirementAmount" ).val( $( "#slider-horizontal-timeRequirement" ).slider( "value" ) );
+			timeRequirement=Number(document.getElementById("timeRequirementAmount").value)+0;
 
 });
 // $('#amount').change(function () {
@@ -3602,7 +3638,7 @@ $('#playAgainButton').click(function () {
 	r = randomNoteNum;
 	gauge.update({
 		majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
-		units: (noteArray[r][1] + " " + score) //sets the 3 notes in there.
+		units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
 	});
 	playANote(randomNoteNum);
 	// var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));
