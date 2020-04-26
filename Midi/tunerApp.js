@@ -3681,6 +3681,8 @@ $('#octave2').click(function () {
 	document.getElementById("octave2").style.background = buttonColor;
 	document.getElementById("octave3").style.background = buttonNormalColor;
 	document.getElementById("octave4").style.background = buttonNormalColor;
+	document.getElementById("octave5").innerHTML = "Octave 5";
+	document.getElementById("octave5").style.background = buttonNormalColor;
 	noteAdapter = 12;
 	updateReferences();
 });
@@ -3692,6 +3694,8 @@ $('#octave3').click(function () {
 	document.getElementById("octave2").innerHTML = "Octave 2";
 	document.getElementById("octave3").innerHTML = "Octave 3 (selected)";
 	document.getElementById("octave4").innerHTML = "Octave 4";
+	document.getElementById("octave5").innerHTML = "Octave 5";
+	document.getElementById("octave5").style.background = buttonNormalColor;
 	noteAdapter = 24;
 	updateReferences();
 });
@@ -3703,11 +3707,23 @@ $('#octave4').click(function () {
 	document.getElementById("octave2").innerHTML = "Octave 2";
 	document.getElementById("octave3").innerHTML = "Octave 3";
 	document.getElementById("octave4").innerHTML = "Octave 4 (selected)";
+	
+	document.getElementById("octave5").innerHTML = "Octave 5";
+	document.getElementById("octave5").style.background = buttonNormalColor;
 	noteAdapter = 36;
 	updateReferences();
 });
 
-$('#octave5').click(function () {
+$('#octave5').click(function () {	
+document.getElementById("octave2").style.background = buttonNormalColor;
+	document.getElementById("octave4").style.background = buttonNormalColor;
+	document.getElementById("octave3").style.background = buttonNormalColor;
+	document.getElementById("octave2").innerHTML = "Octave 2";
+	document.getElementById("octave3").innerHTML = "Octave 3";
+	document.getElementById("octave4").innerHTML = "Octave 4";
+	
+	document.getElementById("octave5").innerHTML = "Octave 5 (selected)";
+	document.getElementById("octave5").style.background = buttonColor;
 	noteAdapter = 48;
 	updateReferences();
 });
