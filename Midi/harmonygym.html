@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" prefix="og: http://ogp.me/ns#">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Practice Harmonizing in Thirds</title>
+<meta name="robots" content="index, follow" >
+<meta name="viewport" content="width=device-width, user-scalable=yes" >
+<meta name="theme-color" content="#5F3FBC" >
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="style31.css" type="text/css">
+</head>
+<body class="tuner">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>	
+	
+    <script src="vendor/Tone.js"></script>
+	    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
+
+<div class="all-wide">
+<div class="content">
+<h2> Welcome to Harmony Sense, Practice Singing in Harmony! </h2>
+<h3> Press "Turn on the Tuner" to Begin, there are adjustable settings both above and below the tuner on the page</h3>
+ <button type ='button' id ="usePiano" style=background:#00cc00>Use Piano (selected)</button>
+ <button type ='button' id ="useSynth">Use Synth</button>
+ <button type ='button' id ="useHumanVoice">Use Human Voice</button>
+  <span style="font-size:16px">Select a reference tone: Piano (short tones), Human Voice (long tones), Synth (long tones)</span>
+ <p>
+ <button type ='button' id ="accompanimentOn">On</button>
+ <button type ='button' id ="accompanimentOff"style=background:#00cc00 >Off (selected)</button>
+ <span style="font-size:16px">Select whether or not to have chordal accompaniment</span>
+ <p>
+ <button type ='button' id ="inversionsOn">On</button>
+ <button type ='button' id ="inversionsOff"style=background:#00cc00 >Off (selected)</button>
+  <span style="font-size:16px">Select whether to vary inversions in accompaniment</span>
+ <p>
+ 
+ <button type ='button' id ="thirdDown">3rd down</button>
+ <button type ='button' id ="thirdUp" style=background:#00cc00>3rd up (selected)</button>
+ <button type ='button' id ="unison" >Unison</button>
+ <button type ='button' id ="fourthDown" >5th up</button>
+ <button type ='button' id ="fourthUp" >4th up</button>
+ 
+  <span style="font-size:16px">Select what harmony interval you would like to practice</span>
+ <p>
+ <button type ='button' id ="majorScale" style=background:#00cc00>Major Scale (selected)</button>
+ <button type ='button' id ="natMinorScale">Natural Minor Scale</button>
+ <span style="font-size:16px">Choose your Reference Scale Type</span>
+ <p>
+ <select id = "referenceKeySelect" name = "referenceKeySelect"> <option value = "C"> C </option> <option value = "C#/Db"> C#/Db </option><option value = "D"> D </option><option value = "D#/Eb"> D#/Eb </option> <option value = "E"> E </option> <option value = "F"> F </option><option value = "F#/Gb"> F#/Gb </option><option value = "G"> G </option> <option value = "G#/Ab"> G#/Ab </option><option value = "A"> A </option><option value = "A#/Bb"> A#/Bb </option> <option value = "B"> B </option></select>
+ <span style="font-size:16px">Choose your Reference Key</span>
+ <p>
+ <button type ='button' id ="doButton">Do</button>
+  <button type ='button' id ="reButton">Re</button>
+   <button type ='button' id ="miButton">Mi</button>
+    <button type ='button' id ="faButton">Fa</button>
+	 <button type ='button' id ="solButton">Sol</button>
+	  <button type ='button' id ="laButton">La</button>
+	   <button type ='button' id ="tiButton">Ti</button>
+	    <button type ='button' id ="do2Button">Do(high)</button>  
+		<span style="font-size:16px">play notes in key for reference</span>
+<p>
+<button type ='button' id ="pauseButton">Pause Timer</button>  
+Time = <span id="countdown">01:00</span>
+|   <span id="totalscore"># Correct = 0</span>
+| Avg Time = <span id="averagetime"></span> seconds 
+
+<!-- <div class = "container justify-content-start"> -->
+  <div class="row justify-content-start">
+	<div class = "col-xs-offset-0 col-xs-7 col-sm-7 col-md-7 col-lg-7" style=>
+		<div id="tunerframe">
+			<div id="tunerback"style="width:80%;">
+				<img id="preloader" alt="Loading..." src="anim.gif" style="display: block;margin-left: auto;margin-right: auto;" >
+				<canvas id="tunercanvas" style="width:80%;">
+				</canvas>
+			</div>
+		</div>
+		<script>
+		(function (d, e) {
+		var t=d.createElement("script");t.type="text/javascript",t.async=!0,t.src=e;var n=d.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n)
+		})(document, 'tunerAppGym.js');
+		</script>
+	</div>
+	<div class="col-xs-offset-0 col-xs-4 col-sm-5 justify-content-start">
+		<!-- <div class="all-wide"> -->
+		<div class="row justify-content-start">
+		
+			
+			<span id="referenceText" style="font-size: 16px;"> </span>
+			<p>
+			
+			<button type ='button' id ="playAgainButton">Play Reference Note Again</button>
+			<p>
+		</div>
+			<div class="row justify-content-start">
+			<p>
+				<!-- <div class = "col-sm-4"> -->
+					
+					<div id="slider-horizontal" style="width:90%; max-width:300px;"></div>
+					<label for="amount" style="width:auto;">Accompaniment Volume:</label>
+					<input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div><div class = "col-sm-4"> -->
+			</div>	
+			<p>
+
+			<div class="row justify-content-start">
+			
+					<div id="slider-horizontal-reference" style="width:90%; max-width:300px;"></div><label for="referenceamount">Reference Volume:</label>
+					<input type="text" id="referenceamount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div> -->
+			</div>
+			<p>
+			<div class="row justify-content-start">
+			
+					<div id="slider-horizontal-timeRequirement" style="width:90%; max-width:300px;"></div><label for="timeRequirementAmount">Seconds to hold note:</label>
+					<input type="text" id="timeRequirementAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div> -->
+			</div>
+			<div class="row justify-content-start">
+ <button type ='button' id ="continuousOn"style=background:#00cc00>On (selected)</button>
+ <button type ='button' id ="continuousOff">Off</button>
+ 			<span style="font-size:16px">Continuous Mode</span>
+ </div>
+		<!-- </div> -->
+		<p>
+
+
+	</div>
+	
+	</div>
+			<div class="row justify-content-start">
+			<button type ='button' id ="octave2">Octave 2</button>
+			<button type ='button' id ="octave3" style=background:#00cc00>Octave 3 (selected)</button>
+			<button type ='button' id ="octave4">Octave 4</button>
+			<button type ='button' id ="octave5">Octave 5</button>
+			<p>
+			<span style="font-size:16px">Select above what octave you would like your reference note played in.
+			<p> Note: You can still sing in any octave as long as your relative interval is correct.</span>
+		</div>
+ <p>
+ 
+
+    
+	<audio id = "sound-A1" src = "samples/_A2.wav" preload = "auto"></audio>
+	<audio id = "sound-Bb1" src = "samples/_Bb2.wav" preload = "auto" ></audio>
+	<audio id = "sound-B1" src = "samples/_B2.wav" preload = "auto"></audio>
+	<audio id = "sound-C2" src = "samples/_C3.wav" preload = "auto"></audio>
+	<audio id = "sound-Db2" src = "samples/_Db3.wav" preload = "auto"></audio>
+	<audio id = "sound-D2" src = "samples/_D3.wav" preload = "auto"></audio>
+	<audio id = "sound-Eb2" src = "samples/_Eb3.wav" preload = "auto"></audio>
+	<audio id = "sound-E2" src = "samples/_E3.wav" preload = "auto"></audio>
+	<audio id = "sound-F2" src = "samples/_F3.wav" preload = "auto"></audio>
+	<audio id = "sound-Gb2" src = "samples/_Gb3.wav" preload = "auto"></audio>
+	<audio id = "sound-G2" src = "samples/_G3.wav" preload = "auto"></audio>
+	<audio id = "sound-Ab2" src = "samples/_Ab3.wav" preload = "auto"></audio>
+	<audio id = "sound-A2" src = "samples/A2.ogg" preload = "auto"></audio>
+	<audio id = "sound-Bb2" src = "samples/Bb2.ogg" preload = "auto"></audio>
+	<audio id = "sound-B2" src = "samples/B2.ogg" preload = "auto"></audio>
+	<audio id = "sound-Ab3" src = "samples/Ab3.ogg" preload = "auto"></audio>
+	<audio id = "sound-A3" src = "samples/A3.ogg" preload = "auto"></audio>
+	<audio id = "sound-Bb3" src = "samples/Bb3.ogg" preload = "auto"></audio>
+	<audio id = "sound-B3" src = "samples/B3.ogg" preload = "auto"></audio>
+	<audio id = "sound-C3" src = "samples/C3.ogg" preload = "auto"></audio>
+	<audio id = "sound-Db3" src = "samples/Db3.ogg" preload = "auto"></audio>
+	<audio id = "sound-D3" src = "samples/D3.ogg" preload = "auto"></audio>
+	<audio id = "sound-Eb3" src = "samples/Eb3.ogg" preload = "auto"></audio>
+	<audio id = "sound-E3" src = "samples/E3.ogg" preload = "auto"></audio>
+	<audio id = "sound-F3" src = "samples/F3.ogg" preload = "auto"></audio>
+	<audio id = "sound-Gb3" src = "samples/Gb3.ogg" preload = "auto"></audio>
+	<audio id = "sound-G3" src = "samples/G3.ogg" preload = "auto"></audio>
+	<audio id = "sound-Ab4" src = "samples/Ab4.ogg" preload = "auto"></audio>
+	<audio id = "sound-A4" src = "samples/A4.ogg" preload = "auto"></audio>
+	<audio id = "sound-Bb4" src = "samples/Bb4.ogg" preload = "auto"></audio>
+	<audio id = "sound-B4" src = "samples/B4.ogg" preload = "auto"></audio>
+	<audio id = "sound-C4" src = "samples/C4.ogg" preload = "auto"></audio>
+	<audio id = "sound-Db4" src = "samples/Db4.ogg" preload = "auto"></audio>
+	<audio id = "sound-D4" src = "samples/D4.ogg" preload = "auto"></audio>
+	<audio id = "sound-Eb4" src = "samples/Eb4.ogg" preload = "auto"></audio>
+	<audio id = "sound-E4" src = "samples/E4.ogg" preload = "auto"></audio>
+	<audio id = "sound-F4" src = "samples/F4.ogg" preload = "auto"></audio>
+	<audio id = "sound-Gb4" src = "samples/Gb4.ogg" preload = "auto"></audio>
+	<audio id = "sound-G4" src = "samples/G4.ogg" preload = "auto"></audio>
+	<audio id = "sound-C5" src = "samples/C5.ogg" preload = "auto"></audio>
+	<audio id = "sound-Db5" src = "samples/5_Db4_4.wav" preload = "auto"></audio>
+	<audio id = "sound-D5" src = "samples/5_D4_3.wav" preload = "auto"></audio>
+	<audio id = "sound-Eb5" src = "samples/5_Eb4_3.wav" preload = "auto"></audio>
+	<audio id = "sound-E5" src = "samples/5_E4_3.wav" preload = "auto"></audio>
+	<audio id = "sound-F5" src = "samples/5_F4_3.wav" preload = "auto"></audio>
+	<audio id = "sound-Gb5" src = "samples/5_Gb4_3.wav" preload = "auto"></audio>
+	<audio id = "sound-G5" src = "samples/5_G4_2.wav" preload = "auto"></audio>
+	<audio id = "sound-Ab5" src = "samples/5_Ab4_2.wav" preload = "auto"></audio>
+	<audio id = "sound-A5" src = "samples/5_A4_2.wav" preload = "auto"></audio>
+	<audio id = "sound-Bb5" src = "samples/5_Bb4_2.wav" preload = "auto"></audio>
+	<audio id = "sound-B5" src = "samples/5_B4_2.wav" preload = "auto"></audio>
+	<audio id = "sound-C6" src = "samples/5_C5_2.wav" preload = "auto"></audio>
+	
+	<audio id = "vsound-A1" src = "samples/vA3.wav" preload = "auto"></audio>
+	<audio id = "vsound-Bb1" src = "samples/vBb3.wav" preload = "auto"></audio>
+	<audio id = "vsound-B1" src = "samples/vB3.wav" preload = "auto"></audio>
+	<audio id = "vsound-C2" src = "samples/vC3.wav" preload = "auto"></audio>
+	<audio id = "vsound-Db2" src = "samples/vDb3.wav" preload = "auto"></audio>
+	<audio id = "vsound-D2" src = "samples/vD3.wav" preload = "auto"></audio>
+	<audio id = "vsound-Eb2" src = "samples/vD#3-Eb2.wav" preload = "auto"></audio>
+	<audio id = "vsound-E2" src = "samples/vE3.wav" preload = "auto"></audio>
+	<audio id = "vsound-F2" src = "samples/vF3.wav" preload = "auto"></audio>
+	<audio id = "vsound-Gb2" src = "samples/vF#3-Gb3.wav" preload = "auto"></audio>
+	<audio id = "vsound-G2" src = "samples/vG3.wav" preload = "auto"></audio>
+	<audio id = "vsound-Ab2" src = "samples/vG#3-Ab3.wav" preload = "auto"></audio>
+	<audio id = "vsound-A2" src = "samples/vA2.wav" preload = "auto"></audio>
+	<audio id = "vsound-Bb2" src = "samples/vA#2-Bb2.wav" preload = "auto"></audio>
+	<audio id = "vsound-B2" src = "samples/vB2.wav" preload = "auto"></audio>
+	<audio id = "vsound-Ab3" src = "samples/vG#3-Ab3.wav" preload = "auto"></audio>
+	<audio id = "vsound-A3" src = "samples/vA3.wav" preload = "auto"></audio>
+	<audio id = "vsound-Bb3" src = "samples/vA#3-Bb3.wav" preload = "auto"></audio>
+	<audio id = "vsound-B3" src = "samples/vB3.wav" preload = "auto"></audio>
+	<audio id = "vsound-C3" src = "samples/vC3.wav" preload = "auto"></audio>
+	<audio id = "vsound-Db3" src = "samples/vC#3-Db3.wav" preload = "auto"></audio>
+	<audio id = "vsound-D3" src = "samples/vD3.wav" preload = "auto"></audio>
+	<audio id = "vsound-Eb3" src = "samples/vD#3-Eb3.wav" preload = "auto"></audio>
+	<audio id = "vsound-E3" src = "samples/vE3.wav" preload = "auto"></audio>
+	<audio id = "vsound-F3" src = "samples/vF3.wav" preload = "auto"></audio>
+	<audio id = "vsound-Gb3" src = "samples/vF#3-Gb3.wav" preload = "auto"></audio>
+	<audio id = "vsound-G3" src = "samples/vG3.wav" preload = "auto"></audio>
+	<audio id = "vsound-Ab4" src = "samples/vG#4-Ab4.wav" preload = "auto"></audio>
+	<audio id = "vsound-A4" src = "samples/vA4.wav" preload = "auto"></audio>
+	<audio id = "vsound-Bb4" src = "samples/vA#4-Bb4.wav" preload = "auto"></audio>
+	<audio id = "vsound-B4" src = "samples/vB4.wav" preload = "auto"></audio>
+	<audio id = "vsound-C4" src = "samples/vC4.wav" preload = "auto"></audio>
+	<audio id = "vsound-Db4" src = "samples/vC#4-Db4.wav" preload = "auto"></audio>
+	<audio id = "vsound-D4" src = "samples/vD4.wav" preload = "auto"></audio>
+	<audio id = "vsound-Eb4" src = "samples/vD#4-Eb4.wav" preload = "auto"></audio>
+	<audio id = "vsound-E4" src = "samples/vE4.wav" preload = "auto"></audio>
+	<audio id = "vsound-F4" src = "samples/vF4.wav" preload = "auto"></audio>
+	<audio id = "vsound-Gb4" src = "samples/vF#4-Gb4.wav" preload = "auto"></audio>
+	<audio id = "vsound-G4" src = "samples/vG4.wav" preload = "auto"></audio>
+	<audio id = "vsound-C5" src = "samples/vC5.wav" preload = "auto"></audio>
+	<audio id = "vsound-Db5" src = "samples/vC#5-Db5.wav" preload = "auto"></audio>
+	<audio id = "vsound-D5" src = "samples/vD5.wav" preload = "auto"></audio>
+	<audio id = "vsound-Eb5" src = "samples/vD#5-Eb5.wav" preload = "auto"></audio>
+	<audio id = "vsound-E5" src = "samples/vE5.wav" preload = "auto"></audio>
+	<audio id = "vsound-F5" src = "samples/vF5.wav" preload = "auto"></audio>
+	<audio id = "vsound-Gb5" src = "samples/vF#5-Gb5.wav" preload = "auto"></audio>
+	<audio id = "vsound-G5" src = "samples/vG5.wav" preload = "auto"></audio>
+	<audio id = "vsound-Ab5" src = "samples/vG#5-Ab5.wav" preload = "auto"></audio>
+	<audio id = "vsound-A5" src = "samples/vA5.wav" preload = "auto"></audio>
+	<audio id = "vsound-Bb5" src = "samples/vA#5-Bb5.wav" preload = "auto"></audio>
+	<audio id = "vsound-B5" src = "samples/vB5.wav" preload = "auto"></audio>
+	<audio id = "vsound-C6" src = "samples/vC6.wav" preload = "auto"></audio>
+<div style="clear:both;"></div>
+</div>
+</div>
+<script>
+		alert ("Welcome to Harmony gym. This is a special edition of Harmony Sense (www.nwhsaob.com/harmonysense.html) with specific settings requested by MCPS.\n \nNew features are added frequently to the full (still free) version at the link above. \n \nPress 'Ok' to continue.");
+		alert ("When you enter the site, press 'Turn On' to begin\n \nPress 'Ok' to continue.");
+	</script>
+
+</body>
+</html>
