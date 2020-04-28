@@ -6,6 +6,7 @@ var keyType = "major";
 var noteRange = 1 * 12;
 var scaleInterval = 2;
 var keyOf = 0;
+var firstQuestion=false;
 var noteKeyRange = 7;
 var scaleAdapter = 0;
 var noteAdapter = 24; // limited by the lower limit of my audio files, 10 is the lowest you should go.
@@ -34,7 +35,7 @@ var newLastRandomScaleNum=0;
 var referenceVolume=50;
 var accompanimentVolume=50;
 var justPlayingScaleFam=false;
-var continuous=false;
+var continuous=true;
 var timeRequirement=2;
 var pauseTimeStart = 0;
 var pauseTimeAmount=0;
@@ -2612,8 +2613,9 @@ function repeatOnFrame() {
 		alert ("Directions: To the right of the tuner box, you will be told what note is being played, and what interval and note you must sing. \n\nThe tuner will show how accurate you are and what note you are singing. \n\nSing and hold the correct pitch in the green area on the tuner for 2 seconds to move on to answer the question and move on to the next note.\n\nIt does not have to be 2 seconds. You can adjust this using the sliding bar on the right.\n \nPress 'Ok' to continue.");
 		alert ("And lastly, keep track of how much time you have been practicing using the timer above the tuner. You can also keep track of how long it is taking you on average to harmonize each time, as well as your total number of harmonized notes.\n\nFor more settings, look at the descriptions to the right of the buttons above.\n \nPress 'Ok' to begin.");
 		pause=false;
+		firstQuestion=true;
 		playMajorScale(noteAdapter + scaleAdapter);
-		
+	
 		
 	}
 	if ((!sequenceStarted)&&(sequenceArray.length>0)){
@@ -2636,9 +2638,15 @@ function repeatOnFrame() {
 	}
 	if (newQuestionTime == true) {
 		newQuestionTime = false;
-
+		
 		stopAllNotes();
+		if (firstQuestion){
+			randomScaleNum= 0;
+		firstQuestion=false;
+		}
+		else{
 		randomScaleNum = Math.floor(Math.random() * 7);
+		}
 		if (keyType == "major") {
 			randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter;
 		} else {
