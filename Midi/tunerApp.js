@@ -30,7 +30,7 @@ var lastReference = 0;
 var lastRandomScaleNum = 0;
 var firstChordOver = false;
 var inversionsAreOn = true;
-var shiftAdapter=0;
+var shiftAdapter = 0;
 var newLastRandomScaleNum = 0;
 var referenceVolume = 50;
 var accompanimentVolume = 50;
@@ -66,9 +66,15 @@ var currentScore = 0;
 var scoreTimeStart = 0;
 var scoreTimeBeats = 0;
 var scoreTimeSeconds = 0;
-var melodicRange=3;
-var noteLengthMax=4;
-var noteLengthMin=3;
+var melodicRange = 3;
+var noteLengthMax = 4;
+var noteLengthMin = 3;
+var scoreTimeStart;
+var newScore=false;
+var wrongNote=false;
+var wrongPoints=0;
+var deficitBoost=0;
+var mostRecentPostingNum=0;
 function startTimer() {
     // set timer for 60 minutes from start
     var now = new Date();
@@ -81,10 +87,11 @@ function pauseTimer() {
     pauseTimeStart = new Date(pauseTime.getTime());
 }
 function pauseScoreTimer() {
-    var scorePauseTime = new Date();
-    scorePauseTimeAmount = 0;
-    previousScorePauseTimeAmount = 0;
-    scorePauseTimeStart = new Date(scorePauseTime.getTime());
+    // var scorePauseTime = new Date();
+    // scorePauseTimeAmount = 0;
+    // previousScorePauseTimeAmount = 0;
+    // scorePauseTimeStart = new Date(scorePauseTime.getTime());
+	// // updateTimer();
 }
 function startNoteTimer() {
     var noteTimeLocal = new Date();
@@ -95,31 +102,68 @@ function startScoreTimer() {
     var scoreTimeLocal = new Date();
     // previousPauseTimeAmount = 0;
     scorePauseTimeAmount = 0;
-	previousScorePauseTimeAmount = 0;
+	scoreTimeBeats=0;
+	deficitBoost=0;
+	// alert("yo");
+    previousScorePauseTimeAmount = 0;
+	newScore=true;
     scoreTimeStart = new Date(scoreTimeLocal.getTime());
+	unpauseScore();
+	pauseScore();
     updateTimer();
 }
 /**
  * Function to update the time remaining every second
  */
-function updateTimer() {
+function updateTimer() { //what to do when time zone
 
     var now = new Date();
+	if ((wrongNote)&&(!(scoreTimeStart.getTime()>now.getTime()))){
+		// alert("sup fool");
+		scoreTimeStart.setTime(scoreTimeStart.getTime()+0.5);
+		// wrongTimer=new Date();
+		// wrongPoints=0;
+	// scoreTimeSatart=new Date();
+	// newScore=false;
+	}
+	
+	// wrongPoints=now.getTime()-wrongTimer.getTime()+wrongPoints;
+	// console.log("wrong points: "+wrongPoints);
+	
     if (paused) {
         pauseTimeAmount = previousPauseTimeAmount + (now.getTime() - pauseTimeStart);
     }
-    if (scorePaused) {
-        // console.log("score pause time amount " + (((now.getTime() - scorePauseTimeStart) % (1000.001 * 60.001)) / 1000.001));
-        scorePauseTimeAmount =now.getTime() - scorePauseTimeStart; //previousScorePauseTimeAmount + (now.getTime() - scorePauseTimeStart);
-    }
+    // if (scorePaused) {
+        // // console.log("score pause time amount " + (((now.getTime() - scorePauseTimeStart) % (1000.001 * 60.001)) / 1000.001));
+        // scorePauseTimeAmount = now.getTime() - scorePauseTimeStart; //previousScorePauseTimeAmount + (now.getTime() - scorePauseTimeStart);
+    // }
     noteTime = (now.getTime()) - noteTimeStart;
-    noteTimeSeconds = ((noteTime % (1000.001 * 60.001)) / 1000.001);
+    noteTimeSeconds = ((noteTime % (1000 * 60)) / 1000.001);
     noteTimeBeats = noteTimeSeconds / (60.001 / currentBPM);
-    scoreTime = (now.getTime() - scorePauseTimeAmount) - scoreTimeStart;
-    scoreTimeSeconds = ((scoreTime % (1000.001 * 60.001)) / 1000.001);
+	
+  try {
+  
+ 
+	
+	// console.log(deficitBoost +" d");
+    scoreTime = (now.getTime() - scoreTimeStart.getTime());//-wrongPoints;///1000.01-deficitBoost/1000.01;
+	if (scoreTime<0){
+	// deficitBoost=scoreTime;
+	}//scorePauseTimeAmount) - scoreTimeStart.getTime();
+    scoreTimeSeconds = ((scoreTime % (1000 * 60)) / 1000.001);
     scoreTimeBeats = scoreTimeSeconds / (60.001 / currentBPM);
-
-    // console.log ("note time is " +noteTime + " seconds is "+noteTimeSeconds+" beats at 120bpm are "+noteTimeBeats);
+	 // if (sequencePlay) {
+            // timeRequirement = (beatsExpected-1) / 2.0001; // after doing the math... it should be beats expected. / (currentBPM/60.000001);
+            // // console.log(timeRequirement + " is time requirement");
+        // }
+        // currentScore = 50.00001 * (scoreTimeBeats + .001) / (timeRequirement + .001); //(currentScore+.000001)+2.00/timeRequirement;
+		// score = Math.floor(currentScore);
+	            // gauge.update({
+                // majorTicks: [(noteArray[mostRecentPostingNum - 1] || "")[1] || "", noteArray[mostRecentPostingNum][1], (noteArray[mostRecentPostingNum + 1] || "")[1] || ""],
+                // units: (noteArray[mostRecentPostingNum][1] + " " + Math.floor(score)) //sets the 3 notes in there.
+      // });
+	console.log("scoreTime beats are "+scoreTimeBeats);//+ " and pausetime is "+scorePauseTimeAmount+ " and scoretimestart is "+scoreTimeStart.getTime());
+     } catch (error) {}  // console.log ("note time is " +noteTime + " seconds is "+noteTimeSeconds+" beats at 120bpm are "+noteTimeBeats);
     var distance = (now.getTime() - pauseTimeAmount) - timeEnd.getTime();
     var minutes = Math.floor(distance / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -2538,11 +2582,11 @@ function playANote(arrayPlace) {
                 randomScaleLocal = 6;
             }
             if (keyType == "major") {
-                randomNoteLocal = getNoteNumMajorScale(randomScaleLocal) + noteAdapter + scaleAdapter+shiftAdapter;
-				shiftAdapter=0;
+                randomNoteLocal = getNoteNumMajorScale(randomScaleLocal) + noteAdapter + scaleAdapter + shiftAdapter;
+                shiftAdapter = 0;
             } else if (keyType == "minor") {
-                randomNoteLocal = getNoteNumMinorScale(randomScaleLocal) + noteAdapter + scaleAdapter+shiftAdapter;
-				shiftAdapter=0;
+                randomNoteLocal = getNoteNumMinorScale(randomScaleLocal) + noteAdapter + scaleAdapter + shiftAdapter;
+                shiftAdapter = 0;
             }
             // console.log("current is "+randomScaleLocal+" and last was "+lastRandomScaleNum);
             let rootDifference = randomNoteLocal - lastReference + 0;
@@ -2644,13 +2688,13 @@ function repeatOnFrame() {
     if ((!sequenceStarted) && (sequenceArray.length > 0)) {
         if (sequenceArray.length == (sequenceLength + 1)) { // this is the beginning of the sequence every time.
             score = 0;
-			scoreTimeBeats=0;
+            scoreTimeBeats = 0;
             currentScore = 0;
             previousScorePauseTimeAmount = 0;
-			pauseScoreTimeAmount=0;
+            scorePauseTimeAmount = 0;
             // scorePauseTimeAmount=0;
             startScoreTimer();
-            unpauseScore();
+            pauseScore();
         }
         // console.log(sequenceCopy.toString());
         // console.log(sequenceArray.toString());
@@ -2731,12 +2775,16 @@ function repeatOnFrame() {
         synth.triggerRelease();
         stopAllNotes();
     }
+	
     if (newQuestionTime == true) {
-		startScoreTimer();
+		currentScore=0;
+		score=0;
+        startScoreTimer();
+		// pauseScore();
         newQuestionTime = false;
 
         stopAllNotes();
-		if (!sequencePlay) {
+        if (!sequencePlay) {
             randomScaleNum = Math.floor(Math.random() * 7);
             if (keyType == "major") {
                 randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter;
@@ -2750,43 +2798,41 @@ function repeatOnFrame() {
             beatsExpected =  - .9;
             sequenceFirst = true;
             for (var i = 0; sequenceLength > i; i++) {
-                if (i==0) {
+                if (i == 0) {
                     randomScaleNum = Math.floor(Math.random() * 7);
-					console.log(i+" sequencefirst");
+                    console.log(i + " sequencefirst");
                 } else {
-					console.log(i+" notfirst "+randomScaleNum);
-					let intervalChange=(Math.floor(Math.random() * (2*melodicRange)) - melodicRange);
-                 	if (intervalChange==0){
-						while (intervalChange==0){
-	
-							intervalChange=(Math.floor(Math.random() * (2*melodicRange)) - melodicRange);
-						}
-					}
-					randomScaleNum = randomScaleNum+intervalChange;
-					if (randomScaleNum>6){
-						shiftAdapter=12;
-					}
-					else if (randomScaleNum<0){
-						shiftAdapter=-12;
-					}
-					else{
-						shiftAdapter=0;
-					}
+                    console.log(i + " notfirst " + randomScaleNum);
+                    let intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                    if (intervalChange == 0) {
+                        while (intervalChange == 0) {
+
+                            intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                        }
+                    }
+                    randomScaleNum = randomScaleNum + intervalChange;
+                    if (randomScaleNum > 6) {
+                        shiftAdapter = 12;
+                    } else if (randomScaleNum < 0) {
+                        shiftAdapter = -12;
+                    } else {
+                        shiftAdapter = 0;
+                    }
                     // console.log(randomScaleNum + " is the scale change");
                 }
                 if (keyType == "major") {
-                    randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter+shiftAdapter;
-					shiftAdapter=0;
+                    randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                    shiftAdapter = 0;
                 } else {
                     // alert ("hi");
-                    randomNoteNum = getNoteNumMinorScale(randomScaleNum) + noteAdapter + scaleAdapter+shiftAdapter;
-					shiftAdapter=0;
+                    randomNoteNum = getNoteNumMinorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                    shiftAdapter = 0;
                 }
-				// console.log(i+" "+randomNoteNum);
-                let thisNoteTime = Math.floor(Math.random() * (noteLengthMax-noteLengthMin)+1) + noteLengthMin; //length of random notes
+                // console.log(i+" "+randomNoteNum);
+                let thisNoteTime = Math.floor(Math.random() * (noteLengthMax - noteLengthMin) + 1) + noteLengthMin; //length of random notes
                 sequenceArray.push([randomNoteNum + 0, thisNoteTime + 0, randomScaleNum + 0]);
                 beatsExpected = beatsExpected + thisNoteTime;
-				console.log("beats" +thisNoteTime);
+                console.log("beats" + thisNoteTime);
                 // console.log(beatsExpected + " is beats amount");
 
             }
@@ -2801,34 +2847,35 @@ function repeatOnFrame() {
 
         if (sequencePlay) {
             randomNoteNum = currentRandomNoteNum + 0;
-        }
-        if (intervalDirection == "up") {
-            // alert("hi");
-            majorCheck = true;
-            getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
-            document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + " third above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
-            majorCheck = false;
-        } else if (intervalDirection == "down") {
-            majorCheck = true;
-            getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
-            document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + " third below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
-            majorCheck = false;
-        } else if (intervalDirection == "unison") {
-            document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing that";
-        } else if (intervalDirection == "fourthUp") {
-            if (toSolFej(keyOf, randomScaleNum) == "Fa") {
-                newQuestionTime = true;
+        } else {
+            if (intervalDirection == "up") {
+                // alert("hi");
+                majorCheck = true;
+                getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
+                document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + " third above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+                majorCheck = false;
+            } else if (intervalDirection == "down") {
+                majorCheck = true;
+                getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
+                document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + " third below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+                majorCheck = false;
+            } else if (intervalDirection == "unison") {
+                document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing that";
+            } else if (intervalDirection == "fourthUp") {
+                if (toSolFej(keyOf, randomScaleNum) == "Fa") {
+                    newQuestionTime = true;
+                }
+                document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+            } else if (intervalDirection == "fourthDown") {
+                if (toSolFej(keyOf, randomScaleNum) == "Fa") {
+                    newQuestionTime = true;
+                }
+                document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
             }
-            document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
-        } else if (intervalDirection == "fourthDown") {
-            if (toSolFej(keyOf, randomScaleNum) == "Fa") {
-                newQuestionTime = true;
-            }
-            document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
         }
-
         r = randomNoteNum;
         if (!paused) {
+			mostRecentPostingNum=r;
             gauge.update({
                 majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
                 units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
@@ -2839,11 +2886,13 @@ function repeatOnFrame() {
             }); //sets the 3 notes in there.
         }
         if ((!newQuestionTime) && (!sequencePlay)) {
-			r=randomNoteNum;
-			gauge.update({
-            majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
-            units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
-        });
+            r = randomNoteNum;
+			mostRecentPostingNum=r;
+            gauge.update({
+                majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
+                units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
+				
+            });
             playANote(randomNoteNum);
         }
         if ((!newQuestionTime) && (sequencePlay)) {
@@ -2924,36 +2973,48 @@ function repeatOnFrame() {
                     return e + r
                 }) / u.length, drawGaugeNote(e))
         //this spot is Avi important
-    } else {
+    } else {	//WHAT TO DO WHEN NO SOUND
+
         if (!sequencePlay) {
             startScoreTimer();
         } else {
-            pauseScore();
+            if (scoreTimeBeats<(1)){ 
+			wrongNote=false;			
+			wrongPoints=0;
+			startScoreTimer();
 			
-
+			console.log("s "+scoreTimeBeats);
+			}
+			else {
+			wrongNote=true;
+			updateTimer();
+			console.log(wrongPoints);
+			}
+			
+			// pauseScore();
         }
-		
+
         // alert("yo");
     }
-	            // currentScore = 50.00001 * (scoreTimeBeats + .000001) / (timeRequirement + .000001);
-            if (currentScore < 0) {
+    // currentScore = 50.00001 * (scoreTimeBeats + .000001) / (timeRequirement + .000001);
+    if (currentScore < 0) {
 
-                scorePauseTimeAmount = 0;
-                previousScorePauseTimeAmount = 0;
-                currentScore = 0;
-				score=0;
-				scoreTimeBeats=0;
-				
-				// if (r){
-				// gauge.update({
-				// majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
-				// units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
-				// });
-				// }
-            }
-			// score=Math.floor(currentScore);
-			// console.log ("score is "+score);
-			requestAnimationFrame(repeatOnFrame)
+        scorePauseTimeAmount = 0;
+        previousScorePauseTimeAmount = 0;
+        currentScore = 0;
+        score = 0;
+        scoreTimeBeats = 0;
+
+        // if (r){
+        // gauge.update({
+        // majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
+        // units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
+        // });
+        // }
+    }
+    // score=Math.floor(currentScore);
+    // console.log ("score is "+score);
+    requestAnimationFrame(repeatOnFrame)
 }
 window.requestAnimationFrame || (window.requestAnimationFrame = function () {
     return window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (e, r) {
@@ -3192,7 +3253,7 @@ function basicNote(complexNote) {
     return newNote;
 };
 function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
-    frequenceEnhancedTech || (e += e * (enhancedFreq(0, 20) - 15) / 1e3);
+    frequenceEnhancedTech || (e += e * (enhancedFreq(0, 20) - 15) / 1e3); //LOOK HERE AVI THIS MIGHT BE A GOOD SPOT TO UPDATE THE TICKER.
     var r = findNote(e); //converting the noteArray
     var thanote = findNote(e);
     //console.log((thanote)+","+(findNote(randomNoteNum)+4))
@@ -3212,12 +3273,16 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
     }
     //console.log(basicNote(thanote));
     // console.log(noteArray[randomNoteNum+legalInterval][1]);
-    if (((basicNote(thanote)) == (basicNote((randomNoteNum) + legalInterval))) && (!paused)) {
-        unpauseScore();
-        // console.log("awesome");
+    if (((basicNote(thanote)) == (basicNote((randomNoteNum) + legalInterval))) && (!paused)) { //WHAT TO DO WHEN correct
+        // unpauseScore();
+        console.log("awesome");
+		wrongPoints=0;	
+		wrongNote=false;
+		
+		// updateTimer();
         if (sequencePlay) {
-            timeRequirement = beatsExpected / (currentBPM/60.000001);
-            console.log(timeRequirement + " is time requirement");
+            timeRequirement = (beatsExpected-1) / 2.0001; // after doing the math... it should be beats expected. / (currentBPM/60.000001);
+            // console.log(timeRequirement + " is time requirement");
         }
         currentScore = 50.00001 * (scoreTimeBeats + .001) / (timeRequirement + .001); //(currentScore+.000001)+2.00/timeRequirement;
         // console.log("beats "+scoreTimeBeats+" timerequirement "+timeRequirement+" currentScore "+currentScore+" scoreTimeStart "+scoreTimeStart+" scoreTime "+scoreTimeSeconds);
@@ -3226,7 +3291,7 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
 
             score = 0;
             currentScore = 0;
-			scoreTimeBeats=0;
+            scoreTimeBeats = 0;
             totalScore++;
             document.getElementById("totalscore").innerHTML = "#Correct = " + totalScore;
             previousNote = noteArray[((randomNoteNum) + legalInterval)][1];
@@ -3234,19 +3299,23 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
             setTimeout(inTimeOut(), 3000);
 
         }
-    } else {
+    } else { //WHAT TO DO WHEN WRONG
+		console.log("not awesome");
         if ((sequencePlay) && (score > 0)) {
-            pauseScore();
+			wrongNote=true;
+			updateTimer();
+            // startScoreTimer();
             // currentScore = currentScore - 1.00 / timeRequirement;
             // score = Math.floor(currentScore);
         } else {
             currentScore = 0;
             score = 0;
-			scoreTimeBeats=0;
+            scoreTimeBeats = 0;
+			wrongNote=false;
+			wrongPoints=0;
             startScoreTimer();
-
-            if (!sequencePlay) {
-            }
+			// pauseScore();
+            if (!sequencePlay) {}
 
             // alert ("wrong");
             // console.log("beats "+scoreTimeBeats+" timerequirement "+timeRequirement+" currentScore "+currentScore+" scoreTimeStart "+scoreTimeStart+" scoreTime "+scoreTimeSeconds);
@@ -3266,6 +3335,7 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
         c = "#000000",
         l = "normal";
         i >= e && e >= a && (u = darkColor, c = darkColor, l = "bold"),
+		mostRecentPostingNum=r;
         gauge.update({
             units: noteArray[r][1] + " " + Math.floor(score),
             value: e,
@@ -3316,8 +3386,8 @@ function pauseUnpauseScore() {
 }
 function pauseScore() {
     if (!scorePaused) {
-        pauseScoreTimer();
         scorePaused = true;
+        pauseScoreTimer();
 
         // gauge.update({
         // units: "Paused"
@@ -3572,24 +3642,24 @@ var slider = document.getElementById('noteLengthSlider');
 noUiSlider.create(slider, {
     start: [3, 4],
     connect: true,
-	step: 1,
+    step: 1,
     range: {
         'min': 1,
         'max': 4
     },
-	pips: {
-		mode: 'count',
-		values: 4,
-		stepped: false,
-		density: 40
-	},
+    pips: {
+        mode: 'count',
+        values: 4,
+        stepped: false,
+        density: 40
+    },
 });
 
-slider.noUiSlider.on('change', function (){
-noteLengthMin=Number(slider.noUiSlider.get()[0]);
-noteLengthMax=Number(slider.noUiSlider.get()[1]);
-// alert(noteLengthMin+" sup " +noteLengthMax);
- });
+slider.noUiSlider.on('change', function () {
+    noteLengthMin = Number(slider.noUiSlider.get()[0]);
+    noteLengthMax = Number(slider.noUiSlider.get()[1]);
+    // alert(noteLengthMin+" sup " +noteLengthMax);
+});
 $(function () {
     $("#slider-horizontal").slider({
         orientation: "horizontal",
@@ -3600,12 +3670,12 @@ $(function () {
         slide: function (event, ui) {
             $("#amount").val(ui.value);
             accompanimentVolume = Number(document.getElementById("amount").value) + 0;
-            console.log("set to " + accompanimentVolume);
+            // console.log("set to " + accompanimentVolume);
         }
     });
     $("#amount").val($("#slider-horizontal").slider("value"));
     accompanimentVolume = Number(document.getElementById("amount").value) + 0;
-    console.log("set to " + accompanimentVolume);
+    // console.log("set to " + accompanimentVolume);
 });
 
 $(function () {
@@ -4030,6 +4100,7 @@ $('#pauseButton').click(function () {
         document.getElementById("pauseButton").innerHTML = "Pause Timer";
         paused = false;
         if (!paused) {
+			mostRecentPostingNum=randomNoteNum;
             gauge.update({
                 majorTicks: [(noteArray[randomNoteNum - 1] || "")[1] || "", noteArray[randomNoteNum][1], (noteArray[randomNoteNum + 1] || "")[1] || ""],
                 units: (noteArray[randomNoteNum][1] + " " + Math.floor(score)) //sets the 3 notes in there.
@@ -4171,7 +4242,9 @@ $('#octave5').click(function () {
 
 $('#playAgainButton').click(function () {
     r = randomNoteNum;
+
     if (!paused) {
+		mostRecentPostingNum=r;
         gauge.update({
             majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
             units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
