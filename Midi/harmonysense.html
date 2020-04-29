@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="style31.css" type="text/css">
+<link rel="stylesheet" href="vendor/nouislider.min.css" type="text/css">
 </head>
 <body class="tuner">
 
@@ -19,6 +20,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>	
 	
+    <script src="vendor/nouislider.js"></script>
     <script src="vendor/Tone.js"></script>
 	    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
 
@@ -115,17 +117,21 @@ Time = <span id="countdown">01:00</span>
 				<!-- </div> -->
 			</div>
 			<p>
+						<div class="row justify-content-start">
+ <button type ='button' id ="continuousOn">On</button>
+ <button type ='button' id ="continuousOff"style=background:#00cc00>Off (selected)</button>
+ 			<span style="font-size:16px">Continuous Mode</span>
+ </div><p>
 			<div class="row justify-content-start">
-			
+					<p><br><b><u>Settings for Regular Mode </u></b><p>
 					<div id="slider-horizontal-timeRequirement" style="width:90%; max-width:300px;"></div><label for="timeRequirementAmount">Seconds to hold note:</label>
 					<input type="text" id="timeRequirementAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
 				<!-- </div> -->
 			</div>
-			<div class="row justify-content-start">
- <button type ='button' id ="continuousOn">On</button>
- <button type ='button' id ="continuousOff"style=background:#00cc00>Off (selected)</button>
- 			<span style="font-size:16px">Continuous Mode</span>
- </div>
+			
+					
+			
+
 		<!-- </div> -->
 		<p>
 
@@ -143,8 +149,43 @@ Time = <span id="countdown">01:00</span>
 			<p> Note: You can still sing in any octave as long as your relative interval is correct.</span>
 		</div>
  <p>
- 
-
+ 			<div class="row justify-content-start">
+ <button type ='button' id ="sequenceOn">On</button>
+ <button type ='button' id ="sequenceOff"style=background:#00cc00>Off (selected)</button>
+ 			<span style="font-size:16px">Sequence Mode (in Beta)</span>
+ </div>
+<div class="row justify-content-start">
+					<p><p><p><br><b><u>Settings for Sequence Mode </u></b><p>
+					<div id="slider-horizontal-sequenceLengthAmount" style="width:90%; max-width:300px;"></div><label for="sequenceLengthAmount"># Notes in Sequence:</label>
+					<input type="text" id="sequenceLengthAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div> -->
+			</div>
+			
+					<div class="row justify-content-start">
+			
+					<div id="slider-horizontal-melodicRangeAmount" style="width:90%; max-width:300px;"></div><label for="melodicRangeAmount">Melodic Range between notes(scale steps):</label>
+					<input type="text" id="melodicRangeAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div> -->
+			</div>
+						<div class="row justify-content-start">
+						
+						<div class="row justify-content-start">
+			
+					<div id="slider-horizontal-BPMAmount" style="width:90%; max-width:300px;"></div><label for="BPMAmount">Set the Tempo (BPM)</label>
+					<input type="text" id="BPMAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div> -->
+			</div>
+						<div class="row justify-content-start">
+					<p><p><p><p><p><p><p><p><p><p>
+					<div id="noteLengthSlider" style="width:90%; max-width:300px;"></div>
+					<p><p><p><p>
+					</div>
+					<div class="row justify-content-start">
+					<p><p><p><p><br>
+					<span style="font-size:16px">Set the minimum and maximum note length (# of beats held)</span>
+					<!-- <input type="text" id="noteLength" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;"> -->
+				<!-- </div> -->
+					</div>
     
 	<audio id = "sound-A1" src = "samples/_A2.wav" preload = "auto"></audio>
 	<audio id = "sound-Bb1" src = "samples/_Bb2.wav" preload = "auto" ></audio>
