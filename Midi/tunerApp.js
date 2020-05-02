@@ -2571,8 +2571,12 @@ function playANote(arrayPlace) { // where we Play Notes
 
         synthStarted = new Date(new Date().getTime()); //([noteStr, noteArray[53][0]],['10', '1']); // ((0.01+referenceVolume))/100-.0001);
     } else if (instrument == "synth2") {
-        var noteStr = noteArray[arrayPlace - 24][1];
-        noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
+		try{
+			var noteStr = noteArray[arrayPlace - 24][1];
+	} catch (err){
+		var noteStr = noteArray[arrayPlace][1];
+	}
+		noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
         synth2.triggerRelease();
         synth2.set("volume", (accompanimentVolume / 10) - 30); //(((0.01+referenceVolume))/100-.0001));
         // synth.volume=(((0.01+referenceVolume))/100-.0001);
