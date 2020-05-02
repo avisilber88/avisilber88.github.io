@@ -6,6 +6,7 @@ var keyType = "major";
 var noteRange = 1 * 12;
 var scaleInterval = 2;
 var keyOf = 0;
+var synthStarted;
 var noteKeyRange = 7;
 var scaleAdapter = 0;
 var noteAdapter = 24; // limited by the lower limit of my audio files, 10 is the lowest you should go.
@@ -16,10 +17,16 @@ var newQuestionTime = false;
 var beginning = true;
 var previousNote = "";
 var audioArray = [];
-var synth = new Tone.PolySynth(1, Tone.Synth).toMaster();
+var arpeggioAudioArray = [];
+var rootAudioArray = [];
+var synthTone = new Tone.PolySynth(1, Tone.Synth)
+    var synth = synthTone.toMaster();
+var synthTone2 = new Tone.PolySynth(1, Tone.Synth)
+    var synth2 = synthTone2.toMaster();
 var score = 0;
 var intervalDirection = "up";
 var randomScaleNum = 0;
+var randomArpeggioScaleNum = 0;
 var buttonColor = '#00cc00';
 var buttonNormalColor = 'buttonface';
 var accompaniment = true;
@@ -52,14 +59,38 @@ var noteTime = 0;
 var currentBPM = 120;
 var noteTimeBeats = 0;
 var noteTimeSeconds = 0;
+var rootTimeBeats = 0;
+var rootTimeSeconds = 0;
+var rootTimeStart = 0;
+var rootTime = 0;
+var arpeggioTimeBeats = 0;
+var arpeggioTimeSeconds = 0;
+var arpeggioTimeStart = 0;
+var arpeggioTime = 0;
 var playSequences;
+var playArpeggioSequences;
+var playRootSequences;
 var sequenceStarted = false;
 var sequenceArray = [];
 var sequencePlay = false;
+var arpeggioSequenceStarted = false;
+var arpeggioSequenceArray = [];
+var arpeggioSequencePlay = false;
+var rootSequenceStarted = false;
+var rootSequenceArray = [];
+var rootSequencePlay = false;
 var currentNoteBeats = 0;
+var currentRootBeats = 0;
+var currentArpeggioBeats = 0;
 var currentRandomNoteNum = 0;
+var currentRandomRootNum = 0;
+var currentRandomArpeggioNum = 0;
 var sequenceLength = 2;
 var sequenceCopy = [];
+var rootSequenceLength = 2;
+var rootSequenceCopy = [];
+var arpeggioSequenceLength = 2;
+var arpeggioSequenceCopy = [];
 var beatsExpected = 2;
 var sequenceFirst = true;
 var currentScore = 0;
@@ -70,11 +101,21 @@ var melodicRange = 3;
 var noteLengthMax = 4;
 var noteLengthMin = 3;
 var scoreTimeStart;
-var newScore=false;
-var wrongNote=false;
-var wrongPoints=0;
-var deficitBoost=0;
-var mostRecentPostingNum=0;
+var newScore = false;
+var wrongNote = false;
+var wrongPoints = 0;
+var deficitBoost = 0;
+var mostRecentPostingNum = 0;
+var weGotArpeggios = true;
+var arpeggioPlay = true;
+var arpeggioPlayBackup = false;
+var arpeggioNoteLength = 0.5;
+var rootNoteLength = 2;
+var arpeggioAdded = false;
+var synthTimePassed = 0;
+var rootPlay = true;
+var arpeggioChoice = 0;
+
 function startTimer() {
     // set timer for 60 minutes from start
     var now = new Date();
@@ -91,25 +132,36 @@ function pauseScoreTimer() {
     // scorePauseTimeAmount = 0;
     // previousScorePauseTimeAmount = 0;
     // scorePauseTimeStart = new Date(scorePauseTime.getTime());
-	// // updateTimer();
+    // // updateTimer();
 }
 function startNoteTimer() {
     var noteTimeLocal = new Date();
     noteTimeStart = new Date(noteTimeLocal.getTime());
     updateTimer();
 }
+function startRootTimer() {
+    var rootTimeLocal = new Date();
+    rootTimeStart = new Date(rootTimeLocal.getTime());
+    updateTimer();
+}
+function startArpeggioTimer() {
+    var arpeggioTimeLocal = new Date();
+    arpeggioTimeStart = new Date(arpeggioTimeLocal.getTime());
+    updateTimer();
+}
+
 function startScoreTimer() {
     var scoreTimeLocal = new Date();
     // previousPauseTimeAmount = 0;
     scorePauseTimeAmount = 0;
-	scoreTimeBeats=0;
-	deficitBoost=0;
-	// alert("yo");
+    scoreTimeBeats = 0;
+    deficitBoost = 0;
+    // alert("yo");
     previousScorePauseTimeAmount = 0;
-	newScore=true;
+    newScore = true;
     scoreTimeStart = new Date(scoreTimeLocal.getTime());
-	unpauseScore();
-	pauseScore();
+    unpauseScore();
+    pauseScore();
     updateTimer();
 }
 /**
@@ -118,59 +170,67 @@ function startScoreTimer() {
 function updateTimer() { //what to do when time zone
 
     var now = new Date();
-	if ((wrongNote)&&(!(scoreTimeStart.getTime()>now.getTime()))){
-		// alert("sup fool");
-		scoreTimeStart.setTime(scoreTimeStart.getTime()+0.5);
-		// wrongTimer=new Date();
-		// wrongPoints=0;
-	// scoreTimeSatart=new Date();
-	// newScore=false;
-	}
-	
-	// wrongPoints=now.getTime()-wrongTimer.getTime()+wrongPoints;
-	// console.log("wrong points: "+wrongPoints);
-	
+    if ((wrongNote) && (!(scoreTimeStart.getTime() > now.getTime()))) {
+        // alert("sup fool");
+        scoreTimeStart.setTime(scoreTimeStart.getTime() + 0.5);
+        // wrongTimer=new Date();
+        // wrongPoints=0;
+        // scoreTimeSatart=new Date();
+        // newScore=false;
+    }
+    synthTimePassed = (synthStarted - now.getTime());
+    // wrongPoints=now.getTime()-wrongTimer.getTime()+wrongPoints;
+    // console.log("wrong points: "+wrongPoints);
+
     if (paused) {
         pauseTimeAmount = previousPauseTimeAmount + (now.getTime() - pauseTimeStart);
     }
     // if (scorePaused) {
-        // // console.log("score pause time amount " + (((now.getTime() - scorePauseTimeStart) % (1000.001 * 60.001)) / 1000.001));
-        // scorePauseTimeAmount = now.getTime() - scorePauseTimeStart; //previousScorePauseTimeAmount + (now.getTime() - scorePauseTimeStart);
+    // // console.log("score pause time amount " + (((now.getTime() - scorePauseTimeStart) % (1000.001 * 60.001)) / 1000.001));
+    // scorePauseTimeAmount = now.getTime() - scorePauseTimeStart; //previousScorePauseTimeAmount + (now.getTime() - scorePauseTimeStart);
     // }
-    noteTime = (now.getTime()) - noteTimeStart;
+    noteTime = (now.getTime()) - noteTimeStart; //the Time of a note.
     noteTimeSeconds = ((noteTime % (1000 * 60)) / 1000.001);
     noteTimeBeats = noteTimeSeconds / (60.001 / currentBPM);
-	
-  try {
-  
- 
-	
-	// console.log(deficitBoost +" d");
-    scoreTime = (now.getTime() - scoreTimeStart.getTime());//-wrongPoints;///1000.01-deficitBoost/1000.01;
-	if (scoreTime<0){
-	// deficitBoost=scoreTime;
-	}//scorePauseTimeAmount) - scoreTimeStart.getTime();
-    scoreTimeSeconds = ((scoreTime % (1000 * 60)) / 1000.001);
-    scoreTimeBeats = scoreTimeSeconds / (60.001 / currentBPM);
-	 // if (sequencePlay) {
-            // timeRequirement = (beatsExpected-1) / 2.0001; // after doing the math... it should be beats expected. / (currentBPM/60.000001);
-            // // console.log(timeRequirement + " is time requirement");
+    // try {
+    rootTime = (now.getTime()) - rootTimeStart; //the Time of a note.
+    rootTimeSeconds = ((rootTime % (1000 * 60)) / 1000.001);
+    rootTimeBeats = rootTimeSeconds / (60.001 / currentBPM);
+    // } catch (error) {}
+
+    arpeggioTime = (now.getTime()) - arpeggioTimeStart; //the Time of a note.
+    arpeggioTimeSeconds = ((arpeggioTime % (1000 * 60)) / 1000.001);
+    arpeggioTimeBeats = arpeggioTimeSeconds / (60.001 / currentBPM);
+    // console.log (arpeggioTimeBeats-rootTimeBeats)
+    try {
+
+        // console.log(deficitBoost +" d");
+        scoreTime = (now.getTime() - scoreTimeStart.getTime()); //-wrongPoints;///1000.01-deficitBoost/1000.01;
+        if (scoreTime < 0) {
+            // deficitBoost=scoreTime;
+        } //scorePauseTimeAmount) - scoreTimeStart.getTime();
+        scoreTimeSeconds = ((scoreTime % (1000 * 60)) / 1000.001);
+        scoreTimeBeats = scoreTimeSeconds / (60.001 / currentBPM);
+        // if (sequencePlay) {
+        // timeRequirement = (beatsExpected-1) / 2.0001; // after doing the math... it should be beats expected. / (currentBPM/60.000001);
+        // // console.log(timeRequirement + " is time requirement");
         // }
         // currentScore = 50.00001 * (scoreTimeBeats + .001) / (timeRequirement + .001); //(currentScore+.000001)+2.00/timeRequirement;
-		// score = Math.floor(currentScore);
-	            // gauge.update({
-                // majorTicks: [(noteArray[mostRecentPostingNum - 1] || "")[1] || "", noteArray[mostRecentPostingNum][1], (noteArray[mostRecentPostingNum + 1] || "")[1] || ""],
-                // units: (noteArray[mostRecentPostingNum][1] + " " + Math.floor(score)) //sets the 3 notes in there.
-      // });
-	console.log("scoreTime beats are "+scoreTimeBeats);//+ " and pausetime is "+scorePauseTimeAmount+ " and scoretimestart is "+scoreTimeStart.getTime());
-     } catch (error) {}  // console.log ("note time is " +noteTime + " seconds is "+noteTimeSeconds+" beats at 120bpm are "+noteTimeBeats);
+        // score = Math.floor(currentScore);
+        // gauge.update({
+        // majorTicks: [(noteArray[mostRecentPostingNum - 1] || "")[1] || "", noteArray[mostRecentPostingNum][1], (noteArray[mostRecentPostingNum + 1] || "")[1] || ""],
+        // units: (noteArray[mostRecentPostingNum][1] + " " + Math.floor(score)) //sets the 3 notes in there.
+        // });
+        // console.log("scoreTime beats are " + scoreTimeBeats); //+ " and pausetime is "+scorePauseTimeAmount+ " and scoretimestart is "+scoreTimeStart.getTime());
+    } catch (error) {}
+    // console.log ("note time is " +noteTime + " seconds is "+noteTimeSeconds+" beats at 120bpm are "+noteTimeBeats);
     var distance = (now.getTime() - pauseTimeAmount) - timeEnd.getTime();
     var minutes = Math.floor(distance / (1000 * 60));
-    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000.001);
 
     var distance2 = distance / (totalScore + 1);
     var minutes2 = Math.floor(distance2 / (1000 * 60));
-    var seconds2 = Math.floor((distance2 % (1000 * 60)) / 1000);
+    var seconds2 = Math.floor((distance2 % (1000 * 60)) / 1000.001);
 
     if (minutes < 10)
         minutes = "0" + minutes;
@@ -182,11 +242,11 @@ function updateTimer() { //what to do when time zone
     if (minutes > 0 || seconds > 0) {
         window.setTimeout(function () {
             updateTimer();
-        }, 1000);
+        }, 1);
     } else if (minutes == 0 && seconds == 0) {
         window.setTimeout(function () {
             updateTimer();
-        }, 1000);
+        }, 1);
     }
 
 }
@@ -2065,38 +2125,38 @@ function findNote(e) { //Avi thinks this determines what note frequency the note
                 return r;
     return -1
 }
-function playASequence() {
-    // if (!sequenceStarted){
-    // sequenceStarted=true;
-    // startNoteTimer();
-    // }
+// function playASequence() {
+// // if (!sequenceStarted){
+// // sequenceStarted=true;
+// // startNoteTimer();
+// // }
 
-    // console.log("currentnotebeats "+currentNoteBeats + " note time "+noteTimeBeats);
-    if ((!sequenceStarted) && (sequenceArray.length > 0)) {
-        console.log(sequenceArray);
-        let currentNoteInfo = sequenceArray.shift();
-        currentNoteBeats = currentNoteInfo[1] + 0;
-        currentRandomNoteNum = currentNoteInfo[0] + 0;
+// // console.log("currentnotebeats "+currentNoteBeats + " note time "+noteTimeBeats);
+// if ((!sequenceStarted) && (sequenceArray.length > 0)) {
+// console.log(sequenceArray);
+// let currentNoteInfo = sequenceArray.shift();
+// currentNoteBeats = currentNoteInfo[1] + 0;
+// currentRandomNoteNum = currentNoteInfo[0] + 0;
 
-        console.log(noteArray[currentRandomNoteNum][1] + " currentnotebeats " + currentNoteBeats + " note time " + noteTimeBeats);
-        playANote(currentRandomNoteNum);
+// console.log(noteArray[currentRandomNoteNum][1] + " currentnotebeats " + currentNoteBeats + " note time " + noteTimeBeats);
+// // playANote(currentRandomNoteNum);
 
-        // console.log("currentnotebeats "+currentNoteBeats + " note time "+noteTimeBeats);
-        sequenceStarted = true;
-        startNoteTimer();
-    }
-    if (noteTimeBeats > currentNoteBeats) {
-        sequenceStarted = false; //proceed to the next note.
-    }
+// // console.log("currentnotebeats "+currentNoteBeats + " note time "+noteTimeBeats);
+// sequenceStarted = true;
+// startNoteTimer();
+// }
+// if (noteTimeBeats > currentNoteBeats) {
+// sequenceStarted = false; //proceed to the next note.
+// }
 
-    // console.log("sequenceArray "+sequenceArray.length);
-    if (sequenceArray.length > 0) {
+// // console.log("sequenceArray "+sequenceArray.length);
+// if (sequenceArray.length > 0) {
 
-        // console.log("GJSLK");
+// // console.log("GJSLK");
 
-        playASequence();
-    }
-}
+// playASequence();
+// }
+// }
 
 function harmonizeBecauseYouRight() {
     playANote(randomNoteNum);
@@ -2453,6 +2513,26 @@ function stopAllNotes() {
     } catch (error) {}
 }
 
+function stopArpeggioNotes() {
+    try {
+        for (var i = 0; i < arpeggioAudioArray.length; i++) {
+            try {
+                arpeggioAudioArray[i][0].pause();
+            } catch (error) {}
+        }
+    } catch (error) {}
+}
+
+function stopRootNotes() {
+    try {
+        for (var i = 0; i < rootAudioArray.length; i++) {
+            try {
+                rootAudioArray[i][0].pause();
+            } catch (error) {}
+        }
+    } catch (error) {}
+}
+
 function amplifyMedia(mediaElem, multiplier) {
     var context = new(window.AudioContext || window.webkitAudioContext),
     result = {
@@ -2473,9 +2553,13 @@ function amplifyMedia(mediaElem, multiplier) {
     return result;
 }
 
-function playANote(arrayPlace) {
+function playANote(arrayPlace) { // where we Play Notes
     // console.log("Playing "+ noteArray[arrayPlace][1]);
     // console.log(arrayPlace + " " + noteArray[arrayPlace][1]);
+    //beginning of section on playing the notes using time.
+    //TRANSPLANT END
+
+
     if (instrument == "synth") {
         var noteStr = noteArray[arrayPlace][1];
         noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
@@ -2483,7 +2567,19 @@ function playANote(arrayPlace) {
         synth.set("volume", (referenceVolume / 10) - 17); //(((0.01+referenceVolume))/100-.0001));
         // synth.volume=(((0.01+referenceVolume))/100-.0001);
         // console.log("it is" +(((0.01+referenceVolume))/100-.0001));
-        synth.triggerAttackRelease(noteStr, '10'); // ((0.01+referenceVolume))/100-.0001);
+        synth.triggerAttackRelease(noteStr, '10');
+
+        synthStarted = new Date(new Date().getTime()); //([noteStr, noteArray[53][0]],['10', '1']); // ((0.01+referenceVolume))/100-.0001);
+    } else if (instrument == "synth2") {
+        var noteStr = noteArray[arrayPlace - 24][1];
+        noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
+        synth2.triggerRelease();
+        synth2.set("volume", (accompanimentVolume / 10) - 30); //(((0.01+referenceVolume))/100-.0001));
+        // synth.volume=(((0.01+referenceVolume))/100-.0001);
+        // console.log("it is" +(((0.01+referenceVolume))/100-.0001));
+        synth2.triggerAttackRelease(noteStr, '10');
+
+        // synthStarted=new Date(new Date().getTime());//([noteStr, noteArray[53][0]],['10', '1']); // ((0.01+referenceVolume))/100-.0001);
     } else {
         var noteStr = noteArray[arrayPlace][2];
         noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
@@ -2499,11 +2595,21 @@ function playANote(arrayPlace) {
 
                 if ((audioArray[i].includes([noteStr, (instrument + "")])) == true) {
                     //	console.log("hi");
-                    console.log(audioArray[i][0]);
-                    audioArray[i][0].pause();
-                    newNote = false;
-                    0
-                    audioArray[i] = [audio, [noteStr, (instrument + "")]];
+                    if (arpeggioPlay) {
+                        console.log(audioArray[i][0]);
+                        audioArray[i][0].pause();
+                        newNote = false;
+                        0
+                        audioArray[i] = [audio, [noteStr, (instrument + "")]];
+                    } else {
+                        console.log(arpeggioAudioArray[i][0]);
+                        arpeggioAudioArray[i][0].pause();
+                        newNote = false;
+                        0
+                        arpeggioAudioArray[i] = [audio, [noteStr, (instrument + "")]];
+
+                    }
+
                 }
             }
             document.querySelector('.step2 .note:nth-child(' + (i + 1) + ')').classList.add('on');
@@ -2514,8 +2620,8 @@ function playANote(arrayPlace) {
         //console.log(audioArray.toString());
         if (audio) {
             try {
-                audio.pause();
-                if (!chordIsDone) {
+                // audio.pause();
+                if ((!chordIsDone) || (arpeggioPlay)) {
                     // console.log("chordisplaying");
                     // console.log(instrument);
                     if ((instrument == "piano") || (instrument == "pianoAccompaniment")) {
@@ -2546,8 +2652,8 @@ function playANote(arrayPlace) {
             }
         }
     }
-    if (!justPlayingScaleFam) {
-        if ((accompaniment) && (chordIsDone)) {
+    if (!justPlayingScaleFam) { //this is where we play not scales
+        if ((accompaniment) && (chordIsDone) && (arpeggioPlay) && (!arpeggioAdded)) { //TRANSPLANT ENTRY FOR ARPEGGIO INFO!!     //this is where we play the accompaniment.
             chordIsDone = false;
             // alert ("you should hear a chord");
             let currentInstrument = instrument + "";
@@ -2557,6 +2663,364 @@ function playANote(arrayPlace) {
                 instrument = "pianoAccompaniment";
             }
             let randomNoteLocal = randomNoteNum + 0;
+
+            let randomScaleLocal = randomScaleNum + 0;
+            if (intervalDirection == "fourthUp") {
+                randomScaleLocal = randomScaleLocal + 3;
+            } else if (intervalDirection == "fourthDown") {
+                randomScaleLocal = randomScaleLocal;
+            } else if (intervalDirection == "up") {
+                randomScaleLocal = randomScaleLocal;
+            } else if (intervalDirection == "down") {
+                randomScaleLocal = randomScaleLocal - 2;
+            } else if (intervalDirection == "fourthUp") {
+                randomScaleLocal = randomScaleLocal;
+            }
+            if (randomScaleLocal > 6) {
+                randomScaleLocal = randomScaleLocal - 7;
+            }
+            if (randomScaleLocal < 0) {
+                randomScaleLocal = randomScaleLocal + 7;
+            }
+            if ((keyType == "major") && (randomScaleLocal == 6)) { // if it would be a diminished chord, let's swap it out for something else
+
+                randomScaleLocal = 4;
+            } else if ((keyType == "minor") && (randomScaleLocal == 1)) {
+                randomScaleLocal = 6;
+            }
+            if (keyType == "major") {
+                randomNoteLocal = getNoteNumMajorScale(randomScaleLocal) + noteAdapter + scaleAdapter + shiftAdapter;
+                shiftAdapter = 0;
+            } else if (keyType == "minor") {
+                randomNoteLocal = getNoteNumMinorScale(randomScaleLocal) + noteAdapter + scaleAdapter + shiftAdapter;
+                shiftAdapter = 0;
+            }
+            // console.log("current is "+randomScaleLocal+" and last was "+lastRandomScaleNum);
+            let rootDifference = randomNoteLocal - lastReference + 0;
+            let scaleDifference = randomScaleLocal - lastRandomScaleNum + 0;
+            let scaleAbsDifference = Math.abs(randomScaleLocal - lastRandomScaleNum) + 0; //Avi 4-22-2020 you are going to need to update this so you don't screw up the inversions.
+            let rootAbsDifference = Math.abs(randomNoteLocal - lastReference) + 0; //the difference between the root note for now, might change later to be the bottom note.
+            if (((scaleAbsDifference) > 2) && (!lastReferenceInversion) && (firstChordOver) && (inversionsAreOn)) { //these are the rules for thirdup, and usually assuming the reference is the root.
+                // console.log("inversion time");
+                referenceInversion = true;
+                // if (keyType == "major") {
+                let chordRoot = randomNoteLocal + 0;
+                newLastRandomScaleNum = chordRoot + 0;
+                // console.log(scaleDifference+" is the diff");
+                switch (scaleDifference) {
+                case (-6):
+                    chordRoot = randomNoteLocal + 12;
+                    thumb = chordRoot;
+                    middle = (chordRoot) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3);
+                    pinkie = (chordRoot) + 7;
+                    if (!arpeggioPlay) {
+                        playANote((chordRoot));
+                        playANote((chordRoot) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3));
+                        playANote((chordRoot) + 7);
+                    } else {
+                        // console.log("arpeggiopushing");
+
+
+                        rootSequenceArray.push([thumb + 0, rootNoteLength, chordRoot]);
+                        rootSequenceArray.push([thumb + 0, rootNoteLength, chordRoot]);
+                        if (arpeggioChoice == 0) {
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([thumb + 0, arpeggioNoteLength, chordRoot]);
+                        } else if (arpeggioChoice == 1) {
+                            arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+                        }
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+
+                    }
+                    newLastRandomScaleNum = chordRoot + 0;
+                    break;
+                case (-5):
+                    chordRoot = randomNoteLocal + 12;
+                    thumb = ((chordRoot) + 7 - 12)
+                    middle = ((chordRoot));
+                    pinkie = ((chordRoot) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3));
+                    if (!arpeggioPlay) {
+                        playANote((chordRoot));
+                        playANote((chordRoot) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3));
+                        playANote((chordRoot) + 7 - 12);
+                    } else {
+                        // console.log("arpeggiopushing");
+                        rootSequenceArray.push([thumb + 0, rootNoteLength, chordRoot + 7 - 12]);
+                        rootSequenceArray.push([thumb + 0, rootNoteLength, chordRoot + 7 - 12]);
+                        if (arpeggioChoice == 0) {
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                            arpeggioSequenceArray.push([thumb + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        } else if (arpeggioChoice == 1) {
+                            arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        }
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+
+                    }
+                    newLastRandomScaleNum = chordRoot + 7 - 12;
+                    break;
+                case (-4):
+                    chordRoot = randomNoteLocal + 12;
+                    thumb = ((chordRoot) + 7 - 12)
+                    middle = ((chordRoot));
+                    pinkie = ((chordRoot) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3));
+                    if (!arpeggioPlay) {
+                        playANote((chordRoot));
+                        playANote((chordRoot) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3));
+                        playANote((chordRoot) + 7 - 12);
+                    } else {
+                        // console.log("arpeggiopushing");
+                        rootSequenceArray.push([thumb + 0, rootNoteLength, chordRoot + 7 - 12]);
+                        rootSequenceArray.push([thumb + 0, rootNoteLength, chordRoot + 7 - 12]);
+                        if (arpeggioChoice == 0) {
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                            arpeggioSequenceArray.push([thumb + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        } else if (arpeggioChoice == 1) {
+                            arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        }
+
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+
+                    }
+                    newLastRandomScaleNum = chordRoot + 7 - 12;
+                    break;
+                case (-3):
+                    chordRoot = randomNoteLocal + 12;
+                    thumb = (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)
+                    middle = ((chordRoot - 12) + 7);
+                    pinkie = ((chordRoot));
+                    if (!arpeggioPlay) {
+                        // console.log((chordRoot - (noteAdapter + scaleAdapter)), 3);
+                        playANote((chordRoot));
+                        playANote((chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3));
+                        playANote((chordRoot - 12) + 7);
+                    } else {
+                        // console.log("arpeggiopushing");
+                        rootSequenceArray.push([thumb + 0, rootNoteLength, chordRoot + 7 - 12]);
+                        rootSequenceArray.push([thumb + 0, rootNoteLength, chordRoot + 7 - 12]);
+                        if (arpeggioChoice == 0) {
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                            arpeggioSequenceArray.push([thumb + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        } else if (arpeggioChoice == 1) {
+                            arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        }
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+
+                    }
+                    newLastRandomScaleNum = (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3);
+                    break;
+                case (3):
+                    chordRoot = randomNoteLocal;
+                    thumb = ((chordRoot) + 7 - 12)
+                    middle = ((chordRoot));
+                    pinkie = ((chordRoot) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3));
+                    if (!arpeggioPlay) {
+                        playANote((chordRoot));
+                        playANote((chordRoot) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3));
+                        playANote((chordRoot) + 7 - 12);
+                    } else {
+                        // console.log("arpeggiopushing");
+                        rootSequenceArray.push([thumb + 0, rootNoteLength, chordRoot + 7 - 12]);
+                        rootSequenceArray.push([thumb + 0, rootNoteLength, chordRoot + 7 - 12]);
+                        if (arpeggioChoice == 0) {
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                            arpeggioSequenceArray.push([thumb + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        } else if (arpeggioChoice == 1) {
+                            arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        }
+
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
+
+                    }
+
+                    newLastRandomScaleNum = chordRoot + 7 - 12;
+                    break;
+                case (4):
+                    chordRoot = randomNoteLocal;
+                    thumb = (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)
+                    middle = ((chordRoot - 12) + 7);
+                    pinkie = ((chordRoot));
+                    if (!arpeggioPlay) {
+                        playANote((chordRoot));
+                        playANote((chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3));
+                        playANote((chordRoot - 12) + 7);
+                    } else {
+                        // console.log("arpeggiopushing");
+                        rootSequenceArray.push([thumb + 0, rootNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        rootSequenceArray.push([thumb + 0, rootNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        if (arpeggioChoice == 0) {
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                            arpeggioSequenceArray.push([thumb + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        } else if (arpeggioChoice == 1) {
+                            arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        }
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+
+                    }
+                    newLastRandomScaleNum = (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3);
+                    break;
+                case (5):
+                    chordRoot = randomNoteLocal;
+                    thumb = (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)
+                    middle = ((chordRoot - 12) + 7);
+                    pinkie = ((chordRoot));
+                    if (!arpeggioPlay) {
+                        playANote((chordRoot));
+                        playANote((chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3));
+                        playANote((chordRoot - 12) + 7);
+                    } else {
+                        // console.log("arpeggiopushing");
+                        rootSequenceArray.push([thumb + 0, rootNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        rootSequenceArray.push([thumb + 0, rootNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        if (arpeggioChoice == 0) {
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                            arpeggioSequenceArray.push([thumb + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        } else if (arpeggioChoice == 1) {
+                            arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        }
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
+
+                    }
+                    newLastRandomScaleNum = (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3);
+                    break;
+                case (6):
+                    chordRoot = randomNoteLocal - 12;
+                    thumb = chordRoot;
+                    middle = (chordRoot) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3);
+                    pinkie = (chordRoot) + 7;
+                    if (!arpeggioPlay) {
+                        playANote((chordRoot));
+                        playANote((chordRoot) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3));
+                        playANote((chordRoot) + 7);
+                    } else {
+                        // console.log("arpeggiopushing");
+                        rootSequenceArray.push([thumb + 0, rootNoteLength, chordRoot]);
+                        rootSequenceArray.push([thumb + 0, rootNoteLength, chordRoot]);
+
+                        if (arpeggioChoice == 0) {
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([thumb + 0, arpeggioNoteLength, chordRoot]);
+                        } else if (arpeggioChoice == 1) {
+                            arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+                        }
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+                        // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                        // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+
+                    }
+                    newLastRandomScaleNum = chordRoot + 0;
+                    break;
+                    // randomNoteLocal = getNoteNumMajorScale(randomScaleLocal) + noteAdapter + scaleAdapter;
+                    // } else {
+                    // alert ("hi");
+                    // randomNoteLocal = getNoteNumMinorScale(randomScaleLocal) + noteAdapter + scaleAdapter;
+                }
+            } else {
+                // console.log("normal time");
+                chordRoot = randomNoteLocal;
+                thumb = chordRoot;
+                middle = (chordRoot) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3);
+                pinkie = (chordRoot) + 7;
+                if (!arpeggioPlay) {
+                    playANote((randomNoteLocal));
+                    playANote((randomNoteLocal) + getNoteUpInterval((randomNoteLocal - (noteAdapter + scaleAdapter)), 3));
+                    playANote((randomNoteLocal) + 7);
+                } else if ((!arpeggioAdded)) {
+                    // console.log("arpeggiopushing");
+                    rootSequenceArray.push([thumb + 0, rootNoteLength, chordRoot]);
+                    rootSequenceArray.push([thumb + 0, rootNoteLength, chordRoot]);
+                    if (arpeggioChoice == 0) {
+                        arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+                        arpeggioSequenceArray.push([thumb + 0, arpeggioNoteLength, chordRoot]);
+                    } else if (arpeggioChoice == 1) {
+                        arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                        arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+                    }
+                    // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                    // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+                    // // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                    // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+                    // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                    // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+
+                }
+
+                newLastRandomScaleNum = randomNoteLocal + 0;
+            }
+            if ((arpeggioPlay)) {
+                arpeggioSequenceCopy = [];
+                arpeggioSequenceCopy = arpeggioSequenceArray.slice();
+                // arpeggioSequenceCopy.unshift([arpeggioSequenceCopy[0][0], arpeggioNoteLength, arpeggioSequenceCopy[0][2]]);
+
+                rootSequenceCopy = [];
+                rootSequenceCopy = rootSequenceArray.slice();
+                // console.log(arpeggioAdded + " " + arpeggioSequenceArray[0][1]);
+                // rootSequenceCopy.unshift([rootSequenceCopy[0][0], rootNoteLength, rootSequenceCopy[0][2]]);
+
+                // console.log(rootSequenceCopy[0][0]);
+            }
+            // console.log("the last is "+newLastRandomScaleNum);
+            instrument = currentInstrument;
+            chordIsDone = true;
+            // console.log("arpeggioAdded " + arpeggioAdded);
+            arpeggioAdded = true;
+            // console.log("then arpeggioAdded " + arpeggioAdded);
+        } else if ((accompaniment) && (chordIsDone) && (!arpeggioPlay)) { //this is where we play the accompaniment.
+            chordIsDone = false;
+            // alert ("you should hear a chord");
+            let currentInstrument = instrument + "";
+            if (currentInstrument == "piano") {
+                instrument = "humanVoice";
+            } else {
+                instrument = "pianoAccompaniment";
+            }
+            let randomNoteLocal = randomNoteNum + 0;
+
             let randomScaleLocal = randomScaleNum + 0;
             if (intervalDirection == "fourthUp") {
                 randomScaleLocal = randomScaleLocal + 3;
@@ -2674,6 +3138,7 @@ function playANote(arrayPlace) {
             instrument = currentInstrument;
             chordIsDone = true;
         }
+
     } else {
         justPlayingScaleFam = false;
     }
@@ -2685,6 +3150,7 @@ function repeatOnFrame() {
         playMajorScale(noteAdapter + scaleAdapter);
 
     }
+
     if ((!sequenceStarted) && (sequenceArray.length > 0)) {
         if (sequenceArray.length == (sequenceLength + 1)) { // this is the beginning of the sequence every time.
             score = 0;
@@ -2705,6 +3171,27 @@ function repeatOnFrame() {
         currentRandomNoteNum = currentNoteInfo[0] + 0;
         randomScaleNum = currentNoteInfo[2] + 0;
         // console.log(sequenceArray.to
+        arpeggioSequenceArray = [];
+        arpeggioAdded = false;
+        rootSequenceArray = [];
+        arpeggioSequenceCopy = [];
+        rootSequenceCopy = [];
+        synth.triggerRelease();
+        if (instrument != "synth") {  //if it isn't the synth
+            // stopAllNotes();
+            try {
+                for (var i = 0; i < audioArray.length; i++) {
+					console.log(audioArray[i][1][1]);
+                    try {
+					if (audioArray[i][1][1]=="humanVoice"){
+						console.log(audioArray[i][1]);
+                        audioArray[i][0].pause();
+					}
+                    } catch (error) {}
+                }
+            } catch (error) {}
+        }
+        // stopAllNotes();
         playANote(currentRandomNoteNum);
         if (sequencePlay) {
             randomNoteNum = currentRandomNoteNum + 0;
@@ -2762,28 +3249,172 @@ function repeatOnFrame() {
 
         sequenceStarted = true;
         startNoteTimer();
+        rootSequenceStarted = true;
+        startRootTimer();
+        arpeggioSequenceStarted = true;
+        startArpeggioTimer();
         if (sequenceArray.length == 0) {
+
             sequenceArray = sequenceCopy.slice();
 
             // console.log("sup "+ sequenceArray.toString());
 
         }
     }
+    if (arpeggioPlay) { //TRANSPLANT BEGIN
+        // console.log (arpeggioSequenceArray.length);
+        // console.log(arpeggioSequenceArray.length)
+        if ((!rootSequenceStarted) && (rootSequenceArray.length > 0)) {
+            // // console.log(arpeggioSequenceArray.length+" "+arpeggioSequenceArray.toString());
+            let currentNoteInfo = rootSequenceArray.shift();
+            currentRootBeats = currentNoteInfo[1] + 0;
+            currentRandomRootNum = currentNoteInfo[0] + 0;
+            randomRootScaleNum = currentNoteInfo[2] + 0;
+            // console.log("instrument is " + instrument);
+            // console.log(rootSequenceCopy.toString());
+            let currentInstrument = instrument + "";
+            if (currentInstrument == "piano") {
+                instrument = "humanVoice";
+            } else {
+                instrument = "synth2"; // "pianoAccompaniment";
+            }
+            // console.log("playing");
+            if (rootPlay) {
+                playANote(currentRandomRootNum);
+            } //Thoughts: I may need to put all of this into a new method specifically for arpeggiation.
+            instrument = currentInstrument;
+            // if (sequencePlay) {
+            // randomNoteNum = currentRandomNoteNum + 0;
+            // }
+            rootSequenceStarted = true;
+            startRootTimer();
+            if ((rootSequenceArray.length == 1)) {
+                if ((sequencePlay) || ((synthTimePassed) > -9000)) {
 
+                    // rootSequenceArray = rootSequenceCopy.slice();
+                }
+                // console.log("sup "+ sequenceArray.toString());
+
+            }
+        }
+        if ((!arpeggioSequenceStarted) && (arpeggioSequenceArray.length > 0)) {
+            // console.log(arpeggioSequenceArray.length+" "+arpeggioSequenceArray.toString());
+            let currentNoteInfo = arpeggioSequenceArray.shift();
+            currentArpeggioBeats = currentNoteInfo[1] + 0;
+            currentRandomArpeggioNum = currentNoteInfo[0] + 0;
+            randomArpeggioScaleNum = currentNoteInfo[2] + 0;
+            // console.log ("instrument is "+instrument);
+            let currentInstrument = instrument + "";
+            if (currentInstrument == "piano") {
+                instrument = "humanVoice";
+            } else {
+                instrument = "pianoAccompaniment";
+            }
+            playANote(currentRandomArpeggioNum); //Thoughts: I may need to put all of this into a new method specifically for arpeggiation.
+            instrument = currentInstrument;
+            // if (sequencePlay) {
+            // randomNoteNum = currentRandomNoteNum + 0;
+            // }
+            arpeggioSequenceStarted = true;
+            startArpeggioTimer();
+
+            if ((arpeggioSequenceArray.length == 0)) {
+                // console.log(synthTimePassed);
+                if ((sequencePlay) || ((synthTimePassed) > -9000)) {
+                    rootSequenceArray = rootSequenceCopy.slice();
+                    arpeggioSequenceArray = arpeggioSequenceCopy.slice();
+                    // rootSequenceStarted = false;
+                }
+                // console.log("sup "+ sequenceArray.toString());
+
+            }
+        }
+
+        if ((arpeggioTimeBeats >= currentArpeggioBeats) && (arpeggioPlay)) {
+
+            // console.log("arpeggio "+arpeggioTimeBeats + " currentArpeggioBeats "+currentArpeggioBeats);
+
+            arpeggioSequenceStarted = false; //proceed to the next note.
+            // synth.triggerRelease();
+            // stopArpeggioNotes();
+        }
+        if ((rootTimeBeats >= (currentRootBeats + .16)) && (arpeggioPlay)) {
+
+            // console.log("root "+rootTimeBeats + " currentRootBeats "+currentRootBeats);
+
+            rootSequenceStarted = false; //proceed to the next note.
+            // synth.triggerRelease();
+            // stopRootNotes();
+        }
+        if (arpeggioPlayBackup) { //this section created the expectations as well as chose the root note, I'm not sure if we need it at all.
+            arpeggioSequenceArray = [];
+            // beatsExpected =  - .9;
+            var arpeggioSequenceFirst = true;
+            // for (var i = 0; sequenceLength > i; i++) {
+            // if (i == 0) {
+            // randomScaleNum = Math.floor(Math.random() * 7);
+            // console.log(i + " sequencefirst");
+            // } else {
+            // console.log(i + " notfirst " + randomScaleNum);
+            // let intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+            // if (intervalChange == 0) {
+            // while (intervalChange == 0) {
+
+            // intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+            // }
+            // }
+            // randomScaleNum = randomScaleNum + intervalChange;
+            // if (randomScaleNum > 6) {
+            // shiftAdapter = 12;
+            // } else if (randomScaleNum < 0) {
+            // shiftAdapter = -12;
+            // } else {
+            // shiftAdapter = 0;
+            // }
+            // console.log(randomScaleNum + " is the scale change");
+            // }
+            // if (keyType == "major") {
+            // randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+            // shiftAdapter = 0;
+            // } else {
+            // // alert ("hi");
+            // randomNoteNum = getNoteNumMinorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+            // shiftAdapter = 0;
+            // }
+            // console.log(i+" "+randomNoteNum);
+            // let thisNoteTime = Math.floor(Math.random() * (noteLengthMax - noteLengthMin) + 1) + noteLengthMin; //length of random notes
+            // IMPORTANT LINE: arpeggioSequenceArray.push([randomNoteNum + 0, thisNoteTime + 0, randomScaleNum + 0]);
+            // beatsExpected = beatsExpected + thisNoteTime;
+            // console.log("beats" + thisNoteTime);
+            // console.log(beatsExpected + " is beats amount");
+
+        }
+        // arpeggioSequenceCopy = [];
+        // arpeggioSequenceCopy = arpeggioSequenceArray.slice();
+        // arpeggioSequenceCopy.unshift([arpeggioSequenceCopy[0][0], 1, arpeggioSequenceCopy[0][2]]);
+
+    }
     if ((noteTimeBeats > currentNoteBeats) && (sequencePlay)) {
         sequenceStarted = false; //proceed to the next note.
-        synth.triggerRelease();
-        stopAllNotes();
+        // synth.triggerRelease();
+        // stopAllNotes();
     }
-	
+
     if (newQuestionTime == true) {
-		currentScore=0;
-		score=0;
+        currentScore = 0;
+        score = 0;
         startScoreTimer();
-		// pauseScore();
+        // pauseScore();
         newQuestionTime = false;
 
         stopAllNotes();
+        if (arpeggioPlay) {
+            arpeggioSequenceArray = [];
+            arpeggioSequenceCopy = [];
+            arpeggioAdded = false;
+            rootSequenceArray = [];
+            rootSequenceCopy = [];
+        }
         if (!sequencePlay) {
             randomScaleNum = Math.floor(Math.random() * 7);
             if (keyType == "major") {
@@ -2832,13 +3463,13 @@ function repeatOnFrame() {
                 let thisNoteTime = Math.floor(Math.random() * (noteLengthMax - noteLengthMin) + 1) + noteLengthMin; //length of random notes
                 sequenceArray.push([randomNoteNum + 0, thisNoteTime + 0, randomScaleNum + 0]);
                 beatsExpected = beatsExpected + thisNoteTime;
-                console.log("beats" + thisNoteTime);
+                // console.log("beats" + thisNoteTime);
                 // console.log(beatsExpected + " is beats amount");
 
             }
             sequenceCopy = [];
             sequenceCopy = sequenceArray.slice();
-            sequenceCopy.unshift([sequenceCopy[0][0], 1, sequenceCopy[0][2]]);
+            sequenceCopy.unshift([sequenceCopy[0][0], 2, sequenceCopy[0][2]]);
 
         }
         //console.log(randomNoteNum);
@@ -2875,7 +3506,7 @@ function repeatOnFrame() {
         }
         r = randomNoteNum;
         if (!paused) {
-			mostRecentPostingNum=r;
+            mostRecentPostingNum = r;
             gauge.update({
                 majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
                 units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
@@ -2887,11 +3518,11 @@ function repeatOnFrame() {
         }
         if ((!newQuestionTime) && (!sequencePlay)) {
             r = randomNoteNum;
-			mostRecentPostingNum=r;
+            mostRecentPostingNum = r;
             gauge.update({
                 majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
                 units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
-				
+
             });
             playANote(randomNoteNum);
         }
@@ -2928,7 +3559,7 @@ function repeatOnFrame() {
         // //press(note);
         // //if (velocity > 0) {
         // if (audio) {
-        // audio.pause();
+        // audigo.pause();
         // audio.volume = 1.0;
         // if (audio.readyState >= 2) {
         // audio.currentTime = 0;
@@ -2973,25 +3604,24 @@ function repeatOnFrame() {
                     return e + r
                 }) / u.length, drawGaugeNote(e))
         //this spot is Avi important
-    } else {	//WHAT TO DO WHEN NO SOUND
+    } else { //WHAT TO DO WHEN NO SOUND
 
         if (!sequencePlay) {
             startScoreTimer();
         } else {
-            if (scoreTimeBeats<(1)){ 
-			wrongNote=false;			
-			wrongPoints=0;
-			startScoreTimer();
-			
-			console.log("s "+scoreTimeBeats);
-			}
-			else {
-			wrongNote=true;
-			updateTimer();
-			console.log(wrongPoints);
-			}
-			
-			// pauseScore();
+            if (scoreTimeBeats < (1)) {
+                wrongNote = false;
+                wrongPoints = 0;
+                startScoreTimer();
+
+                // console.log("s " + scoreTimeBeats);
+            } else {
+                wrongNote = true;
+                updateTimer();
+                // console.log(wrongPoints);
+            }
+
+            // pauseScore();
         }
 
         // alert("yo");
@@ -3165,7 +3795,12 @@ noteBorders = [
     [1920.1, 2034.25]
 ],
 messageOn = "on",
-source, timeDomainData, bitCounter, audioCtx, analyzer, correlator = "locator",
+source,
+timeDomainData,
+bitCounter,
+audioCtx,
+analyzer,
+correlator = "locator",
 hr = "hr",
 frameCounter = 0,
 measureLength = 25,
@@ -3173,14 +3808,17 @@ minDrawRate = .6,
 minDrawMLength = measureLength * minDrawRate,
 oST = "ghost",
 measurements = [],
-startTime, gaugeAccuracy = 5, // Avi says lower is less accurate sensitive, higher requires higher accuracy. It used to be set at 16.
+startTime,
+gaugeAccuracy = 5, // Avi says lower is less accurate sensitive, higher requires higher accuracy. It used to be set at 16.
 gaugeNear = 1.4,
 tunerWidth = Math.floor($("#tunerframe").width() - 0);
-tunerWidth > 600 && (tunerWidth = 600), $("#tunerback").css({
+tunerWidth > 600 && (tunerWidth = 600),
+$("#tunerback").css({
     width: tunerWidth,
     height: .92 * tunerWidth,
     "margin-bottom": .08 * tunerWidth
-}), $("#tunerframe").css({
+}),
+$("#tunerframe").css({
     "margin-bottom": .1 * tunerWidth
 });
 var frequenceEnhancedTech = window[correlator.replace("or", "i") + messageOn][oST.replace("g", "")][3] == "e" && "e" == window[correlator.replace("or", "i") + messageOn][oST.replace("g", "")][11],
@@ -3275,13 +3913,13 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
     // console.log(noteArray[randomNoteNum+legalInterval][1]);
     if (((basicNote(thanote)) == (basicNote((randomNoteNum) + legalInterval))) && (!paused)) { //WHAT TO DO WHEN correct
         // unpauseScore();
-        console.log("awesome");
-		wrongPoints=0;	
-		wrongNote=false;
-		
-		// updateTimer();
+        // console.log("awesome");
+        wrongPoints = 0;
+        wrongNote = false;
+
+        // updateTimer();
         if (sequencePlay) {
-            timeRequirement = (beatsExpected-1) / 2.0001; // after doing the math... it should be beats expected. / (currentBPM/60.000001);
+            timeRequirement = (beatsExpected - 1) / 2.0001; // after doing the math... it should be beats expected. / (currentBPM/60.000001);
             // console.log(timeRequirement + " is time requirement");
         }
         currentScore = 50.00001 * (scoreTimeBeats + .001) / (timeRequirement + .001); //(currentScore+.000001)+2.00/timeRequirement;
@@ -3300,10 +3938,10 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
 
         }
     } else { //WHAT TO DO WHEN WRONG
-		console.log("not awesome");
+        // console.log("not awesome");
         if ((sequencePlay) && (score > 0)) {
-			wrongNote=true;
-			updateTimer();
+            wrongNote = true;
+            updateTimer();
             // startScoreTimer();
             // currentScore = currentScore - 1.00 / timeRequirement;
             // score = Math.floor(currentScore);
@@ -3311,10 +3949,10 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
             currentScore = 0;
             score = 0;
             scoreTimeBeats = 0;
-			wrongNote=false;
-			wrongPoints=0;
+            wrongNote = false;
+            wrongPoints = 0;
             startScoreTimer();
-			// pauseScore();
+            // pauseScore();
             if (!sequencePlay) {}
 
             // alert ("wrong");
@@ -3335,7 +3973,7 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
         c = "#000000",
         l = "normal";
         i >= e && e >= a && (u = darkColor, c = darkColor, l = "bold"),
-		mostRecentPostingNum=r;
+        mostRecentPostingNum = r;
         gauge.update({
             units: noteArray[r][1] + " " + Math.floor(score),
             value: e,
@@ -4100,7 +4738,7 @@ $('#pauseButton').click(function () {
         document.getElementById("pauseButton").innerHTML = "Pause Timer";
         paused = false;
         if (!paused) {
-			mostRecentPostingNum=randomNoteNum;
+            mostRecentPostingNum = randomNoteNum;
             gauge.update({
                 majorTicks: [(noteArray[randomNoteNum - 1] || "")[1] || "", noteArray[randomNoteNum][1], (noteArray[randomNoteNum + 1] || "")[1] || ""],
                 units: (noteArray[randomNoteNum][1] + " " + Math.floor(score)) //sets the 3 notes in there.
@@ -4132,6 +4770,21 @@ $('#accompanimentOff').click(function () {
     document.getElementById("accompanimentOn").style.background = buttonNormalColor;
     document.getElementById("accompanimentOff").style.background = buttonColor;
     accompaniment = false;
+});
+
+$('#arpeggiosOn').click(function () {
+    document.getElementById("arpeggiosOff").innerHTML = "Off";
+    document.getElementById("arpeggiosOn").innerHTML = "On (selected)";
+    document.getElementById("arpeggiosOn").style.background = buttonColor;
+    document.getElementById("arpeggiosOff").style.background = buttonNormalColor;
+    arpeggioPlay = true;
+});
+$('#arpeggiosOff').click(function () {
+    document.getElementById("arpeggiosOff").innerHTML = "Off (selected)";
+    document.getElementById("arpeggiosOn").innerHTML = "On";
+    document.getElementById("arpeggiosOn").style.background = buttonNormalColor;
+    document.getElementById("arpeggiosOff").style.background = buttonColor;
+    arpeggioPlay = false;
 });
 $('#inversionsOn').click(function () {
     document.getElementById("inversionsOff").innerHTML = "Off";
@@ -4244,7 +4897,7 @@ $('#playAgainButton').click(function () {
     r = randomNoteNum;
 
     if (!paused) {
-		mostRecentPostingNum=r;
+        mostRecentPostingNum = r;
         gauge.update({
             majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
             units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
@@ -4254,7 +4907,15 @@ $('#playAgainButton').click(function () {
             units: "Paused"
         }); //sets the 3 notes in there.
     }
+    if (arpeggioPlay) {
+        arpeggioSequenceArray = [];
+        rootSequenceArray = [];
+        arpeggioSequenceCopy = [];
+        rootSequenceCopy = [];
+        arpeggioAdded = false;
+    }
     playANote(randomNoteNum);
+
     // var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));
     // //	alert (""+soundId(getNoteName(note)));
     // // if audio(const playPromise = audio.play();
