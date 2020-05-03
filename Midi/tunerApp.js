@@ -2553,7 +2553,7 @@ function amplifyMedia(mediaElem, multiplier) {
     return result;
 }
 
-function playANote(arrayPlace) { // where we Play Notes
+async function playANote(arrayPlace) { // where we Play Notes
     // console.log("Playing "+ noteArray[arrayPlace][1]);
     // console.log(arrayPlace + " " + noteArray[arrayPlace][1]);
     //beginning of section on playing the notes using time.
@@ -2648,11 +2648,17 @@ function playANote(arrayPlace) { // where we Play Notes
 
             if (audio.readyState >= 2) {
                 audio.currentTime = 0;
-                var promise = audio.play();
+				
+                if (arpeggioPlay){
+					await audio.play();
+				}
+				else{
+				var promise = audio.play();
 
                 if (promise !== undefined) {
                     promise.then(_ => {}).catch(error => {});
                 }
+			}
             }
         }
     }
