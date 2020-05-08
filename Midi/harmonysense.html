@@ -38,19 +38,27 @@
  <button type ='button' id ="usePiano">Use Piano</button>
  <button type ='button' id ="useSynth" style=background:#00cc00>Use Synth (selected)</button>
  <button type ='button' id ="useHumanVoice">Use Human Voice</button>
-  <span style="font-size:16px">Select a reference tone: Piano (short tones), Human Voice (long tones), Synth (long tones)</span>
+  <span style="font-size:16px">Select a reference tone: Piano (short tones), Human Voice (long tones), Synth (long tones) <p></span>
  <p>
  <button type ='button' id ="accompanimentOn"style=background:#00cc00>On (selected)</button>
  <button type ='button' id ="accompanimentOff" >Off</button>
  <span style="font-size:16px">Select whether or not to have chordal accompaniment</span>
- <p>
- <button type ='button' id ="arpeggiosOn"style=background:#00cc00>On (selected)</button>
- <button type ='button' id ="arpeggiosOff" >Off</button>
-  <span style="font-size:16px">Select whether or not to arpeggiate the accompaniment</span>
- <p>
- <button type ='button' id ="inversionsOn"style=background:#00cc00>On (selected)</button>
- <button type ='button' id ="inversionsOff" >Off</button>
-  <span style="font-size:16px">Select whether to vary inversions in accompaniment</span>
+ <p class = "accompaniment-buttons">
+ <button type ='button' class = "accompaniment-buttons" id ="arpeggiosOn"style=background:#00cc00>On (selected)</button>
+ <button type ='button' class = "accompaniment-buttons" id ="arpeggiosOff" >Off</button>
+ <span class = "accompaniment-buttons" style="font-size:16px">Select whether or not to arpeggiate the accompaniment</span>
+ <button type ='button' class = "arpeggio-type-buttons accompaniment-buttons" id ="arpeggio-zero"style=background:#00cc00>A (selected)</button>
+ <button type ='button' class = "arpeggio-type-buttons accompaniment-buttons" id ="arpeggio-one">B</button>
+ <button type ='button' class = "arpeggio-type-buttons accompaniment-buttons" id ="arpeggio-two">C</button>
+ <span class = "arpeggio-type-buttons accompaniment-buttons" style="font-size:16px">Select an Arpeggio</span>
+ <p class = "arpeggio-type-buttons">
+ <button type ='button' class = "arpeggio-type-buttons accompaniment-buttons" id ="play-root-on">On</button>
+ <button type ='button' class = "arpeggio-type-buttons accompaniment-buttons" id ="play-root-off" style=background:#00cc00>Off (selected)</button>
+  <span class = "arpeggio-type-buttons accompaniment-buttons" style="font-size:16px">Select whether or not to play the root in the bass (in beta)</span>
+ <p class = "arpeggio-type-buttons">
+ <button type ='button' class = "accompaniment-buttons" id ="inversionsOn"style=background:#00cc00>On (selected)</button>
+ <button type ='button' class = "accompaniment-buttons" id ="inversionsOff" >Off</button>
+  <span class = "accompaniment-buttons" style="font-size:16px">Select whether to vary inversions in accompaniment</span>
  <p>
  
  <button type ='button' id ="thirdDown">3rd down</button>
@@ -134,10 +142,12 @@ Time = <span id="countdown">01:00</span>
  			<span style="font-size:16px">Continuous Mode</span>
  </div><p>
 			<div class="row justify-content-start">
+				<div class ="regular-mode">
 					<p><br><b><u>Settings for Regular Mode </u></b><p>
-					<div id="slider-horizontal-timeRequirement" style="width:90%; max-width:300px;"></div><label for="timeRequirementAmount">Seconds to hold note:</label>
+					<div class = "regular-mode" id="slider-horizontal-timeRequirement" style="width:90%; max-width:300px;"></div><label for="timeRequirementAmount">Seconds to hold note:</label>
 					<input type="text" id="timeRequirementAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
 				<!-- </div> -->
+				</div>
 			</div>
 			
 					
@@ -166,34 +176,34 @@ Time = <span id="countdown">01:00</span>
  			<span style="font-size:16px">Sequence Mode (in Beta)</span>
  </div>
 <div class="row justify-content-start">
-					<p><p><p><br><b><u>Settings for Sequence Mode </u></b><p>
-					<div id="slider-horizontal-sequenceLengthAmount" style="width:90%; max-width:300px;"></div><label for="sequenceLengthAmount"># Notes in Sequence:</label>
+					<span class = "sequence-mode"><p><p><p><br><b><u>Settings for Sequence Mode </u></b></span><p>
+					<div class = "sequence-mode" id="slider-horizontal-sequenceLengthAmount" style="width:90%; max-width:300px;"></div><label for="sequenceLengthAmount"># Notes in Sequence:</label>
 					<input type="text" id="sequenceLengthAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
 				<!-- </div> -->
 			</div>
 			
 					<div class="row justify-content-start">
 			
-					<div id="slider-horizontal-melodicRangeAmount" style="width:90%; max-width:300px;"></div><label for="melodicRangeAmount">Melodic Range between notes(scale steps):</label>
-					<input type="text" id="melodicRangeAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+					<div class = "sequence-mode" id="slider-horizontal-melodicRangeAmount" style="width:90%; max-width:300px;"></div><label class = "sequence-mode" for="melodicRangeAmount">Melodic Range between notes(scale steps):</label>
+					<input class = "sequence-mode" type="text" id="melodicRangeAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
 				<!-- </div> -->
 			</div>
 						<div class="row justify-content-start">
 						
 						<div class="row justify-content-start">
 			
-					<div id="slider-horizontal-BPMAmount" style="width:90%; max-width:300px;"></div><label for="BPMAmount">Set the Tempo (BPM)</label>
-					<input type="text" id="BPMAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+					<div class = "sequence-mode" id="slider-horizontal-BPMAmount" style="width:90%; max-width:300px;"></div><label class = "sequence-mode" for="BPMAmount">Set the Tempo (BPM)</label>
+					<input class = "sequence-mode" type="text" id="BPMAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
 				<!-- </div> -->
 			</div>
 						<div class="row justify-content-start">
 					<p><p><p><p><p><p><p><p><p><p>
-					<div id="noteLengthSlider" style="width:90%; max-width:300px;"></div>
+					<div class = "sequence-mode" id="noteLengthSlider" style="width:90%; max-width:300px;"></div>
 					<p><p><p><p>
 					</div>
 					<div class="row justify-content-start">
 					<p><p><p><p><br>
-					<span style="font-size:16px">Set the minimum and maximum note length (# of beats held)</span>
+					<span class = "sequence-mode" style="font-size:16px">Set the minimum and maximum note length (# of beats held)</span>
 					<!-- <input type="text" id="noteLength" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;"> -->
 				<!-- </div> -->
 					</div>
