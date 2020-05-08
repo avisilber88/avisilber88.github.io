@@ -89,7 +89,7 @@ var sequenceLength = 2;
 var sequenceCopy = [];
 var rootSequenceLength = 2;
 var rootSequenceCopy = [];
-var arpeggioSequenceLength = 2;
+var arpeggioSequenceLength = 4;
 var arpeggioSequenceCopy = [];
 var beatsExpected = 2;
 var sequenceFirst = true;
@@ -114,7 +114,7 @@ var rootNoteLength = 2;
 var arpeggioAdded = false;
 var synthTimePassed = 0;
 var rootPlay = true;
-var arpeggioChoice = 0;
+var arpeggioChoice = 2;
 
 function startTimer() {
     // set timer for 60 minutes from start
@@ -2740,6 +2740,12 @@ async function playANote(arrayPlace) { // where we Play Notes
                             arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
                             arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
                         }
+						else if(arpeggioChoice==2){
+							arpeggioSequenceArray.push([thumb + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);							
+                            arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+						}
                         // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
                         // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
                         // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
@@ -2769,7 +2775,12 @@ async function playANote(arrayPlace) { // where we Play Notes
                         } else if (arpeggioChoice == 1) {
                             arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
                             arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
-                        }
+                        }												else if(arpeggioChoice==2){
+							arpeggioSequenceArray.push([thumb + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);							
+                            arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+						}
                         // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
                         // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
                         // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
@@ -2799,7 +2810,12 @@ async function playANote(arrayPlace) { // where we Play Notes
                         } else if (arpeggioChoice == 1) {
                             arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
                             arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
-                        }
+                        }												else if(arpeggioChoice==2){
+							arpeggioSequenceArray.push([thumb + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);							
+                            arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+						}
 
                         // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
                         // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
@@ -2831,7 +2847,12 @@ async function playANote(arrayPlace) { // where we Play Notes
                         } else if (arpeggioChoice == 1) {
                             arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
                             arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
-                        }
+                        }											else if(arpeggioChoice==2){
+							arpeggioSequenceArray.push([thumb + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);							
+                            arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+						}
                         // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
                         // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
                         // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
@@ -2861,7 +2882,12 @@ async function playANote(arrayPlace) { // where we Play Notes
                         } else if (arpeggioChoice == 1) {
                             arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
                             arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
-                        }
+                        }											else if(arpeggioChoice==2){
+							arpeggioSequenceArray.push([thumb + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);							
+                            arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+						}
 
                         // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
                         // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot + 7 - 12]);
@@ -2893,7 +2919,12 @@ async function playANote(arrayPlace) { // where we Play Notes
                         } else if (arpeggioChoice == 1) {
                             arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
                             arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
-                        }
+                        }										else if(arpeggioChoice==2){
+							arpeggioSequenceArray.push([thumb + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);							
+                            arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+						}
                         // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
                         // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
                         // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
@@ -2923,7 +2954,12 @@ async function playANote(arrayPlace) { // where we Play Notes
                         } else if (arpeggioChoice == 1) {
                             arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
                             arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
-                        }
+                        }										else if(arpeggioChoice==2){
+							arpeggioSequenceArray.push([thumb + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);							
+                            arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+						}
                         // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
                         // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
                         // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, (chordRoot - 12) + getNoteUpInterval((chordRoot - (noteAdapter + scaleAdapter)), 3)]);
@@ -2954,7 +2990,12 @@ async function playANote(arrayPlace) { // where we Play Notes
                         } else if (arpeggioChoice == 1) {
                             arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
                             arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
-                        }
+                        }										else if(arpeggioChoice==2){
+							arpeggioSequenceArray.push([thumb + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);							
+                            arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+						}
                         // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
                         // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
                         // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
@@ -2990,7 +3031,12 @@ async function playANote(arrayPlace) { // where we Play Notes
                     } else if (arpeggioChoice == 1) {
                         arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
                         arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
-                    }
+                    }											else if(arpeggioChoice==2){
+							arpeggioSequenceArray.push([thumb + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);							
+                            arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
+                            arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
+						}
                     // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
                     // arpeggioSequenceArray.push([middle + 0, arpeggioNoteLength, chordRoot]);
                     // // arpeggioSequenceArray.push([pinkie + 0, arpeggioNoteLength, chordRoot]);
@@ -3330,6 +3376,7 @@ function repeatOnFrame() {
 
             if ((arpeggioSequenceArray.length == 0)) {
                 // console.log(synthTimePassed);
+				// alert ("hi"); THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
                 if ((sequencePlay) || ((synthTimePassed) > -9000)) {
                     rootSequenceArray = rootSequenceCopy.slice();
                     arpeggioSequenceArray = arpeggioSequenceCopy.slice();
