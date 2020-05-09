@@ -22,7 +22,7 @@
 	
     <script src="vendor/nouislider.js"></script>
     <script src="vendor/Tone.js"></script>
-	    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
+	    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
 
 <div class="all-wide">
 <div class="content">
@@ -35,6 +35,7 @@
 <!-- } -->
 <!-- </script> -->
 <h3> Press "Turn on the Tuner" to Begin, there are adjustable settings both above and below the tuner on the page</h3>
+<div class = "options-info">
  <button type ='button' id ="usePiano">Use Piano</button>
  <button type ='button' id ="useSynth" style=background:#00cc00>Use Synth (selected)</button>
  <button type ='button' id ="useHumanVoice">Use Human Voice</button>
@@ -60,7 +61,7 @@
  <button type ='button' class = "accompaniment-buttons" id ="inversionsOff" >Off</button>
   <span class = "accompaniment-buttons" style="font-size:16px">Select whether to vary inversions in accompaniment</span>
  <p>
- 
+ </div>
  <button type ='button' id ="thirdDown">3rd down</button>
  <button type ='button' id ="thirdUp" style=background:#00cc00>3rd up (selected)</button>
  <button type ='button' id ="unison" >Unison</button>
@@ -68,7 +69,7 @@
  <button type ='button' id ="fourthUp" >4th up</button>
  
   <span style="font-size:16px">Select what harmony interval you would like to practice</span>
- <p>
+ <p><p>
  <button type ='button' id ="majorScale" style=background:#00cc00>Major Scale (selected)</button>
  <button type ='button' id ="natMinorScale">Natural Minor Scale</button>
  <span style="font-size:16px">Choose your Reference Scale Type</span>
@@ -90,7 +91,7 @@
 Time = <span id="countdown">01:00</span>
 |   <span id="totalscore"># Correct = 0</span>
 | Avg Time = <span id="averagetime"></span> seconds 
-
+<button type ='button' id ="hide-button">Hide Advanced Options</button>  
 <!-- <div class = "container justify-content-start"> -->
   <div class="row justify-content-start">
 	<div class = "col-xs-offset-0 col-xs-7 col-sm-7 col-md-7 col-lg-7" style=>
@@ -136,13 +137,50 @@ Time = <span id="countdown">01:00</span>
 				<!-- </div> -->
 			</div>
 			<p>
-						<div class="row justify-content-start">
- <button type ='button' id ="continuousOn">On</button>
- <button type ='button' id ="continuousOff"style=background:#00cc00>Off (selected)</button>
- 			<span style="font-size:16px">Continuous Mode</span>
- </div><p>
-			<div class="row justify-content-start">
-				<div class ="regular-mode">
+			<div class="options-info row justify-content-start">
+				<button type ='button' id ="continuousOn">On</button>
+				<button type ='button' id ="continuousOff"style=background:#00cc00>Off (selected)</button>
+				<span style="font-size:16px">Continuous Mode</span>
+			</div><p>
+			 <div class="options-info row justify-content-start">
+				<button type ='button' id ="sequenceOn">On</button>
+				<button type ='button' id ="sequenceOff"style=background:#00cc00>Off (selected)</button>
+				<span style="font-size:16px">Sequence Mode (in Beta)</span>
+			</div>
+			<div class="options-info sequence-mode row justify-content-start">
+					<span class = "sequence-mode"><p><p><p><br><b><u>Settings for Sequence Mode </u></b></span><p>
+					<div class = "sequence-mode" id="slider-horizontal-sequenceLengthAmount" style="width:90%; max-width:300px;"></div><label for="sequenceLengthAmount"># Notes in Sequence:</label>
+					<input type="text" id="sequenceLengthAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div> -->
+			</div>
+			
+			<div class="options-info sequence-mode row justify-content-start">
+			
+					<div class = "sequence-mode" id="slider-horizontal-melodicRangeAmount" style="width:90%; max-width:300px;"></div><label class = "sequence-mode" for="melodicRangeAmount">Melodic Range between notes(scale steps):</label>
+					<input class = "sequence-mode" type="text" id="melodicRangeAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div> -->
+			</div>
+	
+						<div class="options-info sequence-mode row justify-content-start">
+						</div>
+			<div class="options-info sequence-mode row justify-content-start">		
+					<div class = "sequence-mode" id="slider-horizontal-BPMAmount" style="width:90%; max-width:300px;"></div><label class = "sequence-mode" for="BPMAmount">Set the Tempo (BPM)</label>
+					<input class = "sequence-mode" type="text" id="BPMAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div> -->
+			</div>
+			<div class="options-info sequence-mode row justify-content-start">
+					<p><p><p><p><p><p><p><p><p><p>
+					<div class = "sequence-mode" id="noteLengthSlider" style="width:90%; max-width:300px;"></div>
+					<p><p><p><p>
+					</div>
+			<div class="options-info sequence-mode row justify-content-start">
+					<p><p><p><p><br>
+					<span class = "sequence-mode" style="font-size:16px">Set the minimum and maximum note length (# of beats held)</span>
+					<!-- <input type="text" id="noteLength" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;"> -->
+				<!-- </div> -->
+			</div>
+			<div class="options-info row justify-content-start">
+				<div class = "regular-mode">
 					<p><br><b><u>Settings for Regular Mode </u></b><p>
 					<div class = "regular-mode" id="slider-horizontal-timeRequirement" style="width:90%; max-width:300px;"></div><label for="timeRequirementAmount">Seconds to hold note:</label>
 					<input type="text" id="timeRequirementAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
@@ -160,6 +198,7 @@ Time = <span id="countdown">01:00</span>
 	</div>
 	
 	</div>
+	<div class="options-info">
 			<div class="row justify-content-start">
 			<button type ='button' id ="octave2">Octave 2</button>
 			<button type ='button' id ="octave3" style=background:#00cc00>Octave 3 (selected)</button>
@@ -168,46 +207,12 @@ Time = <span id="countdown">01:00</span>
 			<p>
 			<span style="font-size:16px">Select above what octave you would like your reference note played in.
 			<p> Note: You can still sing in any octave as long as your relative interval is correct.</span>
-		</div>
- <p>
- 			<div class="row justify-content-start">
- <button type ='button' id ="sequenceOn">On</button>
- <button type ='button' id ="sequenceOff"style=background:#00cc00>Off (selected)</button>
- 			<span style="font-size:16px">Sequence Mode (in Beta)</span>
- </div>
-<div class="row justify-content-start">
-					<span class = "sequence-mode"><p><p><p><br><b><u>Settings for Sequence Mode </u></b></span><p>
-					<div class = "sequence-mode" id="slider-horizontal-sequenceLengthAmount" style="width:90%; max-width:300px;"></div><label for="sequenceLengthAmount"># Notes in Sequence:</label>
-					<input type="text" id="sequenceLengthAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
-				<!-- </div> -->
+			</div>
+			<p>
+
+			
 			</div>
 			
-					<div class="row justify-content-start">
-			
-					<div class = "sequence-mode" id="slider-horizontal-melodicRangeAmount" style="width:90%; max-width:300px;"></div><label class = "sequence-mode" for="melodicRangeAmount">Melodic Range between notes(scale steps):</label>
-					<input class = "sequence-mode" type="text" id="melodicRangeAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
-				<!-- </div> -->
-			</div>
-						<div class="row justify-content-start">
-						
-						<div class="row justify-content-start">
-			
-					<div class = "sequence-mode" id="slider-horizontal-BPMAmount" style="width:90%; max-width:300px;"></div><label class = "sequence-mode" for="BPMAmount">Set the Tempo (BPM)</label>
-					<input class = "sequence-mode" type="text" id="BPMAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
-				<!-- </div> -->
-			</div>
-						<div class="row justify-content-start">
-					<p><p><p><p><p><p><p><p><p><p>
-					<div class = "sequence-mode" id="noteLengthSlider" style="width:90%; max-width:300px;"></div>
-					<p><p><p><p>
-					</div>
-					<div class="row justify-content-start">
-					<p><p><p><p><br>
-					<span class = "sequence-mode" style="font-size:16px">Set the minimum and maximum note length (# of beats held)</span>
-					<!-- <input type="text" id="noteLength" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;"> -->
-				<!-- </div> -->
-					</div>
-    
 	<audio id = "sound-A1" src = "samples/_A2.wav" preload = "auto"></audio>
 	<audio id = "sound-Bb1" src = "samples/_Bb2.wav" preload = "auto" ></audio>
 	<audio id = "sound-B1" src = "samples/_B2.wav" preload = "auto"></audio>

@@ -19,9 +19,9 @@ var previousNote = "";
 var audioArray = [];
 var arpeggioAudioArray = [];
 var rootAudioArray = [];
-var synthTone = new Tone.PolySynth(1, Tone.Synth)
+var synthTone = new Tone.PolySynth(1, Tone.Synth);
     var synth = synthTone.toMaster();
-var synthTone2 = new Tone.PolySynth(1, Tone.Synth)
+var synthTone2 = new Tone.PolySynth(1, Tone.Synth);
     var synth2 = synthTone2.toMaster();
 var score = 0;
 var intervalDirection = "up";
@@ -115,6 +115,7 @@ var arpeggioAdded = false;
 var synthTimePassed = 0;
 var rootPlay = false;
 var arpeggioChoice = 0;
+var hiddenOptions=false;
 $(".sequence-mode").slideToggle();
 function startTimer() {
     // set timer for 60 minutes from start
@@ -4841,6 +4842,50 @@ $('#pauseButton').click(function () {
         }); //sets the 3 notes in there.
         pauseTimer();
     }
+
+});
+
+$('#hide-button').click(function () {
+    if (!hiddenOptions) {
+		document.getElementById("hide-button").innerHTML = "Show Advanced Options";
+			$(".options-info").slideToggle();
+		if (!accompaniment){
+			$(".accompaniment-buttons").slideToggle();
+			
+			
+		}
+		if (!arpeggioPlay){
+				$(".arpeggio-type-buttons").slideToggle();
+			}
+			
+			if (!sequencePlay){
+				$(".sequence-mode").slideToggle();
+			}
+			else{
+				$(".regular-mode").slideToggle();
+			}
+	    hiddenOptions = true;
+	} 
+		
+	else if (hiddenOptions) {
+		document.getElementById("hide-button").innerHTML = "Hide Advanced Options";
+			$(".options-info").slideToggle();
+			if (!accompaniment){
+				$(".accompaniment-buttons").slideToggle();
+			
+				
+			}
+			if (!arpeggioPlay){
+					$(".arpeggio-type-buttons").slideToggle();
+				}
+			if (!sequencePlay){
+				$(".sequence-mode").slideToggle();
+			}
+			else{
+				$(".regular-mode").slideToggle();
+			}
+			hiddenOptions = false;
+	}
 
 });
 
