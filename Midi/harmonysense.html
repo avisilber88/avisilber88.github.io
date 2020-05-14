@@ -56,7 +56,7 @@
  <button type ='button' class = "arpeggio-type-buttons accompaniment-buttons" id ="play-root-on">On</button>
  <button type ='button' class = "arpeggio-type-buttons accompaniment-buttons" id ="play-root-off" style=background:#00cc00>Off (selected)</button>
   <span class = "arpeggio-type-buttons accompaniment-buttons" style="font-size:16px">Select whether or not to play the root in the bass (in beta)</span>
- <p class = "arpeggio-type-buttons">
+ <p class = "accompaniment-buttons">
  <button type ='button' class = "accompaniment-buttons" id ="inversionsOn"style=background:#00cc00>On (selected)</button>
  <button type ='button' class = "accompaniment-buttons" id ="inversionsOff" >Off</button>
   <span class = "accompaniment-buttons" style="font-size:16px">Select whether to vary inversions in accompaniment</span>
@@ -87,7 +87,7 @@
 	    <button type ='button' id ="do2Button">Do(high)</button>  
 		<span style="font-size:16px">play notes in key for reference</span>
 <p>
-<button type ='button' id ="pauseButton">Pause Timer</button>  
+<button type ='button' id ="pauseButton">Pause Timer and Sound</button>  
 Time = <span id="countdown">01:00</span>
 |   <span id="totalscore"># Correct = 0</span>
 | Avg Time = <span id="averagetime"></span> seconds 
@@ -209,9 +209,11 @@ Time = <span id="countdown">01:00</span>
 			<p> Note: You can still sing in any octave as long as your relative interval is correct.</span>
 			</div>
 			<p>
-
-			
+			<div class="row justify-content-start">	
+			<button type ='button' id ="capture-by-sound-button">Record a sequence by singing it</button>
+			<button type ='button' id ="capture-by-buttons-button">Record a sequence by pressing note buttons above the tuner.</button>
 			</div>
+	</div>
 			
 	<audio id = "sound-A1" src = "samples/_A2.wav" preload = "auto"></audio>
 	<audio id = "sound-Bb1" src = "samples/_Bb2.wav" preload = "auto" ></audio>
