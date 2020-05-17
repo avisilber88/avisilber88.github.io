@@ -112,6 +112,7 @@ var arpeggioPlay = true;
 var arpeggioPlayBackup = false;
 var arpeggioNoteLength = 0.5;
 var rootNoteLength = 2;
+var sequenceLeadLength = 2;
 var arpeggioAdded = false;
 var synthTimePassed = 0;
 var rootPlay = false;
@@ -127,6 +128,11 @@ var captureButtons = false;
 var buttonsCaptured = false;
 var buttonStartEndTimes = [];
 $(".sequence-mode").slideToggle();
+var rootOnButton=document.getElementById('play-root-on');
+var rootOffButton=document.getElementById('play-root-on');
+var arpeggioOneButton=document.getElementById('arpeggio-one');
+var arpeggioTwoButton=document.getElementById('arpeggio-two');
+var arpeggioZeroButton=document.getElementById('arpeggio-zero');
 function startTimer() {
     // set timer for 60 minutes from start
     var now = new Date();
@@ -3535,7 +3541,7 @@ function repeatOnFrame() {
         }
             sequenceCopy = [];
             sequenceCopy = sequenceArray.slice();
-            sequenceCopy.unshift([sequenceCopy[0][0], 2, sequenceCopy[0][2]]);
+            sequenceCopy.unshift([sequenceCopy[0][0], sequenceLeadLength, sequenceCopy[0][2]]);
         } else {
             sequenceArray = [];
             beatsExpected =  - .9;
@@ -4074,6 +4080,7 @@ function basicNote(complexNote) {
     }
     return newNote;
 };
+
 function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
     frequenceEnhancedTech || (e += e * (enhancedFreq(0, 20) - 15) / 1e3); //LOOK HERE AVI THIS MIGHT BE A GOOD SPOT TO UPDATE THE TICKER.
     var r = findNote(e); //converting the noteArray
@@ -5058,6 +5065,79 @@ $('#capture-by-buttons-button').click(function () {
         sequencePlay = true;
 
         newQuestionTime = true;
+    }
+});
+$('#testing-button-base-case').click(function () {
+    if (!captureButtons) {
+
+        singingTimeArray = [];
+        sequenceArray = [];
+        sequenceCopyArray = [];
+        if (buttonStartEndTimes.length > 1) {
+            // alert("long");
+            singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1])/1000.01]);
+            buttonStartEndTimes.shift();
+            console.log(singingTimeArray.toString());
+        }
+		singingTimeArray.push([0+noteAdapter, 4]);
+		singingTimeArray.push([2+noteAdapter, 4]);
+		rootNoteLength=2;
+        captureButtons = false;
+		buttonsCaptured=true;
+        singingCaptured = true;
+        sequencePlay = true;
+        newQuestionTime = true;
+		arpeggiosOn.click();
+		rootOnButton.click();
+		arpeggioTwoButton.click();
+    }
+});
+$('#testing-button-test-case-one').click(function () {
+    if (!captureButtons) {
+
+        singingTimeArray = [];
+        sequenceArray = [];
+        sequenceCopyArray = [];
+        if (buttonStartEndTimes.length > 1) {
+            // alert("long");
+            singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1])/1000.01]);
+            buttonStartEndTimes.shift();
+            console.log(singingTimeArray.toString());
+        }
+		singingTimeArray.push([0+noteAdapter, 4]);
+		singingTimeArray.push([2+noteAdapter, 4]);
+		rootNoteLength=1.5;
+        captureButtons = false;
+		buttonsCaptured=true;
+        singingCaptured = true;
+        sequencePlay = true;
+        newQuestionTime = true;
+		arpeggiosOn.click();
+		rootOnButton.click();
+		arpeggioTwoButton.click();
+    }
+});
+$('#testing-button-test-case-zero').click(function () {
+    if (!captureButtons) {
+
+        singingTimeArray = [];
+        sequenceArray = [];
+        sequenceCopyArray = [];
+        if (buttonStartEndTimes.length > 1) {
+            // alert("long");
+            singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1])/1000.01]);
+            buttonStartEndTimes.shift();
+            console.log(singingTimeArray.toString());
+        }
+		singingTimeArray.push([0+noteAdapter, 4]);
+		singingTimeArray.push([2+noteAdapter, 4]);
+        captureButtons = false;
+		buttonsCaptured=true;
+        singingCaptured = true;
+        sequencePlay = true;
+        newQuestionTime = true;
+		arpeggiosOff.click();
+		rootOffButton.click();
     }
 });
 $('#accompanimentOn').click(function () {
