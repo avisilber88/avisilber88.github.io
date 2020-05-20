@@ -56,13 +56,18 @@
  <button type ='button' class = "arpeggio-type-buttons accompaniment-buttons" id ="arpeggio-two">C</button>
  <span class = "arpeggio-type-buttons accompaniment-buttons" style="font-size:16px">Select an Arpeggio</span>
  <p class = "arpeggio-type-buttons">
- <button type ='button' class = "arpeggio-type-buttons accompaniment-buttons" id ="play-root-on">On</button>
- <button type ='button' class = "arpeggio-type-buttons accompaniment-buttons" id ="play-root-off" style=background:#00cc00>Off (selected)</button>
+ <button type ='button' class = "arpeggio-type-buttons accompaniment-buttons" id ="play-root-on" style=background:#00cc00>On (selected)</button>
+ <button type ='button' class = "arpeggio-type-buttons accompaniment-buttons" id ="play-root-off">Off</button>
   <span class = "arpeggio-type-buttons accompaniment-buttons" style="font-size:16px">Select whether or not to play the root in the bass (in beta)</span>
  <p class = "accompaniment-buttons">
  <button type ='button' class = "accompaniment-buttons" id ="inversionsOn"style=background:#00cc00>On (selected)</button>
  <button type ='button' class = "accompaniment-buttons" id ="inversionsOff" >Off</button>
   <span class = "accompaniment-buttons" style="font-size:16px">Select whether to vary inversions in accompaniment</span>
+ <p>
+  <p class = "accompaniment-buttons">
+ <button type ='button' class = "rhythm-type-buttons accompaniment-buttons" id ="rhythmOn"style=background:#00cc00>On (selected)</button>
+ <button type ='button' class = "rhythm-type-buttons accompaniment-buttons" id ="rhythmOff" >Off</button>
+  <span class = "accompaniment-buttons" style="font-size:16px">Select whether to have drums on or off</span>
  <p>
  </div>
  <button type ='button' id ="thirdDown">3rd down</button>
@@ -131,6 +136,14 @@ Time = <span id="countdown">01:00</span>
 					<input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
 				<!-- </div><div class = "col-sm-4"> -->
 			</div>	
+				<p>
+
+			<div class="row justify-content-start">
+			
+					<div id="slider-horizontal-rhythm" style="width:90%; max-width:300px;"></div><label for="rhythmamount">Drums Volume:</label>
+					<input type="text" id="rhythmamount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div> -->
+			</div>
 			<p>
 
 			<div class="row justify-content-start">
@@ -150,6 +163,13 @@ Time = <span id="countdown">01:00</span>
 				<button type ='button' id ="sequenceOff"style=background:#00cc00>Off (selected)</button>
 				<span style="font-size:16px">Sequence Mode (in Beta)</span>
 			</div>
+						<div class="options-info row justify-content-start">		
+					<p>
+					<p>
+					<div id="slider-horizontal-BPMAmount" style="width:90%; max-width:300px;"></div><label for="BPMAmount">Set the Tempo (BPM)</label>
+					<input  type="text" id="BPMAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div> -->
+			</div>
 			<div class="options-info sequence-mode row justify-content-start">
 					<span class = "sequence-mode"><p><p><p><br><b><u>Settings for Sequence Mode </u></b></span><p>
 					<div class = "sequence-mode" id="slider-horizontal-sequenceLengthAmount" style="width:90%; max-width:300px;"></div><label for="sequenceLengthAmount"># Notes in Sequence:</label>
@@ -166,11 +186,7 @@ Time = <span id="countdown">01:00</span>
 	
 						<div class="options-info sequence-mode row justify-content-start">
 						</div>
-			<div class="options-info sequence-mode row justify-content-start">		
-					<div class = "sequence-mode" id="slider-horizontal-BPMAmount" style="width:90%; max-width:300px;"></div><label class = "sequence-mode" for="BPMAmount">Set the Tempo (BPM)</label>
-					<input class = "sequence-mode" type="text" id="BPMAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
-				<!-- </div> -->
-			</div>
+
 			<div class="options-info sequence-mode row justify-content-start">
 					<p><p><p><p><p><p><p><p><p><p>
 					<div class = "sequence-mode" id="noteLengthSlider" style="width:90%; max-width:300px;"></div>
@@ -218,6 +234,9 @@ Time = <span id="countdown">01:00</span>
 			</div>
 	</div>
 			
+	<audio id = "sound-kick0" src = "samples/kick.wav" preload = "auto"></audio>
+	<audio id = "sound-snare0" src = "samples/snare.wav" preload = "auto"></audio>
+	<audio id = "sound-hat0" src = "samples/hat.wav" preload = "auto"></audio>
 	<audio id = "sound-A1" src = "samples/_A2.wav" preload = "auto"></audio>
 	<audio id = "sound-Bb1" src = "samples/_Bb2.wav" preload = "auto" ></audio>
 	<audio id = "sound-B1" src = "samples/_B2.wav" preload = "auto"></audio>

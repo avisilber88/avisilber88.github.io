@@ -39,8 +39,9 @@ var firstChordOver = false;
 var inversionsAreOn = true;
 var shiftAdapter = 0;
 var newLastRandomScaleNum = 0;
-var referenceVolume = 50;
-var accompanimentVolume = 50;
+var referenceVolume = 60;
+var rhythmVolume = 50;
+var accompanimentVolume = 60;
 var justPlayingScaleFam = false;
 var continuous = false;
 var globalTimeRequirement = 2;
@@ -57,7 +58,7 @@ var previousPauseTimeAmount = 0;
 var previousScorePauseTimeAmount = 0;
 var noteTimeStart = 0;
 var noteTime = 0;
-var currentBPM = 120;
+var currentBPM = 100;
 var noteTimeBeats = 0;
 var noteTimeSeconds = 0;
 var rootTimeBeats = 0;
@@ -68,6 +69,10 @@ var arpeggioTimeBeats = 0;
 var arpeggioTimeSeconds = 0;
 var arpeggioTimeStart = 0;
 var arpeggioTime = 0;
+var rhythmTimeBeats = 0;
+var rhythmTimeSeconds = 0;
+var rhythmTimeStart = 0;
+var rhythmTime = 0;
 var playSequences;
 var playArpeggioSequences;
 var playRootSequences;
@@ -77,12 +82,16 @@ var sequencePlay = false;
 var arpeggioSequenceStarted = false;
 var arpeggioSequenceArray = [];
 var arpeggioSequencePlay = false;
+var rhythmSequenceStarted = false;
+var rhythmSequenceArray = [];
+var rhythmSequencePlay = false;
 var rootSequenceStarted = false;
 var rootSequenceArray = [];
 var rootSequencePlay = false;
 var currentNoteBeats = 0;
 var currentRootBeats = 0;
 var currentArpeggioBeats = 0;
+var currentRhythmBeats = 0;
 var currentRandomNoteNum = 0;
 var currentRandomRootNum = 0;
 var currentRandomArpeggioNum = 0;
@@ -90,6 +99,7 @@ var sequenceLength = 2;
 var sequenceCopy = [];
 var rootSequenceLength = 2;
 var rootSequenceCopy = [];
+var rhythmSequenceCopy = [];
 var arpeggioSequenceLength = 4;
 var arpeggioSequenceCopy = [];
 var beatsExpected = 2;
@@ -116,7 +126,7 @@ var rootNoteLength = 2;
 var sequenceLeadLength = 2;
 var arpeggioAdded = false;
 var synthTimePassed = 0;
-var rootPlay = false;
+var rootPlay = true;
 var arpeggioChoice = 0;
 var hiddenOptions = false;
 var singingStartTime = 0;
@@ -140,10 +150,13 @@ var rootTimerStarted=false;
 var scoreTimerStarted=false;
 var pauseTimerStarted=false;
 var wrongNoteStarted=false;
+var rhythmTimerStarted=false;
 var newWrong=false;
 var scorePauseTime=0;
 var previousScorePauseTime=0;
 var leftHandDrop = -12;
+var rhythmPlay = true;
+var genrePullDown=false;
 
 function startTimer() {
     // set timer for 60 minutes from start
@@ -178,6 +191,13 @@ function startRootTimer() {
 function startArpeggioTimer() {
 	arpeggioTimerStarted=true;
 	currentArpeggioBeats=0;
+    // var arpeggioTimeLocal = new Date();
+    // arpeggioTimeStart = new Date(arpeggioTimeLocal.getTime());
+    // updateTimer();
+}
+function startRhythmTimer() {
+	rhythmTimerStarted=true;
+	currentRhythmBeats=0;
     // var arpeggioTimeLocal = new Date();
     // arpeggioTimeStart = new Date(arpeggioTimeLocal.getTime());
     // updateTimer();
@@ -227,7 +247,10 @@ function updateTimer() { //what to do when time zone
     arpeggioTimeStart = new Date(now.getTime());
 	arpeggioTimerStarted=false;
 	}
-	
+	if (rhythmTimerStarted){
+    rhythmTimeStart = new Date(now.getTime());
+	rhythmTimerStarted=false;
+	}
 	if (rootTimerStarted){
     rootTimeStart = new Date(now.getTime());
 	// arpeggioTimerStarted=false;
@@ -283,6 +306,10 @@ function updateTimer() { //what to do when time zone
     arpeggioTime = (now.getTime()) - arpeggioTimeStart; //the Time of a note.
     arpeggioTimeSeconds = ((arpeggioTime % (1000 * 60)) / 1000);
     arpeggioTimeBeats = arpeggioTimeSeconds / (60 / currentBPM);
+	
+	rhythmTime = (now.getTime()) - rhythmTimeStart; //the Time of a note.
+    rhythmTimeSeconds = ((rhythmTime % (1000 * 60)) / 1000);
+    rhythmTimeBeats = rhythmTimeSeconds / (60 / currentBPM);
     // console.log(arpeggioTimeBeats);
 	// console.log(arpeggioTimeBeats+" and " +rootTimeBeats+ " and "+ noteTimeBeats);
     try {
@@ -2315,6 +2342,7 @@ function soundId(id) {
         // alert ("human");
         return 'vsound-' + id;
     } else {
+		// console.log ('sound-' +id);
         return 'sound-' + id;
     }
 };
@@ -2653,9 +2681,15 @@ async function playANote(arrayPlace) { // where we Play Notes
     if (instrument == "synth") {
         var noteStr = noteArray[arrayPlace][1];
         noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
-        synth.triggerRelease();
-        synth.set("volume", (referenceVolume / 10) - 17); //(((0.01+referenceVolume))/100-.0001));
-        // synth.volume=(((0.01+referenceVolume))/100-.0001);
+        
+		synth.triggerRelease();
+        try{
+			synth.set("volume", (referenceVolume / 10) - 17); //(((0.01+referenceVolume))/100-.0001));
+        }
+		catch (error){
+		console.log(error.toString());
+		}
+		// synth.volume=(((0.01+referenceVolume))/100-.0001);
         // console.log("it is" +(((0.01+referenceVolume))/100-.0001));
         synth.triggerAttackRelease(noteStr, '10');
 
@@ -2678,8 +2712,15 @@ async function playANote(arrayPlace) { // where we Play Notes
         if (chordIsDone) {
             synthStarted = new Date(new Date().getTime()); //([noteStr, noteArray[53][0]],['10', '1']); // ((0.01+referenceVolume))/100-.0001);
         }
+		var noteStr="";
+		// console.log(instrument);
+		if (instrument!="rhythmInstruments"){
         var noteStr = noteArray[arrayPlace][2];
         noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
+		}
+		else{
+		var noteStr = arrayPlace;
+		}
         let audio = (document.getElementById(soundId(noteStr)));
 
         // var audioContextual= amplifyMedia(audio, 1);
@@ -2712,7 +2753,11 @@ async function playANote(arrayPlace) { // where we Play Notes
             document.querySelector('.step2 .note:nth-child(' + (i + 1) + ')').classList.add('on');
         } catch (error) {}
         if (newNote == true) {
+			if (instrument!="rhythmInstruments"){
             audioArray.push([audio, [noteArray[arrayPlace][1], (instrument + "")]])
+			}else{
+            audioArray.push([audio, [arrayPlace, (instrument + "")]])
+			}
         }
         //console.log(audioArray.toString());
         if (audio) {
@@ -2725,7 +2770,14 @@ async function playANote(arrayPlace) { // where we Play Notes
                         audio.volume = ((0.01 + accompanimentVolume)) / 100 - .0001; //accompanimentVolume/50;
                     } else if (instrument == "humanVoice") {
                         audio.volume = ((0.01 + accompanimentVolume)) / 500.0 - .0001; //accompanimentVolume/50;
-                    }
+                    } else if (instrument == "rhythmInstruments"){
+						// console.log (((0.01 + rhythmVolume)) / 400.0 - .0001);
+					try{audio.volume = ((0.01 + rhythmVolume)) / 400.0 - .00001; //accompanimentVolume/50;
+					}
+					catch(error){
+					console.log(error.toString());
+					}
+					}
                     // console.log("volume setting "+(((0.01+accompanimentVolume)/100)-.0001));
                 } else {
                     if (instrument == "piano") {
@@ -2755,8 +2807,17 @@ async function playANote(arrayPlace) { // where we Play Notes
         }
     }
     if (!justPlayingScaleFam) { //this is where we play not scales
+
+	
         if ((accompaniment) && (chordIsDone) && (arpeggioPlay) && (!arpeggioAdded)) { //TRANSPLANT ENTRY FOR ARPEGGIO INFO!!     //this is where we play the accompaniment.
             chordIsDone = false;
+					if (rhythmPlay){
+			rhythmSequenceArray=[];
+			setupRhythmSequence();
+
+			rhythmSequenceCopy=[];
+			rhythmSequenceCopy=rhythmSequenceArray.slice();
+		}
             // alert ("you should hear a chord");
             let currentInstrument = instrument + "";
             if (currentInstrument == "piano") {
@@ -3144,6 +3205,10 @@ async function playANote(arrayPlace) { // where we Play Notes
 
                 // console.log(rootSequenceCopy[0][0]);
             }
+			if (rhythmPlay){
+				rhythmSequenceCopy=[];
+				rhythmSequenceCopy=rhythmSequenceArray.slice();
+			}
             // console.log("the last is "+newLastRandomScaleNum);
             instrument = currentInstrument;
             chordIsDone = true;
@@ -3152,6 +3217,12 @@ async function playANote(arrayPlace) { // where we Play Notes
             // console.log("then arpeggioAdded " + arpeggioAdded);
         } else if ((accompaniment) && (chordIsDone) && (!arpeggioPlay)) { //this is where we play the accompaniment.
             chordIsDone = false;
+					if (rhythmPlay){
+			rhythmSequenceArray=[];
+setupRhythmSequence();
+			rhythmSequenceCopy=[];
+			rhythmSequenceCopy=rhythmSequenceArray.slice();
+		}
             // alert ("you should hear a chord");
             let currentInstrument = instrument + "";
             if (currentInstrument == "piano") {
@@ -3285,6 +3356,76 @@ async function playANote(arrayPlace) { // where we Play Notes
 
 }
 
+function setupRhythmSequence(){
+		var genre="";
+	if (!genrePullDown){ //if we don't have the genre pulldown yet, which we don't, we're going to have it select the rhythm by the current tempo.
+		if (currentBPM<80){
+			genre="rnb";
+		}
+		else if (currentBPM <110){
+			genre="hiphop";
+		}
+		else if (currentBPM < 140){
+			genre = "rock";
+		}
+		else if (currentBPM < 170){
+			genre = "trap";
+		}
+		else if (currentBPM < 201){
+			genre = "metal";
+		}
+	}
+	       switch (genre) {
+				case "rnb":
+					rhythmSequenceArray.push(["kick", .5, 0]);
+					rhythmSequenceArray.push(["hat", .5, 0]);
+					rhythmSequenceArray.push(["snare", .5, 0]);
+					rhythmSequenceArray.push(["hat", .25, 0]);
+					rhythmSequenceArray.push(["kick", .25, 0]);
+				break;
+				case "rock": //not programmed yet
+					rhythmSequenceArray.push(["kick", .5, 0]);
+					rhythmSequenceArray.push(["hat", .5, 0]);
+					rhythmSequenceArray.push(["snare", .5, 0]);
+					rhythmSequenceArray.push(["hat", .5, 0]);
+				break;
+				case "trap": //not programmed yet
+					rhythmSequenceArray.push(["kick", .5, 0]);
+					rhythmSequenceArray.push(["hat", .5, 0]);	
+					rhythmSequenceArray.push(["hat", .333, 0]);
+					rhythmSequenceArray.push(["hat", .333, 0]);
+					rhythmSequenceArray.push(["hat", .334, 0]);
+					rhythmSequenceArray.push(["snare", .5, 0]);			
+					rhythmSequenceArray.push(["hat", .5, 0]);		
+					rhythmSequenceArray.push(["hat", .5, 0]);		
+					rhythmSequenceArray.push(["hat", .5, 0]);
+				break;
+				case "metal": // not programmed yet
+					rhythmSequenceArray.push(["kick", .5, 0]);
+					rhythmSequenceArray.push(["kick", .5, 0]);
+					rhythmSequenceArray.push(["snare", .5, 0]);
+					rhythmSequenceArray.push(["kick", .5, 0]);					
+					rhythmSequenceArray.push(["kick", .5, 0]);
+					rhythmSequenceArray.push(["kick", .5, 0]);
+					rhythmSequenceArray.push(["snare", .5, 0]);
+					rhythmSequenceArray.push(["kick", .5, 0]);
+
+				break;
+				case "hiphop": 
+				rhythmSequenceArray.push(["kick", 1, 0]);
+				rhythmSequenceArray.push(["snare", 1, 0]);
+				rhythmSequenceArray.push(["kick", .5, 0]);
+				rhythmSequenceArray.push(["kick", .5, 0]);
+				rhythmSequenceArray.push(["snare", 1, 0]);
+				break;
+		   }
+	
+	
+	
+	
+
+}
+
 function repeatOnFrame() {
 	updateTimer();
     if (beginning == true) {
@@ -3324,6 +3465,8 @@ function repeatOnFrame() {
         arpeggioAdded = false;
         rootSequenceArray = [];
         arpeggioSequenceCopy = [];
+		rhythmSequenceArray=[];
+		rhythmSequenceCopy=[];
         rootSequenceCopy = [];
         synth.triggerRelease();
         if (instrument != "synth") { //if it isn't the synth
@@ -3401,8 +3544,9 @@ function repeatOnFrame() {
         rootSequenceStarted = true;
         startRootTimer();
         arpeggioSequenceStarted = true;
-		console.log("sequence arpeggio!");
+		// console.log("sequence arpeggio!");
         startArpeggioTimer();
+		startRhythmTimer();
         if (sequenceArray.length == 0) {
 
             sequenceArray = sequenceCopy.slice();
@@ -3410,6 +3554,52 @@ function repeatOnFrame() {
             // console.log("sup "+ sequenceArray.toString());
 
         }
+    }
+	if (rhythmPlay) { //TRANSPLANT BEGIN
+
+		  if ((rhythmTimeBeats >= currentRhythmBeats) && (rhythmPlay)) {
+
+            rhythmSequenceStarted = false; //proceed to the next note.
+        
+        }
+		              
+		
+        if ((!rhythmSequenceStarted) && (rhythmSequenceArray.length > 0)) {
+            // console.log(arpeggioSequenceArray.length+" "+arpeggioSequenceArray.toString());
+		
+            let currentNoteInfo = rhythmSequenceArray.shift();
+			// console.log(currentNoteInfo.toString()+" "+arpeggioSequenceStarted);
+            currentRhythmBeats = currentRhythmBeats+currentNoteInfo[1] + 0;
+            currentRandomRhythmNum = currentNoteInfo[0] + 0;
+            randomRhythmScaleNum = currentNoteInfo[2] + 0;
+            // console.log ("instrument is "+instrument);
+            let currentInstrument = instrument + "";
+            instrument="rhythmInstruments";
+            playANote(currentRandomRhythmNum); //Thoughts: I may need to put all of this into a new method specifically for arpeggiation.
+            instrument = currentInstrument;
+            // if (sequencePlay) {
+            // randomNoteNum = currentRandomNoteNum + 0;
+            // }
+            rhythmSequenceStarted = true;
+			// console.log("arpeggio");
+            // startArpeggioTimer();
+
+            if ((rhythmSequenceArray.length == 0)) {
+                // console.log(synthTimePassed);
+                // alert ("hi");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
+                if (((sequencePlay) || ((synthTimePassed) > -9000)) && (accompaniment)&&(!paused) && (!captureSinging)&&(!captureButtons)) {
+                    // alert ("hiya");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
+
+                    // rootSequenceArray = rootSequenceCopy.slice();
+                    rhythmSequenceArray = rhythmSequenceCopy.slice();
+                    // rootSequenceStarted = false;
+                }
+                // console.log("sup "+ sequenceArray.toString());
+
+            }
+        }
+
+      
     }
     if (arpeggioPlay) { //TRANSPLANT BEGIN
         // console.log (arpeggioSequenceArray.length);
@@ -3456,7 +3646,7 @@ function repeatOnFrame() {
             rootSequenceStarted = true;
             // startRootTimer();
             if ((rootSequenceArray.length == 0)) {
-                if ((sequencePlay) || ((synthTimePassed) > -9000)) {
+                if (((sequencePlay) || ((synthTimePassed) > -9000))&& (!paused) && (!captureSinging)&&(!captureButtons)&&(accompaniment)) {
 
                     rootSequenceArray = rootSequenceCopy.slice();
                 }
@@ -3492,7 +3682,7 @@ function repeatOnFrame() {
             if ((arpeggioSequenceArray.length == 0)) {
                 // console.log(synthTimePassed);
                 // alert ("hi");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
-                if (((sequencePlay) || ((synthTimePassed) > -9000)) && (!paused) && (!captureSinging)&&(!captureButtons)) {
+                if (((sequencePlay) || ((synthTimePassed) > -9000)) && (!paused) && (!captureSinging)&&(!captureButtons)&&(accompaniment)) {
                     // alert ("hiya");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
 
                     // rootSequenceArray = rootSequenceCopy.slice();
@@ -3575,6 +3765,10 @@ function repeatOnFrame() {
             rootSequenceArray = [];
             rootSequenceCopy = [];
         }
+		if (rhythmPlay){
+			rhythmSequenceArray = [];
+            rhythmSequenceCopy = [];
+		}
         if (!sequencePlay) {
 			if (arpeggioPlay){
 			if (rootPlay){
@@ -3584,6 +3778,9 @@ function repeatOnFrame() {
 			else{
 			startArpeggioTimer();
 			}
+			}
+			if (rhythmPlay){
+				startRhythmTimer();
 			}
             randomScaleNum = Math.floor(Math.random() * 7);
             if (keyType == "major") {
@@ -4223,7 +4420,7 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
             console.log(timeRequirement + " is time requirement");
         }
 		else{
-		timeRequirement=globalTimeRequirement/(120/currentBPM)
+		timeRequirement=globalTimeRequirement/(120/currentBPM);
 		}
         currentScore = 50 * (scoreTimeBeats) / (timeRequirement); //(currentScore+.000001)+2.00/timeRequirement;
         console.log(newScore+" beats "+scoreTimeBeats+" timerequirement "+timeRequirement+" currentScore "+currentScore+" scoreTimeStart "+scoreTimeStart+" scoreTime "+scoreTimeSeconds);
@@ -4601,7 +4798,7 @@ $(function () {
         range: "min",
         min: 0,
         max: 100,
-        value: 60,
+        value: 50,
         slide: function (event, ui) {
             $("#amount").val(ui.value);
             accompanimentVolume = Number(document.getElementById("amount").value) + 0;
@@ -4612,21 +4809,45 @@ $(function () {
     accompanimentVolume = Number(document.getElementById("amount").value) + 0;
     // console.log("set to " + accompanimentVolume);
 });
-
+$(function () {
+    $("#slider-horizontal-rhythm").slider({
+        orientation: "horizontal",
+        range: "min",
+        min: 0,
+        max: 100,
+        value: 50,
+        slide: function (event, ui) {
+            $("#rhythmamount").val(ui.value);
+            rhythmVolume = Number(document.getElementById("rhythmamount").value) + 0;
+            // console.log("set to " + accompanimentVolume);
+        }
+    });
+    $("#rhythmamount").val($("#slider-horizontal-rhythm").slider("value"));
+    rhythmVolume = Number(document.getElementById("rhythmamount").value) + 0;
+    // console.log("set to " + accompanimentVolume);
+});
 $(function () {
     $("#slider-horizontal-reference").slider({
         orientation: "horizontal",
         range: "min",
         min: 0,
         max: 100,
-        value: 60,
+        value: 50,
         slide: function (event, ui) {
             $("#referenceamount").val(ui.value);
             referenceVolume = Number(document.getElementById("referenceamount").value) + 0;
+			        try{
+			synth.set("volume", (referenceVolume / 10) - 17); //(((0.01+referenceVolume))/100-.0001));
+			}
+		catch (error){}
         }
     });
     $("#referenceamount").val($("#slider-horizontal-reference").slider("value"));
     referenceVolume = Number(document.getElementById("referenceamount").value) + 0;
+	        try{
+			synth.set("volume", (referenceVolume / 10) - 17); //(((0.01+referenceVolume))/100-.0001));
+        }
+		catch (error){}
 
 });
 
@@ -4690,9 +4911,9 @@ $(function () {
     $("#slider-horizontal-BPMAmount").slider({
         orientation: "horizontal",
         range: "min",
-        min: 40,
+        min: 60,
         max: 200,
-        value: 120,
+        value: 100,
         slide: function (event, ui) {
             $("#BPMAmount").val(ui.value);
             currentBPM = Number(document.getElementById("BPMAmount").value) + 0;
@@ -5303,6 +5524,28 @@ $('#arpeggiosOff').click(function () {
     document.getElementById("arpeggiosOff").style.background = buttonColor;
     arpeggioPlay = false;
 });
+
+$('#rhythmOn').click(function () {
+    // if (!rhythmPlay) {
+        // $(".rhythm-type-buttons").slideToggle();
+    // }
+    document.getElementById("rhythmOff").innerHTML = "Off";
+    document.getElementById("rhythmOn").innerHTML = "On (selected)";
+    document.getElementById("rhythmOn").style.background = buttonColor;
+    document.getElementById("rhythmOff").style.background = buttonNormalColor;
+    rhythmPlay = true;
+    playAgainButton.click();
+});
+$('#rhythmOff').click(function () {
+    // if (rhythmPlay) {
+        // $(".rhythm-type-buttons").slideToggle();
+    // }
+    document.getElementById("rhythmOff").innerHTML = "Off (selected)";
+    document.getElementById("rhythmOn").innerHTML = "On";
+    document.getElementById("rhythmOn").style.background = buttonNormalColor;
+    document.getElementById("rhythmOff").style.background = buttonColor;
+    rhythmPlay = false;
+});
 $('#inversionsOn').click(function () {
     document.getElementById("inversionsOff").innerHTML = "Off";
     document.getElementById("inversionsOn").innerHTML = "On (selected)";
@@ -5503,6 +5746,7 @@ $('#playAgainButton').click(function () {
         rootSequenceCopy = [];
         arpeggioAdded = false;
     }
+	
     playANote(randomNoteNum);
 
     // var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));
