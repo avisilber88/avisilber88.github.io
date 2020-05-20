@@ -43,7 +43,8 @@ var referenceVolume = 50;
 var accompanimentVolume = 50;
 var justPlayingScaleFam = false;
 var continuous = false;
-var timeRequirement = 2;
+var globalTimeRequirement = 2;
+var timeRequirement=2;
 var scorePauseTimeStart = 0;
 var pauseTimeStart = 0;
 var pauseTimeAmount = 0;
@@ -4221,6 +4222,9 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
             timeRequirement = (beatsExpected)/2 -(.8*((sequenceLength)*(currentBPM/120)));// / (currentBPM/60) - (.55*sequenceLength); // after doing the math... it should be beats expected. / (currentBPM/60.000001);
             console.log(timeRequirement + " is time requirement");
         }
+		else{
+		timeRequirement=globalTimeRequirement/(120/currentBPM)
+		}
         currentScore = 50 * (scoreTimeBeats) / (timeRequirement); //(currentScore+.000001)+2.00/timeRequirement;
         console.log(newScore+" beats "+scoreTimeBeats+" timerequirement "+timeRequirement+" currentScore "+currentScore+" scoreTimeStart "+scoreTimeStart+" scoreTime "+scoreTimeSeconds);
         score = Math.floor(currentScore);
@@ -4635,11 +4639,11 @@ $(function () {
         value: 2,
         slide: function (event, ui) {
             $("#timeRequirementAmount").val(ui.value);
-            timeRequirement = Number(document.getElementById("timeRequirementAmount").value) + 0;
+            globalTimeRequirement = Number(document.getElementById("timeRequirementAmount").value) + 0;
         }
     });
     $("#timeRequirementAmount").val($("#slider-horizontal-timeRequirement").slider("value"));
-    timeRequirement = Number(document.getElementById("timeRequirementAmount").value) + 0;
+    globalTimeRequirement = Number(document.getElementById("timeRequirementAmount").value) + 0;
 
 });
 
