@@ -131,6 +131,7 @@ var arpeggioChoice = 0;
 var hiddenOptions = false;
 var singingStartTime = 0;
 var singingEndTime = 0;
+var singCaptureButtons=false;
 var youAreSinging = false;
 var singingTimeArray = [];
 var captureSinging = false;
@@ -2692,7 +2693,7 @@ async function playANote(arrayPlace) { // where we Play Notes
 		// synth.volume=(((0.01+referenceVolume))/100-.0001);
         // console.log("it is" +(((0.01+referenceVolume))/100-.0001));
         synth.triggerAttackRelease(noteStr, '10');
-
+		// alert ("hi");
         synthStarted = new Date(new Date().getTime()); //([noteStr, noteArray[53][0]],['10', '1']); // ((0.01+referenceVolume))/100-.0001);
     } else if (instrument == "synth2") {
         try {
@@ -2705,6 +2706,7 @@ async function playANote(arrayPlace) { // where we Play Notes
         synth2.set("volume", (accompanimentVolume / 10) - 30); //(((0.01+referenceVolume))/100-.0001));
         // synth.volume=(((0.01+referenceVolume))/100-.0001);
         // console.log("it is" +(((0.01+referenceVolume))/100-.0001));
+		alert ("hi");
         synth2.triggerAttackRelease(noteStr, '10');
 
         // synthStarted=new Date(new Date().getTime());//([noteStr, noteArray[53][0]],['10', '1']); // ((0.01+referenceVolume))/100-.0001);
@@ -2715,6 +2717,7 @@ async function playANote(arrayPlace) { // where we Play Notes
 		var noteStr="";
 		// console.log(instrument);
 		if (instrument!="rhythmInstruments"){
+			console.log(rhythmSequenceArray.toString());
         var noteStr = noteArray[arrayPlace][2];
         noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
 		}
@@ -3819,6 +3822,7 @@ function repeatOnFrame() {
 				
                 console.log(noteArray[sequenceArray[i][0]][1] + " for " + thisNoteTime);
             }
+			alert(sequenceArray.toString());
             randomNoteNum = sequenceArray[0][0];
 		 if (keyType == "major") {
             // console.log("new is " + newLastRandomScaleNum);
@@ -4008,20 +4012,15 @@ function repeatOnFrame() {
                     singingEndTime = new Date().getTime() + 0;
                     let timeChange = singingEndTime - singingStartTime;
                     // console.log("time change "+timeChange);
-                    if (timeChange > 200) {
+                    if (timeChange > 20) {
                         let singingTimeSeconds = (timeChange / 1000);
                         let singingTimeBeats = singingTimeSeconds / (60 / currentBPM);
                         console.log(noteArray[lastMostRecentPostingNum][1] + " was added from making noise");
                         singingTimeArray.push([lastMostRecentPostingNum, singingTimeSeconds]);
                         console.log("Yo" + singingTimeArray.toString());
-                        if (singingTimeArray.length > 5) {
-                            alert("cool");
-                            captureSinging = false;
-                            singingCaptured = true;
-                            sequencePlay = true;
-
-                            newQuestionTime = true;
-                        }
+                        // if (singingTimeArray.length > 5) {
+                        
+                        // }
                         // console.log("time you sang was " + singingTimeSeconds + " " + noteArray[mostRecentPostingNum][1]);
                     }
                     youAreSinging = false;
@@ -4062,18 +4061,15 @@ function repeatOnFrame() {
             try {
                 singingEndTime = new Date().getTime() + 0;
                 let timeChange = singingEndTime - singingStartTime;
-                if (timeChange > 100) {
+                if (timeChange > 20) {
                     let singingTimeSeconds = ((timeChange % (1000 * 60)) / 1000);
                     let singingTimeBeats = singingTimeSeconds / (60 / currentBPM);
                     console.log(noteArray[mostRecentPostingNum][1] + " was added from being quiet");
                     singingTimeArray.push([mostRecentPostingNum, singingTimeSeconds]);
                     console.log("Yo" + singingTimeArray.toString());
                     if (singingTimeArray.length > 5) {
-                        alert("cool");
-                        captureSinging = false;
-                        singingCaptured = true;
-                        sequencePlay = true;
-                        newQuestionTime = true;
+                        // alert("cool");
+
                     }
                     // console.log("time you sang was " + singingTimeSeconds + " " + noteArray[mostRecentPostingNum][1]);
                 }
@@ -4506,6 +4502,94 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
 
 }
 
+function findKey(notesWeHaveArray){
+let sungNotes=notesWeHaveArray.slice();
+// alert(sungNotes.toString());
+var cMajorArray=[0,[0, 2, 4, 5, 7, 9, 11]];
+var cSharpMajorArray=[1, [1, 3, 5, 6, 8, 10, 0]];
+var dMajorArray=[2, [2, 4, 6, 7, 9, 11, 1]];
+var dSharpMajorArray=[3, [3, 5, 7, 8, 10, 0, 2]];
+var eMajorArray=[4, [4, 6, 8, 9, 11, 1, 3]];
+var fMajorArray=[5, [5, 7, 9, 10, 0, 2, 4]];
+var fSharpMajorArray=[6, [6, 8, 10, 11, 1, 3, 5]];
+var gMajorArray=[7, [7, 9, 11, 0, 2, 4, 6]];
+var gSharpMajorArray=[8, [8, 10, 0, 1, 3, 5, 7]];
+var aMajorArray=[9, [9, 11, 1, 2, 4, 6, 8]];
+var aSharpMajorArray=[10, [10, 0, 2, 3, 5, 7, 9]];
+var bMajorArray=[11, [11, 1, 3, 4, 6, 8, 10]];
+var allTheMajors=[cMajorArray, cSharpMajorArray, dMajorArray, dSharpMajorArray, eMajorArray, fMajorArray, fSharpMajorArray, gMajorArray, gSharpMajorArray, aMajorArray, aSharpMajorArray, bMajorArray];
+var highScoreKeys=[];
+var highScore=0;
+  for (var i = 0; i < allTheMajors.length; i++) {
+      let currentKey = (allTheMajors[i])[0];
+      let currentKeyScore = 0;
+      for (var j = 0; j < sungNotes.length; j++) {
+		  // alert (j+ " "+ sungNotes[j]);
+		  // alert (sungNotes.length);
+		  // alert (allTheMajors[i][1].length);
+          if ((allTheMajors[i])[1].includes(sungNotes[j])) {
+			  
+			  // alert(currentKey+ " "+(allTheMajors[i])[1].toString());
+              currentKeyScore++;
+			  // alert (currentKey+" " +currentKeyScore+" "+j);
+          }
+		  // alert (currentKey+" "+currentKeyScore);
+      }
+      if (currentKeyScore > highScore) {
+		  highScore=currentKeyScore+0;;
+          highScoreKeys = [numToKeyName(currentKey)];
+      } else if (currentKeyScore == highScore) {
+          highScoreKeys.push(numToKeyName(currentKey));
+      }
+
+  }
+ alert(highScoreKeys.toString()+" major " + " with a score of "+highScore);
+}
+
+function numToKeyName(numOfKey){
+let nameOfKey="";
+	switch (numOfKey) {
+		 case 0:
+			nameOfKey="C";
+            break;
+         case 1:
+			nameOfKey="Db";
+            break;
+         case 2:
+			nameOfKey="D";
+            break;
+         case 3:
+			nameOfKey="Eb";
+            break;
+         case 4:
+			nameOfKey="E";
+            break;
+         case 5:
+			nameOfKey="F";
+            break;
+         case 6:
+			nameOfKey="Gb";
+            break;
+         case 7:
+			nameOfKey="G";
+            break;
+         case 8:
+			nameOfKey="Ab";
+            break;
+         case 9:
+			nameOfKey="A";
+            break;
+         case 10:
+			nameOfKey="Bb";
+            break;
+         case 11:
+			nameOfKey="B";
+            break;
+	}
+	return nameOfKey;
+}
+
+
 function pauseUnpauseScore() {
     if (scorePaused) {
         scorePaused = false;
@@ -4629,6 +4713,7 @@ function beginAudio(e) { //Avi thinks It all begins here.
             units: "Wait"
         });
         $("#tunercanvas").unbind("click");
+		// $(document).ready( function(){ PRELOADER.RUN(30000, appStart) } );
         if (audioCtx = new(window.AudioContext || window.webkitAudioContext), analyzer = audioCtx.createAnalyser(), !e) {
             if (audioCtx.sampleRate > 160000) {
                 window.globk = 4
@@ -5189,6 +5274,319 @@ $('#sequenceOn').click(function () {
     sequencePlay = true;
     newQuestionTime = true;
 });
+$('#whitec').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(0+(noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(0+(noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whitecs').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(1 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(1 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whited').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(2 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(2 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whiteds').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(3 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(3 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whitee').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(4 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(4 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whitef').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(5 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(5 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whitefs').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(6 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(6 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whiteg').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(7 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(7 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whitegs').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(8 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(8 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whitea').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(9 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(9 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whiteas').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(10 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(10 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whiteb').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(11 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(11 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+
+$('#whitectwo').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(12+(noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(12+(noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whitecstwo').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(13 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(13 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whitedtwo').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(14 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(14 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whitedstwo').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(15 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(15 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whiteetwo').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(16 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(16 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whiteftwo').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(17 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(17 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whitefstwo').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(18 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(18 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whitegtwo').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(19 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(19 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whitegstwo').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(20 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(20 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whiteatwo').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(21 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(21 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whiteastwo').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(22 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(22 + (noteAdapter + scaleAdapter)));
+    }
+
+});
+$('#whitebtwo').click(function () {
+    justPlayingScaleFam = true;
+    if (instrument == "humanVoice") {
+        stopAllNotes();
+    }
+
+    if (keyType == "major") {
+        (playANote(23 + (noteAdapter + scaleAdapter)));
+    } else {
+        (playANote(23 + (noteAdapter + scaleAdapter)));
+    }
+
+});
 $('#doButton').click(function () {
     justPlayingScaleFam = true;
     if (instrument == "humanVoice") {
@@ -5353,7 +5751,8 @@ $('#hide-button').click(function () {
 
 });
 $('#capture-by-sound-button').click(function () {
-    try {
+	if (!singCaptureButtons){
+	try {
         synth.triggerRelease();
         stopAllNotes();
     } catch (error) {}
@@ -5363,6 +5762,20 @@ $('#capture-by-sound-button').click(function () {
     singingCaptured = false;
     captureSinging = true;
 	buttonsCaptured=false;
+	singCaptureButtons=true;
+	} else {
+	  captureSinging = false;
+      singingCaptured = true;
+      sequencePlay = true;
+      newQuestionTime = true;
+	  singCaptureButtons=false;
+	  
+		var arrayOfSungNotesOnly=[];
+	  for (i=0; i<singingTimeArray.length; i++){
+		arrayOfSungNotesOnly.push(basicNote(singingTimeArray[i][0]));
+	  }
+		findKey(arrayOfSungNotesOnly);
+	}
 });
 $('#capture-by-buttons-button').click(function () {
     if (!captureButtons) {
@@ -5388,8 +5801,12 @@ $('#capture-by-buttons-button').click(function () {
 		buttonsCaptured=true;
         singingCaptured = true;
         sequencePlay = true;
-
         newQuestionTime = true;
+		var arrayOfSungNotesOnly=[];
+	for (i=0; i<singingTimeArray.length; i++){
+		arrayOfSungNotesOnly.push(basicNote(singingTimeArray[i][0]));
+	}
+	findKey(arrayOfSungNotesOnly);
     }
 });
 $('#testing-button-base-case').click(function () {
