@@ -85,7 +85,7 @@
  <button type ='button' id ="natMinorScale">Natural Minor Scale</button>
  <span style="font-size:16px">Choose your Reference Scale Type</span>
  <p>
- <select id = "referenceKeySelect" name = "referenceKeySelect"> <option value = "C"> C </option> <option value = "C#/Db"> C#/Db </option><option value = "D"> D </option><option value = "D#/Eb"> D#/Eb </option> <option value = "E"> E </option> <option value = "F"> F </option><option value = "F#/Gb"> F#/Gb </option><option value = "G"> G </option> <option value = "G#/Ab"> G#/Ab </option><option value = "A"> A </option><option value = "A#/Bb"> A#/Bb </option> <option value = "B"> B </option></select>
+ <select id = "referenceKeySelect" name = "referenceKeySelect"> <option id = "c" value = "C"> C </option> <option id = "cSharp" value = "C#/Db"> C#/Db </option><option id = "d" value = "D"> D </option><option id = "dSharp" value = "D#/Eb"> D#/Eb </option> <option id = "E" value = "E"> E </option> <option id = "f" value = "F"> F </option><option id = "fSharp" value = "F#/Gb"> F#/Gb </option><option id = "g" value = "G"> G </option> <option id = "gSharp" value = "G#/Ab"> G#/Ab </option><option id = "a" value = "A"> A </option><option id = "aSharp" value = "A#/Bb"> A#/Bb </option> <option id = "b" value = "B"> B </option></select>
  <span style="font-size:16px">Choose your Reference Key</span>
  <p>
  <button type ='button' id ="doButton">Do</button>
@@ -118,7 +118,7 @@ Time = <span id="countdown">01:00</span>
 		<script>
 		(function (d, e) {
 		var t=d.createElement("script");t.type="text/javascript",t.async=!0,t.src=e;var n=d.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n)
-		})(document, 'tunerAppRenewed.js');
+		})(document, 'tunerAppRenewedTwo.js');
 		</script>
 	</div>
 	<div class="col-xs-offset-0 col-xs-4 col-sm-5 justify-content-start">
@@ -164,9 +164,11 @@ Time = <span id="countdown">01:00</span>
 				<span style="font-size:16px">Continuous Mode</span>
 			</div><p>
 			 <div class="options-info row justify-content-start">
-				<button type ='button' id ="sequenceOn">On</button>
-				<button type ='button' id ="sequenceOff"style=background:#00cc00>Off (selected)</button>
-				<span style="font-size:16px">Sequence Mode (in Beta)</span>
+				
+				<button type ='button' id ="sequenceOff"style=background:#00cc00>Single Notes (selected)</button>
+				<button type ='button' id ="sequenceOn">Basic Sequence</button>
+				<button type ='button' id ="complexSequence">Complex Sequence (Beta)</button>
+				<span style="font-size:16px">Sequence Mode</span>
 			</div>
 						<div class="options-info row justify-content-start">		
 					<p>
