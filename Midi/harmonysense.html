@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="style31.css" type="text/css">
 <link rel="stylesheet" href="vendor/nouislider.min.css" type="text/css">
 <link rel="stylesheet" href="vendor/piano.css" type="text/css">
+<link rel="stylesheet" href="vendor/preloader.css" type="text/css">
 
 </head>
 <body class="tuner">
@@ -25,6 +26,11 @@
     <script src="vendor/nouislider.js"></script>
     <script src="vendor/Tone.js"></script>
 	    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+
+<div id="app-preloader">
+    <label for="preload-progress-bar">Downloading sounds and image files: <span class="progress-percentage"></span></label>
+    <progress id="preload-progress-bar"></progress>
+</div>
 
 <div class="all-wide">
 <div class="content">
@@ -275,224 +281,115 @@ Time = <span id="countdown">01:00</span>
 <p>
 
 </div>		
-	<audio id = "sound-kick0" src = "samplestwo/kick.wav" preload = "auto"></audio>
-	<audio id = "sound-snare0" src = "samplestwo/snare.wav" preload = "auto"></audio>
-	<audio id = "sound-hat0" src = "samplestwo/hat.wav" preload = "auto"></audio>
-	<audio id = "sound-A1" src = "samplestwo/_A2.wav" preload = "auto"></audio>
-	<audio id = "sound-Bb1" src = "samplestwo/_Bb2.wav" preload = "auto" ></audio>
-	<audio id = "sound-B1" src = "samplestwo/_B2.wav" preload = "auto"></audio>
-	<audio id = "sound-C2" src = "samplestwo/_C3.wav" preload = "auto"></audio>
-	<audio id = "sound-Db2" src = "samplestwo/_Db3.wav" preload = "auto"></audio>
-	<audio id = "sound-D2" src = "samplestwo/_D3.wav" preload = "auto"></audio>
-	<audio id = "sound-Eb2" src = "samplestwo/_Eb3.wav" preload = "auto"></audio>
-	<audio id = "sound-E2" src = "samplestwo/_E3.wav" preload = "auto"></audio>
-	<audio id = "sound-F2" src = "samplestwo/_F3.wav" preload = "auto"></audio>
-	<audio id = "sound-Gb2" src = "samplestwo/_Gb3.wav" preload = "auto"></audio>
-	<audio id = "sound-G2" src = "samplestwo/_G3.wav" preload = "auto"></audio>
-	<audio id = "sound-Ab2" src = "samplestwo/_Ab3.wav" preload = "auto"></audio>
-	<audio id = "sound-A2" src = "samplestwo/A2.ogg" preload = "auto"></audio>
-	<audio id = "sound-Bb2" src = "samplestwo/Bb2.ogg" preload = "auto"></audio>
-	<audio id = "sound-B2" src = "samplestwo/B2.ogg" preload = "auto"></audio>
-	<audio id = "sound-Ab3" src = "samplestwo/Ab3.ogg" preload = "auto"></audio>
-	<audio id = "sound-A3" src = "samplestwo/A3.ogg" preload = "auto"></audio>
-	<audio id = "sound-Bb3" src = "samplestwo/Bb3.ogg" preload = "auto"></audio>
-	<audio id = "sound-B3" src = "samplestwo/B3.ogg" preload = "auto"></audio>
-	<audio id = "sound-C3" src = "samplestwo/C3.ogg" preload = "auto"></audio>
-	<audio id = "sound-Db3" src = "samplestwo/Db3.ogg" preload = "auto"></audio>
-	<audio id = "sound-D3" src = "samplestwo/D3.ogg" preload = "auto"></audio>
-	<audio id = "sound-Eb3" src = "samplestwo/Eb3.ogg" preload = "auto"></audio>
-	<audio id = "sound-E3" src = "samplestwo/E3.ogg" preload = "auto"></audio>
-	<audio id = "sound-F3" src = "samplestwo/F3.ogg" preload = "auto"></audio>
-	<audio id = "sound-Gb3" src = "samplestwo/Gb3.ogg" preload = "auto"></audio>
-	<audio id = "sound-G3" src = "samplestwo/G3.ogg" preload = "auto"></audio>
-	<audio id = "sound-Ab4" src = "samplestwo/Ab4.ogg" preload = "auto"></audio>
-	<audio id = "sound-A4" src = "samplestwo/A4.ogg" preload = "auto"></audio>
-	<audio id = "sound-Bb4" src = "samplestwo/Bb4.ogg" preload = "auto"></audio>
-	<audio id = "sound-B4" src = "samplestwo/B4.ogg" preload = "auto"></audio>
-	<audio id = "sound-C4" src = "samplestwo/C4.ogg" preload = "auto"></audio>
-	<audio id = "sound-Db4" src = "samplestwo/Db4.ogg" preload = "auto"></audio>
-	<audio id = "sound-D4" src = "samplestwo/D4.ogg" preload = "auto"></audio>
-	<audio id = "sound-Eb4" src = "samplestwo/Eb4.ogg" preload = "auto"></audio>
-	<audio id = "sound-E4" src = "samplestwo/E4.ogg" preload = "auto"></audio>
-	<audio id = "sound-F4" src = "samplestwo/F4.ogg" preload = "auto"></audio>
-	<audio id = "sound-Gb4" src = "samplestwo/Gb4.ogg" preload = "auto"></audio>
-	<audio id = "sound-G4" src = "samplestwo/G4.ogg" preload = "auto"></audio>
-	<audio id = "sound-C5" src = "samplestwo/C5.ogg" preload = "auto"></audio>
-	<audio id = "sound-Db5" src = "samplestwo/5_Db4_4.wav" preload = "auto"></audio>
-	<audio id = "sound-D5" src = "samplestwo/5_D4_3.wav" preload = "auto"></audio>
-	<audio id = "sound-Eb5" src = "samplestwo/5_Eb4_3.wav" preload = "auto"></audio>
-	<audio id = "sound-E5" src = "samplestwo/5_E4_3.wav" preload = "auto"></audio>
-	<audio id = "sound-F5" src = "samplestwo/5_F4_3.wav" preload = "auto"></audio>
-	<audio id = "sound-Gb5" src = "samplestwo/5_Gb4_3.wav" preload = "auto"></audio>
-	<audio id = "sound-G5" src = "samplestwo/5_G4_2.wav" preload = "auto"></audio>
-	<audio id = "sound-Ab5" src = "samplestwo/5_Ab4_2.wav" preload = "auto"></audio>
-	<audio id = "sound-A5" src = "samplestwo/5_A4_2.wav" preload = "auto"></audio>
-	<audio id = "sound-Bb5" src = "samplestwo/5_Bb4_2.wav" preload = "auto"></audio>
-	<audio id = "sound-B5" src = "samplestwo/5_B4_2.wav" preload = "auto"></audio>
-	<audio id = "sound-C6" src = "samplestwo/5_C5_2.wav" preload = "auto"></audio>
+	<audio id = "sound-kick0" data-src = "samplestwo/kick.wav"></audio>
+	<audio id = "sound-snare0" data-src = "samplestwo/snare.wav"></audio>
+	<audio id = "sound-hat0" data-src = "samplestwo/hat.wav"></audio>
+	<audio id = "sound-A1" data-src = "samplestwo/_A2.wav"></audio>
+	<audio id = "sound-Bb1" data-src = "samplestwo/_Bb2.wav" preload = "auto" ></audio>
+	<audio id = "sound-B1" data-src = "samplestwo/_B2.wav"></audio>
+	<audio id = "sound-C2" data-src = "samplestwo/_C3.wav"></audio>
+	<audio id = "sound-Db2" data-src = "samplestwo/_Db3.wav"></audio>
+	<audio id = "sound-D2" data-src = "samplestwo/_D3.wav"></audio>
+	<audio id = "sound-Eb2" data-src = "samplestwo/_Eb3.wav"></audio>
+	<audio id = "sound-E2" data-src = "samplestwo/_E3.wav"></audio>
+	<audio id = "sound-F2" data-src = "samplestwo/_F3.wav"></audio>
+	<audio id = "sound-Gb2" data-src = "samplestwo/_Gb3.wav"></audio>
+	<audio id = "sound-G2" data-src = "samplestwo/_G3.wav"></audio>
+	<audio id = "sound-Ab2" data-src = "samplestwo/_Ab3.wav"></audio>
+	<audio id = "sound-A2" data-src = "samplestwo/A2.ogg"></audio>
+	<audio id = "sound-Bb2" data-src = "samplestwo/Bb2.ogg"></audio>
+	<audio id = "sound-B2" data-src = "samplestwo/B2.ogg"></audio>
+	<audio id = "sound-Ab3" data-src = "samplestwo/Ab3.ogg"></audio>
+	<audio id = "sound-A3" data-src = "samplestwo/A3.ogg"></audio>
+	<audio id = "sound-Bb3" data-src = "samplestwo/Bb3.ogg"></audio>
+	<audio id = "sound-B3" data-src = "samplestwo/B3.ogg"></audio>
+	<audio id = "sound-C3" data-src = "samplestwo/C3.ogg"></audio>
+	<audio id = "sound-Db3" data-src = "samplestwo/Db3.ogg"></audio>
+	<audio id = "sound-D3" data-src = "samplestwo/D3.ogg"></audio>
+	<audio id = "sound-Eb3" data-src = "samplestwo/Eb3.ogg"></audio>
+	<audio id = "sound-E3" data-src = "samplestwo/E3.ogg"></audio>
+	<audio id = "sound-F3" data-src = "samplestwo/F3.ogg"></audio>
+	<audio id = "sound-Gb3" data-src = "samplestwo/Gb3.ogg"></audio>
+	<audio id = "sound-G3" data-src = "samplestwo/G3.ogg"></audio>
+	<audio id = "sound-Ab4" data-src = "samplestwo/Ab4.ogg"></audio>
+	<audio id = "sound-A4" data-src = "samplestwo/A4.ogg"></audio>
+	<audio id = "sound-Bb4" data-src = "samplestwo/Bb4.ogg"></audio>
+	<audio id = "sound-B4" data-src = "samplestwo/B4.ogg"></audio>
+	<audio id = "sound-C4" data-src = "samplestwo/C4.ogg"></audio>
+	<audio id = "sound-Db4" data-src = "samplestwo/Db4.ogg"></audio>
+	<audio id = "sound-D4" data-src = "samplestwo/D4.ogg"></audio>
+	<audio id = "sound-Eb4" data-src = "samplestwo/Eb4.ogg"></audio>
+	<audio id = "sound-E4" data-src = "samplestwo/E4.ogg"></audio>
+	<audio id = "sound-F4" data-src = "samplestwo/F4.ogg"></audio>
+	<audio id = "sound-Gb4" data-src = "samplestwo/Gb4.ogg"></audio>
+	<audio id = "sound-G4" data-src = "samplestwo/G4.ogg"></audio>
+	<audio id = "sound-C5" data-src = "samplestwo/C5.ogg"></audio>
+	<audio id = "sound-Db5" data-src = "samplestwo/5_Db4_4.wav"></audio>
+	<audio id = "sound-D5" data-src = "samplestwo/5_D4_3.wav"></audio>
+	<audio id = "sound-Eb5" data-src = "samplestwo/5_Eb4_3.wav"></audio>
+	<audio id = "sound-E5" data-src = "samplestwo/5_E4_3.wav"></audio>
+	<audio id = "sound-F5" data-src = "samplestwo/5_F4_3.wav"></audio>
+	<audio id = "sound-Gb5" data-src = "samplestwo/5_Gb4_3.wav"></audio>
+	<audio id = "sound-G5" data-src = "samplestwo/5_G4_2.wav"></audio>
+	<audio id = "sound-Ab5" data-src = "samplestwo/5_Ab4_2.wav"></audio>
+	<audio id = "sound-A5" data-src = "samplestwo/5_A4_2.wav"></audio>
+	<audio id = "sound-Bb5" data-src = "samplestwo/5_Bb4_2.wav"></audio>
+	<audio id = "sound-B5" data-src = "samplestwo/5_B4_2.wav"></audio>
+	<audio id = "sound-C6" data-src = "samplestwo/5_C5_2.wav"></audio>
 	
-	<audio id = "vsound-A1" src = "samplestwo/vA1.wav" preload = "auto"></audio>
-	<audio id = "vsound-Bb1" src = "samplestwo/vBb1.wav" preload = "auto"></audio>
-	<audio id = "vsound-B1" src = "samplestwo/vB1.wav" preload = "auto"></audio>
-	<audio id = "vsound-C2" src = "samplestwo/vC2.wav" preload = "auto"></audio>
-	<audio id = "vsound-Db2" src = "samplestwo/vDb2.wav" preload = "auto"></audio>
-	<audio id = "vsound-D2" src = "samplestwo/vD2.wav" preload = "auto"></audio>
-	<audio id = "vsound-Eb2" src = "samplestwo/vEb2.wav" preload = "auto"></audio>
-	<audio id = "vsound-E2" src = "samplestwo/vE2.wav" preload = "auto"></audio>
-	<audio id = "vsound-F2" src = "samplestwo/vF2.wav" preload = "auto"></audio>
-	<audio id = "vsound-Gb2" src = "samplestwo/vGb2.wav" preload = "auto"></audio>
-	<audio id = "vsound-G2" src = "samplestwo/vG2.wav" preload = "auto"></audio>
-	<audio id = "vsound-Ab2" src = "samplestwo/vAb2.wav" preload = "auto"></audio>
-	<audio id = "vsound-A2" src = "samplestwo/vA2.wav" preload = "auto"></audio>
-	<audio id = "vsound-Bb2" src = "samplestwo/vBb2.wav" preload = "auto"></audio>
-	<audio id = "vsound-B2" src = "samplestwo/vB2.wav" preload = "auto"></audio>
-	<audio id = "vsound-Ab3" src = "samplestwo/vAb3.wav" preload = "auto"></audio>
-	<audio id = "vsound-A3" src = "samplestwo/vA3.wav" preload = "auto"></audio>
-	<audio id = "vsound-Bb3" src = "samplestwo/vBb3.wav" preload = "auto"></audio>
-	<audio id = "vsound-B3" src = "samplestwo/vB3.wav" preload = "auto"></audio>
-	<audio id = "vsound-C3" src = "samplestwo/vC3.wav" preload = "auto"></audio>
-	<audio id = "vsound-Db3" src = "samplestwo/vDb3.wav" preload = "auto"></audio>
-	<audio id = "vsound-D3" src = "samplestwo/vD3.wav" preload = "auto"></audio>
-	<audio id = "vsound-Eb3" src = "samplestwo/vEb3.wav" preload = "auto"></audio>
-	<audio id = "vsound-E3" src = "samplestwo/vE3.wav" preload = "auto"></audio>
-	<audio id = "vsound-F3" src = "samplestwo/vF3.wav" preload = "auto"></audio>
-	<audio id = "vsound-Gb3" src = "samplestwo/vGb3.wav" preload = "auto"></audio>
-	<audio id = "vsound-G3" src = "samplestwo/vG3.wav" preload = "auto"></audio>
-	<audio id = "vsound-Ab4" src = "samplestwo/vAb4.wav" preload = "auto"></audio>
-	<audio id = "vsound-A4" src = "samplestwo/vA4.wav" preload = "auto"></audio>
-	<audio id = "vsound-Bb4" src = "samplestwo/vBb4.wav" preload = "auto"></audio>
-	<audio id = "vsound-B4" src = "samplestwo/vB4.wav" preload = "auto"></audio>
-	<audio id = "vsound-C4" src = "samplestwo/vC4.wav" preload = "auto"></audio>
-	<audio id = "vsound-Db4" src = "samplestwo/vDb4.wav" preload = "auto"></audio>
-	<audio id = "vsound-D4" src = "samplestwo/vD4.wav" preload = "auto"></audio>
-	<audio id = "vsound-Eb4" src = "samplestwo/vEb4.wav" preload = "auto"></audio>
-	<audio id = "vsound-E4" src = "samplestwo/vE4.wav" preload = "auto"></audio>
-	<audio id = "vsound-F4" src = "samplestwo/vF4.wav" preload = "auto"></audio>
-	<audio id = "vsound-Gb4" src = "samplestwo/vGb4.wav" preload = "auto"></audio>
-	<audio id = "vsound-G4" src = "samplestwo/vG4.wav" preload = "auto"></audio>
-	<audio id = "vsound-C5" src = "samplestwo/vC5.wav" preload = "auto"></audio>
-	<audio id = "vsound-Db5" src = "samplestwo/vDb5.wav" preload = "auto"></audio>
-	<audio id = "vsound-D5" src = "samplestwo/vD5.wav" preload = "auto"></audio>
-	<audio id = "vsound-Eb5" src = "samplestwo/vEb5.wav" preload = "auto"></audio>
-	<audio id = "vsound-E5" src = "samplestwo/vE5.wav" preload = "auto"></audio>
-	<audio id = "vsound-F5" src = "samplestwo/vF5.wav" preload = "auto"></audio>
-	<audio id = "vsound-Gb5" src = "samplestwo/vGb5.wav" preload = "auto"></audio>
-	<audio id = "vsound-G5" src = "samplestwo/vG5.wav" preload = "auto"></audio>
-	<audio id = "vsound-Ab5" src = "samplestwo/vAb5.wav" preload = "auto"></audio>
-	<audio id = "vsound-A5" src = "samplestwo/vA5.wav" preload = "auto"></audio>
-	<audio id = "vsound-Bb5" src = "samplestwo/vBb5.wav" preload = "auto"></audio>
-	<audio id = "vsound-B5" src = "samplestwo/vB5.wav" preload = "auto"></audio>
-	<audio id = "vsound-C6" src = "samplestwo/vC6.wav" preload = "auto"></audio>
-	<!-- <div data-audiosrc="post-cards.mp3" data-audioid="post-cards"></div> -->
-	
-		<!-- <div data-audioid = "sound-kick0" data-audiosrc = "samplestwo/kick.wav" ></div> -->
-	<!-- <div data-audioid = "sound-snare0" data-audiosrc = "samplestwo/snare.wav" ></div> -->
-	<!-- <div data-audioid = "sound-hat0" data-audiosrc = "samplestwo/hat.wav" ></div> -->
-	<!-- <div data-audioid = "sound-A1" data-audiosrc = "samplestwo/_A2.wav" ></div> -->
-	<!-- <div data-audioid = "sound-Bb1" data-audiosrc = "samplestwo/_Bb2.wav"  ></div> -->
-	<!-- <div data-audioid = "sound-B1" data-audiosrc = "samplestwo/_B2.wav" ></div> -->
-	<!-- <div data-audioid = "sound-C2" data-audiosrc = "samplestwo/_C3.wav" ></div> -->
-	<!-- <div data-audioid = "sound-Db2" data-audiosrc = "samplestwo/_Db3.wav" ></div> -->
-	<!-- <div data-audioid = "sound-D2" data-audiosrc = "samplestwo/_D3.wav" ></div> -->
-	<!-- <div data-audioid = "sound-Eb2" data-audiosrc = "samplestwo/_Eb3.wav" ></div> -->
-	<!-- <div data-audioid = "sound-E2" data-audiosrc = "samplestwo/_E3.wav" ></div> -->
-	<!-- <div data-audioid = "sound-F2" data-audiosrc = "samplestwo/_F3.wav" ></div> -->
-	<!-- <div data-audioid = "sound-Gb2" data-audiosrc = "samplestwo/_Gb3.wav" ></div> -->
-	<!-- <div data-audioid = "sound-G2" data-audiosrc = "samplestwo/_G3.wav" ></div> -->
-	<!-- <div data-audioid = "sound-Ab2" data-audiosrc = "samplestwo/_Ab3.wav" ></div> -->
-	<!-- <div data-audioid = "sound-A2" data-audiosrc = "samplestwo/A2.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-Bb2" data-audiosrc = "samplestwo/Bb2.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-B2" data-audiosrc = "samplestwo/B2.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-Ab3" data-audiosrc = "samplestwo/Ab3.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-A3" data-audiosrc = "samplestwo/A3.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-Bb3" data-audiosrc = "samplestwo/Bb3.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-B3" data-audiosrc = "samplestwo/B3.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-C3" data-audiosrc = "samplestwo/C3.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-Db3" data-audiosrc = "samplestwo/Db3.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-D3" data-audiosrc = "samplestwo/D3.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-Eb3" data-audiosrc = "samplestwo/Eb3.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-E3" data-audiosrc = "samplestwo/E3.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-F3" data-audiosrc = "samplestwo/F3.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-Gb3" data-audiosrc = "samplestwo/Gb3.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-G3" data-audiosrc = "samplestwo/G3.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-Ab4" data-audiosrc = "samplestwo/Ab4.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-A4" data-audiosrc = "samplestwo/A4.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-Bb4" data-audiosrc = "samplestwo/Bb4.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-B4" data-audiosrc = "samplestwo/B4.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-C4" data-audiosrc = "samplestwo/C4.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-Db4" data-audiosrc = "samplestwo/Db4.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-D4" data-audiosrc = "samplestwo/D4.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-Eb4" data-audiosrc = "samplestwo/Eb4.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-E4" data-audiosrc = "samplestwo/E4.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-F4" data-audiosrc = "samplestwo/F4.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-Gb4" data-audiosrc = "samplestwo/Gb4.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-G4" data-audiosrc = "samplestwo/G4.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-C5" data-audiosrc = "samplestwo/C5.ogg" ></div> -->
-	<!-- <div data-audioid = "sound-Db5" data-audiosrc = "samplestwo/5_Db4_4.wav" ></div> -->
-	<!-- <div data-audioid = "sound-D5" data-audiosrc = "samplestwo/5_D4_3.wav" ></div> -->
-	<!-- <div data-audioid = "sound-Eb5" data-audiosrc = "samplestwo/5_Eb4_3.wav" ></div> -->
-	<!-- <div data-audioid = "sound-E5" data-audiosrc = "samplestwo/5_E4_3.wav" ></div> -->
-	<!-- <div data-audioid = "sound-F5" data-audiosrc = "samplestwo/5_F4_3.wav" ></div> -->
-	<!-- <div data-audioid = "sound-Gb5" data-audiosrc = "samplestwo/5_Gb4_3.wav" ></div> -->
-	<!-- <div data-audioid = "sound-G5" data-audiosrc = "samplestwo/5_G4_2.wav" ></div> -->
-	<!-- <div data-audioid = "sound-Ab5" data-audiosrc = "samplestwo/5_Ab4_2.wav" ></div> -->
-	<!-- <div data-audioid = "sound-A5" data-audiosrc = "samplestwo/5_A4_2.wav" ></div> -->
-	<!-- <div data-audioid = "sound-Bb5" data-audiosrc = "samplestwo/5_Bb4_2.wav" ></div> -->
-	<!-- <div data-audioid = "sound-B5" data-audiosrc = "samplestwo/5_B4_2.wav" ></div> -->
-	<!-- <div data-audioid = "sound-C6" data-audiosrc = "samplestwo/5_C5_2.wav" ></div> -->
-	
-	<!-- <div data-audioid = "vsound-A1" data-audiosrc = "samplestwo/vA1.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Bb1" data-audiosrc = "samplestwo/vA#1-Bb1.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-B1" data-audiosrc = "samplestwo/vB1.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-C2" data-audiosrc = "samplestwo/vC2.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Db2" data-audiosrc = "samplestwo/vE#2-Db2.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-D2" data-audiosrc = "samplestwo/vD2.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Eb2" data-audiosrc = "samplestwo/vD#2-Eb2.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-E2" data-audiosrc = "samplestwo/vE2.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-F2" data-audiosrc = "samplestwo/vF2.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Gb2" data-audiosrc = "samplestwo/vF#2-Gb2.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-G2" data-audiosrc = "samplestwo/vG2.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Ab2" data-audiosrc = "samplestwo/vG#2-Ab2.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-A2" data-audiosrc = "samplestwo/vA2.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Bb2" data-audiosrc = "samplestwo/vA#2-Bb2.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-B2" data-audiosrc = "samplestwo/vB2.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Ab3" data-audiosrc = "samplestwo/vG#3-Ab3.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-A3" data-audiosrc = "samplestwo/vA3.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Bb3" data-audiosrc = "samplestwo/vA#3-Bb3.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-B3" data-audiosrc = "samplestwo/vB3.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-C3" data-audiosrc = "samplestwo/vC3.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Db3" data-audiosrc = "samplestwo/vC#3-Db3.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-D3" data-audiosrc = "samplestwo/vD3.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Eb3" data-audiosrc = "samplestwo/vD#3-Eb3.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-E3" data-audiosrc = "samplestwo/vE3.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-F3" data-audiosrc = "samplestwo/vF3.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Gb3" data-audiosrc = "samplestwo/vF#3-Gb3.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-G3" data-audiosrc = "samplestwo/vG3.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Ab4" data-audiosrc = "samplestwo/vG#4-Ab4.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-A4" data-audiosrc = "samplestwo/vA4.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Bb4" data-audiosrc = "samplestwo/vA#4-Bb4.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-B4" data-audiosrc = "samplestwo/vB4.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-C4" data-audiosrc = "samplestwo/vC4.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Db4" data-audiosrc = "samplestwo/vC#4-Db4.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-D4" data-audiosrc = "samplestwo/vD4.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Eb4" data-audiosrc = "samplestwo/vD#4-Eb4.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-E4" data-audiosrc = "samplestwo/vE4.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-F4" data-audiosrc = "samplestwo/vF4.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Gb4" data-audiosrc = "samplestwo/vF#4-Gb4.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-G4" data-audiosrc = "samplestwo/vG4.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-C5" data-audiosrc = "samplestwo/vC5.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Db5" data-audiosrc = "samplestwo/vC#5-Db5.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-D5" data-audiosrc = "samplestwo/vD5.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Eb5" data-audiosrc = "samplestwo/vD#5-Eb5.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-E5" data-audiosrc = "samplestwo/vE5.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-F5" data-audiosrc = "samplestwo/vF5.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Gb5" data-audiosrc = "samplestwo/vF#5-Gb5.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-G5" data-audiosrc = "samplestwo/vG5.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Ab5" data-audiosrc = "samplestwo/vG#5-Ab5.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-A5" data-audiosrc = "samplestwo/vA5.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-Bb5" data-audiosrc = "samplestwo/vA#5-Bb5.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-B5" data-audiosrc = "samplestwo/vB5.wav" ></div> -->
-	<!-- <div data-audioid = "vsound-C6" data-audiosrc = "samplestwo/vC6.wav" ></div> -->
+	<audio id = "vsound-A1" data-src = "samplestwo/vA1.wav"></audio>
+	<audio id = "vsound-Bb1" data-src = "samplestwo/vBb1.wav"></audio>
+	<audio id = "vsound-B1" data-src = "samplestwo/vB1.wav"></audio>
+	<audio id = "vsound-C2" data-src = "samplestwo/vC2.wav"></audio>
+	<audio id = "vsound-Db2" data-src = "samplestwo/vDb2.wav"></audio>
+	<audio id = "vsound-D2" data-src = "samplestwo/vD2.wav"></audio>
+	<audio id = "vsound-Eb2" data-src = "samplestwo/vEb2.wav"></audio>
+	<audio id = "vsound-E2" data-src = "samplestwo/vE2.wav"></audio>
+	<audio id = "vsound-F2" data-src = "samplestwo/vF2.wav"></audio>
+	<audio id = "vsound-Gb2" data-src = "samplestwo/vGb2.wav"></audio>
+	<audio id = "vsound-G2" data-src = "samplestwo/vG2.wav"></audio>
+	<audio id = "vsound-Ab2" data-src = "samplestwo/vAb2.wav"></audio>
+	<audio id = "vsound-A2" data-src = "samplestwo/vA2.wav"></audio>
+	<audio id = "vsound-Bb2" data-src = "samplestwo/vBb2.wav"></audio>
+	<audio id = "vsound-B2" data-src = "samplestwo/vB2.wav"></audio>
+	<audio id = "vsound-Ab3" data-src = "samplestwo/vAb3.wav"></audio>
+	<audio id = "vsound-A3" data-src = "samplestwo/vA3.wav"></audio>
+	<audio id = "vsound-Bb3" data-src = "samplestwo/vBb3.wav"></audio>
+	<audio id = "vsound-B3" data-src = "samplestwo/vB3.wav"></audio>
+	<audio id = "vsound-C3" data-src = "samplestwo/vC3.wav"></audio>
+	<audio id = "vsound-Db3" data-src = "samplestwo/vDb3.wav"></audio>
+	<audio id = "vsound-D3" data-src = "samplestwo/vD3.wav"></audio>
+	<audio id = "vsound-Eb3" data-src = "samplestwo/vEb3.wav"></audio>
+	<audio id = "vsound-E3" data-src = "samplestwo/vE3.wav"></audio>
+	<audio id = "vsound-F3" data-src = "samplestwo/vF3.wav"></audio>
+	<audio id = "vsound-Gb3" data-src = "samplestwo/vGb3.wav"></audio>
+	<audio id = "vsound-G3" data-src = "samplestwo/vG3.wav"></audio>
+	<audio id = "vsound-Ab4" data-src = "samplestwo/vAb4.wav"></audio>
+	<audio id = "vsound-A4" data-src = "samplestwo/vA4.wav"></audio>
+	<audio id = "vsound-Bb4" data-src = "samplestwo/vBb4.wav"></audio>
+	<audio id = "vsound-B4" data-src = "samplestwo/vB4.wav"></audio>
+	<audio id = "vsound-C4" data-src = "samplestwo/vC4.wav"></audio>
+	<audio id = "vsound-Db4" data-src = "samplestwo/vDb4.wav"></audio>
+	<audio id = "vsound-D4" data-src = "samplestwo/vD4.wav"></audio>
+	<audio id = "vsound-Eb4" data-src = "samplestwo/vEb4.wav"></audio>
+	<audio id = "vsound-E4" data-src = "samplestwo/vE4.wav"></audio>
+	<audio id = "vsound-F4" data-src = "samplestwo/vF4.wav"></audio>
+	<audio id = "vsound-Gb4" data-src = "samplestwo/vGb4.wav"></audio>
+	<audio id = "vsound-G4" data-src = "samplestwo/vG4.wav"></audio>
+	<audio id = "vsound-C5" data-src = "samplestwo/vC5.wav"></audio>
+	<audio id = "vsound-Db5" data-src = "samplestwo/vDb5.wav"></audio>
+	<audio id = "vsound-D5" data-src = "samplestwo/vD5.wav"></audio>
+	<audio id = "vsound-Eb5" data-src = "samplestwo/vEb5.wav"></audio>
+	<audio id = "vsound-E5" data-src = "samplestwo/vE5.wav"></audio>
+	<audio id = "vsound-F5" data-src = "samplestwo/vF5.wav"></audio>
+	<audio id = "vsound-Gb5" data-src = "samplestwo/vGb5.wav"></audio>
+	<audio id = "vsound-G5" data-src = "samplestwo/vG5.wav"></audio>
+	<audio id = "vsound-Ab5" data-src = "samplestwo/vAb5.wav"></audio>
+	<audio id = "vsound-A5" data-src = "samplestwo/vA5.wav"></audio>
+	<audio id = "vsound-Bb5" data-src = "samplestwo/vBb5.wav"></audio>
+	<audio id = "vsound-B5" data-src = "samplestwo/vB5.wav"></audio>
+	<audio id = "vsound-C6" data-src = "samplestwo/vC6.wav"></audio>
+
 <div style="clear:both;"></div>
 </div>
 </div>

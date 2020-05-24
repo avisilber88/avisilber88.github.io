@@ -1,0 +1,17 @@
+body.not-loaded #app-preloader ~ * {
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+#preloader-progress-bar {
+    position: 100%; 
+    background-color: white; 
+    width: 450px; 
+    height: 150px; 
+    margin: 0 auto; 
+    top: 50%; 
+    left: 50%; 
+    right: 50%; 
+    transform: translateY(-50%);
+    font-size: 12px; 
+}
