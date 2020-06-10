@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="vendor/nouislider.min.css" type="text/css">
 <link rel="stylesheet" href="vendor/piano.css" type="text/css">
 <link rel="stylesheet" href="vendor/preloader.css" type="text/css">
+<link rel="stylesheet" href="vendor/notationmovement.css" type="text/css">
 
 </head>
 <body class="tuner">
@@ -25,6 +26,7 @@
 	
     <script src="vendor/nouislider.js"></script>
     <script src="vendor/Tone.js"></script>
+    <script src="vendor/vexflow-min.js"></script>
 	    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
 
 <div id="app-preloader">
@@ -230,6 +232,19 @@ Time = <span id="countdown">01:00</span>
 	</div>
 	
 	</div>
+	<div class="row justify-content-start">
+	
+<div id="staff-box"></div>
+</div>	
+<div class="row justify-content-start">
+	
+	<div id="controls">
+  <button id='add-note'>Add Note</button>
+  <button id='right-answer'>Right Answer</button>
+</div>
+
+<div id="staff-box-two"></div>
+</div>
 	<div class="options-info">
 			<div class="row justify-content-start">
 			<button type ='button' id ="octave2">Octave 2</button>
@@ -244,6 +259,12 @@ Time = <span id="countdown">01:00</span>
 			<div class="row justify-content-start">	
 			<button type ='button' id ="capture-by-sound-button">Record a sequence by singing it (in Beta)</button>
 			<button type ='button' id ="capture-by-buttons-button">Record a sequence by pressing note buttons above the tuner.</button>
+			</div>
+			<p> 			
+			<p>
+			<div class="row justify-content-start">	
+			<button type ='button' id ="mute-button">mute Mic</button>
+			<button type ='button' id ="unmute-button">unMute Mic</button>
 			</div>
 	</div>
 	<div>
@@ -281,6 +302,7 @@ Time = <span id="countdown">01:00</span>
 <p>
 
 </div>		
+	
 	<div class="row justify-content-start">
 	<button type ='button' id ="chord-progression-roman">In Roman Numerals</button>
 	<button type ='button' id ="chord-progression-names">In Chord Names</button>
@@ -387,6 +409,7 @@ Time = <span id="countdown">01:00</span>
 <div style="clear:both;"></div>
 </div>
 </div>
+
 
 <script src="helper.js"></script>
 <script src="vendor/preloader.js"></script>
