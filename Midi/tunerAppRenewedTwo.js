@@ -214,6 +214,7 @@ var wholesToTieAtTheBeginning = 0;
 var startingXSetting=600;
 var setupAFirstNote=false;
 var firstNotationToCome=false;
+var singAndTargetPlacement=600;
 noteOnListener(0, 0);
 
 
@@ -900,14 +901,25 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
                 fillStyle: 'red'
             }); //chartreuse
             try {
-                const transformMatrix = window.getComputedStyle(visibleReferenceNoteGroups[visibleReferenceNoteGroups.length - 1]).transform;
-                // transformMatrix will be something like 'matrix(1, 0, 0, 1, -118, 0)'
+				let transformMatrix=5;
+					// console.warn(visibleReferenceNoteGroups.length);
+				if (sequencePlay){
+					transformMatrix = window.getComputedStyle(visibleReferenceNoteGroups[visibleReferenceNoteGroups.length - 2]).transform;
+                }
+				else{ 
+					transformMatrix = window.getComputedStyle(visibleReferenceNoteGroups[visibleReferenceNoteGroups.length - 1]).transform;             
+				
+				}
+				// console.warn("it is "+transformMatrix);
+				// transformMatrix will be something like 'matrix(1, 0, 0, 1, -118, 0)'
                 // where, since we're only translating in x, the 4th property will be
                 // the current x-translation. You can dive into the gory details of
                 // CSS3 transform matrices (along with matrix multiplication) if you want
                 // at http://www.useragentman.com/blog/2011/01/07/css3-matrix-transform-for-the-mathematically-challenged/
                 const x = transformMatrix.split(',')[4].trim();
-                tickContext.preFormat().setX(Math.floor(x) + startingXSetting);
+				console.warn(x);
+                singAndTargetPlacement=Math.floor(x) + startingXSetting;
+				
             } catch (error) {
                 // alert ("hi");
                 console.error(error.toString());
@@ -1044,6 +1056,9 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
 			else{
             tickContext.preFormat().setX(startingXSetting);
 			}
+		if ((voiceType=="singingNote")||(voiceType=="targetNote")){
+		tickContext.preFormat().setX(singAndTargetPlacement);
+		}
         currentImageNote.draw();
         if (tieOn){tickContext.preFormat().setX(startingSetX+25);
         currentSecondImageNote.draw();
@@ -1081,6 +1096,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
         // If a user doesn't answer in time make the note fall below the staff
         window.setTimeout(() => {
             if (voiceType == "singingNote") {
+				
                 const index = visibleSingingNoteGroups.indexOf(group);
                 if (index === -1)
                     return;
