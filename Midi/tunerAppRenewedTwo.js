@@ -7663,6 +7663,17 @@ $('#sequenceOff').click(function () {
     document.getElementById("sequenceOn").style.background = buttonNormalColor;
     document.getElementById("complexSequence").innerHTML = "Complex Sequence (beta)";
     document.getElementById("complexSequence").style.background = buttonNormalColor;
+	    singingTimeArray = [];
+        sequenceArray = [];
+        sequenceCopy = [];
+        arpeggioArray = [];
+        chordSequenceArray = [];
+        chordSequenceCopy = [];
+        buttonsCaptured = false;
+        captureButtons = false;
+		singingCaptured=false;
+		buttonPlay=false;
+        buttonStartEndTimes = [];
     sequencePlay = false;
     newQuestionTime = true;
     nonReferencePlay = false;
@@ -7680,7 +7691,18 @@ $('#sequenceOn').click(function () {
     document.getElementById("complexSequence").style.background = buttonNormalColor;
     slider.noUiSlider.set([4, 4]);
     sequenceLength = 2;
-
+		    singingTimeArray = [];
+        sequenceArray = [];
+        sequenceCopy = [];
+        arpeggioArray = [];
+        chordSequenceArray = [];
+        chordSequenceCopy = [];
+        buttonsCaptured = false;
+        captureButtons = false;
+		
+		buttonPlay=false;
+		singingCaptured=false;
+        buttonStartEndTimes = [];
     $("#sequenceLengthAmount").val(2);
     noteLengthMin = 4;
     noteLengthMax = 4;
@@ -7702,7 +7724,18 @@ $('#complexSequence').click(function () {
     noteLengthMin = 1;
     noteLengthMax = 2;
     sequenceLength = 8;
-
+		singingTimeArray = [];
+        sequenceArray = [];
+        sequenceCopy = [];
+        arpeggioArray = [];
+        chordSequenceArray = [];
+        chordSequenceCopy = [];
+        buttonsCaptured = false;
+        captureButtons = false;
+		
+		buttonPlay=false;
+		singingCaptured=false;
+        buttonStartEndTimes = [];
     slider.noUiSlider.set([1, 2]);
     // $("#slider-horizontal-BPMAmount").slide(78);
     $("#BPMAmount").val(78);
