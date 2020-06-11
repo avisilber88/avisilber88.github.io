@@ -211,7 +211,11 @@ var tieAmountOne = 1;
 var tieAmountTwo = 1;
 var smallestNoteDenominator = 8;
 var wholesToTieAtTheBeginning = 0;
+var startingXSetting=600;
+var setupAFirstNote=false;
+var firstNotationToCome=false;
 noteOnListener(0, 0);
+
 
 // const VF = Vex.Flow;
 
@@ -261,7 +265,7 @@ var div = document.getElementById("staff-box")
     var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
 
 // Configure the rendering context.
-renderer.resize(800, 200);
+renderer.resize(700, 200);
 var context = renderer.getContext();
 
 // A tickContext is required to draw anything that would be placed
@@ -414,7 +418,7 @@ notes[0].setKeyStyle(0, {
 //
 // tickContext.setX() establishes the left-most x position for all
 // of the 'tickables' (notes, etc...) in a context.
-tickContext.preFormat().setX(400);
+tickContext.preFormat().setX(startingXSetting);
 
 // This will contain any notes that are currently visible on the staff,
 // before they've either been answered correctly, or plumetted off
@@ -426,52 +430,52 @@ const visibleSingingNoteGroups = [];
 const visibleTargetNoteGroups = [];
 
 // Add a note to the staff from the notes array (if there are any left).
-document.getElementById('add-note').addEventListener('click', (e) => {
-    if (!firstNoteShown) {
+// document.getElementById('add-note').addEventListener('click', (e) => {
+    // if (!firstNoteShown) {
 
-        makeAndShowANote(37, 2, "referenceNote");
-        makeAndShowANote(50, 2, "referenceNote");
-        makeAndShowANote(40, 2, "singingNote");
-        makeAndShowANote(41, 2, "targetNote");
-        // makeAndShowANote(47,2, "singingNote");
-        firstNoteShown = true;
-    } else {
-        makeAndShowANote(37, 2, "referenceNote");
-        makeAndShowANote(50, 2, "referenceNote");
-        makeAndShowANote(45, 2, "targetNote");
-        makeAndShowANote(47, 2, "singingNote");
-    }
-    // note = notes.shift();
-    // if(!note) return;
-    // const group = context.openGroup();
-    // visibleNoteGroups.push(group);
-    // note.draw();
-    // context.closeGroup();
-    // group.classList.add('scroll');
-    // // Force a dom-refresh by asking for the group's bounding box. Why? Most
-    // // modern browsers are smart enough to realize that adding .scroll class
-    // // hasn't changed anything about the rendering, so they wait to apply it
-    // // at the next dom refresh, when they can apply any other changes at the
-    // // same time for optimization. However, if we allow that to happen,
-    // // then sometimes the note will immediately jump to its fully transformed
-    // // position -- because the transform will be applied before the class with
-    // // its transition rule.
-    // const box = group.getBoundingClientRect();
-    // group.classList.add('scrolling');
+        // makeAndShowANote(37, 2, "referenceNote");
+        // makeAndShowANote(50, 2, "referenceNote");
+        // makeAndShowANote(40, 2, "singingNote");
+        // makeAndShowANote(41, 2, "targetNote");
+        // // makeAndShowANote(47,2, "singingNote");
+        // firstNoteShown = true;
+    // } else {
+        // makeAndShowANote(37, 2, "referenceNote");
+        // makeAndShowANote(50, 2, "referenceNote");
+        // makeAndShowANote(45, 2, "targetNote");
+        // makeAndShowANote(47, 2, "singingNote");
+    // }
+    // // note = notes.shift();
+    // // if(!note) return;
+    // // const group = context.openGroup();
+    // // visibleNoteGroups.push(group);
+    // // note.draw();
+    // // context.closeGroup();
+    // // group.classList.add('scroll');
+    // // // Force a dom-refresh by asking for the group's bounding box. Why? Most
+    // // // modern browsers are smart enough to realize that adding .scroll class
+    // // // hasn't changed anything about the rendering, so they wait to apply it
+    // // // at the next dom refresh, when they can apply any other changes at the
+    // // // same time for optimization. However, if we allow that to happen,
+    // // // then sometimes the note will immediately jump to its fully transformed
+    // // // position -- because the transform will be applied before the class with
+    // // // its transition rule.
+    // // const box = group.getBoundingClientRect();
+    // // group.classList.add('scrolling');
 
-    // // If a user doesn't answer in time make the note fall below the staff
-    // window.setTimeout(() => {
-    // const index = visibleNoteGroups.indexOf(group);
-    // if(index === -1) return;
-    // group.classList.add('too-slow');
-    // visibleNoteGroups.shift();
-    // }, 5000);
-});
+    // // // If a user doesn't answer in time make the note fall below the staff
+    // // window.setTimeout(() => {
+    // // const index = visibleNoteGroups.indexOf(group);
+    // // if(index === -1) return;
+    // // group.classList.add('too-slow');
+    // // visibleNoteGroups.shift();
+    // // }, 5000);
+// });
 
 // If a user plays/identifies the note in time, send it up to note heaven.
-document.getElementById('right-answer').addEventListener('click', (e) => {
-    rightAnswer();
-})
+// document.getElementById('right-answer').addEventListener('click', (e) => {
+    // rightAnswer();
+// })
 
 function durationNoteSelectTwentyFour(localBeatCount) {
     let outOfTwentyFour = Math.round(localBeatCount * 6);
@@ -493,6 +497,10 @@ function durationNoteSelect(localBeatCount) {
         beatCount = durationNoteSelectEight(localBeatCount);
         wholesToTieAtTheBeginning = Math.floor(beatCount / 8);
         beatCount = beatCount % 8;
+		if ((beatCount==0)&&(wholesToTieAtTheBeginning==1)){
+		beatCount=8;
+		wholesToTieAtTheBeginning=0;
+		}
         //the code below is for 1/8 where each case is the numerator
         switch (beatCount) {
         case 1:
@@ -606,7 +614,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
         let partOne = noteStr.slice(0, 1) + '';
         let partTwo = noteStr.slice(+2) + '';
         let partThree = noteStr.slice(1, 2) + '';
-        // alert (partOne+" "+partTwo+" "+partThree+" ");
+        // alert (partOne+" "+partTwo+" "+partThree+" "+wholesToTieAtTheBeginning);
         noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
         //Start AREA OF TIES!
 
@@ -870,7 +878,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
                     fillStyle: 'black'
                 });
             }
-            tickContext.preFormat().setX(400);
+
         } else if (voiceType == "targetNote") {
             try {
                 // if ((wrongNote) && (!(scoreTimeStart.getTime() > now.getTime()))) {
@@ -899,11 +907,11 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
                 // CSS3 transform matrices (along with matrix multiplication) if you want
                 // at http://www.useragentman.com/blog/2011/01/07/css3-matrix-transform-for-the-mathematically-challenged/
                 const x = transformMatrix.split(',')[4].trim();
-                tickContext.preFormat().setX(Math.floor(x) + 400);
+                tickContext.preFormat().setX(Math.floor(x) + startingXSetting);
             } catch (error) {
                 // alert ("hi");
                 console.error(error.toString());
-                tickContext.preFormat().setX(400);
+                tickContext.preFormat().setX(startingXSetting);
             } //.setX(visibleNoteGroups[0].getX());//.setX(tickContext.getTickables().getX());
             // alert (visibleNoteGroups.getX().toString());
             // alert notes[0].
@@ -935,11 +943,11 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
                 // CSS3 transform matrices (along with matrix multiplication) if you want
                 // at http://www.useragentman.com/blog/2011/01/07/css3-matrix-transform-for-the-mathematically-challenged/
                 const x = transformMatrix.split(',')[4].trim();
-                tickContext.preFormat().setX(Math.floor(x) + 400); //.setX(visibleNoteGroups[0].getX());//.setX(tickContext.getTickables().getX());
+                tickContext.preFormat().setX(Math.floor(x) + startingXSetting); //.setX(visibleNoteGroups[0].getX());//.setX(tickContext.getTickables().getX());
                 // alert (visibleNoteGroups.getX().toString());
                 // alert notes[0].
             } catch (error) {
-                tickContext.preFormat().setX(400);
+                tickContext.preFormat().setX(startingXSetting);
             }
         }
         currentImageNote = notes.shift();
@@ -969,22 +977,45 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
         } else if (voiceType == "referenceNote") {
             visibleReferenceNoteGroups.push(group);
             referenceGroups.push(visibleReferenceNoteGroups.indexOf(group));
-            if (sequenceOn) {
+            if (sequencePlay) {
                 try {
                     // alert ("hi");
+					visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group)].classList.add('prescroll');
+					} catch (error) {alert ("hi"); }
+					   try {
+                    // alert ("hi");
+					visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group)].classList.add('nextNote');
+					} catch (error) { }
+					try {
+                    visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 1].classList.remove('prescroll');
+					} catch (error) { }
+					try {
+                    visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 1].classList.remove('nextNote');
+					} catch (error) { }
+					try {
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 1].classList.add('currentnote');
+					} catch (error) { }
+					try {
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.remove('currentnote');
+					} catch (error) { }
+					try {
                     // visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.add('scroll');
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.remove('partscroll');
+					} catch (error) { }
+					try {
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.remove('partscrolling');
+					} catch (error) { }
+					try {
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.add('scroll');
+					} catch (error) { }
+					try {
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.add('scrolling');
 
-                } catch (error) {}
+                } catch (error) { }
             }
             // console.error(referenceGroups.toString());
         }
-		let startingSetX=400-wholesToTieAtTheBeginning*25;
+		let startingSetX=startingXSetting-wholesToTieAtTheBeginning*25;
 		if (tieOn){
 			startingSetX=startingSetX-50;
 		}			
@@ -1006,6 +1037,13 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
 			startingSetX=startingSetX+25;
 		}
 		tickContext.preFormat().setX(startingSetX);
+		if (setupAFirstNote){
+            tickContext.preFormat().setX(startingXSetting+25);
+			setupAFirstNote=false;
+		}
+			else{
+            tickContext.preFormat().setX(startingXSetting);
+			}
         currentImageNote.draw();
         if (tieOn){tickContext.preFormat().setX(startingSetX+25);
         currentSecondImageNote.draw();
@@ -1078,7 +1116,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
             // const index = visibleNoteGroups.indexOf(group);
 
 
-        }, 5000);
+        }, 10000);
     }
 }
 
@@ -1096,7 +1134,7 @@ function rightAnswer() {
     // at http://www.useragentman.com/blog/2011/01/07/css3-matrix-transform-for-the-mathematically-challenged/
     const x = transformMatrix.split(',')[4].trim();
     // And, finally, we set the note's style.transform property to send it skyward.
-    group.style.transform = `translate(${x}px, -800px)`;
+    group.style.transform = `translate(${x}px, (0-startingXSetting)+'px')`;
 }
 
 if (navigator.requestMIDIAccess) {
@@ -4661,7 +4699,22 @@ function repeatOnFrame() {
         }
         // console.log(sequenceCopy.toString());
         // console.log(sequenceArray.toString());
-        let currentNoteInfo = sequenceArray.shift();
+			if (firstNotationToCome){
+				// alert(sequenceArray[0][0]+" "+sequenceArray[0][1]);
+				
+                makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
+				
+				// alert("checkpointTwo");
+				firstNotationToCome=false;
+				setupAFirstNote=true;
+			}
+            let currentNoteInfo = sequenceArray.shift();
+			
+            if (sequenceArray.length > 0) {
+                makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
+            } else {
+                makeAndShowANote(sequenceCopy[0][0], sequenceCopy[0][1], "referenceNote");
+            }
         // let currentRandomScaleNum=
         // console.log(currentNoteInfo.toString());
         currentNoteBeats = currentNoteInfo[1] + 0;
@@ -4881,8 +4934,13 @@ function repeatOnFrame() {
 
         if ((!sequenceStarted) && (sequenceArray.length > 0)) {
             // console.log(arpeggioSequenceArray.length+" "+arpeggioSequenceArray.toString());
-
+			if (firstNotationToCome){
+                makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
+				firstNotationToCome=false;
+				setupAFirstNote=true;
+			}
             let currentNoteInfo = sequenceArray.shift();
+			
             if (sequenceArray.length > 0) {
                 makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
             } else {
@@ -5168,6 +5226,7 @@ function repeatOnFrame() {
         newScore = true;
         // startScoreTimer();
         // pauseScore();
+		firstNotationToCome=true;
         newQuestionTime = false;
 
         stopAllNotes();
@@ -5837,8 +5896,9 @@ function repeatOnFrame() {
             }
         }
         r = randomNoteNum;
-
-        makeAndShowANote(r, 2, "referenceNote");
+		if (!sequencePlay){
+			makeAndShowANote(r, 2, "referenceNote");
+		}
         if (!paused) {
             lastMostRecentPostingNum = mostRecentPostingNum + 0;
 

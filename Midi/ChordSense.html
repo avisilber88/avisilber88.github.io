@@ -9,9 +9,14 @@
 <!-- MultiSelect CSS & JS library -->
 <link href="vendor/jquery.multiselect.css" rel="stylesheet" />
 <script src="vendor/jquery.multiselect.js"></script>
+
+<script src="vendor/vexflow-min.js"></script>
 	<!--script src = "vendor/jquery-3.4.1.js"></script-->
 	<script type = "text/javascript" src = "vendor/jquery-3.4.1.js"></script>
 	<link type = "text/css" rel = "stylesheet" href = "MidiApp2.css">
+	
+<link rel="stylesheet" href="vendor/notationmovement.css" type="text/css">
+	
 <script>
 function myFunction() {
 if (location.protocol != 'https:')
@@ -105,6 +110,10 @@ if (location.protocol != 'https:')
 	<option value="dubB" id = "doubleBass">Look for two additional root notes in the Bass</option>
     </select>
 </p></div>
+<div id ="octaveButtonLinks" class = "chickens"><p><p><button type="button" id = "octaveUp"> octave &#8593;</button></p></div>
+<div id ="octaveButtonLinksTwo" class = "chickens"><p><p><button type="button" id = "octaveDown">octave &#8595;</button></p></div>
+<div id ="octaveNumBox" class = "chickens" style="background: white">Octave 3</div>
+<div id ="sheetButtonLink"><p><p><button type="button" id = "sheetButton">Change To Words</button></p></div>
 <div id ="chordSenseLink"><p><p><button type="button"  id = "chordLink" onclick="myFunction()">Practice Scales</button></p></div>
 <script>
 function myFunction() {
@@ -151,8 +160,13 @@ function myFunction() {
 			</div>
 			<p class="hint">Hint: "Amazing Grace"  in F</p>
 		</div>
-
+		
 		<div class="screen step2">
+	<div class="row justify-content-start chickens" >
+			<br>
+				<div id="staff-box" style="background:white"></div>
+			</div>	
+	
 			<div class="lock-input">
 				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
 				<div class="note"><svg><use xlink:href="#note"></use></svg></div>

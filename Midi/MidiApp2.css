@@ -68,11 +68,36 @@ position: right;
 	HEIGHT: 4ch;
 }
 
-#reset {
- 	position: right;
+#sheetButton {
+	position: fixed;
+	z-index: 9;
+	left: 50vw;
+	width: 10vw;
+	HEIGHT: 6vh;
+}
+#octaveUp {
+	position: fixed;
+	z-index: 9;
+	left: 30vw;
+	width: 10vw;
+	HEIGHT: 3vh;
+}
+#octaveNumBox {
+	position: fixed;
+	z-index: 9;
+	left: 40vw;
+	width: 10vw;
+	HEIGHT: 6vh;
+	text-align: center;
+	padding-top: .5ch;
+}
+#octaveDown {
+ 	position: fixed;
     z-index: 9;
-    width: 30ch;
-	HEIGHT: 4ch;
+	left: 30vw;
+	top: 3vh;
+    width: 10vw;
+	HEIGHT: 3vh;
 	}
 #countdown {
     height: 20vh;
