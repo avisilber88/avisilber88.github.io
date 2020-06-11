@@ -1,4 +1,21 @@
 var randomNoteNum
+var buttonPlay = false;
+var cMajorArray = [0, [0, 2, 4, 5, 7, 9, 11]];
+var cSharpMajorArray = [1, [1, 3, 5, 6, 8, 10, 0]];
+var dMajorArray = [2, [2, 4, 6, 7, 9, 11, 1]];
+var dSharpMajorArray = [3, [3, 5, 7, 8, 10, 0, 2]];
+var eMajorArray = [4, [4, 6, 8, 9, 11, 1, 3]];
+var fMajorArray = [5, [5, 7, 9, 10, 0, 2, 4]];
+var fSharpMajorArray = [6, [6, 8, 10, 11, 1, 3, 5]];
+var gMajorArray = [7, [7, 9, 11, 0, 2, 4, 6]];
+var gSharpMajorArray = [8, [8, 10, 0, 1, 3, 5, 7]];
+var aMajorArray = [9, [9, 11, 1, 2, 4, 6, 8]];
+var aSharpMajorArray = [10, [10, 0, 2, 3, 5, 7, 9]];
+var bMajorArray = [11, [11, 1, 3, 4, 6, 8, 10]];
+var allTheMajors = [cMajorArray, cSharpMajorArray, dMajorArray, dSharpMajorArray, eMajorArray, fMajorArray, fSharpMajorArray, gMajorArray, gSharpMajorArray, aMajorArray, aSharpMajorArray, bMajorArray];
+var highScoreKeys = [];
+var highScoreKeysNames = [];
+var highScore = 0;
 var totalScore = 0;
 var timerLength = 10 / 60; // in minutes
 var timerTripped = false;
@@ -18,6 +35,7 @@ var beginning = true;
 var previousNote = "";
 var audioArray = [];
 var arpeggioAudioArray = [];
+var mostRecentSungNum = 0;
 var rootAudioArray = [];
 var synthTone = new Tone.PolySynth(1, Tone.Synth);
 var synth = synthTone.toMaster();
@@ -30,7 +48,7 @@ var randomArpeggioScaleNum = 0;
 var buttonColor = '#00cc00';
 var buttonNormalColor = 'buttonface';
 var accompaniment = true;
-var chordIsDone = true;
+var chordIsDone = false;
 var lastReferenceInversion = false;
 var referenceInversion = false;
 var lastReference = 0;
@@ -89,6 +107,9 @@ var arpeggioSequencePlay = false;
 var rhythmSequenceStarted = false;
 var rhythmSequenceArray = [];
 var rhythmSequencePlay = false;
+var chordSequenceStarted = false;
+var chordSequenceArray = [];
+var chordSequencePlay = false;
 var rootSequenceStarted = false;
 var rootSequenceArray = [];
 var rootSequencePlay = false;
@@ -100,8 +121,9 @@ var currentChordBeats = 0;
 var currentRandomNoteNum = 0;
 var currentRandomRootNum = 0;
 var currentRandomArpeggioNum = 0;
-var sequenceLength = 2;
+var sequenceLength = 8;
 var sequenceCopy = [];
+var chordSequenceCopy = [];
 var rootSequenceLength = 2;
 var rootSequenceCopy = [];
 var rhythmSequenceCopy = [];
@@ -143,6 +165,7 @@ var captureSinging = false;
 var singingCaptured = false;
 var captureButtons = false;
 var buttonsCaptured = false;
+var rhythmStarted = false;
 var buttonStartEndTimes = [];
 $(".sequence-mode").slideToggle();
 var rootOnButton = document.getElementById('play-root-on');
@@ -165,7 +188,657 @@ var leftHandDrop = -12;
 var rhythmPlay = true;
 var genrePullDown = false;
 var referenceIgnore = true;
-var nonReferencePlay = true;
+var nonReferencePlay = false;
+var referenceNoteArray = [];
+var chordSequenceLength = 2;
+var arrayOfSungNotesOnly = [];
+var activeChord = [];
+var specificActiveChord = [];
+var micMute = false;
+var firstNoteShown = false;
+var lastImageNote;
+var currentImageNote;
+var rememberSingingGroup;
+var rememberTargetGroup;
+var referenceGroups = [];
+var rememberReferenceGroup;
+var notationMode="movingNotesMode";
+noteOnListener(0, 0);
+
+
+// const VF = Vex.Flow;
+
+// // Create a VexFlow renderer attaced to the DIV element "boo"
+// var vf = new VF.Factory({renderer: {elementId: 'staff-box'}});
+// var score = vf.EasyScore();
+// var system = vf.System();
+
+// // Create a 4/4 treble stave, and add two parallel voices
+// system.addStave({
+// voices: [
+// // Top voice has 4 quarter notes with stems up
+// score.voice(score.notes('C#5/q, B4, A4, G#4', {stem: 'up', strokeStyle: 'green'})),
+
+// // Bottom voice has two half notes, with the stem down
+// score.voice(score.notes('C#4/h, C#4', {stem: 'down'}))
+// ]
+// }).addClef('treble').addTimeSignature('4/4');
+
+// // Draw it!
+// vf.draw();
+
+
+// // var vf = new VF.Factory({renderer: {elementId: 'staff-box'}});
+// var score = vf.EasyScore();
+// var system = vf.System();
+
+// // Create a 4/4 treble stave, and add two parallel voices
+// system.addStave({
+// voices: [
+// // Top voice has 4 quarter notes with stems up
+// score.voice(score.notes('C#5/q, E4, A4, G#4', {stem: 'up'}).setStemStyle({strokeStyle: 'green'})),
+
+// // Bottom voice has two half notes, with the stem down
+// score.voice(score.notes('C#4/h, C#4', {stem: 'down'}))
+// ]
+// }).addClef('treble').addTimeSignature('4/4');
+// system.stave
+// // Draw it!
+// vf.draw();
+
+
+VF = Vex.Flow;
+
+// Create an SVG renderer and attach it to the DIV element named "boo".
+var div = document.getElementById("staff-box")
+    var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
+
+// Configure the rendering context.
+renderer.resize(500, 150);
+var context = renderer.getContext();
+
+// A tickContext is required to draw anything that would be placed
+// in relation to time/rhythm, including StaveNote which we use here.
+// In real music, this allows VexFlow to align notes from multiple
+// voices with different rhythms horizontally. Here, it doesn't do much
+// for us, since we'll be animating the horizontal placement of notes,
+// but we still need to add our notes to a tickContext so that they get
+// an x value and can be rendered.
+//
+// If we create a voice, it will automatically apply a tickContext to our
+// notes, and space them relative to each other based on their duration &
+// the space available. We definitely do not want that here! So, instead
+// of creating a voice, we handle that part of the drawing manually.
+var tickContext = new VF.TickContext();
+
+// Create a stave of width 10000 at position 10, 40 on the canvas.
+var stave = new VF.Stave(10, 10, 10000)
+    .addClef('bass');
+
+// Connect it to the rendering context and draw!
+stave.setContext(context).draw();
+
+var durations = ['8', '4', '2', '1'];
+
+var notes = [
+    ['c', '#', '4'],
+    ['e', 'b', '5'],
+    ['g', '', '5'],
+    ['d', 'b', '4'],
+    ['b', 'bb', '3'],
+    ['a', 'b', '4'],
+    ['f', 'b', '5'],
+].map(([letter, acc, octave]) => {
+    const note = new VF.StaveNote({
+            clef: 'bass',
+            keys: [`${letter}${acc}/${octave}`],
+            duration: durations[Math.floor(Math.random() * durations.length)],
+        })
+        .setContext(context)
+        .setStave(stave);
+
+    // If a StaveNote has an accidental, we must render it manually.
+    // This is so that you get full control over whether to render
+    // an accidental depending on the musical context. Here, if we
+    // have one, we want to render it. (Theoretically, we might
+    // add logic to render a natural sign if we had the same letter
+    // name previously with an accidental. Or, perhaps every twelfth
+    // note or so we might render a natural sign randomly, just to be
+    // sure our user who's learning to read accidentals learns
+    // what the natural symbol means.)
+    if (acc)
+        note.addAccidental(0, new VF.Accidental(acc));
+    tickContext.addTickable(note)
+    return note;
+});
+notes[0].setKeyStyle(0, {
+    fillStyle: 'chartreuse'
+});
+// The tickContext.preFormat() call assigns x-values (and other
+// formatting values) to notes. It must be called after we've
+// created the notes and added them to the tickContext. Or, it
+// can be called each time a note is added, if the number of
+// notes needed is not known at the time of bootstrapping.
+//
+// To see what happens if you put it in the wrong place, try moving
+// this line up to where the TickContext is initialized, and check
+// out the error message you get.
+//
+// tickContext.setX() establishes the left-most x position for all
+// of the 'tickables' (notes, etc...) in a context.
+tickContext.preFormat().setX(400);
+
+// This will contain any notes that are currently visible on the staff,
+// before they've either been answered correctly, or plumetted off
+// the staff when a user fails to answer them correctly in time.
+// TODO: Add sound effects.
+const visibleNoteGroups = [];
+
+// Add a note to the staff from the notes array (if there are any left).
+document.getElementById('add-note').addEventListener('click', (e) => {
+    if (!firstNoteShown) {
+
+        makeAndShowANote(37, 2, "referenceNote");
+        makeAndShowANote(50, 2, "referenceNote");
+        makeAndShowANote(40, 2, "singingNote");
+        makeAndShowANote(41, 2, "targetNote");
+        // makeAndShowANote(47,2, "singingNote");
+        firstNoteShown = true;
+    } else {
+        makeAndShowANote(37, 2, "referenceNote");
+        makeAndShowANote(50, 2, "referenceNote");
+        // makeAndShowANote(40,2, "singingNote");
+        makeAndShowANote(45, 2, "targetNote");
+        makeAndShowANote(47, 2, "singingNote");
+    }
+    // note = notes.shift();
+    // if(!note) return;
+    // const group = context.openGroup();
+    // visibleNoteGroups.push(group);
+    // note.draw();
+    // context.closeGroup();
+    // group.classList.add('scroll');
+    // // Force a dom-refresh by asking for the group's bounding box. Why? Most
+    // // modern browsers are smart enough to realize that adding .scroll class
+    // // hasn't changed anything about the rendering, so they wait to apply it
+    // // at the next dom refresh, when they can apply any other changes at the
+    // // same time for optimization. However, if we allow that to happen,
+    // // then sometimes the note will immediately jump to its fully transformed
+    // // position -- because the transform will be applied before the class with
+    // // its transition rule.
+    // const box = group.getBoundingClientRect();
+    // group.classList.add('scrolling');
+
+    // // If a user doesn't answer in time make the note fall below the staff
+    // window.setTimeout(() => {
+    // const index = visibleNoteGroups.indexOf(group);
+    // if(index === -1) return;
+    // group.classList.add('too-slow');
+    // visibleNoteGroups.shift();
+    // }, 5000);
+});
+
+// If a user plays/identifies the note in time, send it up to note heaven.
+document.getElementById('right-answer').addEventListener('click', (e) => {
+    rightAnswer();
+})
+
+function showANote() {
+    var lastImageNote = currentImageNote;
+    var currentImageNote = notes.shift();
+    if (!currentImageNote)
+        return;
+    const group = context.openGroup();
+    visibleNoteGroups.push(group);
+    currentImageNote.draw();
+    context.closeGroup();
+    group.classList.add('scroll');
+    // Force a dom-refresh by asking for the group's bounding box. Why? Most
+    // modern browsers are smart enough to realize that adding .scroll class
+    // hasn't changed anything about the rendering, so they wait to apply it
+    // at the next dom refresh, when they can apply any other changes at the
+    // same time for optimization. However, if we allow that to happen,
+    // then sometimes the note will immediately jump to its fully transformed
+    // position -- because the transform will be applied before the class with
+    // its transition rule.
+    const box = group.getBoundingClientRect();
+    group.classList.add('scrolling');
+
+    // If a user doesn't answer in time make the note fall below the staff
+    window.setTimeout(() => {
+        const index = visibleNoteGroups.indexOf(group);
+        if (index === -1)
+            return;
+        group.classList.add('too-slow');
+        visibleNoteGroups.shift();
+    }, 5000);
+}
+
+function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
+if (notationMode=="movingNotesMode"){	
+    var lastImageNote = currentImageNote;
+    var currentImageNote = notes.shift();
+    let noteStr = noteArray[noteArrayNum][1];
+    // alert (noteStr);
+    let partOne = noteStr.slice(0, 1) + '';
+    let partTwo = noteStr.slice(+2) + '';
+    let partThree = noteStr.slice(1, 2) + '';
+    // alert (partOne+" "+partTwo+" "+partThree+" ");
+    noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
+    notes = [
+        [partOne, partTwo, partThree]
+    ].map(([letter, acc, octave]) => {
+        const note = new VF.StaveNote({
+                clef: 'bass',
+                keys: [`${letter}${acc}/${octave}`],
+                duration: durations[theNoteLength],
+            })
+            .setContext(context)
+            .setStave(stave);
+
+        // If a StaveNote has an accidental, we must render it manually.
+        // This is so that you get full control over whether to render
+        // an accidental depending on the musical context. Here, if we
+        // have one, we want to render it. (Theoretically, we might
+        // add logic to render a natural sign if we had the same letter
+        // name previously with an accidental. Or, perhaps every twelfth
+        // note or so we might render a natural sign randomly, just to be
+        // sure our user who's learning to read accidentals learns
+        // what the natural symbol means.)
+        if (acc)
+            note.addAccidental(0, new VF.Accidental(acc));
+        tickContext.addTickable(note)
+        return note;
+    });
+
+    if (voiceType == "referenceNote") {
+
+        notes[0].setKeyStyle(0, {
+            fillStyle: 'black'
+        });
+        tickContext.preFormat().setX(400);
+
+    } else if (voiceType == "targetNote") {
+        try {
+            // if ((wrongNote) && (!(scoreTimeStart.getTime() > now.getTime()))) {
+            // // alert("sup fool");
+            // // scorePauseTime= previousScorePauseTime+(now.getTime() - scorePauseTime;
+            // // scoreTimeStart.setTime(scoreTimeStart.getTime()+(now.getTime()-scoreTimeStart.getTime())/8);
+            // // wrongTimer=new Date();
+            // // wrongPoints=0;
+            // // scoreTimeSatart=new Date();
+            // // newScore=false;
+            // }
+            // console.log (rememberSingingGroup);
+            visibleNoteGroups[rememberTargetGroup].classList.add('correct');
+
+        } catch (error) {}
+        notes[0].setKeyStyle(0, {
+            fillStyle: 'red'
+        }); //chartreuse
+        try {
+            const transformMatrix = window.getComputedStyle(visibleNoteGroups[referenceGroups[0]]).transform;
+            // transformMatrix will be something like 'matrix(1, 0, 0, 1, -118, 0)'
+            // where, since we're only translating in x, the 4th property will be
+            // the current x-translation. You can dive into the gory details of
+            // CSS3 transform matrices (along with matrix multiplication) if you want
+            // at http://www.useragentman.com/blog/2011/01/07/css3-matrix-transform-for-the-mathematically-challenged/
+            const x = transformMatrix.split(',')[4].trim();
+            tickContext.preFormat().setX(Math.floor(x) + 400);
+        } catch (error) {
+            tickContext.preFormat().setX(400);
+        } //.setX(visibleNoteGroups[0].getX());//.setX(tickContext.getTickables().getX());
+        // alert (visibleNoteGroups.getX().toString());
+        // alert notes[0].
+    } else if (voiceType == "singingNote") {
+        try {
+            // if ((wrongNote) && (!(scoreTimeStart.getTime() > now.getTime()))) {
+            // // alert("sup fool");
+            // // scorePauseTime= previousScorePauseTime+(now.getTime() - scorePauseTime;
+            // // scoreTimeStart.setTime(scoreTimeStart.getTime()+(now.getTime()-scoreTimeStart.getTime())/8);
+            // // wrongTimer=new Date();
+            // // wrongPoints=0;
+            // // scoreTimeSatart=new Date();
+            // // newScore=false;
+            // }
+            console.log(rememberSingingGroup);
+            visibleNoteGroups[rememberSingingGroup].classList.add('correct');
+
+        } catch (error) {}
+        notes[0].setKeyStyle(0, {
+            fillStyle: 'blue'
+        });
+        try {
+            const transformMatrix = window.getComputedStyle(visibleNoteGroups[referenceGroups[0]]).transform;
+            // transformMatrix will be something like 'matrix(1, 0, 0, 1, -118, 0)'
+            // where, since we're only translating in x, the 4th property will be
+            // the current x-translation. You can dive into the gory details of
+            // CSS3 transform matrices (along with matrix multiplication) if you want
+            // at http://www.useragentman.com/blog/2011/01/07/css3-matrix-transform-for-the-mathematically-challenged/
+            const x = transformMatrix.split(',')[4].trim();
+            tickContext.preFormat().setX(Math.floor(x) + 400); //.setX(visibleNoteGroups[0].getX());//.setX(tickContext.getTickables().getX());
+            // alert (visibleNoteGroups.getX().toString());
+            // alert notes[0].
+        } catch (error) {
+            tickContext.preFormat().setX(400);
+        }
+    }
+    currentImageNote = notes.shift();
+    if (!currentImageNote)
+        return;
+    const group = context.openGroup();
+    visibleNoteGroups.push(group);
+    // alert(visibleNoteGroups[0].));
+    console.log(voiceType);
+    if (voiceType == "singingNote") {
+
+        rememberSingingGroup = visibleNoteGroups.indexOf(group);
+    } else if (voiceType == "targetNote") {
+
+        rememberTargetGroup = visibleNoteGroups.indexOf(group);
+    } else if (voiceType == "referenceNote") {
+		
+        referenceGroups.push(visibleNoteGroups.indexOf(group));
+        console.error(referenceGroups.toString());
+    }
+    currentImageNote.draw();
+    context.closeGroup();
+    // group.classList.add('scroll');
+    // Force a dom-refresh by asking for the group's bounding box. Why? Most
+    // modern browsers are smart enough to realize that adding .scroll class
+    // hasn't changed anything about the rendering, so they wait to apply it
+    // at the next dom refresh, when they can apply any other changes at the
+    // same time for optimization. However, if we allow that to happen,
+    // then sometimes the note will immediately jump to its fully transformed
+    // position -- because the transform will be applied before the class with
+    // its transition rule.
+    const box = group.getBoundingClientRect();
+    // group.classList.add('scrolling');
+
+    // If a user doesn't answer in time make the note fall below the staff
+    window.setTimeout(() => {
+        const index = visibleNoteGroups.indexOf(group);
+
+        if (index === -1)
+            return;
+        group.classList.add('too-slow');
+        visibleNoteGroups.shift();
+        if (referenceGroups.includes(index + 0)) {
+            referenceGroups.splice(referenceGroups.indexOf(index + 0), 1);
+
+            makeAndShowANote(randomNoteNum, 2, "referenceNote");
+
+        }
+        referenceGroups = referenceGroups.map(function (value) {
+                return value - 1;
+            });
+        if (referenceGroups.includes(index + 0)) {
+            referenceGroups.splice(referenceGroups.indexOf(index + 0), 1);
+
+            makeAndShowANote(randomNoteNum, 2, "referenceNote");
+
+        }
+
+    }, 5000);
+}
+}
+
+function rightAnswer() {
+    group = visibleNoteGroups.shift();
+    group.classList.add('correct');
+    // The note will be somewhere in the middle of its move to the left -- by
+    // getting its computed style we find its x-position, freeze it there, and
+    // then send it straight up to note heaven with no horizontal motion.
+    const transformMatrix = window.getComputedStyle(group).transform;
+    // transformMatrix will be something like 'matrix(1, 0, 0, 1, -118, 0)'
+    // where, since we're only translating in x, the 4th property will be
+    // the current x-translation. You can dive into the gory details of
+    // CSS3 transform matrices (along with matrix multiplication) if you want
+    // at http://www.useragentman.com/blog/2011/01/07/css3-matrix-transform-for-the-mathematically-challenged/
+    const x = transformMatrix.split(',')[4].trim();
+    // And, finally, we set the note's style.transform property to send it skyward.
+    group.style.transform = `translate(${x}px, -800px)`;
+}
+
+if (navigator.requestMIDIAccess) {
+    //console.log('This browser supports WebMIDI!');
+
+    navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
+
+} else {
+    console.log('WebMIDI is not supported in this browser.');
+    // console.lot( 'Error: This browser does not support WebMIDI.');
+}
+
+function onMIDISuccess(midiAccess) {
+    // document.querySelector('.step0').innerHTML = 'Click here to begin...';
+    var inputs = midiAccess.inputs;
+    var outputs = midiAccess.outputs;
+
+    for (var input of midiAccess.inputs.values()) {
+        input.onmidimessage = getMIDIMessage;
+    }
+}
+function onMIDIFailure() {
+    console.log('WebMIDI is not supported in this browser.');
+    // document.querySelector('.step0').innerHTML = 'Error: Could not access MIDI devices. Connect a device and refresh to try again.';
+}
+
+function getMIDIMessage(message) {
+    var command = message.data[0];
+    var note = message.data[1];
+    var velocity = (message.data.length > 2) ? message.data[2] : 0; // a velocity value might not be included with a noteOff command
+    switch (command) {
+    case 144: // noteOn
+        var keyboardAudio = document.getElementById(soundId(getNoteName(note)));
+        if (velocity > 0) {
+            if (keyboardAudio) {
+                keyboardAudio.pause();
+                keyboardAudio.volume = 1.0;
+                if (keyboardAudio.readyState >= 2) {
+                    keyboardAudio.currentTime = 0;
+                    var promise = keyboardAudio.play();
+
+                    if (promise !== undefined) {
+                        promise.then(_ => {
+                            // Autoplay started!
+                        }).catch(error => {
+                            //alert ("it worked");
+                            // Autoplay was prevented.
+                            // Show a "Play" button so that user can start playback.
+                        });
+                    }
+
+                }
+            }
+            noteOnListener(note, velocity); //
+        } else {
+            noteOffListener(note);
+        }
+
+        break;
+    case 128: // noteOff
+        noteOffListener(note);
+        return function () {
+            var keyboardAudio = document.getElementById("sound-A3");
+            if (playPromise !== null) {
+                playPromise.catch(() => {
+                    keyboardAudio.pause();
+                    keyboardAudio.volume = 1.0;
+                    if (keyboardAudio.readyState >= 2) {
+                        keyboardAudio.currentTime = 0;
+                        keyboardAudio.pause();
+                    }
+                })
+            }
+        };
+        //stopNote(midiNoteToFrequency(note));
+        noteOffCallback(note);
+        break;
+        // we could easily expand this switch statement to cover other types of commands such as controllers or sysex
+    }
+}
+
+function noteOnListener(note, velocity) {
+
+    // runSequence('gamestart');
+
+    // show the requisite number of note placeholders
+
+    // when the array is the same length as the correct sequence, compare the two
+    if ((captureButtons)) {
+        console.log("note is number " + note);
+        buttonStartEndTimes.push([note - 24, new Date(new Date().getTime())]);
+        if (buttonStartEndTimes.length > 1) {
+            // alert("long");
+            singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000.0001, 0]);
+            buttonStartEndTimes.shift();
+            // console.log(singingTimeArray.toString());
+        }
+    }
+    if (specificActiveChord.includes(note) == false) {
+        specificActiveChord.push(note);
+        specificActiveChord.sort();
+    }
+    if (activeChord.includes(arrangeNote(note)) == false) { //4/9/2020 I think I may need to add a new activeChordlisting that includes the actual note and not just the arrangenote, so I can be certain the note order in addition here. Avi
+        activeChord.push(arrangeNote(note));
+        console.log(arrangeNote(specificActiveChord[0]));
+    }
+
+}
+
+function noteOffListener(note) {
+    specificActiveChord.splice(specificActiveChord.indexOf(note), 1);
+    activeChord.splice(activeChord.indexOf(note), 1);
+}
+
+function arrangeNote(a) {
+    var b = a;
+    //        int timesThrough = 0;
+    for (var i = a; i > 0; i = i - 12) {
+        b = i;
+        //            timesThrough++;
+    }
+    //9 if equation then a
+    //10 if equation then a#
+    //11 if equation then b
+    //12 if equation then c
+    //1 equation then c#
+    //2 equation then d
+    //3 equation then d#
+    //4 equation then e
+    //5 equation then f
+    //6 equation then f#
+    //7 equation then g
+    //8 equation then g#
+    return b;
+};
+function getNoteName(noteNum) {
+    var b = noteNum;
+    var octave = -2;
+    //        int timesThrough = 0;
+    for (var i = noteNum; i > 0; i = i - 12) {
+        b = i;
+        octave++;
+        //            timesThrough++;
+    }
+    if (b == 12) {
+        octave++;
+    }
+    //9 if equation then a
+    //10 if equation then a#
+    //11 if equation then b
+    //12 if equation then c
+    //1 equation then c#
+    //2 equation then d
+    //3 equation then d#
+    //4 equation then e
+    //5 equation then f
+    //6 equation then f#
+    //7 equation then g
+    //8 equation then g#
+    return getNoteNameGeneral(b) + "" + octave;
+}
+
+function getNoteNameGeneral(genNoteNum) {
+    var genNoteName = "C";
+    switch (genNoteNum) {
+    case 1:
+        genNoteName = "Db";
+        break;
+    case 2:
+        genNoteName = "D";
+        break;
+    case 3:
+        genNoteName = "Eb";
+        break;
+    case 4:
+        genNoteName = "E";
+        break;
+    case 5:
+        genNoteName = "F";
+        break;
+    case 6:
+        genNoteName = "Gb";
+        break;
+    case 7:
+        genNoteName = "G";
+        break;
+    case 8:
+        genNoteName = "Ab";
+        break;
+    case 9:
+        genNoteName = "A";
+        break;
+    case 10:
+        genNoteName = "Bb";
+        break;
+    case 11:
+        genNoteName = "B";
+        break;
+    case 12:
+        genNoteName = "C";
+        break;
+    case 13:
+        genNoteName = "Db";
+        break;
+    case 14:
+        genNoteName = "D";
+        break;
+    case 15:
+        genNoteName = "Eb";
+        break;
+    case 16:
+        genNoteName = "E";
+        break;
+    case 17:
+        genNoteName = "F";
+        break;
+    case 18:
+        genNoteName = "Gb";
+        break;
+    case 19:
+        genNoteName = "G";
+        break;
+    case 20:
+        genNoteName = "Ab";
+        break;
+    case 21:
+        genNoteName = "A";
+        break;
+    case 22:
+        genNoteName = "Bb";
+        break;
+    case 23:
+        genNoteName = "B";
+        break;
+    case 24:
+        genNoteName = "C";
+        break;
+    }
+    return genNoteName;
+}
+
 function startTimer() {
     // set timer for 60 minutes from start
     var now = new Date();
@@ -187,6 +860,9 @@ function pauseScoreTimer() {
 }
 function startNoteTimer() {
     noteTimerStarted = true;
+    if (nonReferencePlay) {
+        currentNoteBeats = 0;
+    }
     // updateTimer();
 }
 function startRootTimer() {
@@ -212,7 +888,6 @@ function startRhythmTimer() {
 }
 function startChordTimer() {
     chordTimerStarted = true;
-    currentChordBeats = 0;
     // var arpeggioTimeLocal = new Date();
     // arpeggioTimeStart = new Date(arpeggioTimeLocal.getTime());
     // updateTimer();
@@ -2313,7 +2988,6 @@ function harmonizeBecauseYouRight() {
         console.log("newMinor is " + newLastRandomScaleNum);
         lastRandomScaleNum = getScaleNumMinorNote(newLastRandomScaleNum);
     }
-
     referenceInversion = false;
     firstChordOver = true;
     //	setTimeout(stopAllNotes, 0);
@@ -2410,6 +3084,7 @@ function getNoteNumMajorScale(scaleNum) {
 }
 
 function getScaleNumMajorNote(scaleNum) {
+    scaleNum = scaleNum - keyOf;
     while (scaleNum > 11) {
         scaleNum = scaleNum - 12;
     }
@@ -2445,6 +3120,7 @@ function getScaleNumMajorNote(scaleNum) {
 }
 
 function getScaleNumMinorNote(scaleNum) {
+    scaleNum = scaleNum - keyOf;
     while (scaleNum > 11) {
         scaleNum = scaleNum - 12;
     }
@@ -2687,7 +3363,9 @@ function amplifyMedia(mediaElem, multiplier) {
     return result;
 }
 
-async function playANote(arrayPlace) { // where we Play Notes
+async function playANote(arrayPlace) { // where we Play Notes  //important chordIsDone means we are not playing the chord. !chordIsDone means we are playing the chord or arpeggios.
+
+
     // console.log("Playing "+ noteArray[arrayPlace][1]);
     // console.log(arrayPlace + " " + noteArray[arrayPlace][1]);
     //beginning of section on playing the notes using time.
@@ -2696,9 +3374,9 @@ async function playANote(arrayPlace) { // where we Play Notes
         buttonStartEndTimes.push([arrayPlace, new Date(new Date().getTime())]);
         if (buttonStartEndTimes.length > 1) {
             // alert("long");
-            singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000.01]);
+            singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000.0001, 0]);
             buttonStartEndTimes.shift();
-            console.log(singingTimeArray.toString());
+            // console.log(singingTimeArray.toString());
         }
     }
     if (instrument == "synth") {
@@ -2727,103 +3405,106 @@ async function playANote(arrayPlace) { // where we Play Notes
         synth2.set("volume", (accompanimentVolume / 10) - 30); //(((0.01+referenceVolume))/100-.0001));
         // synth.volume=(((0.01+referenceVolume))/100-.0001);
         // console.log("it is" +(((0.01+referenceVolume))/100-.0001));
-        alert("hi");
+        // alert("hi");
         synth2.triggerAttackRelease(noteStr, '10');
 
         // synthStarted=new Date(new Date().getTime());//([noteStr, noteArray[53][0]],['10', '1']); // ((0.01+referenceVolume))/100-.0001);
     } else {
-        if (chordIsDone) {
+        if ((chordIsDone)) { // Avi changed this on 5-22 5/22
             synthStarted = new Date(new Date().getTime()); //([noteStr, noteArray[53][0]],['10', '1']); // ((0.01+referenceVolume))/100-.0001);
         }
         var noteStr = "";
         // console.log(instrument);
         if (instrument != "rhythmInstruments") {
-            console.log(rhythmSequenceArray.toString());
-            var noteStr = noteArray[arrayPlace][2];
+            // alert (instrument);
+            var noteStr = noteArray[arrayPlace][2]; // error spot 1
             noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
         } else {
             var noteStr = arrayPlace;
         }
-        let audio = (document.getElementById(soundId(noteStr)));
+        if (!((!accompaniment) && (instrument == "pianoAccompaniment"))) {
+            let audio = (document.getElementById(soundId(noteStr)));
 
-        // var audioContextual= amplifyMedia(audio, 1);
-        // audio.crossOrigin = "anonymous";
-        var newNote = true;
-        try {
-            for (var i = 0; i < audioArray.length; i++) {
-                // console.log(audioArray[i].includes(noteArray[arrayPlace][1]));}
-                // console.log(audioArray.length);
-
-                if ((audioArray[i].includes([noteStr, (instrument + "")])) == true) {
-                    //	console.log("hi");
-                    if (arpeggioPlay) {
-                        console.log(audioArray[i][0]);
-                        audioArray[i][0].pause();
-                        newNote = false;
-                        0
-                        audioArray[i] = [audio, [noteStr, (instrument + "")]];
-                    } else {
-                        console.log(arpeggioAudioArray[i][0]);
-                        arpeggioAudioArray[i][0].pause();
-                        newNote = false;
-                        0
-                        arpeggioAudioArray[i] = [audio, [noteStr, (instrument + "")]];
-
-                    }
-
-                }
-            }
-            document.querySelector('.step2 .note:nth-child(' + (i + 1) + ')').classList.add('on');
-        } catch (error) {}
-        if (newNote == true) {
-            if (instrument != "rhythmInstruments") {
-                audioArray.push([audio, [noteArray[arrayPlace][1], (instrument + "")]])
-            } else {
-                audioArray.push([audio, [arrayPlace, (instrument + "")]])
-            }
-        }
-        //console.log(audioArray.toString());
-        if (audio) {
+            // var audioContextual= amplifyMedia(audio, 1);
+            // audio.crossOrigin = "anonymous";
+            var newNote = true;
             try {
-                // audio.pause();
-                if ((!chordIsDone) || (arpeggioPlay)) {
-                    // console.log("chordisplaying");
-                    // console.log(instrument);
-                    if ((instrument == "piano") || (instrument == "pianoAccompaniment")) {
-                        audio.volume = ((0.01 + accompanimentVolume)) / 100 - .0001; //accompanimentVolume/50;
-                    } else if (instrument == "humanVoice") {
-                        audio.volume = ((0.01 + accompanimentVolume)) / 500.0 - .0001; //accompanimentVolume/50;
-                    } else if (instrument == "rhythmInstruments") {
-                        // console.log (((0.01 + rhythmVolume)) / 400.0 - .0001);
-                        try {
-                            audio.volume = ((0.01 + rhythmVolume)) / 400.0 - .00001; //accompanimentVolume/50;
-                        } catch (error) {
-                            console.log(error.toString());
+                for (var i = 0; i < audioArray.length; i++) {
+                    // console.log(audioArray[i].includes(noteArray[arrayPlace][1]));}
+                    // console.log(audioArray.length);
+
+                    if ((audioArray[i].includes([noteStr, (instrument + "")])) == true) {
+                        //	console.log("hi");
+                        if (arpeggioPlay) {
+                            console.log(audioArray[i][0]);
+                            audioArray[i][0].pause();
+                            newNote = false;
+                            0
+                            audioArray[i] = [audio, [noteStr, (instrument + "")]];
+                        } else {
+                            console.log(arpeggioAudioArray[i][0]);
+                            arpeggioAudioArray[i][0].pause();
+                            newNote = false;
+                            0
+                            arpeggioAudioArray[i] = [audio, [noteStr, (instrument + "")]];
+
                         }
-                    }
-                    // console.log("volume setting "+(((0.01+accompanimentVolume)/100)-.0001));
-                } else {
-                    if (instrument == "piano") {
-                        audio.volume = ((0.01 + referenceVolume)) / 100 - .0001; //accompanimentVolume/50;
-                    } else if (instrument == "humanVoice") {
 
-                        audio.volume = ((0.01 + referenceVolume)) / 300.0 - .0001; //accompanimentVolume/50;
                     }
-
                 }
+                document.querySelector('.step2 .note:nth-child(' + (i + 1) + ')').classList.add('on');
             } catch (error) {}
-            // audioContextual.amplify(accompanimentVolume/50);//1.0;
-
-            if (audio.readyState >= 2) {
-                audio.currentTime = 0;
-
-                if (arpeggioPlay) {
-                    await audio.play();
+            if (newNote == true) {
+                if (instrument != "rhythmInstruments") {
+                    audioArray.push([audio, [noteArray[arrayPlace][1], (instrument + "")]])
                 } else {
-                    var promise = audio.play();
+                    audioArray.push([audio, [arrayPlace, (instrument + "")]])
+                }
+            }
 
-                    if (promise !== undefined) {
-                        promise.then(_ => {}).catch(error => {});
+            //console.log(audioArray.toString());
+            if (audio) {
+                try {
+                    // audio.pause();
+                    if ((!chordIsDone) || (arpeggioPlay)) {
+                        // console.log("chordisplaying");
+                        // console.log(instrument);
+                        if ((instrument == "piano") || (instrument == "pianoAccompaniment")) {
+                            audio.volume = ((0.01 + accompanimentVolume)) / 100 - .0001; //accompanimentVolume/50;
+                        } else if (instrument == "humanVoice") {
+                            audio.volume = ((0.01 + accompanimentVolume)) / 500.0 - .0001; //accompanimentVolume/50;
+                        } else if (instrument == "rhythmInstruments") {
+                            // console.log (((0.01 + rhythmVolume)) / 400.0 - .0001);
+                            try {
+                                audio.volume = ((0.01 + rhythmVolume)) / 400.0 - .00001; //accompanimentVolume/50;
+                            } catch (error) {
+                                console.log(error.toString());
+                            }
+                        }
+                        // console.log("volume setting "+(((0.01+accompanimentVolume)/100)-.0001));
+                    } else {
+                        if (instrument == "piano") {
+                            audio.volume = ((0.01 + referenceVolume)) / 100 - .0001; //accompanimentVolume/50;
+                        } else if (instrument == "humanVoice") {
+
+                            audio.volume = ((0.01 + referenceVolume)) / 300.0 - .0001; //accompanimentVolume/50;
+                        }
+
+                    }
+                } catch (error) {}
+                // audioContextual.amplify(accompanimentVolume/50);//1.0;
+
+                if (audio.readyState >= 2) {
+                    audio.currentTime = 0;
+
+                    if (arpeggioPlay) {
+                        await audio.play();
+                    } else {
+                        var promise = audio.play();
+
+                        if (promise !== undefined) {
+                            promise.then(_ => {}).catch(error => {});
+                        }
                     }
                 }
             }
@@ -2832,11 +3513,13 @@ async function playANote(arrayPlace) { // where we Play Notes
     if (!justPlayingScaleFam) { //this is where we play not scales
 
 
-        if ((accompaniment) && (chordIsDone || nonReferencePlay) && (arpeggioPlay) && (!arpeggioAdded)) { //TRANSPLANT ENTRY FOR ARPEGGIO INFO!!     //this is where we play the accompaniment.
+        if ((accompaniment) && (chordIsDone) && (arpeggioPlay) && (!arpeggioAdded)) { //TRANSPLANT ENTRY FOR ARPEGGIO INFO!!     //this is where we play the accompaniment.
             chordIsDone = false;
-            nonReferencePlay = false;
+            // alert (arpeggioPlay);
+            // nonReferencePlay = false; //AVI you mmay
             if (rhythmPlay) {
                 rhythmSequenceArray = [];
+                // alert ("hi");
                 setupRhythmSequence();
 
                 rhythmSequenceCopy = [];
@@ -2889,6 +3572,7 @@ async function playANote(arrayPlace) { // where we Play Notes
             let rootAbsDifference = Math.abs(randomNoteLocal - lastReference) + 0; //the difference between the root note for now, might change later to be the bottom note.
             if (((scaleAbsDifference) > 2) && (!lastReferenceInversion) && (firstChordOver) && (inversionsAreOn)) { //these are the rules for thirdup, and usually assuming the reference is the root.
                 // console.log("inversion time");
+
                 referenceInversion = true;
                 // if (keyType == "major") {
                 let chordRoot = randomNoteLocal + 0;
@@ -3235,7 +3919,7 @@ async function playANote(arrayPlace) { // where we Play Notes
             }
             // console.log("the last is "+newLastRandomScaleNum);
             instrument = currentInstrument;
-            if (!referenceIgnore) {
+            if (!nonReferencePlay) {
                 chordIsDone = true;
             }
             // console.log("arpeggioAdded " + arpeggioAdded);
@@ -3373,7 +4057,9 @@ async function playANote(arrayPlace) { // where we Play Notes
             }
             // console.log("the last is "+newLastRandomScaleNum);
             instrument = currentInstrument;
-            chordIsDone = true;
+            if (!nonReferencePlay) {
+                chordIsDone = true;
+            }
         }
 
     } else {
@@ -3383,6 +4069,8 @@ async function playANote(arrayPlace) { // where we Play Notes
 }
 
 function setupRhythmSequence() {
+
+    rhythmStarted = true;
     var genre = "";
     if (!genrePullDown) { //if we don't have the genre pulldown yet, which we don't, we're going to have it select the rhythm by the current tempo.
         if (currentBPM < 80) {
@@ -3450,18 +4138,20 @@ function repeatOnFrame() {
         playMajorScale(noteAdapter + scaleAdapter);
 
     }
-    if ((noteTimeBeats > currentNoteBeats) && (sequencePlay)) {
+    if ((noteTimeBeats > currentNoteBeats) && (sequencePlay) && (!nonReferencePlay)) {
         sequenceStarted = false; //proceed to the next note.
         // synth.triggerRelease();
         // stopAllNotes();
     }
-    if ((!sequenceStarted) && (sequenceArray.length > 0) && (!paused)) {
-        if (sequenceArray.length == (sequenceLength + 1)) { // this is the beginning of the sequence every time.
+    console.log(sequenceStarted + " " + sequenceArray.length + " " + paused + " " + nonReferencePlay);
+    if ((!sequenceStarted) && (sequenceArray.length > 0) && (!paused) && (!nonReferencePlay)) {
+        if (sequenceArray.length == (sequenceLength)) { // this is the beginning of the sequence every time.
             score = 0;
             scoreTimeBeats = 0;
             currentScore = 0;
             previousScorePauseTimeAmount = 0;
             scorePauseTimeAmount = 0;
+            // alert ("hi");
             // scorePauseTimeAmount=0;
             newScore = true;
             newWrong = false;
@@ -3502,6 +4192,7 @@ function repeatOnFrame() {
             } catch (error) {}
         }
         // stopAllNotes();
+        chordIsDone = true;
         playANote(currentRandomNoteNum);
         if (sequencePlay) {
             randomNoteNum = currentRandomNoteNum + 0;
@@ -3572,7 +4263,207 @@ function repeatOnFrame() {
             // console.log("sup "+ sequenceArray.toString());
 
         }
+    } else if (nonReferencePlay) {
+        if ((chordTimeBeats >= currentChordBeats)) {
+
+            chordSequenceStarted = false; //proceed to the next note.
+
+        }
+        if ((!chordSequenceStarted) && (chordSequenceArray.length > 0) && (!paused)) { //TRANSPLANT BEGIN //Avi thinks he should definitely return here!!
+
+            if (chordSequenceArray.length == (chordSequenceLength)) { // this is the beginning of the sequence every time.
+                score = 0;
+                scoreTimeBeats = 0;
+                currentScore = 0;
+                previousScorePauseTimeAmount = 0;
+                scorePauseTimeAmount = 0;
+                // scorePauseTimeAmount=0;
+                newScore = true;
+                newWrong = false;
+                wrongNote = false;
+                wrongPoints = 0;
+                // startScoreTimer();
+                pauseScore();
+                sequenceArray = sequenceCopy.slice();
+                // console.log(sequenceArray.toString());
+                synth.triggerRelease();
+                sequenceStarted = true;
+                startNoteTimer();
+                // alert ("starting again "+chordSequenceLength);
+            }
+            // else if(chordSequenceArray.length == (chordSequenceLength)){
+
+            // // alert (chordSequenceArray.length+" "+chordSequenceLength);
+
+
+            // }
+
+            // console.log(arpeggioSequenceArray.length+" "+arpeggioSequenceArray.toString());
+            // alert(chordSequenceArray.toString());
+            let currentNoteInfo = chordSequenceArray.shift();
+            // console.log(currentNoteInfo.toString()+" "+arpeggioSequenceStarted);
+            currentChordBeats = currentNoteInfo[1] + 0;
+            // alert (chordTimeBeats);
+            currentRandomChordNum = currentNoteInfo[0] + 0;
+            randomChordScaleNum = currentNoteInfo[2] + 0;
+            arpeggioSequenceArray = [];
+            arpeggioAdded = false;
+            rootSequenceArray = [];
+            arpeggioSequenceCopy = [];
+            rhythmSequenceArray = [];
+            rhythmSequenceCopy = [];
+            rootSequenceCopy = [];
+
+            // console.log ("instrument is "+instrument);
+            let currentInstrument = instrument + "";
+            instrument = "pianoAccompaniment";
+            chordIsDone = true;
+            randomNoteNum = currentRandomChordNum + 0;
+            randomScaleNum = randomChordScaleNum + 0;
+            // alert (randomNoteNum);
+            playANote(currentRandomChordNum);
+            console.warn("chord " + numToKeyName(basicNote(currentRandomChordNum)));
+            //Thoughts: I may need to put all of this into a new method specifically for arpeggiation.
+            instrument = currentInstrument;
+
+            //beginningtakenfromharmonizebecauseyougotitrright
+            lastReference = currentRandomChordNum + 0;
+
+            if (referenceInversion) {
+                lastReferenceInversion = true;
+            } else {
+                lastReferenceInversion = false;
+            }
+            // while (newLastRandomScaleNum > 11) {
+            newLastRandomScaleNum = newLastRandomScaleNum % 12;
+            // }
+            while (newLastRandomScaleNum < 0) {
+                newLastRandomScaleNum = newLastRandomScaleNum + 12;
+            }
+            if (keyType == "major") {
+                // console.log("new is " + newLastRandomScaleNum);
+                lastRandomScaleNum = getScaleNumMajorNote(newLastRandomScaleNum);
+            } else {
+                // alert ("hi");
+                // console.log("newMinor is " + newLastRandomScaleNum);
+                lastRandomScaleNum = getScaleNumMinorNote(newLastRandomScaleNum);
+            }
+            referenceInversion = false;
+            firstChordOver = true;
+            // alert (randomNoteNum);
+            //end of taken from harmonizebecauseyougotitright
+
+
+            chordSequenceStarted = true;
+            startChordTimer();
+            rootSequenceStarted = true;
+            startRootTimer();
+            arpeggioSequenceStarted = true;
+            // console.log("sequence arpeggio!");
+            startArpeggioTimer();
+            startRhythmTimer();
+            if (chordSequenceArray.length == 0) {
+
+                chordSequenceArray = chordSequenceCopy.slice();
+                // alert (chordSequenceArray.length);
+                // console.log("sup "+ sequenceArray.toString());
+
+            }
+        }
+
     }
+    if (nonReferencePlay) { //TRANSPLANT BEGIN
+
+        if ((noteTimeBeats >= currentNoteBeats)) {
+            // alert (sequenceArray.length);
+            sequenceStarted = false; //proceed to the next note.
+
+        }
+
+        if ((!sequenceStarted) && (sequenceArray.length > 0)) {
+            // console.log(arpeggioSequenceArray.length+" "+arpeggioSequenceArray.toString());
+
+            let currentNoteInfo = sequenceArray.shift();
+            // console.log(currentNoteInfo.toString()+" "+arpeggioSequenceStarted);
+            currentNoteBeats = currentNoteBeats + currentNoteInfo[1] + 0;
+            currentRandomNoteNum = currentNoteInfo[0] + 0;
+            let randomNoteScaleNum = currentNoteInfo[2] + 0;
+            // console.log ("instrument is "+instrument);
+            // let currentInstrument = instrument + "";
+            // instrument = "synth"; //error spot 2
+            // alert (currentRandomRhythmNum);
+            if (instrument != "synth") { //if it isn't the synth
+                // stopAllNotes();
+                try {
+                    for (var i = 0; i < audioArray.length; i++) {
+                        console.log(audioArray[i][1][1]);
+                        try {
+                            if (audioArray[i][1][1] == "humanVoice") {
+                                console.log(audioArray[i][1]);
+                                audioArray[i][0].pause();
+                            }
+                        } catch (error) {}
+                    }
+                } catch (error) {}
+            }
+            playANote(currentRandomNoteNum); //Thoughts: I may need to put all of this into a new method specifically for arpeggiation.
+            // console.warn("synth "+ numToKeyName(basicNote(currentRandomNoteNum)));
+            // instrument = currentInstrument;
+            if (sequencePlay) {
+                randomNoteNum = currentRandomNoteNum + 0;
+                randomScaleNum = randomNoteScaleNum + 0;
+                console.log("the note is " + randomScaleNum);
+            }
+            if (intervalDirection == "up") {
+                // alert(noteArray[randomNoteNum][1]);
+                majorCheck = true;
+                getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
+
+                console.log("the note is " + randomScaleNum);
+                document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + " third above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+                majorCheck = false;
+            } else if (intervalDirection == "down") {
+                majorCheck = true;
+                getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
+                document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + " third below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+                majorCheck = false;
+            } else if (intervalDirection == "unison") {
+                document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing that";
+            } else if (intervalDirection == "fourthUp") {
+                if (toSolFej(keyOf, randomScaleNum) == "Fa") {
+                    newQuestionTime = true;
+                }
+                document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+            } else if (intervalDirection == "fourthDown") {
+                if (toSolFej(keyOf, randomScaleNum) == "Fa") {
+                    newQuestionTime = true;
+                }
+                document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+            }
+            // if (sequencePlay) {
+            // randomNoteNum = currentRandomNoteNum + 0;
+            // }
+            sequenceStarted = true;
+            // console.log("arpeggio");
+            // startArpeggioTimer();
+
+            if ((sequenceArray.length == 0)) {
+                // console.log(synthTimePassed);
+                // alert ("hi");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
+                if (((sequencePlay) || ((synthTimePassed) > -9000)) && (accompaniment) && (!paused)) {
+                    // alert ("hiya");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
+
+                    // rootSequenceArray = rootSequenceCopy.slice();
+                    // sequenceArray = sequenceCopy.slice();
+                    // rootSequenceStarted = false;
+                }
+                // console.log("sup "+ sequenceArray.toString());
+
+            }
+        }
+
+    }
+
     if (rhythmPlay) { //TRANSPLANT BEGIN
 
         if ((rhythmTimeBeats >= currentRhythmBeats) && (rhythmPlay)) {
@@ -3581,7 +4472,7 @@ function repeatOnFrame() {
 
         }
 
-        if ((!rhythmSequenceStarted) && (rhythmSequenceArray.length > 0)) {
+        if ((!rhythmSequenceStarted) && (rhythmSequenceArray.length > 0) && (rhythmStarted)) {
             // console.log(arpeggioSequenceArray.length+" "+arpeggioSequenceArray.toString());
 
             let currentNoteInfo = rhythmSequenceArray.shift();
@@ -3591,7 +4482,8 @@ function repeatOnFrame() {
             randomRhythmScaleNum = currentNoteInfo[2] + 0;
             // console.log ("instrument is "+instrument);
             let currentInstrument = instrument + "";
-            instrument = "rhythmInstruments";
+            instrument = "rhythmInstruments"; //error spot 2
+            // alert (currentRandomRhythmNum);
             playANote(currentRandomRhythmNum); //Thoughts: I may need to put all of this into a new method specifically for arpeggiation.
             instrument = currentInstrument;
             // if (sequencePlay) {
@@ -3783,6 +4675,7 @@ function repeatOnFrame() {
             rhythmSequenceCopy = [];
         }
         if (!sequencePlay) {
+            chordIsDone = true;
             if (arpeggioPlay) {
                 if (rootPlay) {
                     startRootTimer();
@@ -3803,100 +4696,611 @@ function repeatOnFrame() {
 
             }
         } else if (singingCaptured) {
+            if (!buttonPlay) {
 
-            sequenceArray = singingTimeArray.slice();
-            if (!buttonsCaptured) {
-                sequenceArray.shift();
-            }
-            beatsExpected = 2.00;
-            sequenceFirst = true;
-            sequenceLength = sequenceArray.length;
-
-            for (var i = 0; sequenceLength > i; i++) {
-                let thisNoteTime = sequenceArray[i][1];
-
-                thisNoteTime = thisNoteTime / (60 / currentBPM);
-                sequenceArray[i][1] = thisNoteTime;
-                randomNoteNum = sequenceArray[i][0];
-                if (keyType == "major") {
-                    // console.log("new is " + newLastRandomScaleNum);
-                    randomScaleNum = getScaleNumMajorNote(randomNoteNum);
-                } else {
-                    // alert ("hi");
-                    // console.log("newMinor is " + newLastRandomScaleNum);
-                    randomScaleNum = getScaleNumMinorNote(randomNoteNum);
+                console.log("the original singing array " + (singingTimeArray).toString());
+                console.log("the original singing array " + gimmeThatAgainAsNoteAndBeats(singingTimeArray).toString());
+                referenceNoteArray = [];
+                chordSequenceArray = [];
+                chordSequenceCopy = [];
+                nonReferencePlay = true;
+                // console.log(singingTimeArray.toString());
+                sequenceArray = JSON.parse(JSON.stringify(singingTimeArray));
+                if (!buttonsCaptured) {
+                    // sequenceArray.shift();
                 }
-                sequenceArray[i][2] = randomScaleNum + 0;
-                beatsExpected = beatsExpected + thisNoteTime;
+                beatsExpected = 0.00;
+                sequenceFirst = true;
+                sequenceLength = sequenceArray.length;
 
-                console.log(noteArray[sequenceArray[i][0]][1] + " for " + thisNoteTime);
-            }
-            alert(sequenceArray.toString());
-            randomNoteNum = sequenceArray[0][0];
-            if (keyType == "major") {
-                // console.log("new is " + newLastRandomScaleNum);
-                randomScaleNum = getScaleNumMajorNote(randomNoteNum);
-            } else {
-                // alert ("hi");
-                // console.log("newMinor is " + newLastRandomScaleNum);
-                randomScaleNum = getScaleNumMinorNote(randomNoteNum);
-            }
-            sequenceCopy = [];
-            sequenceCopy = sequenceArray.slice();
-            sequenceCopy.unshift([sequenceCopy[0][0], sequenceLeadLength, sequenceCopy[0][2]]);
-        } else {
-            sequenceArray = [];
-            beatsExpected = 2.00;
-            sequenceFirst = true;
-            for (var i = 0; sequenceLength > i; i++) {
-                if (i == 0) {
-                    randomScaleNum = Math.floor(Math.random() * 7);
-                    console.log(i + " sequencefirst");
-                } else {
-                    console.log(i + " notfirst " + randomScaleNum);
-                    let intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
-                    if (intervalChange == 0) {
-                        while (intervalChange == 0) {
+                findKey(arrayOfSungNotesOnly);
+                let removeNotesArray = [];
+                let shiftNotesArray = [];
+                let temporarySequence = [];
 
-                            intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                // console.log(sequenceArray.toString());
+                temporarySequence = JSON.parse(JSON.stringify(sequenceArray));
+
+                // console.log(temporarySequence.toString());
+                let temporarayArrayOfSungNotesOnly = [];
+                for (var i = 0; sequenceLength > i; i++) {
+                    let thisNoteTime = sequenceArray[i][1] + 0;
+                    thisNoteTime = thisNoteTime / (60 / currentBPM);
+                    thisNoteTime = Math.round(thisNoteTime * 6) / 6; //this makes it so we round to the nearest 1/24 note.
+                    if (thisNoteTime == 0) {
+                        // console.log("we removed " + i + " " + noteArray[sequenceArray[i][0]][1] + isItInKey(sequenceArray[i][0]));
+                        removeNotesArray.push(i + 0);
+                    } else {
+                        temporarySequence[i][1] = thisNoteTime + 0;
+                        randomNoteNum = sequenceArray[i][0];
+
+                        if (keyType == "major") {
+                            // console.log("new is " + newLastRandomScaleNum);
+                            randomScaleNum = getScaleNumMajorNote(randomNoteNum);
+                        } else {
+                            // alert ("hi");
+                            // console.log("newMinor is " + newLastRandomScaleNum);
+                            randomScaleNum = getScaleNumMinorNote(randomNoteNum);
+                        }
+                        sequenceArray[i][2] = randomScaleNum + 0;
+                        beatsExpected = beatsExpected + thisNoteTime;
+
+                        // console.log(noteArray[sequenceArray[i][0]][1] + " for " + thisNoteTime);
+                    }
+                }
+                // console.log("sung Notes " + arrayOfSungNotesOnly.toString());
+                arrayOfSungNotesOnly = [];
+                // console.log(temporarySequence.toString());
+                for (var i = 0; removeNotesArray.length > i; i++) {
+                    // let index = sequenceArray.indexOf(removeNotesArray[i]);
+                    temporarySequence.splice(removeNotesArray[i] - i, 1);
+                }
+
+                // console.log(gimmeThatAgainAsNoteAndBeats(temporarySequence).toString());
+                let blah = [];
+                arrayOfSungNotesOnly = [];
+                for (i = 0; i < temporarySequence.length; i++) {
+                    arrayOfSungNotesOnly.push(basicNote(temporarySequence[i][0]));
+                }
+                // console.log("sung Notes now "+arrayOfSungNotesOnly.toString());
+                findKey(arrayOfSungNotesOnly);
+                //after keydecide
+                //before keyshift
+                removeNotesArray = [];
+                shiftNotesArray = [];
+                temporarySequence = [];
+
+                console.log("After round one, singing array " + (sequenceArray).toString());
+                console.log("After round one, singing array " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
+
+                // console.log(sequenceArray.toString());
+                temporarySequence = JSON.parse(JSON.stringify(sequenceArray));
+
+                // console.log("gimmeThatAgainAsNoteAndBeats(temporarySequence).toString());
+                temporarayArrayOfSungNotesOnly = [];
+                for (var i = 0; sequenceLength > i; i++) {
+                    let thisNoteTime = sequenceArray[i][1] + 0;
+                    thisNoteTime = thisNoteTime / (60 / currentBPM);
+                    thisNoteTime = Math.round(thisNoteTime * 6) / 6; //this makes it so we round to the nearest 1/24 note.
+                    if (thisNoteTime == 0) {
+                        // console.log("we removed " + i + " " + noteArray[sequenceArray[i][0]][1] + isItInKey(sequenceArray[i][0]));
+                        removeNotesArray.push(i + 0);
+                    } else {
+
+                        console.log("After round a, singing array " + (sequenceArray).toString());
+                        console.log("After round a, singing array " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
+                        temporarySequence[i][1] = thisNoteTime + 0;
+
+                        console.log("After round b, singing array " + (sequenceArray).toString());
+                        console.log("After round b, singing array " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
+                        randomNoteNum = sequenceArray[i][0];
+
+                        if (keyType == "major") {
+                            // console.log("new is " + newLastRandomScaleNum);
+                            randomScaleNum = getScaleNumMajorNote(randomNoteNum);
+                        } else {
+                            // alert ("hi");
+                            // console.log("newMinor is " + newLastRandomScaleNum);
+                            randomScaleNum = getScaleNumMinorNote(randomNoteNum);
+                        }
+                        sequenceArray[i][2] = randomScaleNum + 0;
+                        beatsExpected = beatsExpected + thisNoteTime;
+
+                        // console.log(noteArray[sequenceArray[i][0]][1] + " for " + thisNoteTime);
+                    }
+                }
+                // console.log("sung Notes " + arrayOfSungNotesOnly.toString());
+                arrayOfSungNotesOnly = [];
+                // console.log("before changing key-temporary " + temporarySequence.toString());
+                // console.log("before changing key-temporary " + gimmeThatAgainAsNoteAndBeats(temporarySequence).toString());
+
+                let noteOneForComparison = 0;
+                let noteTwoForComparison = 0;
+                for (var i = 0; removeNotesArray.length > i; i++) {
+                    // alert("did one");
+                    // let index = sequenceArray.indexOf(removeNotesArray[i]);
+                    if (removeNotesArray.length > 1) {
+
+                        if (Math.abs(removeNotesArray[i] - removeNotesArray[i + 1]) == 1) { //if two notes were deleted next to eachother, hence I may literally be singing on a fence.
+                            noteOneForComparison = sequenceArray[removeNotesArray[i]][0];
+                            noteTwoForComparison = sequenceArray[removeNotesArray[i + 1]][0];
+
+                            console.log("About to shift notes " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
+                            //if the first note is in the key  console.log("we removed " + i + " " + noteArray[sequenceArray[i][0]][1] + isItInKey(sequenceArray[i][0]));
+                            if (!(isItInKey(basicNote(noteOneForComparison)))) { //if the 1st note is not in key, add its note time to the second note.
+                                sequenceArray[removeNotesArray[i + 1]][1] = sequenceArray[removeNotesArray[i + 1]][1] + sequenceArray[removeNotesArray[i]][1];
+                                sequenceArray[removeNotesArray[i]][1] = 0;
+                                temporarySequence.splice(removeNotesArray[i] - i, 1);
+                            } else if (!(isItInKey(basicNote(noteTwoForComparison)))) { //if the 2nd note is not in key, add its note time to the first one.
+                                sequenceArray[removeNotesArray[i]][1] = sequenceArray[removeNotesArray[i + 1]][1] + sequenceArray[removeNotesArray[i]][1];
+                                sequenceArray[removeNotesArray[i + 1]][1] = 0;
+                                temporarySequence.splice(removeNotesArray[i + 1] - i, 1);
+                            }
+                            // console.log("just shifted notes " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
                         }
                     }
-                    randomScaleNum = randomScaleNum + intervalChange;
-                    if (randomScaleNum > 6) {
-                        shiftAdapter = 12;
-                    } else if (randomScaleNum < 0) {
-                        shiftAdapter = -12;
+                    // temporarySequence.splice(removeNotesArray[i]-i, 1);
+                }
+                //after key shift
+                arrayOfSungNotesOnly = [];
+                for (i = 0; i < temporarySequence.length; i++) {
+                    arrayOfSungNotesOnly.push(basicNote(temporarySequence[i][0]));
+                }
+
+                removeNotesArray = [];
+                shiftNotesArray = [];
+
+                console.log("After round two, singing array " + (sequenceArray).toString());
+                console.log("After round two, singing array " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
+                for (var i = 0; sequenceLength > i; i++) {
+                    let thisNoteTime = sequenceArray[i][1] + 0;
+
+                    thisNoteTime = thisNoteTime / (60 / currentBPM);
+                    thisNoteTime = Math.round(thisNoteTime * 6) / 6; //this makes it so we round to the nearest 1/24 note.
+                    if (thisNoteTime == 0) {
+                        // console.log("we removed " + i + " " + noteArray[sequenceArray[i][0]][1] + isItInKey(sequenceArray[i][0]));
+                        removeNotesArray.push(i + 0);
                     } else {
-                        shiftAdapter = 0;
+                        sequenceArray[i][1] = thisNoteTime + 0;
+                        randomNoteNum = sequenceArray[i][0];
+
+                        if (keyType == "major") {
+                            // console.log("new is " + newLastRandomScaleNum);
+                            randomScaleNum = getScaleNumMajorNote(randomNoteNum);
+                        } else {
+                            // alert ("hi");
+                            // console.log("newMinor is " + newLastRandomScaleNum);
+                            randomScaleNum = getScaleNumMinorNote(randomNoteNum);
+                        }
+                        sequenceArray[i][2] = randomScaleNum + 0;
+                        beatsExpected = beatsExpected + thisNoteTime;
+
+                        // console.log(noteArray[sequenceArray[i][0]][1] + " for " + thisNoteTime);
                     }
-                    // console.log(randomScaleNum + " is the scale change");
                 }
-                if (keyType == "major") {
-                    randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
-                    shiftAdapter = 0;
-                } else {
-                    // alert ("hi");
-                    randomNoteNum = getNoteNumMinorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
-                    shiftAdapter = 0;
+                for (var i = 0; removeNotesArray.length > i; i++) {
+                    // let index = sequenceArray.indexOf(removeNotesArray[i]);
+                    if (removeNotesArray.length > 1) {
+                        if (Math.abs(removeNotesArray[i] - removeNotesArray[i]) == 1) {}
+                    }
+                    sequenceArray.splice(removeNotesArray[i] - i, 1);
                 }
-                // console.log(i+" "+randomNoteNum);
-                let thisNoteTime = Math.floor(Math.random() * (noteLengthMax - noteLengthMin) + 1) + noteLengthMin; //length of random notes
-                sequenceArray.push([randomNoteNum + 0, thisNoteTime + 0, randomScaleNum + 0]);
-                beatsExpected = beatsExpected + thisNoteTime;
+
+                console.log("After round three, singing array " + (sequenceArray).toString());
+                console.log("After round three, singing array " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
+                // console.log("just removed notes " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
+                // alert(sequenceArray.toString());
+                // randomNoteNum = sequenceArray[0][0];
+                // if (keyType == "major") {
+                // // console.log("new is " + newLastRandomScaleNum);
+                // randomScaleNum = getScaleNumMajorNote(randomNoteNum);
+                // } else {
+                // // alert ("hi");
+                // // console.log("newMinor is " + newLastRandomScaleNum);
+                // randomScaleNum = getScaleNumMinorNote(randomNoteNum);
+                // }
+
+                // nonreference section begin
+
+                // for (var i = 0; sequenceLength > i; i++) {
+                // if (i == 0) {
+                // randomScaleNum = Math.floor(Math.random() * 7);
+                // // console.log(i + " sequencefirst");
+                // } else {
+                // // console.log(i + " notfirst " + randomScaleNum);
+                // let intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                // if (intervalChange == 0) {
+                // while (intervalChange == 0) {
+
+                // intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                // }
+                // }
+                // randomScaleNum = randomScaleNum + intervalChange;
+                // if (randomScaleNum > 6) {
+                // shiftAdapter = 12;
+                // } else if (randomScaleNum < 0) {
+                // shiftAdapter = -12;
+                // } else {
+                // shiftAdapter = 0;
+                // }
+                // // console.log(randomScaleNum + " is the scale change");
+                // }
+                // if (keyType == "major") {
+                // randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                // shiftAdapter = 0;
+                // // alert (randomNoteNum);
+                // } else {
+
+                // randomNoteNum = getNoteNumMinorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                // shiftAdapter = 0;
+                // }
+                // // console.log(i+" "+randomNoteNum);
+                // let thisNoteTime = Math.floor(Math.random() * (noteLengthMax - noteLengthMin + 1)) + noteLengthMin; //length of random notes
+                // // alert (basicNote(randomNoteNum));
+                // beatsExpected = beatsExpected + thisNoteTime;
                 // console.log("beats" + thisNoteTime);
                 // console.log(beatsExpected + " is beats amount");
 
-            }
-            sequenceCopy = [];
-            sequenceCopy = sequenceArray.slice();
-            sequenceCopy.unshift([sequenceCopy[0][0], 2, sequenceCopy[0][2]]);
+                findKey(arrayOfSungNotesOnly);
+                for (var i = 0; (Math.floor((beatsExpected - 2) / 4) + 1) > i; i++) {
+                    if (i == 0) {
+                        randomScaleNum = Math.floor(Math.random() * 7);
+                        // console.log(i + " sequencefirst");
+                    } else {
+                        // console.log(i + " notfirst " + randomScaleNum);
+                        let intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                        if (intervalChange == 0) {
+                            while (intervalChange == 0) {
 
+                                intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                            }
+                        }
+                        randomScaleNum = randomScaleNum + intervalChange;
+                        if (randomScaleNum > 6) {
+                            shiftAdapter = 12;
+                        } else if (randomScaleNum < 0) {
+                            shiftAdapter = -12;
+                        } else {
+                            shiftAdapter = 0;
+                        }
+                        // console.log(randomScaleNum + " is the scale change");
+                    }
+                    if (keyType == "major") {
+                        randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                        shiftAdapter = 0;
+                    } else {
+                        // alert ("hi");
+                        randomNoteNum = getNoteNumMinorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                        shiftAdapter = 0;
+                    }
+                    // console.log(i+" "+randomNoteNum);
+                    // let thisNoteTime = Math.floor(Math.random() * (noteLengthMax - noteLengthMin + 1)) + noteLengthMin; //length of random notes
+                    // referenceNoteArray.push(basicNote(randmonNoteNum));
+                    // alert ("that's one");
+                    chordSequenceArray.push([randomNoteNum + 0, 4, randomScaleNum + 0]);
+                    // beatsExpected = beatsExpected + thisNoteTime;
+                    // console.log("beats" + thisNoteTime);
+                    // console.log(beatsExpected + " is beats amount");
+
+                }
+                chordSequenceLength = chordSequenceArray.length + 0;
+                chordSequenceCopy = [];
+                chordSequenceCopy = chordSequenceArray.slice();
+                // chordSequenceCopy.unshift([chordSequenceCopy[0][0], 4, chordSequenceCopy[0][2]]);
+
+                sequenceCopy = [];
+                sequenceCopy = JSON.parse(JSON.stringify(sequenceArray));
+
+                //nonreference section end
+
+
+            } else if (buttonPlay) {
+                referenceNoteArray = [];
+                chordSequenceArray = [];
+                chordSequenceCopy = [];
+                nonReferencePlay = true;
+                sequenceArray = JSON.parse(JSON.stringify(singingTimeArray));
+                if (!buttonsCaptured) {
+                    sequenceArray.shift();
+                }
+                beatsExpected = 0.00;
+                sequenceFirst = true;
+                sequenceLength = sequenceArray.length;
+
+                findKey(arrayOfSungNotesOnly);
+                let removeNotesArray = [];
+                for (var i = 0; sequenceLength > i; i++) {
+                    let thisNoteTime = sequenceArray[i][1];
+
+                    thisNoteTime = thisNoteTime / (60 / currentBPM);
+                    thisNoteTime = Math.round(thisNoteTime * 6) / 6;
+                    if (thisNoteTime == 0) {
+                        alert("we removed " + i + " " + sequenceLength[i].toString());
+                        removeNotesArray.push(i + 0);
+                    } else {
+                        sequenceArray[i][1] = thisNoteTime;
+                        randomNoteNum = sequenceArray[i][0];
+
+                        if (keyType == "major") {
+                            // console.log("new is " + newLastRandomScaleNum);
+                            randomScaleNum = getScaleNumMajorNote(randomNoteNum);
+                        } else {
+                            // alert ("hi");
+                            // console.log("newMinor is " + newLastRandomScaleNum);
+                            randomScaleNum = getScaleNumMinorNote(randomNoteNum);
+                        }
+                        sequenceArray[i][2] = randomScaleNum + 0;
+                        beatsExpected = beatsExpected + thisNoteTime;
+
+                        console.log(noteArray[sequenceArray[i][0]][1] + " for " + thisNoteTime);
+                    }
+                }
+                for (var i = 0; removeNotesArray.length > i; i++) {
+                    let index = array.indexOf(removeNotesArray[i]);
+                    sequenceArray.splice(index, 1 - i);
+                }
+                // alert(sequenceArray.toString());
+                // randomNoteNum = sequenceArray[0][0];
+                // if (keyType == "major") {
+                // // console.log("new is " + newLastRandomScaleNum);
+                // randomScaleNum = getScaleNumMajorNote(randomNoteNum);
+                // } else {
+                // // alert ("hi");
+                // // console.log("newMinor is " + newLastRandomScaleNum);
+                // randomScaleNum = getScaleNumMinorNote(randomNoteNum);
+                // }
+
+                // nonreference section begin
+
+                // for (var i = 0; sequenceLength > i; i++) {
+                // if (i == 0) {
+                // randomScaleNum = Math.floor(Math.random() * 7);
+                // // console.log(i + " sequencefirst");
+                // } else {
+                // // console.log(i + " notfirst " + randomScaleNum);
+                // let intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                // if (intervalChange == 0) {
+                // while (intervalChange == 0) {
+
+                // intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                // }
+                // }
+                // randomScaleNum = randomScaleNum + intervalChange;
+                // if (randomScaleNum > 6) {
+                // shiftAdapter = 12;
+                // } else if (randomScaleNum < 0) {
+                // shiftAdapter = -12;
+                // } else {
+                // shiftAdapter = 0;
+                // }
+                // // console.log(randomScaleNum + " is the scale change");
+                // }
+                // if (keyType == "major") {
+                // randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                // shiftAdapter = 0;
+                // // alert (randomNoteNum);
+                // } else {
+
+                // randomNoteNum = getNoteNumMinorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                // shiftAdapter = 0;
+                // }
+                // // console.log(i+" "+randomNoteNum);
+                // let thisNoteTime = Math.floor(Math.random() * (noteLengthMax - noteLengthMin + 1)) + noteLengthMin; //length of random notes
+                // // alert (basicNote(randomNoteNum));
+                // beatsExpected = beatsExpected + thisNoteTime;
+                // console.log("beats" + thisNoteTime);
+                // console.log(beatsExpected + " is beats amount");
+
+                findKey(arrayOfSungNotesOnly);
+                for (var i = 0; (Math.floor((beatsExpected - 2) / 4) + 1) > i; i++) {
+                    if (i == 0) {
+                        randomScaleNum = Math.floor(Math.random() * 7);
+                        // console.log(i + " sequencefirst");
+                    } else {
+                        // console.log(i + " notfirst " + randomScaleNum);
+                        let intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                        if (intervalChange == 0) {
+                            while (intervalChange == 0) {
+
+                                intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                            }
+                        }
+                        randomScaleNum = randomScaleNum + intervalChange;
+                        if (randomScaleNum > 6) {
+                            shiftAdapter = 12;
+                        } else if (randomScaleNum < 0) {
+                            shiftAdapter = -12;
+                        } else {
+                            shiftAdapter = 0;
+                        }
+                        // console.log(randomScaleNum + " is the scale change");
+                    }
+                    if (keyType == "major") {
+                        randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                        shiftAdapter = 0;
+                    } else {
+                        // alert ("hi");
+                        randomNoteNum = getNoteNumMinorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                        shiftAdapter = 0;
+                    }
+                    // console.log(i+" "+randomNoteNum);
+                    // let thisNoteTime = Math.floor(Math.random() * (noteLengthMax - noteLengthMin + 1)) + noteLengthMin; //length of random notes
+                    // referenceNoteArray.push(basicNote(randmonNoteNum));
+                    // alert ("that's one");
+                    chordSequenceArray.push([randomNoteNum + 0, 4, randomScaleNum + 0]);
+                    // beatsExpected = beatsExpected + thisNoteTime;
+                    // console.log("beats" + thisNoteTime);
+                    // console.log(beatsExpected + " is beats amount");
+
+                }
+                chordSequenceLength = chordSequenceArray.length + 0;
+                chordSequenceCopy = [];
+                chordSequenceCopy = chordSequenceArray.slice();
+                // chordSequenceCopy.unshift([chordSequenceCopy[0][0], 4, chordSequenceCopy[0][2]]);
+
+                sequenceCopy = [];
+                sequenceCopy = sequenceArray.slice();
+
+                //nonreference section end
+            }
+        } else { // regular sequenceplay is on
+            chordSequenceArray = [];
+            sequenceChordCopy = [];
+            sequenceArray = [];
+            sequenceCopy = [];
+            beatsExpected = 0;
+            sequenceFirst = true;
+            if (!nonReferencePlay) {
+                for (var i = 0; sequenceLength > i; i++) {
+                    if (i == 0) {
+                        randomScaleNum = Math.floor(Math.random() * 7);
+                        console.log(i + " sequencefirst");
+                    } else {
+                        console.log(i + " notfirst " + randomScaleNum);
+                        let intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                        if (intervalChange == 0) {
+                            while (intervalChange == 0) {
+
+                                intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                            }
+                        }
+                        randomScaleNum = randomScaleNum + intervalChange;
+                        if (randomScaleNum > 6) {
+                            shiftAdapter = 12;
+                        } else if (randomScaleNum < 0) {
+                            shiftAdapter = -12;
+                        } else {
+                            shiftAdapter = 0;
+                        }
+                        // console.log(randomScaleNum + " is the scale change");
+                    }
+                    if (keyType == "major") {
+                        randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                        shiftAdapter = 0;
+                    } else {
+                        // alert ("hi");
+                        randomNoteNum = getNoteNumMinorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                        shiftAdapter = 0;
+                    }
+                    // console.log(i+" "+randomNoteNum);
+                    let thisNoteTime = Math.floor(Math.random() * (noteLengthMax - noteLengthMin + 1)) + noteLengthMin; //length of random notes
+                    sequenceArray.push([randomNoteNum + 0, thisNoteTime + 0, randomScaleNum + 0]);
+                    beatsExpected = beatsExpected + thisNoteTime;
+                    // console.log("beats" + thisNoteTime);
+                    // console.log(beatsExpected + " is beats amount");
+
+                }
+                sequenceCopy = [];
+                sequenceCopy = sequenceArray.slice();
+                // sequenceCopy.unshift([sequenceCopy[0][0], 2, sequenceCopy[0][2]]);
+
+            } else { //this is where I am making first the notes of reference and then the chords around them.
+                referenceNoteArray = [];
+                for (var i = 0; sequenceLength > i; i++) {
+                    if (i == 0) {
+                        randomScaleNum = Math.floor(Math.random() * 7);
+                        // console.log(i + " sequencefirst");
+                    } else {
+                        // console.log(i + " notfirst " + randomScaleNum);
+                        let intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                        if (intervalChange == 0) {
+                            while (intervalChange == 0) {
+
+                                intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                            }
+                        }
+                        randomScaleNum = randomScaleNum + intervalChange;
+                        if (randomScaleNum > 6) {
+                            shiftAdapter = 12;
+                        } else if (randomScaleNum < 0) {
+                            shiftAdapter = -12;
+                        } else {
+                            shiftAdapter = 0;
+                        }
+                        // console.log(randomScaleNum + " is the scale change");
+                    }
+                    if (keyType == "major") {
+                        randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                        shiftAdapter = 0;
+                        // alert (randomNoteNum);
+                    } else {
+
+                        randomNoteNum = getNoteNumMinorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                        shiftAdapter = 0;
+                    }
+                    // console.log(i+" "+randomNoteNum);
+                    let thisNoteTime = Math.floor(Math.random() * (noteLengthMax - noteLengthMin + 1)) + noteLengthMin; //length of random notes
+                    // alert (basicNote(randomNoteNum));
+                    referenceNoteArray.push(basicNote(randomNoteNum));
+                    sequenceArray.push([randomNoteNum + 0, thisNoteTime + 0, randomScaleNum + 0]);
+                    beatsExpected = beatsExpected + thisNoteTime;
+                    console.log("original beats expected " + beatsExpected);
+                    // console.log("beats" + thisNoteTime);
+                    // console.log(beatsExpected + " is beats amount");
+
+                }
+                console.log("Final original beats expected " + beatsExpected);
+                findKey(referenceNoteArray);
+                for (var i = 0; (Math.floor((beatsExpected - 2) / 4) + 1) > i; i++) {
+                    if (i == 0) {
+                        randomScaleNum = Math.floor(Math.random() * 7);
+                        // console.log(i + " sequencefirst");
+                    } else {
+                        // console.log(i + " notfirst " + randomScaleNum);
+                        let intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                        if (intervalChange == 0) {
+                            while (intervalChange == 0) {
+
+                                intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                            }
+                        }
+                        randomScaleNum = randomScaleNum + intervalChange;
+                        if (randomScaleNum > 6) {
+                            shiftAdapter = 12;
+                        } else if (randomScaleNum < 0) {
+                            shiftAdapter = -12;
+                        } else {
+                            shiftAdapter = 0;
+                        }
+                        // console.log(randomScaleNum + " is the scale change");
+                    }
+                    if (keyType == "major") {
+                        randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                        shiftAdapter = 0;
+                    } else {
+                        // alert ("hi");
+                        randomNoteNum = getNoteNumMinorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                        shiftAdapter = 0;
+                    }
+                    // console.log(i+" "+randomNoteNum);
+                    // let thisNoteTime = Math.floor(Math.random() * (noteLengthMax - noteLengthMin + 1)) + noteLengthMin; //length of random notes
+                    // referenceNoteArray.push(basicNote(randmonNoteNum));
+                    // alert ("that's one");
+                    chordSequenceArray.push([randomNoteNum + 0, 4, randomScaleNum + 0]);
+                    // beatsExpected = beatsExpected + thisNoteTime;
+                    // console.log("beats" + thisNoteTime);
+                    // console.log(beatsExpected + " is beats amount");
+
+                }
+                chordSequenceLength = chordSequenceArray.length + 0;
+                beatsExpected = chordSequenceLength * 4;
+                console.log(beatsExpected + " after chordsequencelengh");
+                chordSequenceCopy = [];
+                chordSequenceCopy = chordSequenceArray.slice();
+                // chordSequenceCopy.unshift([chordSequenceCopy[0][0], 2, chordSequenceCopy[0][2]]); I undid this, and I don't know if I agree with it.
+
+                sequenceCopy = [];
+                sequenceCopy = sequenceArray.slice();
+                // sequenceCopy.unshift([sequenceCopy[0][0], 2, sequenceCopy[0][2]]);
+
+            }
         }
+
         //console.log(randomNoteNum);
         //			console.log (randomNoteArray+" "+noteArray[findNote(randomNoteNum)][1]);
         // console.log(randomScaleNum + " " + getNoteNumMajorScale(randomScaleNum) + " " + randomNoteNum + " " + noteArray[randomNoteNum][1] + "");
 
-        if (sequencePlay) {
+        if (sequencePlay) { //I don't remember what this is for.
             randomNoteNum = currentRandomNoteNum + 0;
         } else {
             if (intervalDirection == "up") {
@@ -3925,8 +5329,11 @@ function repeatOnFrame() {
             }
         }
         r = randomNoteNum;
+
+        makeAndShowANote(r, 2, "referenceNote");
         if (!paused) {
             lastMostRecentPostingNum = mostRecentPostingNum + 0;
+
             mostRecentPostingNum = r;
             gauge.update({
                 majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
@@ -4009,48 +5416,48 @@ function repeatOnFrame() {
     //console.log("sup");
 
     frameCounter++,
-    Date.now() - startTime >= 450 && (measureLength = frameCounter, minDrawMLength = frameCounter * minDrawRate, startTime = Date.now(), frameCounter = 0),
+    Date.now() - startTime >= 30 && (measureLength = frameCounter, minDrawMLength = frameCounter * minDrawRate, startTime = Date.now(), frameCounter = 0), // Avi Changed this from 450 to 250 on 5-23
     analyzer.getFloatTimeDomainData(timeDomainData);
     var e = bitCounter / findWaveLength(timeDomainData, window.globk * 24, window.globk * 1200, 10, 10, .016, Math.ceil(10 / window.globk)); //e is the value of the sound
     if (e > 0) {
         // console.log("you're singing");
         // console.log("you started singing "+noteArray[findNote(e)][1] + " "+noteArray[mostRecentPostingNum][1]);
-        if (captureSinging) {
-            if (findNote(e) != mostRecentPostingNum) { //I currently don't have any way of recognizing that notes were changed. this boolean is a placeholder.
-                try {
-                    singingEndTime = new Date().getTime() + 0;
-                    let timeChange = singingEndTime - singingStartTime;
-                    // console.log("time change "+timeChange);
-                    if (timeChange > 20) {
-                        let singingTimeSeconds = (timeChange / 1000);
-                        let singingTimeBeats = singingTimeSeconds / (60 / currentBPM);
-                        console.log(noteArray[lastMostRecentPostingNum][1] + " was added from making noise");
-                        singingTimeArray.push([lastMostRecentPostingNum, singingTimeSeconds]);
-                        console.log("Yo" + singingTimeArray.toString());
-                        // if (singingTimeArray.length > 5) {
+        // if (captureSinging) {
+        // if (findNote(e) != mostRecentPostingNum) { //I currently don't have any way of recognizing that notes were changed. this boolean is a placeholder.
+        // try {
+        // singingEndTime = new Date().getTime() + 0;
+        // let timeChange = singingEndTime - singingStartTime;
+        // // console.log("time change "+timeChange);
+        // if (timeChange > 20) {
+        // let singingTimeSeconds = (timeChange / 1000);
+        // let singingTimeBeats = singingTimeSeconds / (60 / currentBPM);
+        // console.log(noteArray[lastMostRecentPostingNum][1] + " was added from making noise");
+        // singingTimeArray.push([lastMostRecentPostingNum, singingTimeSeconds]);
+        // console.log("Yo" + singingTimeArray.toString());
+        // // if (singingTimeArray.length > 5) {
 
-                        // }
-                        // console.log("time you sang was " + singingTimeSeconds + " " + noteArray[mostRecentPostingNum][1]);
-                    }
-                    youAreSinging = false;
-                    // singingStartTime = new Date().getTime() + 0;
+        // // }
+        // // console.log("time you sang was " + singingTimeSeconds + " " + noteArray[mostRecentPostingNum][1]);
+        // }
+        // youAreSinging = false;
+        // // singingStartTime = new Date().getTime() + 0;
 
-                } catch (error) {
-                    console.log(error);
-                }
+        // } catch (error) {
+        // console.log(error);
+        // }
 
-            } else {
-                console.log("they were the same");
-            }
+        // } else {
+        // console.log("they were the same");
+        // }
 
-            if (!youAreSinging) {
-                try {
-                    singingStartTime = new Date().getTime() + 0;
-                } catch (error) {}
+        // if (!youAreSinging) {
+        // try {
+        // singingStartTime = new Date().getTime() + 0;
+        // } catch (error) {}
 
-                youAreSinging = true;
-            }
-        }
+        // youAreSinging = true;
+        // }
+        // }
         measurements.push([e, findNote(e)]),
         measurements.length > measureLength && (measurements = measurements.slice(measurements.length - measureLength));
         for (var r = 0, t = 0, o = 0, n = measurements.length, a = 0; n > a; a++) {
@@ -4066,30 +5473,30 @@ function repeatOnFrame() {
         //this spot is Avi important
     } else { //WHAT TO DO WHEN NO SOUND
 
-        if (captureSinging) {
-            try {
-                singingEndTime = new Date().getTime() + 0;
-                let timeChange = singingEndTime - singingStartTime;
-                if (timeChange > 20) {
-                    let singingTimeSeconds = ((timeChange % (1000 * 60)) / 1000);
-                    let singingTimeBeats = singingTimeSeconds / (60 / currentBPM);
-                    console.log(noteArray[mostRecentPostingNum][1] + " was added from being quiet");
-                    singingTimeArray.push([mostRecentPostingNum, singingTimeSeconds]);
-                    console.log("Yo" + singingTimeArray.toString());
-                    if (singingTimeArray.length > 5) {
-                        // alert("cool");
+        // if (captureSinging) {
+        // try {
+        // singingEndTime = new Date().getTime() + 0;
+        // let timeChange = singingEndTime - singingStartTime;
+        // if (timeChange > 20) {
+        // let singingTimeSeconds = ((timeChange % (1000 * 60)) / 1000);
+        // let singingTimeBeats = singingTimeSeconds / (60 / currentBPM);
+        // console.log(noteArray[mostRecentPostingNum][1] + " was added from being quiet");
+        // singingTimeArray.push([mostRecentPostingNum, singingTimeSeconds]);
+        // console.log("Yo" + singingTimeArray.toString());
+        // if (singingTimeArray.length > 5) {
+        // // alert("cool");
 
-                    }
-                    // console.log("time you sang was " + singingTimeSeconds + " " + noteArray[mostRecentPostingNum][1]);
-                }
+        // }
+        // // console.log("time you sang was " + singingTimeSeconds + " " + noteArray[mostRecentPostingNum][1]);
+        // }
 
-                singingStartTime = new Date().getTime() + 0;
-            } catch (error) {
-                console.log(error);
-            }
+        // singingStartTime = new Date().getTime() + 0;
+        // } catch (error) {
+        // console.log(error);
+        // }
 
-            youAreSinging = false;
-        }
+        // youAreSinging = false;
+        // }
         if (!sequencePlay) {
             startWrongTimer();
             //startScoreTimer();
@@ -4390,10 +5797,20 @@ function basicNote(complexNote) {
     return newNoteNumber;
 };
 
+function gimmeThatAgainAsNoteAndBeats(aSequenceArray) {
+    let tempSequence = [];
+    for (i = 0; i < aSequenceArray.length; i++) {
+        tempSequence.push([noteArray[aSequenceArray[i][0]][1], Math.round(aSequenceArray[i][1])])
+    }
+    return tempSequence;
+}
+
 function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
     frequenceEnhancedTech || (e += e * (enhancedFreq(0, 20) - 15) / 1e3); //LOOK HERE AVI THIS MIGHT BE A GOOD SPOT TO UPDATE THE TICKER.
     var r = findNote(e); //converting the noteArray
     var thanote = findNote(e);
+
+    makeAndShowANote(thanote, 2, "singingNote");
     //console.log((thanote)+","+(findNote(randomNoteNum)+4))
     if (sequencePlay) {
         randomNoteNum = currentRandomNoteNum + 0;
@@ -4409,8 +5826,63 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
     } else if (intervalDirection == "fourthDown") {
         var legalInterval = 7; //getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 0);
     }
+
+    makeAndShowANote(randomNoteNum + legalInterval, 2, "targetNote");
     //console.log(basicNote(thanote));
     // console.log(noteArray[randomNoteNum+legalInterval][1]);
+    if (captureSinging) {
+        // if ((captureButtons) && (justPlayingScaleFam)) {
+        // buttonStartEndTimes.push([arrayPlace, new Date(new Date().getTime())]);
+        // if (buttonStartEndTimes.length > 1) {
+        // // alert("long");
+        // singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000.01]);
+        // buttonStartEndTimes.shift();
+        // console.log(singingTimeArray.toString());
+        // }
+        // }
+        if (r != mostRecentSungNum) { //I currently don't have any way of recognizing that notes were changed. this boolean is a placeholder.
+            try {
+                console.log("you are singing " + noteArray[r][1] + " " + r);
+                // console.log(0/5);
+                buttonStartEndTimes.push([r, new Date(new Date().getTime())]);
+                if (buttonStartEndTimes.length > 1) {
+                    singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000.00001, 0]);
+                    // console.log(singingTimeArray.toString());
+                    buttonStartEndTimes.shift();
+                }
+                // singingEndTime = new Date().getTime() + 0;
+                // let timeChange = singingEndTime - singingStartTime;
+                // console.log("time change "+timeChange);
+                // if (timeChange > 20) {
+                // let singingTimeSeconds = (timeChange / 1000);
+                // let singingTimeBeats = singingTimeSeconds / (60 / currentBPM);
+                // console.log(noteArray[lastMostRecentPostingNum][1] + " was added from making noise");
+                // singingTimeArray.push([lastMostRecentPostingNum, singingTimeSeconds]);
+                // console.log("Yo" + singingTimeArray.toString());
+                // // if (singingTimeArray.length > 5) {
+
+                // // }
+                // // console.log("time you sang was " + singingTimeSeconds + " " + noteArray[mostRecentPostingNum][1]);
+                // }
+                // youAreSinging = false;
+                // // singingStartTime = new Date().getTime() + 0;
+
+            } catch (error) {
+                console.log(error);
+            }
+
+        } else {
+            // console.log("they were the same");
+        }
+
+        // if (!youAreSinging) {
+        // try {
+        // singingStartTime = new Date().getTime() + 0;
+        // } catch (error) {}
+
+        // youAreSinging = true;
+        // }
+    }
     if (((basicNote(thanote)) == (basicNote((randomNoteNum) + legalInterval))) && (!paused)) { //WHAT TO DO WHEN correct
         // unpauseScore();
         // console.log("awesome");
@@ -4420,16 +5892,27 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
         newWrong = true;
         startScoreTimer();
         // updateTimer();
-        if (sequencePlay) {
+        if ((sequencePlay) && (!nonReferencePlay)) {
+            // alert (beatsExpected+" "+sequenceLength);
             timeRequirement = (beatsExpected) / 2 - (.8 * ((sequenceLength) * (currentBPM / 120))); // / (currentBPM/60) - (.55*sequenceLength); // after doing the math... it should be beats expected. / (currentBPM/60.000001);
+            console.log(timeRequirement + " is time requirement");
+        } else if ((nonReferencePlay)) {
+            // alert (beatsExpected+" "+sequenceLength);
+
+            console.log("testing original beats expected " + beatsExpected);
+            timeRequirement = (beatsExpected) / 2 - (.6 * ((sequenceLength) * (currentBPM / 120)));
+            if (timeRequirement < (beatsExpected / 4)) {
+                timeRequirement = beatsExpected / 4; // this was a fail safe because I kept finding the time requirement was far too severe.
+            }
+            // / (currentBPM/60) - (.55*sequenceLength); // after doing the math... it should be beats expected. / (currentBPM/60.000001);
             console.log(timeRequirement + " is time requirement");
         } else {
             timeRequirement = globalTimeRequirement / (120 / currentBPM);
         }
         currentScore = 50 * (scoreTimeBeats) / (timeRequirement); //(currentScore+.000001)+2.00/timeRequirement;
-        console.log(newScore + " beats " + scoreTimeBeats + " timerequirement " + timeRequirement + " currentScore " + currentScore + " scoreTimeStart " + scoreTimeStart + " scoreTime " + scoreTimeSeconds);
+        // console.log(newScore + " beats " + scoreTimeBeats + " timerequirement " + timeRequirement + " currentScore " + currentScore + " scoreTimeStart " + scoreTimeStart + " scoreTime " + scoreTimeSeconds);
         score = Math.floor(currentScore);
-        if (score >= 100) { //100 is 2 seconds... 200 is 4 seconds.
+        if ((score >= 100) && (!micMute)) { //100 is 2 seconds... 200 is 4 seconds.
 
             score = 0;
             currentScore = 0;
@@ -4481,6 +5964,7 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
         i >= e && e >= a && (u = darkColor, c = darkColor, l = "bold"),
         lastMostRecentPostingNum = mostRecentPostingNum + 0;
         mostRecentPostingNum = r;
+        mostRecentSungNum = r + 0;
         gauge.update({
             units: noteArray[r][1] + " " + Math.floor(score),
             value: e,
@@ -4510,24 +5994,38 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
 
 }
 
+function isItInKey(aNoteNumber) {
+    let wellIsIt = false;
+    let minorVersion = highScoreKeys[0];
+    if (keyType == "minor") {
+        let minorVersion = highScoreKeys[0] - 3;
+        if (minorVersion < 0) {
+            minorVersion = minorVersion + 12;
+        }
+    }
+    if ((allTheMajors[minorVersion])[1].includes(basicNote(aNoteNumber))) {
+        // alert(currentKey+ " "+(allTheMajors[i])[1].toString());
+        wellIsIt = true;
+        // alert (currentKey+" " +currentKeyScore+" "+j);
+    }
+
+    return wellIsIt;
+}
+
+function tryToShiftToKey(aNoteNumber) {
+    let minorVersion = highScoreKeys[0] - 3;
+    if (minorVersion < 0) {
+        minorVersion = minorVersion + 12;
+    }
+
+}
+
 function findKey(notesWeHaveArray) {
     let sungNotes = notesWeHaveArray.slice();
     // alert(sungNotes.toString());
-    var cMajorArray = [0, [0, 2, 4, 5, 7, 9, 11]];
-    var cSharpMajorArray = [1, [1, 3, 5, 6, 8, 10, 0]];
-    var dMajorArray = [2, [2, 4, 6, 7, 9, 11, 1]];
-    var dSharpMajorArray = [3, [3, 5, 7, 8, 10, 0, 2]];
-    var eMajorArray = [4, [4, 6, 8, 9, 11, 1, 3]];
-    var fMajorArray = [5, [5, 7, 9, 10, 0, 2, 4]];
-    var fSharpMajorArray = [6, [6, 8, 10, 11, 1, 3, 5]];
-    var gMajorArray = [7, [7, 9, 11, 0, 2, 4, 6]];
-    var gSharpMajorArray = [8, [8, 10, 0, 1, 3, 5, 7]];
-    var aMajorArray = [9, [9, 11, 1, 2, 4, 6, 8]];
-    var aSharpMajorArray = [10, [10, 0, 2, 3, 5, 7, 9]];
-    var bMajorArray = [11, [11, 1, 3, 4, 6, 8, 10]];
-    var allTheMajors = [cMajorArray, cSharpMajorArray, dMajorArray, dSharpMajorArray, eMajorArray, fMajorArray, fSharpMajorArray, gMajorArray, gSharpMajorArray, aMajorArray, aSharpMajorArray, bMajorArray];
-    var highScoreKeys = [];
-    var highScore = 0;
+    highScoreKeys = [];
+    highScoreKeysNames = [];
+    highScore = 0;
     for (var i = 0; i < allTheMajors.length; i++) {
         let currentKey = (allTheMajors[i])[0];
         let currentKeyScore = 0;
@@ -4545,19 +6043,35 @@ function findKey(notesWeHaveArray) {
         }
         if (currentKeyScore > highScore) {
             highScore = currentKeyScore + 0; ;
-            highScoreKeys = [numToKeyName(currentKey)];
+            highScoreKeys = [(currentKey)];
+            highScoreKeysNames = [numToKeyName(currentKey)];
         } else if (currentKeyScore == highScore) {
-            highScoreKeys.push(numToKeyName(currentKey));
+            highScoreKeys.push((currentKey));
+            highScoreKeysNames.push(numToKeyName(currentKey));
         }
 
     }
-    alert(highScoreKeys.toString() + " major " + " with a score of " + highScore);
     // alert (highScoreKeys[0]);
     // $("#referenceKeySelect option[id='']").attr("selected", "selected");
     // document.getElementById("referenceKeySelect").options["D"].select
     // $("#referenceKeySelect option[value=(highScoreKeys[0])]").attr("selected", "selected");
     // $('select').val(highScoreKeys[0]);
-    $('#referenceKeySelect option[value="' + highScoreKeys[0] + '"]').prop("selected", true);
+    let minorVersion = highScoreKeys[0] - 3;
+    if (minorVersion < 0) {
+        minorVersion = minorVersion + 12;
+    }
+    if (buttonsCaptured) {
+        console.log(highScoreKeysNames.toString() + " major " + " with a score of " + highScore);
+    }
+    if (keyType == "major") {
+        $('#referenceKeySelect option[value="' + highScoreKeysNames[0] + '"]').prop("selected", true);
+        updateScaleAdapter(highScoreKeysNames[0]);
+    } else {
+        $('#referenceKeySelect option[value="' + numToKeyName(minorVersion) + '"]').prop("selected", true);
+        updateScaleAdapter(numToKeyName(minorVersion));
+    }
+
+    // $('#referenceKeySelect').trigger("change");
 }
 
 function numToKeyName(numOfKey) {
@@ -4651,7 +6165,7 @@ function unpauseScore() {
 }
 
 function toSolFej(keyOfWhat, scaleNumOfNote) {
-    var scaleNumHere = keyOfWhat + scaleNumOfNote;
+    var scaleNumHere = scaleNumOfNote; //used to add keyOfWhat
     // alert (scaleNumHere);
     while (scaleNumHere > 6) {
         scaleNumHere = scaleNumHere - 7;
@@ -4968,8 +6482,8 @@ $(function () {
     $("#slider-horizontal-sequenceLengthAmount").slider({
         orientation: "horizontal",
         range: "min",
-        min: 1,
-        max: 4,
+        min: 2,
+        max: 20,
         value: 2,
         slide: function (event, ui) {
             $("#sequenceLengthAmount").val(ui.value);
@@ -5019,6 +6533,7 @@ $(function () {
     $("#BPMAmount").val($("#slider-horizontal-BPMAmount").slider("value"));
     currentBPM = Number(document.getElementById("BPMAmount").value) + 0;
     // console.log("it is " + sequenceLength);
+
     newQuestionTime = true;
     stopAllNotes();
 });
@@ -5173,45 +6688,257 @@ var updateReferences = function () {
     playANote(randomNoteNum);
 }
 
-var updateScaleAdapter = function (selected) {
+var getRomanNumeral = function (scaleIs) {
+    if (scaleIs < 0) {
+        scaleIs = scaleIs + 7;
+    } else if (scaleIs > 6) {
+        scaleIs = scaleIs - 7;
+    }
+    let romanN = "I";
+    switch (scaleIs) {
+    case 0:
+        if (keyType = "major") {
+            romanN = "I"
+        } else {
+            romanN = "i"
+        }
+        break;
+    case 1:
+        if (keyType = "major") {
+            romanN = "ii"
+        } else {
+            romanN = "VII"
+        }
+        break;
+    case 2:
+        if (keyType = "major") {
+            romanN = "iii"
+        } else {
+            romanN = "III"
+        }
+        break;
+    case 3:
+        if (keyType = "major") {
+            romanN = "IV"
+        } else {
+            romanN = "iv"
+        }
+        break;
+    case 4:
+        if (keyType = "major") {
+            romanN = "V"
+        } else {
+            romanN = "v"
+        }
+        break;
+    case 5:
+        if (keyType = "major") {
+            romanN = "vi"
+        } else {
+            romanN = "VI"
+        }
+        break;
+    case 6:
+        if (keyType = "major") {
+            romanN = "V"
+        } else {
+            romanN = "VII"
+        }
+        break;
+    }
+    return romanN;
+}
+var getMinorEnd = function (scaleIs) {
+    if (scaleIs < 0) {
+        scaleIs = scaleIs + 7;
+    } else if (scaleIs > 6) {
+        scaleIs = scaleIs - 7;
+    }
+    let romanN = "I";
+    switch (scaleIs) {
+    case 0:
+        if (keyType = "major") {
+            romanN = ""
+        } else {
+            romanN = "m"
+        }
+        break;
+    case 1:
+        if (keyType = "major") {
+            romanN = "m"
+        } else {
+            romanN = ""
+        }
+        break;
+    case 2:
+        if (keyType = "major") {
+            romanN = "m"
+        } else {
+            romanN = ""
+        }
+        break;
+    case 3:
+        if (keyType = "major") {
+            romanN = ""
+        } else {
+            romanN = "m"
+        }
+        break;
+    case 4:
+        if (keyType = "major") {
+            romanN = ""
+        } else {
+            romanN = "m"
+        }
+        break;
+    case 5:
+        if (keyType = "major") {
+            romanN = "m"
+        } else {
+            romanN = ""
+        }
+        break;
+    case 6:
+        if (keyType = "major") {
+            romanN = ""
+        } else {
+            romanN = ""
+        }
+        break;
+    }
+    return romanN;
+}
 
+var getChordNameAltered = function (scaleIs, chordName) {
+    if (scaleIs < 0) {
+        scaleIs = scaleIs + 7;
+    } else if (scaleIs > 6) {
+        scaleIs = scaleIs - 7;
+    }
+    let romanN = chordName
+        romanN = romanN.substring(0, romanN.length - 1);
+    switch (scaleIs) {
+    case 0:
+        if (keyType = "major") {
+            romanN = romanN;
+        } else {
+            romanN = romanN + "m";
+        }
+        break;
+    case 1:
+        if (keyType = "major") {
+            romanN = romanN + "m";
+        } else {
+            alert("it's happening")
+            romanN = noteArray[10 + scaleAdapter][1] + "";
+            romanN = romanN.substring(0, romanN.length - 1);
+        }
+        break;
+    case 2:
+        if (keyType = "major") {
+            romanN = romanN + "m";
+        } else {
+            romanN = romanN;
+        }
+        break;
+    case 3:
+        if (keyType = "major") {
+            romanN = romanN;
+        } else {
+            romanN = romanN + "m";
+        }
+        break;
+    case 4:
+        if (keyType = "major") {
+            romanN = romanN;
+        } else {
+            romanN = romanN + "m";
+        }
+        break;
+    case 5:
+        if (keyType = "major") {
+            romanN = romanN + "m";
+        } else {
+            romanN = romanN;
+        }
+        break;
+    case 6:
+        if (keyType = "major") {
+            romanN = noteArray[7 + scaleAdapter][1] + "";
+            romanN = romanN.substring(0, romanN.length - 1);
+        } else {
+            romanN = romanN;
+        }
+        break;
+    }
+    return romanN;
+}
+var updateScaleAdapter = function (selected) {
     selected = selected.trim() + "";
     switch (selected) {
     case "C":
         scaleAdapter = 0;
+        keyOf = 0;
         break;
     case "C#/Db":
         scaleAdapter = 1;
+        keyOf = 1;
         break;
     case "D":
         scaleAdapter = 2;
+        keyOf = 2;
         break;
     case "D#/Eb":
         scaleAdapter = 3;
+        keyOf = 3;
+        break;
+    case "Eb":
+        scaleAdapter = 3;
+        keyOf = 3;
         break;
     case "E":
         scaleAdapter = 4;
+        keyOf = 4;
         break;
     case "F":
         scaleAdapter = 5;
+        keyOf = 5;
         break;
     case "F#/Gb":
         scaleAdapter = 6;
+        keyOf = 6;
+        break;
+    case "Gb":
+        scaleAdapter = 6;
+        keyOf = 6;
         break;
     case "G":
         scaleAdapter = 7;
+        keyOf = 7;
         break;
     case "G#/Ab":
         scaleAdapter = 8;
+        keyOf = 8;
+        break;
+    case "Ab":
+        scaleAdapter = 8;
+        keyOf = 8;
         break;
     case "A":
         scaleAdapter = 9;
+        keyOf = 9;
         break;
     case "A#/Bb":
         scaleAdapter = 10;
+        keyOf = 10;
+        break;
+    case "Bb":
+        scaleAdapter = 10;
+        keyOf = 10;
         break;
     case "B":
         scaleAdapter = 11;
+        keyOf = 11;
         break;
     }
 
@@ -5266,24 +6993,63 @@ $('#sequenceOff').click(function () {
         $(".regular-mode").slideToggle();
         $(".sequence-mode").slideToggle();
     }
-    document.getElementById("sequenceOn").innerHTML = "On";
-    document.getElementById("sequenceOff").innerHTML = "Off (selected)";
+    document.getElementById("sequenceOn").innerHTML = "Basic Sequence";
+    document.getElementById("sequenceOff").innerHTML = "Single Notes (selected)";
     document.getElementById("sequenceOff").style.background = buttonColor;
     document.getElementById("sequenceOn").style.background = buttonNormalColor;
+    document.getElementById("complexSequence").innerHTML = "Complex Sequence (beta)";
+    document.getElementById("complexSequence").style.background = buttonNormalColor;
     sequencePlay = false;
     newQuestionTime = true;
+    nonReferencePlay = false;
 });
 $('#sequenceOn').click(function () {
-    if (!sequencePlay) {
+    if ((!sequencePlay) && (!nonReferencePlay)) {
         $(".regular-mode").slideToggle();
         $(".sequence-mode").slideToggle();
     }
-    document.getElementById("sequenceOff").innerHTML = "Off";
-    document.getElementById("sequenceOn").innerHTML = "On (selected)";
+    document.getElementById("sequenceOff").innerHTML = "Single Notes";
+    document.getElementById("sequenceOn").innerHTML = "Basic Sequence (selected)";
     document.getElementById("sequenceOn").style.background = buttonColor;
     document.getElementById("sequenceOff").style.background = buttonNormalColor;
+    document.getElementById("complexSequence").innerHTML = "Complex Sequence (beta)";
+    document.getElementById("complexSequence").style.background = buttonNormalColor;
+    slider.noUiSlider.set([4, 4]);
+    sequenceLength = 2;
+
+    $("#sequenceLengthAmount").val(2);
+    noteLengthMin = 4;
+    noteLengthMax = 4;
     sequencePlay = true;
     newQuestionTime = true;
+    nonReferencePlay = false;
+});
+$('#complexSequence').click(function () {
+    if ((!sequencePlay) && (!nonReferencePlay)) {
+        $(".regular-mode").slideToggle();
+        $(".sequence-mode").slideToggle();
+    }
+    document.getElementById("sequenceOff").innerHTML = "Single Notes";
+    document.getElementById("sequenceOn").innerHTML = "Basic Sequence";
+    document.getElementById("complexSequence").innerHTML = "Complex Sequence (beta)(selected)";
+    document.getElementById("sequenceOn").style.background = buttonNormalColor;
+    document.getElementById("sequenceOff").style.background = buttonNormalColor;
+    document.getElementById("complexSequence").style.background = buttonColor;
+    noteLengthMin = 1;
+    noteLengthMax = 2;
+    sequenceLength = 8;
+
+    slider.noUiSlider.set([1, 2]);
+    // $("#slider-horizontal-BPMAmount").slide(78);
+    $("#BPMAmount").val(78);
+
+    $("#sequenceLengthAmount").val(8);
+    sequenceLength = 8;
+    currentBPM = 78;
+    // $("#slider-horizontal-BPMAmount").slider('option', 'slide').call($slider, event, ui);
+    sequencePlay = true;
+    newQuestionTime = true;
+    nonReferencePlay = true;
 });
 $('#whitec').click(function () {
     justPlayingScaleFam = true;
@@ -5292,9 +7058,9 @@ $('#whitec').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(0 + (noteAdapter + scaleAdapter)));
+        (playANote(0 + (noteAdapter)));
     } else {
-        (playANote(0 + (noteAdapter + scaleAdapter)));
+        (playANote(0 + (noteAdapter)));
     }
 
 });
@@ -5305,9 +7071,9 @@ $('#whitecs').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(1 + (noteAdapter + scaleAdapter)));
+        (playANote(1 + (noteAdapter)));
     } else {
-        (playANote(1 + (noteAdapter + scaleAdapter)));
+        (playANote(1 + (noteAdapter)));
     }
 
 });
@@ -5318,9 +7084,9 @@ $('#whited').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(2 + (noteAdapter + scaleAdapter)));
+        (playANote(2 + (noteAdapter)));
     } else {
-        (playANote(2 + (noteAdapter + scaleAdapter)));
+        (playANote(2 + (noteAdapter)));
     }
 
 });
@@ -5331,9 +7097,9 @@ $('#whiteds').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(3 + (noteAdapter + scaleAdapter)));
+        (playANote(3 + (noteAdapter)));
     } else {
-        (playANote(3 + (noteAdapter + scaleAdapter)));
+        (playANote(3 + (noteAdapter)));
     }
 
 });
@@ -5344,9 +7110,9 @@ $('#whitee').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(4 + (noteAdapter + scaleAdapter)));
+        (playANote(4 + (noteAdapter)));
     } else {
-        (playANote(4 + (noteAdapter + scaleAdapter)));
+        (playANote(4 + (noteAdapter)));
     }
 
 });
@@ -5357,9 +7123,9 @@ $('#whitef').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(5 + (noteAdapter + scaleAdapter)));
+        (playANote(5 + (noteAdapter)));
     } else {
-        (playANote(5 + (noteAdapter + scaleAdapter)));
+        (playANote(5 + (noteAdapter)));
     }
 
 });
@@ -5370,9 +7136,9 @@ $('#whitefs').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(6 + (noteAdapter + scaleAdapter)));
+        (playANote(6 + (noteAdapter)));
     } else {
-        (playANote(6 + (noteAdapter + scaleAdapter)));
+        (playANote(6 + (noteAdapter)));
     }
 
 });
@@ -5383,9 +7149,9 @@ $('#whiteg').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(7 + (noteAdapter + scaleAdapter)));
+        (playANote(7 + (noteAdapter)));
     } else {
-        (playANote(7 + (noteAdapter + scaleAdapter)));
+        (playANote(7 + (noteAdapter)));
     }
 
 });
@@ -5396,9 +7162,9 @@ $('#whitegs').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(8 + (noteAdapter + scaleAdapter)));
+        (playANote(8 + (noteAdapter)));
     } else {
-        (playANote(8 + (noteAdapter + scaleAdapter)));
+        (playANote(8 + (noteAdapter)));
     }
 
 });
@@ -5409,9 +7175,9 @@ $('#whitea').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(9 + (noteAdapter + scaleAdapter)));
+        (playANote(9 + (noteAdapter)));
     } else {
-        (playANote(9 + (noteAdapter + scaleAdapter)));
+        (playANote(9 + (noteAdapter)));
     }
 
 });
@@ -5422,9 +7188,9 @@ $('#whiteas').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(10 + (noteAdapter + scaleAdapter)));
+        (playANote(10 + (noteAdapter)));
     } else {
-        (playANote(10 + (noteAdapter + scaleAdapter)));
+        (playANote(10 + (noteAdapter)));
     }
 
 });
@@ -5435,9 +7201,9 @@ $('#whiteb').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(11 + (noteAdapter + scaleAdapter)));
+        (playANote(11 + (noteAdapter)));
     } else {
-        (playANote(11 + (noteAdapter + scaleAdapter)));
+        (playANote(11 + (noteAdapter)));
     }
 
 });
@@ -5449,9 +7215,9 @@ $('#whitectwo').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(12 + (noteAdapter + scaleAdapter)));
+        (playANote(12 + (noteAdapter)));
     } else {
-        (playANote(12 + (noteAdapter + scaleAdapter)));
+        (playANote(12 + (noteAdapter)));
     }
 
 });
@@ -5462,9 +7228,9 @@ $('#whitecstwo').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(13 + (noteAdapter + scaleAdapter)));
+        (playANote(13 + (noteAdapter)));
     } else {
-        (playANote(13 + (noteAdapter + scaleAdapter)));
+        (playANote(13 + (noteAdapter)));
     }
 
 });
@@ -5475,9 +7241,9 @@ $('#whitedtwo').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(14 + (noteAdapter + scaleAdapter)));
+        (playANote(14 + (noteAdapter)));
     } else {
-        (playANote(14 + (noteAdapter + scaleAdapter)));
+        (playANote(14 + (noteAdapter)));
     }
 
 });
@@ -5488,9 +7254,9 @@ $('#whitedstwo').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(15 + (noteAdapter + scaleAdapter)));
+        (playANote(15 + (noteAdapter)));
     } else {
-        (playANote(15 + (noteAdapter + scaleAdapter)));
+        (playANote(15 + (noteAdapter)));
     }
 
 });
@@ -5501,9 +7267,9 @@ $('#whiteetwo').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(16 + (noteAdapter + scaleAdapter)));
+        (playANote(16 + (noteAdapter)));
     } else {
-        (playANote(16 + (noteAdapter + scaleAdapter)));
+        (playANote(16 + (noteAdapter)));
     }
 
 });
@@ -5514,9 +7280,9 @@ $('#whiteftwo').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(17 + (noteAdapter + scaleAdapter)));
+        (playANote(17 + (noteAdapter)));
     } else {
-        (playANote(17 + (noteAdapter + scaleAdapter)));
+        (playANote(17 + (noteAdapter)));
     }
 
 });
@@ -5527,9 +7293,9 @@ $('#whitefstwo').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(18 + (noteAdapter + scaleAdapter)));
+        (playANote(18 + (noteAdapter)));
     } else {
-        (playANote(18 + (noteAdapter + scaleAdapter)));
+        (playANote(18 + (noteAdapter)));
     }
 
 });
@@ -5540,9 +7306,9 @@ $('#whitegtwo').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(19 + (noteAdapter + scaleAdapter)));
+        (playANote(19 + (noteAdapter)));
     } else {
-        (playANote(19 + (noteAdapter + scaleAdapter)));
+        (playANote(19 + (noteAdapter)));
     }
 
 });
@@ -5553,9 +7319,9 @@ $('#whitegstwo').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(20 + (noteAdapter + scaleAdapter)));
+        (playANote(20 + (noteAdapter)));
     } else {
-        (playANote(20 + (noteAdapter + scaleAdapter)));
+        (playANote(20 + (noteAdapter)));
     }
 
 });
@@ -5566,9 +7332,9 @@ $('#whiteatwo').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(21 + (noteAdapter + scaleAdapter)));
+        (playANote(21 + (noteAdapter)));
     } else {
-        (playANote(21 + (noteAdapter + scaleAdapter)));
+        (playANote(21 + (noteAdapter)));
     }
 
 });
@@ -5579,9 +7345,9 @@ $('#whiteastwo').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(22 + (noteAdapter + scaleAdapter)));
+        (playANote(22 + (noteAdapter)));
     } else {
-        (playANote(22 + (noteAdapter + scaleAdapter)));
+        (playANote(22 + (noteAdapter)));
     }
 
 });
@@ -5592,9 +7358,9 @@ $('#whitebtwo').click(function () {
     }
 
     if (keyType == "major") {
-        (playANote(23 + (noteAdapter + scaleAdapter)));
+        (playANote(23 + (noteAdapter)));
     } else {
-        (playANote(23 + (noteAdapter + scaleAdapter)));
+        (playANote(23 + (noteAdapter)));
     }
 
 });
@@ -5692,6 +7458,12 @@ $('#do2Button').click(function () {
         (playANote(12 + (noteAdapter + scaleAdapter)));
     }
 });
+$('#mute-button').click(function () {
+    micMute = true;
+});
+$('#unmute-button').click(function () {
+    micMute = false;
+});
 
 $('#pauseButton').click(function () {
     if (paused) {
@@ -5762,6 +7534,7 @@ $('#hide-button').click(function () {
 
 });
 $('#capture-by-sound-button').click(function () {
+
     if (!singCaptureButtons) {
         try {
             synth.triggerRelease();
@@ -5769,19 +7542,29 @@ $('#capture-by-sound-button').click(function () {
         } catch (error) {}
         singingTimeArray = [];
         sequenceArray = [];
-        sequenceCopyArray = [];
+        sequenceCopy = [];
         singingCaptured = false;
         captureSinging = true;
         buttonsCaptured = false;
         singCaptureButtons = true;
+        buttonStartEndTimes = [];
     } else {
+        buttonPlay = false;
+        buttonStartEndTimes.push([0, new Date(new Date().getTime())]);
+        if (buttonStartEndTimes.length > 1) {
+            // alert("long");
+            singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000, 0]);
+            buttonStartEndTimes.shift();
+            // console.log(singingTimeArray.toString());
+        }
         captureSinging = false;
         singingCaptured = true;
         sequencePlay = true;
         newQuestionTime = true;
         singCaptureButtons = false;
+        nonReferencePlay = true;
 
-        var arrayOfSungNotesOnly = [];
+        arrayOfSungNotesOnly = [];
         for (i = 0; i < singingTimeArray.length; i++) {
             arrayOfSungNotesOnly.push(basicNote(singingTimeArray[i][0]));
         }
@@ -5789,32 +7572,38 @@ $('#capture-by-sound-button').click(function () {
     }
 });
 $('#capture-by-buttons-button').click(function () {
+
     if (!captureButtons) {
         try {
             synth.triggerRelease();
             stopAllNotes();
         } catch (error) {}
-        alert(rhythmSequenceArray.toString());
+        // alert(rhythmSequenceArray.toString());
         singingTimeArray = [];
         sequenceArray = [];
-        sequenceCopyArray = [];
+        sequenceCopy = [];
+        arpeggioArray = [];
+        chordSequenceArray = [];
+        chordSequenceCopy = [];
         buttonsCaptured = false;
         captureButtons = true;
         buttonStartEndTimes = [];
     } else {
+        buttonPlay = true;
         buttonStartEndTimes.push([0, new Date(new Date().getTime())]);
         if (buttonStartEndTimes.length > 1) {
             // alert("long");
-            singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000]);
+            singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000, 0]);
             buttonStartEndTimes.shift();
-            console.log(singingTimeArray.toString());
+            // console.log(singingTimeArray.toString());
         }
         captureButtons = false;
         buttonsCaptured = true;
         singingCaptured = true;
         sequencePlay = true;
+        nonReferencePlay = true;
         newQuestionTime = true;
-        var arrayOfSungNotesOnly = [];
+        arrayOfSungNotesOnly = [];
         for (i = 0; i < singingTimeArray.length; i++) {
             arrayOfSungNotesOnly.push(basicNote(singingTimeArray[i][0]));
         }
@@ -5828,15 +7617,17 @@ $('#testing-button-base-case').click(function () {
 
     singingTimeArray = [];
     sequenceArray = [];
-    sequenceCopyArray = [];
+    sequenceCopy = [];
+    arpeggioArray = [];
+    chordSequenceArray = [];
     // if (buttonStartEndTimes.length > 1) {
     // // alert("long");
     // singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1])/1000.01]);
     // buttonStartEndTimes.shift();
     // console.log(singingTimeArray.toString());
     // }
-    singingTimeArray.push([0 + noteAdapter, 4]);
-    singingTimeArray.push([2 + noteAdapter, 4]);
+    singingTimeArray.push([0 + noteAdapter, 4, 0]);
+    singingTimeArray.push([2 + noteAdapter, 4, 1]);
     rootNoteLength = 2;
     captureButtons = false;
     buttonsCaptured = true;
@@ -5855,15 +7646,15 @@ $('#testing-button-test-case-one').click(function () {
 
         singingTimeArray = [];
         sequenceArray = [];
-        sequenceCopyArray = [];
+        sequenceCopy = [];
         if (buttonStartEndTimes.length > 1) {
             // alert("long");
-            singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000]);
+            singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000, 0]);
             buttonStartEndTimes.shift();
-            console.log(singingTimeArray.toString());
+            // console.log(singingTimeArray.toString());
         }
-        singingTimeArray.push([0 + noteAdapter, 4]);
-        singingTimeArray.push([2 + noteAdapter, 4]);
+        singingTimeArray.push([0 + noteAdapter, 4, 0]);
+        singingTimeArray.push([2 + noteAdapter, 4, 1]);
         rootNoteLength = 1.5;
         captureButtons = false;
         buttonsCaptured = true;
@@ -5882,15 +7673,15 @@ $('#testing-button-test-case-zero').click(function () {
 
         singingTimeArray = [];
         sequenceArray = [];
-        sequenceCopyArray = [];
+        sequenceCopy = [];
         if (buttonStartEndTimes.length > 1) {
             // alert("long");
-            singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000]);
+            singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000, 0]);
             buttonStartEndTimes.shift();
-            console.log(singingTimeArray.toString());
+            // console.log(singingTimeArray.toString());
         }
-        singingTimeArray.push([0 + noteAdapter, 4]);
-        singingTimeArray.push([2 + noteAdapter, 4]);
+        singingTimeArray.push([0 + noteAdapter, 4, 0]);
+        singingTimeArray.push([2 + noteAdapter, 4, 1]);
         captureButtons = false;
         buttonsCaptured = true;
         singingCaptured = true;
@@ -5953,7 +7744,40 @@ $('#arpeggiosOff').click(function () {
     document.getElementById("arpeggiosOff").style.background = buttonColor;
     arpeggioPlay = false;
 });
+$('#chord-progression-roman').click(function () {
+    // if (!rhythmPlay) {
+    // $(".rhythm-type-buttons").slideToggle();
+    // }
+    let romanString = "Chord Progression";
+    if (chordSequenceCopy.length > 0) {
+        for (i = 0; i < chordSequenceCopy.length; i++) {
+            romanString = romanString + "-" + getRomanNumeral(chordSequenceCopy[i][2]);
+        }
+        alert(romanString);
+    }
+});
+$('#chord-progression-names').click(function () {
+    // if (!rhythmPlay) {
+    // $(".rhythm-type-buttons").slideToggle();
+    // }
+    let romanString = "Chord Pressiong";
+    if (chordSequenceCopy.length > 0) {
 
+        for (i = 0; i < chordSequenceCopy.length; i++) {
+            romanString = romanString + "-" + getChordNameAltered(chordSequenceCopy[i][2], noteArray[chordSequenceCopy[i][0]][1]);
+        }
+        alert(romanString);
+    }
+});
+$('#chord-progression-next').click(function () {
+    // if (!rhythmPlay) {
+    // $(".rhythm-type-buttons").slideToggle();
+    // }
+    if (singingCaptured) {
+        // alert ("yeah");
+        newQuestionTime = true;
+    }
+});
 $('#rhythmOn').click(function () {
     // if (!rhythmPlay) {
     // $(".rhythm-type-buttons").slideToggle();
@@ -6176,6 +8000,7 @@ $('#playAgainButton').click(function () {
         arpeggioAdded = false;
     }
 
+    makeAndShowANote(randomNoteNum, 2, "referenceNote");
     playANote(randomNoteNum);
 
     // var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));

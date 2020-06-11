@@ -5,7 +5,7 @@ var inversionAddOn = "";
 var pickedInversion = 0;
 var currentStep = -1;
 var score = 1;
-var octaveSetting=24;
+var octaveSetting = 24;
 // Timer length
 var timerLength = 10 / 60; // in minutes
 var timerTripped = false;
@@ -21,11 +21,11 @@ var currentChordName = "Wait for the first chord";
 var bassMatched = 0;
 var currentImageName = "Blank Keyboard.jpeg"
     var slashRoot = 0;
-	var presentationType="sheet"
-//document.getElementById("ez5").addEventListener(select
+var presentationType = "sheet"
+    //document.getElementById("ez5").addEventListener(select
 
 
-var firstNoteShown = false;
+    var firstNoteShown = false;
 var lastImageNote;
 var currentImageNote;
 var rememberSingingGroup;
@@ -41,8 +41,8 @@ var tieAmountOne = 1;
 var tieAmountTwo = 1;
 var smallestNoteDenominator = 8;
 var wholesToTieAtTheBeginning = 0;
-var sequenceOn=false;
-var isFlat=false;
+var sequenceOn = false;
+var isFlat = false;
 
 var noteArray = [
     [32.703, "C1", "C1"], //0
@@ -120,7 +120,7 @@ var noteArray = [
 ];
 // const VF = Vex.Flow;
 
-		$(".lock-input").slideToggle();
+$(".lock-input").slideToggle();
 // // Create a VexFlow renderer attaced to the DIV element "boo"
 // var vf = new VF.Factory({renderer: {elementId: 'staff-box'}});
 // var score = vf.EasyScore();
@@ -333,53 +333,53 @@ const visibleTargetNoteGroups = [];
 
 // Add a note to the staff from the notes array (if there are any left).
 // document.getElementById('add-note').addEventListener('click', (e) => {
-	// showANote();
-		// showANote();
-			// showANote();
-    // // if (!firstNoteShown) {
+// showANote();
+// showANote();
+// showANote();
+// // if (!firstNoteShown) {
 
-        // // makeAndShowANote(37, 2, "referenceNote");
-        // // makeAndShowANote(50, 2, "referenceNote");
-        // // makeAndShowANote(40, 2, "singingNote");
-        // // makeAndShowANote(41, 2, "targetNote");
-        // // // makeAndShowANote(47,2, "singingNote");
-        // // firstNoteShown = true;
-    // // } else {
-        // // makeAndShowANote(37, 2, "referenceNote");
-        // // makeAndShowANote(50, 2, "referenceNote");
-        // // makeAndShowANote(45, 2, "targetNote");
-        // // makeAndShowANote(47, 2, "singingNote");
-    // // }
-    // // note = notes.shift();
-    // // if(!note) return;
-    // // const group = context.openGroup();
-    // // visibleNoteGroups.push(group);
-    // // note.draw();
-    // // context.closeGroup();
-    // // group.classList.add('scroll');
-    // // // Force a dom-refresh by asking for the group's bounding box. Why? Most
-    // // // modern browsers are smart enough to realize that adding .scroll class
-    // // // hasn't changed anything about the rendering, so they wait to apply it
-    // // // at the next dom refresh, when they can apply any other changes at the
-    // // // same time for optimization. However, if we allow that to happen,
-    // // // then sometimes the note will immediately jump to its fully transformed
-    // // // position -- because the transform will be applied before the class with
-    // // // its transition rule.
-    // // const box = group.getBoundingClientRect();
-    // // group.classList.add('scrolling');
+// // makeAndShowANote(37, 2, "referenceNote");
+// // makeAndShowANote(50, 2, "referenceNote");
+// // makeAndShowANote(40, 2, "singingNote");
+// // makeAndShowANote(41, 2, "targetNote");
+// // // makeAndShowANote(47,2, "singingNote");
+// // firstNoteShown = true;
+// // } else {
+// // makeAndShowANote(37, 2, "referenceNote");
+// // makeAndShowANote(50, 2, "referenceNote");
+// // makeAndShowANote(45, 2, "targetNote");
+// // makeAndShowANote(47, 2, "singingNote");
+// // }
+// // note = notes.shift();
+// // if(!note) return;
+// // const group = context.openGroup();
+// // visibleNoteGroups.push(group);
+// // note.draw();
+// // context.closeGroup();
+// // group.classList.add('scroll');
+// // // Force a dom-refresh by asking for the group's bounding box. Why? Most
+// // // modern browsers are smart enough to realize that adding .scroll class
+// // // hasn't changed anything about the rendering, so they wait to apply it
+// // // at the next dom refresh, when they can apply any other changes at the
+// // // same time for optimization. However, if we allow that to happen,
+// // // then sometimes the note will immediately jump to its fully transformed
+// // // position -- because the transform will be applied before the class with
+// // // its transition rule.
+// // const box = group.getBoundingClientRect();
+// // group.classList.add('scrolling');
 
-    // // // If a user doesn't answer in time make the note fall below the staff
-    // // window.setTimeout(() => {
-    // // const index = visibleNoteGroups.indexOf(group);
-    // // if(index === -1) return;
-    // // group.classList.add('too-slow');
-    // // visibleNoteGroups.shift();
-    // // }, 5000);
+// // // If a user doesn't answer in time make the note fall below the staff
+// // window.setTimeout(() => {
+// // const index = visibleNoteGroups.indexOf(group);
+// // if(index === -1) return;
+// // group.classList.add('too-slow');
+// // visibleNoteGroups.shift();
+// // }, 5000);
 // });
 
 // // If a user plays/identifies the note in time, send it up to note heaven.
 // document.getElementById('right-answer').addEventListener('click', (e) => {
-    // rightAnswer();
+// rightAnswer();
 // })
 
 function durationNoteSelectTwentyFour(localBeatCount) {
@@ -491,93 +491,91 @@ function showANote() {
 }
 
 $('#sheetButton').click(function () {
-	if (presentationType=="sheet"){
-		
-		$(".chickens").slideToggle();
-		
-		$(".lock-input").slideToggle();
-	presentationType="words";
-    document.getElementById("sheetButton").innerHTML = "Change to Sheet Music";
-	
-    document.getElementById("sheetButton").style.left = '40vw';
-	} else {
-		$(".chickens").slideToggle();
-		
-		$(".lock-input").slideToggle();
-	presentationType="sheet";
-	
-    document.getElementById("sheetButton").innerHTML = "Change To Words";
-    document.getElementById("sheetButton").style.left = '50vw';
-	}
-	        if (score > 4) {
-            score = score - 3;
-            document.getElementById("sp").innerHTML = " ";
-        }
+    if (presentationType == "sheet") {
 
-        resetChord();
+        $(".chickens").slideToggle();
+
+        $(".lock-input").slideToggle();
+        presentationType = "words";
+        document.getElementById("sheetButton").innerHTML = "Change to Sheet Music";
+
+        document.getElementById("sheetButton").style.left = '40vw';
+    } else {
+        $(".chickens").slideToggle();
+
+        $(".lock-input").slideToggle();
+        presentationType = "sheet";
+
+        document.getElementById("sheetButton").innerHTML = "Change To Words";
+        document.getElementById("sheetButton").style.left = '50vw';
+    }
+    if (score > 4) {
+        score = score - 3;
+        document.getElementById("sp").innerHTML = " ";
+    }
+
+    resetChord();
 
 });
 
 $('#octaveUp').click(function () {
-	if (octaveSetting<=62){
-			octaveSetting=octaveSetting+12;
-			document.getElementById("octaveNumBox").innerHTML="Octave "+ (Math.floor(octaveSetting/12)+1);
-	} 
+    if (octaveSetting <= 62) {
+        octaveSetting = octaveSetting + 12;
+        document.getElementById("octaveNumBox").innerHTML = "Octave " + (Math.floor(octaveSetting / 12) + 1);
+    }
 });
 $('#octaveDown').click(function () {
-	if (octaveSetting>=12){
-			octaveSetting=octaveSetting-12;
-			document.getElementById("octaveNumBox").innerHTML="Octave "+(Math.floor(octaveSetting/12)+1);
-	} 
+    if (octaveSetting >= 12) {
+        octaveSetting = octaveSetting - 12;
+        document.getElementById("octaveNumBox").innerHTML = "Octave " + (Math.floor(octaveSetting / 12) + 1);
+    }
 });
 
-
 function showNotes(arrayOfNotes) {
-		// let noteStr = noteArray[arrayOfNotes[0]+24][1];
-		// let partOne = noteStr.slice(0, 1) + '';
-        // let partTwo = noteStr.slice(+2) + '';
-        // let partThree = noteStr.slice(1, 2) + '';
-        // // alert (partOne+" "+partTwo+" "+partThree+" ");
-        // noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
-     // alert(arrayOfNotes.length);
-	let octaveAdder=octaveSetting;
-	if (pickedInversion!=0){
+    // let noteStr = noteArray[arrayOfNotes[0]+24][1];
+    // let partOne = noteStr.slice(0, 1) + '';
+    // let partTwo = noteStr.slice(+2) + '';
+    // let partThree = noteStr.slice(1, 2) + '';
+    // // alert (partOne+" "+partTwo+" "+partThree+" ");
+    // noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
+    // alert(arrayOfNotes.length);
+    let octaveAdder = octaveSetting;
+    if (pickedInversion != 0) {
 
-		octaveAdder=octaveSetting+12;;
-	}
-	for (var i = 0; i < arrayOfNotes.length; i++) {
-		if (i>0){
-		if (arrayOfNotes[i]<arrayOfNotes[i-1]){
-			octaveAdder=octaveAdder+12;
-		}
+        octaveAdder = octaveSetting + 12; ;
+    }
+    for (var i = 0; i < arrayOfNotes.length; i++) {
+        if (i > 0) {
+            if (arrayOfNotes[i] < arrayOfNotes[i - 1]) {
+                octaveAdder = octaveAdder + 12;
+            }
 
-		}
-		// noteStr = noteArray[arrayOfNotes[0]+24][1];
-		// partOne = noteStr.slice(0, 1) + '';
+        }
+        // noteStr = noteArray[arrayOfNotes[0]+24][1];
+        // partOne = noteStr.slice(0, 1) + '';
         // partTwo = noteStr.slice(+2) + '';
         // partThree = noteStr.slice(1, 2) + '';
-		// const note = new VF.StaveNote({
-			// clef: 'bass',
-			// keys: [partOne, partTwo, partThree],
-			// duration: '1',
-		// }).setContext(context).setStave(staveBass);
-		// if (partTwo)
+        // const note = new VF.StaveNote({
+        // clef: 'bass',
+        // keys: [partOne, partTwo, partThree],
+        // duration: '1',
+        // }).setContext(context).setStave(staveBass);
+        // if (partTwo)
         // note.addAccidental(0, new VF.Accidental(partTwo));
-			if ((pickedInversion != 0)) {
-			    // alert(pickedInversion);
-			    if (pickedInversion == i) {
-			        // alert("yo" + pickedInversion);
-			        makeAndShowANote((arrayOfNotes[i] + octaveAdder - 12) + '', '2', "referenceNote");
-			    }
-				else {
-			    makeAndShowANote(arrayOfNotes[i] + octaveAdder, '2', "referenceNote");
-			}
-			} else {
-			    makeAndShowANote(arrayOfNotes[i] + octaveAdder, '2', "referenceNote");
-			}
-	}
-	
-	// var notes = [
+        if ((pickedInversion != 0)) {
+            // alert(pickedInversion);
+            if (pickedInversion == i) {
+                // alert("yo" + pickedInversion);
+                makeAndShowANote((arrayOfNotes[i] + octaveAdder - 12) + '', '2', "referenceNote");
+            } else {
+                makeAndShowANote(arrayOfNotes[i] + octaveAdder, '2', "referenceNote");
+            }
+        } else {
+            makeAndShowANote(arrayOfNotes[i] + octaveAdder, '2', "referenceNote");
+        }
+    }
+
+    // var notes = [
     // ['c', '#', '4'],
     // ['e', 'b', '5'],
     // ['g', '', '5'],
@@ -585,14 +583,14 @@ function showNotes(arrayOfNotes) {
     // ['b', 'bb', '3'],
     // ['a', 'b', '4'],
     // ['f', 'b', '5'],
-// ].map(([letter, acc, octave]) => {
+    // ].map(([letter, acc, octave]) => {
     // const note = new VF.StaveNote({
-            // clef: 'bass',
-            // keys: [`${letter}${acc}/${octave}`],
-            // duration: durations[Math.floor(2)],
-        // })
-        // .setContext(context)
-        // .setStave(staveBass);
+    // clef: 'bass',
+    // keys: [`${letter}${acc}/${octave}`],
+    // duration: durations[Math.floor(2)],
+    // })
+    // .setContext(context)
+    // .setStave(staveBass);
 
     // // If a StaveNote has an accidental, we must render it manually.
     // // This is so that you get full control over whether to render
@@ -604,17 +602,17 @@ function showNotes(arrayOfNotes) {
     // // sure our user who's learning to read accidentals learns
     // // what the natural symbol means.)
     // if (acc)
-        // note.addAccidental(0, new VF.Accidental(acc));
+    // note.addAccidental(0, new VF.Accidental(acc));
     // tickContext.addTickable(note)
     // return note;
-// });
-// notes[0].setKeyStyle(0, {
+    // });
+    // notes[0].setKeyStyle(0, {
     // fillStyle: 'chartreuse'
-// });
+    // });
     // var lastImageNote = currentImageNote;
     // var currentImageNote = notes.shift();
     // if (!currentImageNote)
-        // return;
+    // return;
     // const group = context.openGroup();
     // visibleNoteGroups.push(group);
     // currentImageNote.draw();
@@ -633,15 +631,14 @@ function showNotes(arrayOfNotes) {
 
     // // If a user doesn't answer in time make the note fall below the staff
     // window.setTimeout(() => {
-        // const index = visibleNoteGroups.indexOf(group);
-        // if (index === -1)
-            // return;
-        // group.classList.add('too-slow');
-        // visibleNoteGroups.shift();
+    // const index = visibleNoteGroups.indexOf(group);
+    // if (index === -1)
+    // return;
+    // group.classList.add('too-slow');
+    // visibleNoteGroups.shift();
     // }, 5000);
-	
-	
-	
+
+
 }
 
 function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
@@ -663,12 +660,12 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
         var currentImageNote = notes[0];
         var currentSecondImageNote = note2[0];
         var currentWholeImageNote = noteWhole[0];
-		
+
         let noteStr = noteArray[noteArrayNum][1];
-        if (currentChordName.includes('b')){
-		noteStr=noteArray[noteArrayNum][2];
-		}
-		// noteStr='E5';
+        if (currentChordName.includes('b')) {
+            noteStr = noteArray[noteArrayNum][2];
+        }
+        // noteStr='E5';
         // alert (noteStr);
         let partOne = noteStr.slice(0, 1) + '';
         let partTwo = noteStr.slice(+2) + '';
@@ -1089,9 +1086,9 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
         // console.log(currentImageNote.toString());
         // console.log(group.toString());
         // group.setAttributeNS(null, "fill", "blue");
-		
+
         group.classList.add('partscroll');
-		
+
         // Force a dom-refresh by asking for the group's bounding box. Why? Most
         // modern browsers are smart enough to realize that adding .scroll class
         // hasn't changed anything about the rendering, so they wait to apply it
@@ -1148,25 +1145,24 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
 }
 
 function rightAnswer() {
-    try{
-	for (var i = 0; i< visibleReferenceNoteGroups.length; i=0){
-	group = visibleReferenceNoteGroups.shift();
-    group.classList.add('correct');
-    // The note will be somewhere in the middle of its move to the left -- by
-    // getting its computed style we find its x-position, freeze it there, and
-    // then send it straight up to note heaven with no horizontal motion.
-    const transformMatrix = window.getComputedStyle(group).transform;
-    // transformMatrix will be something like 'matrix(1, 0, 0, 1, -118, 0)'
-    // where, since we're only translating in x, the 4th property will be
-    // the current x-translation. You can dive into the gory details of
-    // CSS3 transform matrices (along with matrix multiplication) if you want
-    // at http://www.useragentman.com/blog/2011/01/07/css3-matrix-transform-for-the-mathematically-challenged/
-    const x = transformMatrix.split(',')[4].trim();
-    // And, finally, we set the note's style.transform property to send it skyward.
-    group.style.transform = `translate(${x}px, -800px)`;
-	}
-	}
-	catch(error){}
+    try {
+        for (var i = 0; i < visibleReferenceNoteGroups.length; i = 0) {
+            group = visibleReferenceNoteGroups.shift();
+            group.classList.add('correct');
+            // The note will be somewhere in the middle of its move to the left -- by
+            // getting its computed style we find its x-position, freeze it there, and
+            // then send it straight up to note heaven with no horizontal motion.
+            const transformMatrix = window.getComputedStyle(group).transform;
+            // transformMatrix will be something like 'matrix(1, 0, 0, 1, -118, 0)'
+            // where, since we're only translating in x, the 4th property will be
+            // the current x-translation. You can dive into the gory details of
+            // CSS3 transform matrices (along with matrix multiplication) if you want
+            // at http://www.useragentman.com/blog/2011/01/07/css3-matrix-transform-for-the-mathematically-challenged/
+            const x = transformMatrix.split(',')[4].trim();
+            // And, finally, we set the note's style.transform property to send it skyward.
+            group.style.transform = `translate(${x}px, -800px)`;
+        }
+    } catch (error) {}
 }
 if (navigator.requestMIDIAccess) {
     //console.log('This browser supports WebMIDI!');
@@ -1353,7 +1349,7 @@ function noteOnListener(note, velocity) {
             specificActiveChord.push(note);
             specificActiveChord.sort();
         }
-		
+
         if (activeChord.includes(arrangeNote(note)) == false) { //4/9/2020 I think I may need to add a new activeChordlisting that includes the actual note and not just the arrangenote, so I can be certain the note order in addition here. Avi
             activeChord.push(arrangeNote(note));
             console.log(arrangeNote(specificActiveChord[0]));
@@ -1385,7 +1381,7 @@ function noteOnListener(note, velocity) {
             }
             document.getElementById("score").innerHTML = "Current Difficulty = " + score.toFixed(2);
             if (match) {
-				rightAnswer();
+                rightAnswer();
                 document.getElementById("warning").innerHTML = "<style='fontSize:0px;'>"
                     score = score + .05;
                 timerLength = (11.0 - score) / 60.0;
@@ -1983,9 +1979,9 @@ function setupChord(rootNote) {
         correctChord.push(13);
         correctChord.push(14);
     }
-	rightAnswer();
-	// alert(correctChord.toString());
-	showNotes(correctChord);
+    rightAnswer();
+    // alert(correctChord.toString());
+    showNotes(correctChord);
 }
 
 function setupMajRoman(rN) {
@@ -2280,10 +2276,10 @@ function updateTimer() {
         seconds = "0" + seconds;
 
     if (currentStep < 3) {
-		let countdownMessage=minutes + ":" + seconds;
-		if (presentationType=="words"){
-			countdownMessage=countdownMessage+ " " + currentChordName;
-		}
+        let countdownMessage = minutes + ":" + seconds;
+        if (presentationType == "words") {
+            countdownMessage = countdownMessage + " " + currentChordName;
+        }
         document.querySelector('#countdown').innerText = countdownMessage;
 
         if (minutes > 0 || seconds > 0) {
@@ -3266,7 +3262,6 @@ $.fn.multiselect = function (options) {
 };
 }
     (jQuery));
-
 
 $(document).ready(function () {
     var times = 0;

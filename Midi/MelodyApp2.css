@@ -49,7 +49,7 @@ body.gameover::after {
 #resetButton {
 	position: fixed;
 	z-index: 9;
-	left: 60vw;
+	left: 30vw;
 	width: 10vw;
 	HEIGHT: 6vh;
 }
@@ -78,14 +78,14 @@ position: right;
 #octaveUp {
 	position: fixed;
 	z-index: 9;
-	left: 30vw;
+	left: 60vw;
 	width: 10vw;
 	HEIGHT: 3vh;
 }
 #octaveNumBox {
 	position: fixed;
 	z-index: 9;
-	left: 40vw;
+	left: 50vw;
 	width: 10vw;
 	HEIGHT: 6vh;
 	text-align: center;
@@ -94,7 +94,7 @@ position: right;
 #octaveDown {
  	position: fixed;
     z-index: 9;
-	left: 30vw;
+	left: 60vw;
 	top: 3vh;
     width: 10vw;
 	HEIGHT: 3vh;
