@@ -22,7 +22,7 @@
 }
 
 .scroll {
-transition: transform 10s linear, opacity 0.05s ease-out, fill 0.2s linear;
+transition: transform 3s linear, opacity 0.05s ease-out, fill 0.2s linear;
 }
 
 .currentnote {
@@ -30,10 +30,10 @@ transform: translate (-100px, 0);
 outline: solid 1px blue;
 color: green;
 }
-.nextnote {
-transform: translate (200px, 0);
-outline: solid 1px blue;
-color: green;
+.nextNote {
+transform: translate (-200px, 0);
+outline: none;
+color: none;
 }
 .notcurrentnote {
 outline: none;
@@ -43,12 +43,15 @@ outline: none;
   transform: translate(-800px, 0);
 }
 
+.prescroll{
+transition: transform 16s linear, opacity 0.05s ease-out, fill 0.2s linear;
+}
 .partscroll{
-transition: transform 10s linear, opacity 0.05s ease-out, fill 0.2s linear;
+transition: transform 7s linear, opacity 0.05s ease-out, fill 0.2s linear;
 }
 
 .partscrolling {
-  transform: translate(-100px, 0);
+  transform: translate(-400px, 0);
 }
 
 
