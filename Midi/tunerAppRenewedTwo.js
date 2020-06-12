@@ -591,7 +591,7 @@ function showANote() {
 }
 
 function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
-    console.log("The Note Message has " + noteArrayNum + " " + voiceType + " " + theNoteLength);
+    // console.log("The Note Message has " + noteArrayNum + " " + voiceType + " " + theNoteLength);
     if (notationMode == "movingNotesMode") {
         // if (Math.round(theNoteLength) == 3) {
         // dotTheNote = true;
@@ -602,9 +602,9 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
         // if (theNoteLength > 4) {
         // theNoteLength = 4;
         // }
-        console.log(theNoteLength);
+        // console.log(theNoteLength);
         theNoteLength = durationNoteSelect(theNoteLength);
-        console.log(theNoteLength);
+        // console.log(theNoteLength);
         var lastImageNote = currentImageNote;
         var currentImageNote = notes.shift();
         var currentSecondImageNote = note2.shift();
@@ -659,7 +659,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
 			}
 		}
         if (tieOn) {
-            console.log("tie on");
+            // console.log("tie on");
             if (noteArrayNum >= 36) {
                 notes = [
                     [partOne, partTwo, partThree, tieAmountOne]
@@ -796,7 +796,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
             // tickContext.addTickable(tiedNote.setContext(context));
         } else {
 
-            console.log("tie off");
+            // console.log("tie off");
             //END AREA OF TIES!
 
 
@@ -917,7 +917,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
                 // CSS3 transform matrices (along with matrix multiplication) if you want
                 // at http://www.useragentman.com/blog/2011/01/07/css3-matrix-transform-for-the-mathematically-challenged/
                 const x = transformMatrix.split(',')[4].trim();
-				console.warn(x);
+				// console.warn(x);
                 singAndTargetPlacement=Math.floor(x) + startingXSetting;
 				
             } catch (error) {
@@ -947,7 +947,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
                 fillStyle: 'blue'
             });
             try {
-                console.log(visibleReferenceNoteGroups.length + " is the length");
+                // console.log(visibleReferenceNoteGroups.length + " is the length");
                 const transformMatrix = window.getComputedStyle(visibleReferenceNoteGroups[visibleReferenceNoteGroups.length - 1]).transform;
                 // transformMatrix will be something like 'matrix(1, 0, 0, 1, -118, 0)'
                 // where, since we're only translating in x, the 4th property will be
@@ -979,7 +979,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
 
         // visibleNoteGroups.push(group);
         // alert(visibleNoteGroups[0].));
-        console.log(voiceType);
+        // console.log(voiceType);
         if (voiceType == "singingNote") {
             visibleSingingNoteGroups.push(group);
             rememberSingingGroup = visibleSingingNoteGroups.indexOf(group);
@@ -1240,7 +1240,7 @@ function noteOnListener(note, velocity) {
 
     // when the array is the same length as the correct sequence, compare the two
     if ((captureButtons)) {
-        console.log("note is number " + note);
+        // console.log("note is number " + note);
         buttonStartEndTimes.push([note - 24, new Date(new Date().getTime())]);
         if (buttonStartEndTimes.length > 1) {
             // alert("long");
@@ -1255,7 +1255,7 @@ function noteOnListener(note, velocity) {
     }
     if (activeChord.includes(arrangeNote(note)) == false) { //4/9/2020 I think I may need to add a new activeChordlisting that includes the actual note and not just the arrangenote, so I can be certain the note order in addition here. Avi
         activeChord.push(arrangeNote(note));
-        console.log(arrangeNote(specificActiveChord[0]));
+        // console.log(arrangeNote(specificActiveChord[0]));
     }
 
 }
@@ -3534,11 +3534,11 @@ function harmonizeBecauseYouRight() {
         newLastRandomScaleNum = newLastRandomScaleNum + 12;
     }
     if (keyType == "major") {
-        console.log("new is " + newLastRandomScaleNum);
+        // console.log("new is " + newLastRandomScaleNum);
         lastRandomScaleNum = getScaleNumMajorNote(newLastRandomScaleNum);
     } else {
         // alert ("hi");
-        console.log("newMinor is " + newLastRandomScaleNum);
+        // console.log("newMinor is " + newLastRandomScaleNum);
         lastRandomScaleNum = getScaleNumMinorNote(newLastRandomScaleNum);
     }
     referenceInversion = false;
@@ -3995,7 +3995,7 @@ async function playANote(arrayPlace) { // where we Play Notes  //important chord
                             0
                             audioArray[i] = [audio, [noteStr, (instrument + "")]];
                         } else {
-                            console.log(arpeggioAudioArray[i][0]);
+                            // console.log(arpeggioAudioArray[i][0]);
                             arpeggioAudioArray[i][0].pause();
                             newNote = false;
                             0
@@ -4696,7 +4696,7 @@ function repeatOnFrame() {
         // synth.triggerRelease();
         // stopAllNotes();
     }
-    console.log(sequenceStarted + " " + sequenceArray.length + " " + paused + " " + nonReferencePlay);
+    // console.log(sequenceStarted + " " + sequenceArray.length + " " + paused + " " + nonReferencePlay);
     if ((!sequenceStarted) && (sequenceArray.length > 0) && (!paused) && (!nonReferencePlay)) {
         if (sequenceArray.length == (sequenceLength)) { // this is the beginning of the sequence every time.
             score = 0;
@@ -4749,10 +4749,10 @@ function repeatOnFrame() {
             // stopAllNotes();
             try {
                 for (var i = 0; i < audioArray.length; i++) {
-                    console.log(audioArray[i][1][1]);
+                    // console.log(audioArray[i][1][1]);
                     try {
                         if (audioArray[i][1][1] == "humanVoice") {
-                            console.log(audioArray[i][1]);
+                            // console.log(audioArray[i][1]);
                             audioArray[i][0].pause();
                         }
                     } catch (error) {}
@@ -4890,7 +4890,7 @@ function repeatOnFrame() {
             randomScaleNum = randomChordScaleNum + 0;
             // alert (randomNoteNum);
             playANote(currentRandomChordNum);
-            console.warn("chord " + numToKeyNamePullDown(basicNote(currentRandomChordNum)));
+            // console.warn("chord " + numToKeyNamePullDown(basicNote(currentRandomChordNum)));
             //Thoughts: I may need to put all of this into a new method specifically for arpeggiation.
             instrument = currentInstrument;
 
@@ -4976,10 +4976,10 @@ function repeatOnFrame() {
                 // stopAllNotes();
                 try {
                     for (var i = 0; i < audioArray.length; i++) {
-                        console.log(audioArray[i][1][1]);
+                        // console.log(audioArray[i][1][1]);
                         try {
                             if (audioArray[i][1][1] == "humanVoice") {
-                                console.log(audioArray[i][1]);
+                                // console.log(audioArray[i][1]);
                                 audioArray[i][0].pause();
                             }
                         } catch (error) {}
@@ -4993,14 +4993,14 @@ function repeatOnFrame() {
             if (sequencePlay) {
                 randomNoteNum = currentRandomNoteNum + 0;
                 randomScaleNum = randomNoteScaleNum + 0;
-                console.log("the note is " + randomScaleNum);
+                // console.log("the note is " + randomScaleNum);
             }
             if (intervalDirection == "up") {
                 // alert(noteArray[randomNoteNum][1]);
                 majorCheck = true;
                 getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
 
-                console.log("the note is " + randomScaleNum);
+                // console.log("the note is " + randomScaleNum);
                 document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + " third above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
                 majorCheck = false;
             } else if (intervalDirection == "down") {
@@ -5281,8 +5281,8 @@ function repeatOnFrame() {
         } else if (singingCaptured) {
             if (!buttonPlay) {
 
-                console.log("the original singing array " + (singingTimeArray).toString());
-                console.log("the original singing array " + gimmeThatAgainAsNoteAndBeats(singingTimeArray).toString());
+                // console.log("the original singing array " + (singingTimeArray).toString());
+                // console.log("the original singing array " + gimmeThatAgainAsNoteAndBeats(singingTimeArray).toString());
                 referenceNoteArray = [];
                 chordSequenceArray = [];
                 chordSequenceCopy = [];
@@ -5353,8 +5353,8 @@ function repeatOnFrame() {
                 shiftNotesArray = [];
                 temporarySequence = [];
 
-                console.log("After round one, singing array " + (sequenceArray).toString());
-                console.log("After round one, singing array " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
+                // console.log("After round one, singing array " + (sequenceArray).toString());
+                // console.log("After round one, singing array " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
 
                 // console.log(sequenceArray.toString());
                 temporarySequence = JSON.parse(JSON.stringify(sequenceArray));
@@ -5370,12 +5370,12 @@ function repeatOnFrame() {
                         removeNotesArray.push(i + 0);
                     } else {
 
-                        console.log("After round a, singing array " + (sequenceArray).toString());
-                        console.log("After round a, singing array " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
+                        // console.log("After round a, singing array " + (sequenceArray).toString());
+                        // console.log("After round a, singing array " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
                         temporarySequence[i][1] = thisNoteTime + 0;
 
-                        console.log("After round b, singing array " + (sequenceArray).toString());
-                        console.log("After round b, singing array " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
+                        // console.log("After round b, singing array " + (sequenceArray).toString());
+                        // console.log("After round b, singing array " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
                         randomNoteNum = sequenceArray[i][0];
 
                         if (keyType == "major") {
@@ -5408,7 +5408,7 @@ function repeatOnFrame() {
                             noteOneForComparison = sequenceArray[removeNotesArray[i]][0];
                             noteTwoForComparison = sequenceArray[removeNotesArray[i + 1]][0];
 
-                            console.log("About to shift notes " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
+                            // console.log("About to shift notes " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
                             //if the first note is in the key  console.log("we removed " + i + " " + noteArray[sequenceArray[i][0]][1] + isItInKey(sequenceArray[i][0]));
                             if (!(isItInKey(basicNote(noteOneForComparison)))) { //if the 1st note is not in key, add its note time to the second note.
                                 sequenceArray[removeNotesArray[i + 1]][1] = sequenceArray[removeNotesArray[i + 1]][1] + sequenceArray[removeNotesArray[i]][1];
@@ -5592,13 +5592,16 @@ function repeatOnFrame() {
 
                 findKey(arrayOfSungNotesOnly);
                 let removeNotesArray = [];
+								// BEGIN FIXED AREA 6 11 2020 FOR FIXING 0 NOTELENGTH OF NOTES
                 for (var i = 0; sequenceLength > i; i++) {
                     let thisNoteTime = sequenceArray[i][1];
 
                     thisNoteTime = thisNoteTime / (60 / currentBPM);
                     thisNoteTime = Math.round(thisNoteTime * 2) / 2;
+					console.warn(thisNoteTime);
                     if (thisNoteTime == 0) {
-                        alert("we removed " + i + " " + sequenceLength[i].toString());
+                        // console.warn("we removed " + i + " " + sequenceArray[i].toString()); //fixed this spot
+						// alert (i+0);
                         removeNotesArray.push(i + 0);
                     } else {
                         sequenceArray[i][1] = thisNoteTime;
@@ -5615,13 +5618,17 @@ function repeatOnFrame() {
                         sequenceArray[i][2] = randomScaleNum + 0;
                         beatsExpected = beatsExpected + thisNoteTime;
 
-                        console.log(noteArray[sequenceArray[i][0]][1] + " for " + thisNoteTime);
+                        // console.log(noteArray[sequenceArray[i][0]][1] + " for " + thisNoteTime);
                     }
                 }
-                for (var i = 0; removeNotesArray.length > i; i++) {
-                    let index = array.indexOf(removeNotesArray[i]);
-                    sequenceArray.splice(index, 1 - i);
+                for (var i = 0; (removeNotesArray.length) > i; i++) { //fixed this spot
+                    let index = removeNotesArray[removeNotesArray.length-i-1]; //fixed this spot
+					console.warn(index+" is index is "+sequenceArray.toString());  //fixed this spot
+                    sequenceArray.splice(index, 1); //fixed this spot
+					// console.warn(sequenceArray.toString());
                 }
+				
+				// END FIXED AREA 6 11 2020 FOR FIXING 0 NOTELENGTH OF NOTES
                 // alert(sequenceArray.toString());
                 // randomNoteNum = sequenceArray[0][0];
                 // if (keyType == "major") {
