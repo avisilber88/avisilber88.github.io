@@ -374,7 +374,7 @@ $(document).ready(function () {
             }
         }
 
-        console.log(allGroupIds.toString());
+
         for (var k = 0; k < groupOfGroupsArray.length; k++) {
             shuffle(groupOfGroupsArray[k]);
             var testIdName = groupOfGroupsArray[k][0][0] + "";
@@ -396,24 +396,6 @@ $(document).ready(function () {
             }
 
         }
-        // alert(allStudentBoxIds[5]);
-        // document.getElementById(allStudentBoxIds[5]).addEventListener("click", function(){
-			// if (!itSelected){
-				// iOne=5;
-				// colorOne=document.getElementById(allStudentBoxIds[5]).style.backgroundColor+"";
-				// document.getElementById(allStudentBoxIds[5]).style.backgroundColor = "white";
-				// nameOne=document.getElementById(allStudentBoxIds[5]).value+"";
-				// itSelected=true;
-			// }
-			// else if ((colorOne==(document.getElementById(allStudentBoxIds[5]).style.backgroundColor+""))||(("white"==(document.getElementById(allStudentBoxIds[5]).style.backgroundColor+"")))){
-				// document.getElementById(allStudentBoxIds[5]).style.backgroundColor = colorOne;
-				// nameTwo=document.getElementById(allStudentBoxIds[5]).value+"";
-				// document.getElementById(allStudentBoxIds[5]).value=nameOne;
-				// document.getElementById(allStudentBoxIds[iOne]).value=nameTwo;		
-				// itSelected=false;
-			
-			// }
-// });
 
 
 for (var i = 0; i<allStudentBoxIds.length; i++){
@@ -502,6 +484,123 @@ for (var i = 0; i<allStudentBoxIds.length; i++){
         document.getElementById('selectionsBox').innerHTML = "<div class = 'finalizeGroups'> <span style='font-size: xx-large'> Finalize Names as Necessary and then click Done:</span> <button type ='button' id ='finalizeGroupsButton' style = 'font-size: xx-large'>Finalize Groups<button></div>";
 
         $(".studentsContainerTwo").slideToggle();
+		numberOfGroups=Math.ceil(columnArray.length/maxStudents);
+        console.log(groupAArray.toString());
+        shuffle(groupAArray);
+        console.log(groupAArray.toString());
+        shuffle(groupBArray);
+        shuffle(groupCArray);
+        var testIdName = "group" + 0 + "";
+        allGroupIds.push(testIdName + "");
+        document.getElementById("studentContainerTwo").innerHTML = "<div id = '" + testIdName + "'>" + testIdName + "</div>";
+        for (var i = 1; i < numberOfGroups; i++) {
+            var testIdName = "group" + i + "";
+            document.getElementById("studentContainerTwo").innerHTML = document.getElementById("studentContainerTwo").innerHTML + "<div id = '" + testIdName + "'>" + testIdName + "</div>";
+            allGroupIds.push(testIdName + "");
+        }
+        groupOfGroupsArray = [];
+        for (var j = 0; j < numberOfGroups; j++) {
+            // alert (j);
+            groupOfGroupsArray.push(new Array());
+        }
+        console.log(groupOfGroupsArray.toString());
+        let groupPlacement = 0;
+        console.warn(groupCArray[0][0].toString());
+        for (var g = 0; g < groupCArray.length; g++) {
+            console.log(groupPlacement);
+
+            console.warn(groupCArray[g][0].toString());
+            (groupOfGroupsArray[groupPlacement + 0]).push([groupCArray[g][0], "green"]); //to later select the background color for highest groups
+            groupPlacement++;
+            if (groupPlacement > (numberOfGroups - 1)) {
+                // console.log(groupPlacement);
+                groupPlacement = 0;
+            }
+        }
+        for (var g = 0; g < groupBArray.length; g++) {
+            groupOfGroupsArray[groupPlacement].push([groupBArray[g][0], "cyan"]); //to later select the background color for highest groups
+            groupPlacement++;
+            if (groupPlacement > (numberOfGroups - 1)) {
+                groupPlacement = 0;
+            }
+        }
+        for (var g = 0; g < groupAArray.length; g++) {
+            groupOfGroupsArray[groupPlacement].push([groupAArray[g][0], "pink"]) //to later select the background color for highest groups
+            groupPlacement++;
+            if (groupPlacement > (numberOfGroups - 1)) {
+                groupPlacement = 0;
+            }
+        }
+
+
+        for (var k = 0; k < groupOfGroupsArray.length; k++) {
+            shuffle(groupOfGroupsArray[k]);
+            var testIdName = groupOfGroupsArray[k][0][0] + "";
+            var testIdTag = testIdName.replace(/\s+/g, '');
+            document.getElementById(allGroupIds[k]).innerHTML = "Group Number: " + (k + 1) + "<p><input type='text'  name='organicCompoundCoefficient' id = '" + testIdTag + "' value='" + testIdName + "' style='background-color:" + groupOfGroupsArray[k][0][1] + "'></input>";
+            allStudentBoxIds.push(testIdTag + "");
+            for (var i = 1; i < groupOfGroupsArray[k].length; i++) {
+                // alert (groupOfGroupsArray[k].length+" of group " + k+ " person is "+testIdName);
+                var testIdName = groupOfGroupsArray[k][i][0] + "";
+                var testIdTag = testIdName.replace(/\s+/g, '');
+                document.getElementById(allGroupIds[k]).innerHTML = document.getElementById(allGroupIds[k]).innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdTag + "' value='" + testIdName + "' style='background-color:" + groupOfGroupsArray[k][i][1] + "'></input>";
+                // if(groupOfGroupsArray[k].length
+                // alert(testIdTag);
+                allStudentBoxIds.push(testIdTag + "");
+                // alert (groupOfGroupsArray[k].length+" of group " + k+ " person is "+testIdName);
+
+                // console.warn("yo yo yo "+allStudentBoxIds.toString());
+
+            }
+
+        }
+
+
+for (var i = 0; i<allStudentBoxIds.length; i++){
+	
+	 (function(i){  
+
+        document.getElementById(allStudentBoxIds[i+0]).addEventListener("click", function(e){
+			if ((!itSelected)&&(!lockNames)){
+				iOne=i;
+				colorOne=document.getElementById(allStudentBoxIds[i+0]).style.backgroundColor+"";
+				document.getElementById(allStudentBoxIds[i]).style.backgroundColor = "white";
+				nameOne=document.getElementById(allStudentBoxIds[i]).value+"";
+				itSelected=true;
+			}
+			else if ((!lockNames)&&((colorOne==(document.getElementById(allStudentBoxIds[i]).style.backgroundColor+""))||(("white"==(document.getElementById(allStudentBoxIds[i]).style.backgroundColor+""))))){
+				// alert (colorOne);
+				document.getElementById(allStudentBoxIds[iOne]).style.backgroundColor = colorOne;
+				nameTwo=document.getElementById(allStudentBoxIds[i]).value+"";
+				document.getElementById(allStudentBoxIds[i]).value=nameOne;
+				document.getElementById(allStudentBoxIds[iOne]).value=nameTwo;	
+				
+				itSelected=false;
+			
+			}
+});
+
+    })(i);
+}
+     // alert ("hi");
+            // if (true){
+            // for (var i = 2; i < dataArray[2].length; i++) {
+            // if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML==(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")))) {
+            // columnOfStudy=i+0;
+            // }
+            // }
+
+
+            // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
+            // }
+            
+
+            // alert(noteLengthMin+" sup " +noteLengthMax);
+   
+        // allStudentBoxIds.push(testIdTag + "");
+
+        // document.getElementById(allStudentBoxIds[0]).style.backgroundColor="cyan";
+        // document.getElementById('studentContainerTwo').innerHTML = "<div>hi</div><div>hi</div><div>hi</div>";
         // document.getElementById('selectionsBox').innerHTML = "<div class = 'pickgroupstyle'> <button type ='button' id ='groupByNumGroupsButton'>Group by the Number of Students per Group</button></div> <button type ='button' id ='groupByNumStudentsButton'>Group by the Maximum Number of Groups</button></div>";
 
         // $('#groupsByNumGroupsButton').click(function () {
@@ -524,12 +623,16 @@ for (var i = 0; i<allStudentBoxIds.length; i++){
         // groupByStudents();
         // });
         $('#finalizeGroupsButton').click(function () {
-            // alert ("hi");
-            // if (true){
+			lockNames=true;
+            // console.warn("yo yo yo "+allStudentBoxIds[5]);
+            // document.getElementById(allStudentBoxIds[5]).style.="";
 
-            // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
-            // }
+            // document.getElementById(allStudentBoxIds[0]).style.backgroundColor="blue";
+            for (var i = 0; i < allStudentBoxIds.length; i++) {
+                // document.getElementById(allStudentBoxIds[0]).innerHTML="";
 
+                document.getElementById(allStudentBoxIds[i]).style.backgroundColor = "white";
+            }
             $(".finalizeGroups").slideToggle();
         });
     }
