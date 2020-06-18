@@ -191,8 +191,8 @@ $(document).ready(function () {
 
             // var testIdName= "student";
             document.getElementById("groupA").innerHTML = "Lowest Score group (Score of " + smallestScore + " to " + scoreCutoffOne + ")<p>";
-            document.getElementById("groupB").innerHTML = "Lowest Score group (Score of " + scoreCutoffOne + ".01 to " + scoreCutoffTwo + ")<p>";
-            document.getElementById("groupC").innerHTML = "Lowest Score group (Score of " + scoreCutoffTwo + ".01 to " + largestScore + ")<p>";
+            document.getElementById("groupB").innerHTML = "Middle Score group (Score of " + scoreCutoffOne + ".01 to " + scoreCutoffTwo + ")<p>";
+            document.getElementById("groupC").innerHTML = "Highest Score group (Score of " + scoreCutoffTwo + ".01 to " + largestScore + ")<p>";
             groupAArray = getBetween(columnArray, smallestScore, scoreCutoffOne);
             groupBArray = getBetween(columnArray, scoreCutoffOne + .01, scoreCutoffTwo);
             groupCArray = getBetween(columnArray, scoreCutoffTwo + .01, largestScore);
