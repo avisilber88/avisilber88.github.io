@@ -162,8 +162,10 @@ $(document).ready(function () {
             },
 			// width: 500px,
         });
-		
-		// $('.noUi-connects').css("width" , "500px");
+		// .noUi-background {
+    // background-image: linear-gradient(to right, #a2ea4c 20%, #07aa91 20%, #07aa91 80%, #a2ea4c 80%);
+// }
+	// $('.noUi-connects').css("background" , "cyan");
 		// document.getElementByClassName('noUi-connects').width='500px';
         scoreCutoffOne = Number(slider.noUiSlider.get()[0]);
         scoreCutoffTwo = Number(slider.noUiSlider.get()[1]);
@@ -176,6 +178,23 @@ $(document).ready(function () {
         console.log("an array " + groupAArray.toString());
         console.log("an array " + groupBArray.toString());
         console.log("an array " + groupCArray.toString());
+		
+					// var totalStudents=groupAArray.length+groupBArray.length+groupCArray.length;
+		// var percentA=groupAArray.length/totalStudents*100;
+
+		// var percentB=groupBArray.length/totalStudents*100+percentA;
+		// var percentC=groupCArray.length/totalStudents*100+percentB+percentA;
+		
+		var totalStudents=largestScore-smallestScore;
+		var percentA=(scoreCutoffOne-smallestScore)/totalStudents*100;
+
+		var percentB=(scoreCutoffTwo-smallestScore)/totalStudents*100;
+		// alert (scoreCutoffOne+" "+scoreCutoffTwo +" "+ totalStudents);
+		// var percentC=groupCArray.length/totalStudents*100+percentB+percentA;
+				// alert (percentA+" "+percentB+" "+percentC);
+		$('.noUi-connects').css("background" , 'linear-gradient(to right, pink '+percentA+'%, cyan '+percentA+'%, cyan '+percentA+'%, cyan '+percentB+'%, green '+percentB+'%)');
+		$('.noUi-connect').css("background" , 'cyan');
+	
         for (var i = 0; i < groupAArray.length; i++) {
             var testIdName = groupAArray[i][0] + "";
             document.getElementById("groupA").innerHTML = document.getElementById("groupA").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "' style='background-color:pink'></input>";
@@ -216,7 +235,14 @@ $(document).ready(function () {
             }
 
             // "<input type='text'  name='organicCompoundCoefficient' id = '"+ testIdName +"'value='"+testIdName+"'></input>";
-
+		var totalStudents=largestScore-smallestScore;
+		var percentA=(scoreCutoffOne-smallestScore)/totalStudents*100;
+		var percentB=(scoreCutoffTwo-smallestScore)/totalStudents*100;
+		
+		// var percentC=groupCArray.length/totalStudents*100+percentB+percentA;
+		// alert (percentA+" "+percentB);
+		$('.noUi-connects').css("background" , 'linear-gradient(to right, pink '+percentA+'%, cyan '+percentA+'%, cyan '+percentA+'%, cyan '+percentB+'%, green '+percentB+'%)');
+	
 
         });
         $('#submitScoreRange').click(function () {
