@@ -101,7 +101,7 @@ $(document).ready(function () {
 
     //Step 2: Generate dropdown menus.
     var generateDropdowns = function (dataArray) {
-        document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment'><select id = 'assignmentSelect' name = 'assignmentSelect'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitAssignment'>Submit</button></div>";
+        document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:xx-large'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitAssignment'>Submit</button></div>";
         $('#assignmentSelect').empty();
         for (var i = 2; i < dataArray[2].length; i++) {
             addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
@@ -130,7 +130,7 @@ $(document).ready(function () {
 
         // alert(largestScore + " " + smallestScore);
         $(".studentsContainerOne").slideToggle();
-        document.getElementById('selectionsBox').innerHTML = "<div class = 'scoreRangeSelected' style='padding-left:60px; padding-top:60px'>Select the borders in score between your 3 groups<div class = 'sequence-mode row' id='noteLengthSlider' style='width:90%; max-width:300px;'></div><div class='row' style = 'padding-top:30vh'><button type ='button' id ='submitScoreRange'>Submit</button></div></div>";
+        document.getElementById('selectionsBox').innerHTML = "<div class = 'scoreRangeSelected' style='padding-left:60px; padding-top:60px; font-size:xx-large'>Select the borders in score between your 3 groups<div class = 'sequence-mode row' id='noteLengthSlider' style='width:90%; max-width:300px;'></div><div class='row' style = 'padding-top:10vh'><button type ='button' id ='submitScoreRange'>Submit</button></div></div>";
         //<div class='row'><div class='col-sm' id = 'groupa'>underperforming group</div><div class='col-sm' id = 'groupb'>middle-performing group</div><div class='col-sm' id = 'groupc'>top performing group</div></div></div><div class='row'>
 
 
