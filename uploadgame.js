@@ -166,18 +166,18 @@ $(document).ready(function () {
         console.log("an array " + groupAArray.toString());
         console.log("an array " + groupBArray.toString());
         console.log("an array " + groupCArray.toString());
-        for (var i = 0; i < groupAArray.length; i++) {
-            var testIdName = groupAArray[i][0] + "";
-            document.getElementById("groupA").innerHTML = document.getElementById("groupA").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "'></input>";
-        }
-        for (var i = 0; i < groupBArray.length; i++) {
-            var testIdName = groupBArray[i][0] + "";
-            document.getElementById("groupB").innerHTML = document.getElementById("groupB").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "'></input>";
-        }
-        for (var i = 0; i < groupCArray.length; i++) {
-            var testIdName = groupCArray[i][0] + "";
-            document.getElementById("groupC").innerHTML = document.getElementById("groupC").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "'></input>";
-        }
+            for (var i = 0; i < groupAArray.length; i++) {
+                var testIdName = groupAArray[i][0] + "";
+                document.getElementById("groupA").innerHTML = document.getElementById("groupA").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "' style='background-color:pink'></input>";
+            }
+            for (var i = 0; i < groupBArray.length; i++) {
+                var testIdName = groupBArray[i][0] + "";
+                document.getElementById("groupB").innerHTML = document.getElementById("groupB").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "' style='background-color:cyan'></input>";
+            }
+            for (var i = 0; i < groupCArray.length; i++) {
+                var testIdName = groupCArray[i][0] + "";
+                document.getElementById("groupC").innerHTML = document.getElementById("groupC").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "' style='background-color:green'></input>";
+            }
         slider.noUiSlider.on('change', function () {
             scoreCutoffOne = Number(slider.noUiSlider.get()[0]);
             scoreCutoffTwo = Number(slider.noUiSlider.get()[1]);
@@ -192,17 +192,17 @@ $(document).ready(function () {
             console.log("an array " + groupAArray.toString());
             console.log("an array " + groupBArray.toString());
             console.log("an array " + groupCArray.toString());
-            for (var i = 0; i < groupAArray.length; i++) {
+          for (var i = 0; i < groupAArray.length; i++) {
                 var testIdName = groupAArray[i][0] + "";
-                document.getElementById("groupA").innerHTML = document.getElementById("groupA").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "'></input>";
+                document.getElementById("groupA").innerHTML = document.getElementById("groupA").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "' style='background-color:pink'></input>";
             }
             for (var i = 0; i < groupBArray.length; i++) {
                 var testIdName = groupBArray[i][0] + "";
-                document.getElementById("groupB").innerHTML = document.getElementById("groupB").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "'></input>";
+                document.getElementById("groupB").innerHTML = document.getElementById("groupB").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "' style='background-color:cyan'></input>";
             }
             for (var i = 0; i < groupCArray.length; i++) {
                 var testIdName = groupCArray[i][0] + "";
-                document.getElementById("groupC").innerHTML = document.getElementById("groupC").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "'></input>";
+                document.getElementById("groupC").innerHTML = document.getElementById("groupC").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "' style='background-color:green'></input>";
             }
 
             // "<input type='text'  name='organicCompoundCoefficient' id = '"+ testIdName +"'value='"+testIdName+"'></input>";
@@ -366,20 +366,7 @@ $(document).ready(function () {
                         groupPlacement = 0;
                     }
                 }
-                console.log(groupOfGroupsArray[0].toString());
-                console.warn(groupOfGroupsArray[1].toString());
-				
-                console.warn(groupOfGroupsArray[2].toString());
-				
-                console.warn(groupOfGroupsArray[3].toString());
-				
-                console.warn(groupOfGroupsArray[4].toString());
-				
-                console.warn(groupOfGroupsArray[5].toString());
-				
-                console.warn(groupOfGroupsArray[6].toString());
-				
-                console.warn(groupOfGroupsArray[7].toString());
+
 				
 
 				
