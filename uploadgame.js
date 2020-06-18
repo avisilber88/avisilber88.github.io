@@ -324,7 +324,7 @@ $(document).ready(function () {
     //Step 4:
 
     var generateGroupChoices = function () {
-        document.getElementById('selectionsBox').innerHTML = "<div class = 'pickgroupstyle'> <button type ='button' id ='groupByNumGroupsButton' style = 'font-size: xx-large'>Group by the Maximum Number of Groups</button><button type ='button' id ='groupByNumStudentsButton' style = 'font-size: xx-large'>Group by the Number of Students per Group</button></div>";
+        document.getElementById('selectionsBox').innerHTML = "<div class = 'pickgroupstyle'> <button type ='button' id ='groupByNumGroupsButton' style = 'font-size: xx-large; margin-right: 50px; margin-left: 65px'>Option 1: Select Number Of Groups</button>    <button type ='button' id ='groupByNumStudentsButton' style = 'font-size: xx-large'>Option 2: Select Size of Groups</button></div>";
 
         $('#groupByNumGroupsButton').click(function () {
             // alert ("hi");
