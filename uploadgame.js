@@ -137,9 +137,8 @@ $(document).ready(function () {
 
         // alert(largestScore + " " + smallestScore);
         $(".studentsContainerOne").slideToggle();
-        document.getElementById('selectionsBox').innerHTML = "<div class = 'scoreRangeSelected' style='padding-left:60px; padding-top:60px; font-size:xx-large'>Select the borders in score between your 3 groups<div class = 'sequence-mode row' id='noteLengthSlider' style='width:90%; max-width:300px;'></div><div class='row' style = 'padding-top:10vh'><button type ='button' id ='submitScoreRange' style='font-size: xx-large'>Submit</button></div></div>";
+        document.getElementById('selectionsBox').innerHTML = "<div class = 'scoreRangeSelected' style='padding-left:60px; padding-top:60px; font-size:xx-large'>Select the borders in score between your 3 groups<div class = 'sequence-mode row'> <div id='noteLengthSlider' style='width:90%; max-width:800px;'></div></div><div class='row' style = 'padding-top:10vh'><button type ='button' id ='submitScoreRange' style='font-size: xx-large'>Submit</button></div></div>";
         //<div class='row'><div class='col-sm' id = 'groupa'>underperforming group</div><div class='col-sm' id = 'groupb'>middle-performing group</div><div class='col-sm' id = 'groupc'>top performing group</div></div></div><div class='row'>
-
 
         columnArray.sort(compareSecondColumn);
         console.log(columnArray);
@@ -154,14 +153,18 @@ $(document).ready(function () {
                 'min': smallestScore,
                 'max': largestScore
             },
+
             pips: {
                 mode: 'count',
                 values: (largestScore - smallestScore),
                 stepped: false,
                 density: 40
             },
+			// width: 500px,
         });
-
+		
+		// $('.noUi-connects').css("width" , "500px");
+		// document.getElementByClassName('noUi-connects').width='500px';
         scoreCutoffOne = Number(slider.noUiSlider.get()[0]);
         scoreCutoffTwo = Number(slider.noUiSlider.get()[1]);
         document.getElementById("groupA").innerHTML = "Lowest Score group (Score of " + smallestScore + " to " + scoreCutoffOne + ")<p>";
