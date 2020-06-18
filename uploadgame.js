@@ -481,7 +481,7 @@ for (var i = 0; i<allStudentBoxIds.length; i++){
     }
 
     var groupByStudents = function (maxStudents) {
-        document.getElementById('selectionsBox').innerHTML = "<div class = 'finalizeGroups'> <span style='font-size: xx-large'> Finalize Names as Necessary and then click Done:</span> <button type ='button' id ='finalizeGroupsButton' style = 'font-size: xx-large'>Finalize Groups<button></div>";
+        document.getElementById('selectionsBox').innerHTML = "<div class = 'finalizeGroups'> <span style='font-size: xx-large'> Finalize Names as Necessary and then click Done:</span> <button type ='button' id ='finalizeGroupsButton' style = 'font-size: xx-large'>Finalize Groups</button></div>";
 
         $(".studentsContainerTwo").slideToggle();
 		numberOfGroups=Math.ceil(columnArray.length/maxStudents);
@@ -537,7 +537,7 @@ for (var i = 0; i<allStudentBoxIds.length; i++){
             shuffle(groupOfGroupsArray[k]);
             var testIdName = groupOfGroupsArray[k][0][0] + "";
             var testIdTag = testIdName.replace(/\s+/g, '');
-            document.getElementById(allGroupIds[k]).innerHTML = "Group Number: " + (k + 1) + "<p><input type='text'  name='organicCompoundCoefficient' id = '" + testIdTag + "' value='" + testIdName + "' style='background-color:" + groupOfGroupsArray[k][0][1] + "'></input>";
+            document.getElementById(allGroupIds[k]).innerHTML = "Group Number: " + (k + 1) + "<br>"+"<input type='text'  name='organicCompoundCoefficient' id = '" + testIdTag + "' value='" + testIdName + "' style='background-color:" + groupOfGroupsArray[k][0][1] + "'></input>";
             allStudentBoxIds.push(testIdTag + "");
             for (var i = 1; i < groupOfGroupsArray[k].length; i++) {
                 // alert (groupOfGroupsArray[k].length+" of group " + k+ " person is "+testIdName);
