@@ -169,9 +169,9 @@ $(document).ready(function () {
 		// document.getElementByClassName('noUi-connects').width='500px';
         scoreCutoffOne = Number(slider.noUiSlider.get()[0]);
         scoreCutoffTwo = Number(slider.noUiSlider.get()[1]);
-        document.getElementById("groupA").innerHTML = "Lowest Score group (Score of " + smallestScore + " to " + scoreCutoffOne + ")<p>";
-        document.getElementById("groupB").innerHTML = "Middle Score group (Score of " + scoreCutoffOne + ".01 to " + scoreCutoffTwo + ")<p>";
-        document.getElementById("groupC").innerHTML = "Highest Score group (Score of " + scoreCutoffTwo + ".01 to " + largestScore + ")<p>";
+        document.getElementById("groupA").innerHTML = "Lowest Score group <br>(Score of " + smallestScore + " to " + scoreCutoffOne + ")<p>";
+        document.getElementById("groupB").innerHTML = "Middle Score group <br>(Score of " + scoreCutoffOne + ".01 to " + scoreCutoffTwo + ")<p>";
+        document.getElementById("groupC").innerHTML = "Highest Score group <br>(Score of " + scoreCutoffTwo + ".01 to " + largestScore + ")<p>";
         groupAArray = getBetween(columnArray, smallestScore, scoreCutoffOne);
         groupBArray = getBetween(columnArray, scoreCutoffOne + .01, scoreCutoffTwo);
         groupCArray = getBetween(columnArray, scoreCutoffTwo + .01, largestScore);
@@ -197,24 +197,24 @@ $(document).ready(function () {
 	
         for (var i = 0; i < groupAArray.length; i++) {
             var testIdName = groupAArray[i][0] + "";
-            document.getElementById("groupA").innerHTML = document.getElementById("groupA").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "' style='background-color:pink'></input>";
+            document.getElementById("groupA").innerHTML = document.getElementById("groupA").innerHTML + "<div class='card' id = '" + testIdName + "' style='background-color: pink'><div class='container'> <h4><b>"+testIdName +"</b></h4></div></div>";
         }
         for (var i = 0; i < groupBArray.length; i++) {
             var testIdName = groupBArray[i][0] + "";
-            document.getElementById("groupB").innerHTML = document.getElementById("groupB").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "' style='background-color:cyan'></input>";
+            document.getElementById("groupB").innerHTML = document.getElementById("groupB").innerHTML + "<div class='card' id = '" + testIdName + "' style='background-color: cyan'><div class='container'> <h4><b>"+testIdName +"</b></h4></div></div>";
         }
         for (var i = 0; i < groupCArray.length; i++) {
             var testIdName = groupCArray[i][0] + "";
-            document.getElementById("groupC").innerHTML = document.getElementById("groupC").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "' style='background-color:lime'></input>";
+            document.getElementById("groupC").innerHTML = document.getElementById("groupC").innerHTML + "<div class='card' id = '" + testIdName + "' style='background-color: lime'><div class='container'> <h4><b>"+testIdName +"</b></h4></div></div>";
         }
         slider.noUiSlider.on('change', function () {
             scoreCutoffOne = Number(slider.noUiSlider.get()[0]);
             scoreCutoffTwo = Number(slider.noUiSlider.get()[1]);
 
             // var testIdName= "student";
-            document.getElementById("groupA").innerHTML = "Lowest Score group (Score of " + smallestScore + " to " + scoreCutoffOne + ")<p>";
-            document.getElementById("groupB").innerHTML = "Middle Score group (Score of " + scoreCutoffOne + ".01 to " + scoreCutoffTwo + ")<p>";
-            document.getElementById("groupC").innerHTML = "Highest Score group (Score of " + scoreCutoffTwo + ".01 to " + largestScore + ")<p>";
+            document.getElementById("groupA").innerHTML = "Lowest Score group <br>(Score of " + smallestScore + " to " + scoreCutoffOne + ")<p>";
+            document.getElementById("groupB").innerHTML = "Middle Score group <br>(Score of " + scoreCutoffOne + ".01 to " + scoreCutoffTwo + ")<p>";
+            document.getElementById("groupC").innerHTML = "Highest Score group <br>(Score of " + scoreCutoffTwo + ".01 to " + largestScore + ")<p>";
             groupAArray = getBetween(columnArray, smallestScore, scoreCutoffOne);
             groupBArray = getBetween(columnArray, scoreCutoffOne + .01, scoreCutoffTwo);
             groupCArray = getBetween(columnArray, scoreCutoffTwo + .01, largestScore);
@@ -223,15 +223,16 @@ $(document).ready(function () {
             console.log("an array " + groupCArray.toString());
             for (var i = 0; i < groupAArray.length; i++) {
                 var testIdName = groupAArray[i][0] + "";
-                document.getElementById("groupA").innerHTML = document.getElementById("groupA").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "' style='background-color:pink'></input>";
+                document.getElementById("groupA").innerHTML = document.getElementById("groupA").innerHTML + "<div class='card' id = '" + testIdName + "' style='background-color: pink'><div class='container'> <h4><b>"+testIdName +"</b></h4></div></div>";
             }
+			
             for (var i = 0; i < groupBArray.length; i++) {
                 var testIdName = groupBArray[i][0] + "";
-                document.getElementById("groupB").innerHTML = document.getElementById("groupB").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "' style='background-color:cyan'></input>";
+                document.getElementById("groupB").innerHTML = document.getElementById("groupB").innerHTML + "<div class='card' id = '" + testIdName + "' style='background-color: cyan'><div class='container'> <h4><b>"+testIdName +"</b></h4></div></div>";
             }
             for (var i = 0; i < groupCArray.length; i++) {
                 var testIdName = groupCArray[i][0] + "";
-                document.getElementById("groupC").innerHTML = document.getElementById("groupC").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "' style='background-color:lime'></input>";
+                document.getElementById("groupC").innerHTML = document.getElementById("groupC").innerHTML + "<div class='card' id = '" + testIdName + "' style='background-color: lime'><div class='container'> <h4><b>"+testIdName +"</b></h4></div></div>";
             }
 
             // "<input type='text'  name='organicCompoundCoefficient' id = '"+ testIdName +"'value='"+testIdName+"'></input>";
@@ -408,16 +409,20 @@ $(document).ready(function () {
             shuffle(groupOfGroupsArray[k]);
             var testIdName = groupOfGroupsArray[k][0][0] + "";
             var testIdTag = testIdName.replace(/\s+/g, '');
-            document.getElementById(allGroupIds[k]).innerHTML = "Group Number: " + (k + 1) + "<br>"+"<input type='text'  name='organicCompoundCoefficient' id = '" + testIdTag + "' value='" + testIdName + "' style='background-color:" + groupOfGroupsArray[k][0][1] + "'></input>";
-            allStudentBoxIds.push(testIdTag + "");
+            document.getElementById(allGroupIds[k]).innerHTML = "Group Number: " + (k + 1) + "<br>"+"<div class='card' id = '" + testIdTag + "' style='background-color:" + groupOfGroupsArray[k][0][1] + "'><div class='container'> <h4><b>"+testIdName +"</b></h4></div></div>";
+
+                allStudentBoxIds.push([testIdTag + "", testIdName+""]);
             for (var i = 1; i < groupOfGroupsArray[k].length; i++) {
                 // alert (groupOfGroupsArray[k].length+" of group " + k+ " person is "+testIdName);
                 var testIdName = groupOfGroupsArray[k][i][0] + "";
                 var testIdTag = testIdName.replace(/\s+/g, '');
-                document.getElementById(allGroupIds[k]).innerHTML = document.getElementById(allGroupIds[k]).innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdTag + "' value='" + testIdName + "' style='background-color:" + groupOfGroupsArray[k][i][1] + "'></input>";
-                // if(groupOfGroupsArray[k].length
+                // document.getElementById(allGroupIds[k]).innerHTML = document.getElementById(allGroupIds[k]).innerHTML + "<div class='card'><div class='container'><input type='text'  name='organicCompoundCoefficient' id = '" + testIdTag + "' value='" + testIdName + "' style='background-color:" + groupOfGroupsArray[k][i][1] + "'></input></div></div>";
+               
+                document.getElementById(allGroupIds[k]).innerHTML = document.getElementById(allGroupIds[k]).innerHTML + "<div class='card' id = '" + testIdTag + "' style='background-color:" + groupOfGroupsArray[k][i][1] + "'><div class='container'> <h4><b>"+testIdName +"</b></h4></div></div>";
+
+			   // if(groupOfGroupsArray[k].length
                 // alert(testIdTag);
-                allStudentBoxIds.push(testIdTag + "");
+                allStudentBoxIds.push([testIdTag + "", testIdName+""]);
                 // alert (groupOfGroupsArray[k].length+" of group " + k+ " person is "+testIdName);
 
                 // console.warn("yo yo yo "+allStudentBoxIds.toString());
@@ -431,21 +436,24 @@ for (var i = 0; i<allStudentBoxIds.length; i++){
 	
 	 (function(i){  
 
-        document.getElementById(allStudentBoxIds[i+0]).addEventListener("click", function(e){
+        document.getElementById(allStudentBoxIds[i+0][0]).addEventListener("click", function(e){
 			if ((!itSelected)&&(!lockNames)){
 				iOne=i;
-				colorOne=document.getElementById(allStudentBoxIds[i+0]).style.backgroundColor+"";
-				document.getElementById(allStudentBoxIds[i]).style.backgroundColor = "white";
-				nameOne=document.getElementById(allStudentBoxIds[i]).value+"";
+				colorOne=document.getElementById(allStudentBoxIds[i+0][0]).style.backgroundColor+"";
+				document.getElementById(allStudentBoxIds[i][0]).style.backgroundColor = "white";
+				nameOne=allStudentBoxIds[i][1]+"";
 				itSelected=true;
+				// alert (i+" "+nameOne);
 			}
-			else if ((!lockNames)&&((colorOne==(document.getElementById(allStudentBoxIds[i]).style.backgroundColor+""))||(("white"==(document.getElementById(allStudentBoxIds[i]).style.backgroundColor+""))))){
+			else if ((!lockNames)&&((colorOne==(document.getElementById(allStudentBoxIds[i][0]).style.backgroundColor+""))||(("white"==(document.getElementById(allStudentBoxIds[i][0]).style.backgroundColor+""))))){
 				// alert (colorOne);
-				document.getElementById(allStudentBoxIds[iOne]).style.backgroundColor = colorOne;
-				nameTwo=document.getElementById(allStudentBoxIds[i]).value+"";
-				document.getElementById(allStudentBoxIds[i]).value=nameOne;
-				document.getElementById(allStudentBoxIds[iOne]).value=nameTwo;	
-				
+				document.getElementById(allStudentBoxIds[iOne][0]).style.backgroundColor = colorOne;
+				nameTwo=allStudentBoxIds[i][1]+"";
+				document.getElementById(allStudentBoxIds[i][0]).innerHTML="<div class='container'> <h4><b>"+nameOne +"</b></h4></div>";
+				allStudentBoxIds[i][1]=nameOne;
+				document.getElementById(allStudentBoxIds[iOne][0]).innerHTML="<div class='container'> <h4><b>"+nameTwo +"</b></h4></div>";
+				allStudentBoxIds[iOne][1]=nameTwo;
+				// alert (i+" "+nameOne+" "+nameTwo);
 				itSelected=false;
 			
 			}
@@ -498,11 +506,11 @@ for (var i = 0; i<allStudentBoxIds.length; i++){
             // console.warn("yo yo yo "+allStudentBoxIds[5]);
             // document.getElementById(allStudentBoxIds[5]).style.="";
 
-            // document.getElementById(allStudentBoxIds[0]).style.backgroundColor="blue";
+            // document.getElementById(allStudentBoxIds[0]).style.backgroundColor="gray";
             for (var i = 0; i < allStudentBoxIds.length; i++) {
                 // document.getElementById(allStudentBoxIds[0]).innerHTML="";
 
-                document.getElementById(allStudentBoxIds[i]).style.backgroundColor = "white";
+                document.getElementById(allStudentBoxIds[i][0]).style.backgroundColor = "white";
             }
             $(".finalizeGroups").slideToggle();
         });
@@ -588,22 +596,24 @@ for (var i = 0; i<allStudentBoxIds.length; i++){
 for (var i = 0; i<allStudentBoxIds.length; i++){
 	
 	 (function(i){  
-
-        document.getElementById(allStudentBoxIds[i+0]).addEventListener("click", function(e){
+    document.getElementById(allStudentBoxIds[i+0][0]).addEventListener("click", function(e){
 			if ((!itSelected)&&(!lockNames)){
 				iOne=i;
-				colorOne=document.getElementById(allStudentBoxIds[i+0]).style.backgroundColor+"";
-				document.getElementById(allStudentBoxIds[i]).style.backgroundColor = "white";
-				nameOne=document.getElementById(allStudentBoxIds[i]).value+"";
+				colorOne=document.getElementById(allStudentBoxIds[i+0][0]).style.backgroundColor+"";
+				document.getElementById(allStudentBoxIds[i][0]).style.backgroundColor = "white";
+				nameOne=allStudentBoxIds[i][1]+"";
 				itSelected=true;
+				// alert (i+" "+nameOne);
 			}
-			else if ((!lockNames)&&((colorOne==(document.getElementById(allStudentBoxIds[i]).style.backgroundColor+""))||(("white"==(document.getElementById(allStudentBoxIds[i]).style.backgroundColor+""))))){
+			else if ((!lockNames)&&((colorOne==(document.getElementById(allStudentBoxIds[i][0]).style.backgroundColor+""))||(("white"==(document.getElementById(allStudentBoxIds[i][0]).style.backgroundColor+""))))){
 				// alert (colorOne);
-				document.getElementById(allStudentBoxIds[iOne]).style.backgroundColor = colorOne;
-				nameTwo=document.getElementById(allStudentBoxIds[i]).value+"";
-				document.getElementById(allStudentBoxIds[i]).value=nameOne;
-				document.getElementById(allStudentBoxIds[iOne]).value=nameTwo;	
-				
+				document.getElementById(allStudentBoxIds[iOne][0]).style.backgroundColor = colorOne;
+				nameTwo=allStudentBoxIds[i][1]+"";
+				document.getElementById(allStudentBoxIds[i][0]).innerHTML="<div class='container'> <h4><b>"+nameOne +"</b></h4></div>";
+				allStudentBoxIds[i][1]=nameOne;
+				document.getElementById(allStudentBoxIds[iOne][0]).innerHTML="<div class='container'> <h4><b>"+nameTwo +"</b></h4></div>";
+				allStudentBoxIds[iOne][1]=nameTwo;
+				// alert (i+" "+nameOne+" "+nameTwo);
 				itSelected=false;
 			
 			}
@@ -656,7 +666,7 @@ for (var i = 0; i<allStudentBoxIds.length; i++){
             // console.warn("yo yo yo "+allStudentBoxIds[5]);
             // document.getElementById(allStudentBoxIds[5]).style.="";
 
-            // document.getElementById(allStudentBoxIds[0]).style.backgroundColor="blue";
+            // document.getElementById(allStudentBoxIds[0]).style.backgroundColor="gray";
             for (var i = 0; i < allStudentBoxIds.length; i++) {
                 // document.getElementById(allStudentBoxIds[0]).innerHTML="";
 

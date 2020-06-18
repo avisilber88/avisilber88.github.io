@@ -2,17 +2,74 @@
 
 <head>
 <style>
+body {
+  background-color: #f0f0f0;
+}
 .flex-container {
   display: flex;
-  background-color: DodgerBlue;
+  background-color: #f0f0f0;
   flex-wrap: wrap;
 }
 
 .flex-container > div {
-  background-color: #f1f1f1;
+  background-color: #f0f0f0;
   margin: 10px;
   padding: 20px;
   font-size: 30px;
+  border-width: 1px;
+  border-color: grey;
+  border-style: solid;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  border-radius: 5px;
+  width: 250px;
+  margin: 5px;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+img {
+  border-radius: 5px 5px 0 0;
+}
+
+.container {
+  padding: 2px 16px;
+  display: flex;
+  align-items: center;
+}
+
+.card-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+
+.badge {
+background-color: blue;
+    color: aqua;
+    display: inline-block;
+    padding: .25em .4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s
+ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  }
+
+.name-title {
+padding-right: 10px;
+    font-weight: bold;
+    font-size: 16px;
 }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
