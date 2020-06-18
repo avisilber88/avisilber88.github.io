@@ -192,7 +192,7 @@ $(document).ready(function () {
 		// alert (scoreCutoffOne+" "+scoreCutoffTwo +" "+ totalStudents);
 		// var percentC=groupCArray.length/totalStudents*100+percentB+percentA;
 				// alert (percentA+" "+percentB+" "+percentC);
-		$('.noUi-connects').css("background" , 'linear-gradient(to right, pink '+percentA+'%, cyan '+percentA+'%, cyan '+percentA+'%, cyan '+percentB+'%, green '+percentB+'%)');
+		$('.noUi-connects').css("background" , 'linear-gradient(to right, pink '+percentA+'%, cyan '+percentA+'%, cyan '+percentA+'%, cyan '+percentB+'%, lime '+percentB+'%)');
 		$('.noUi-connect').css("background" , 'cyan');
 	
         for (var i = 0; i < groupAArray.length; i++) {
@@ -205,7 +205,7 @@ $(document).ready(function () {
         }
         for (var i = 0; i < groupCArray.length; i++) {
             var testIdName = groupCArray[i][0] + "";
-            document.getElementById("groupC").innerHTML = document.getElementById("groupC").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "' style='background-color:green'></input>";
+            document.getElementById("groupC").innerHTML = document.getElementById("groupC").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "' style='background-color:lime'></input>";
         }
         slider.noUiSlider.on('change', function () {
             scoreCutoffOne = Number(slider.noUiSlider.get()[0]);
@@ -231,7 +231,7 @@ $(document).ready(function () {
             }
             for (var i = 0; i < groupCArray.length; i++) {
                 var testIdName = groupCArray[i][0] + "";
-                document.getElementById("groupC").innerHTML = document.getElementById("groupC").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "' style='background-color:green'></input>";
+                document.getElementById("groupC").innerHTML = document.getElementById("groupC").innerHTML + "<input type='text'  name='organicCompoundCoefficient' id = '" + testIdName + "'value='" + testIdName + "' style='background-color:lime'></input>";
             }
 
             // "<input type='text'  name='organicCompoundCoefficient' id = '"+ testIdName +"'value='"+testIdName+"'></input>";
@@ -241,7 +241,7 @@ $(document).ready(function () {
 		
 		// var percentC=groupCArray.length/totalStudents*100+percentB+percentA;
 		// alert (percentA+" "+percentB);
-		$('.noUi-connects').css("background" , 'linear-gradient(to right, pink '+percentA+'%, cyan '+percentA+'%, cyan '+percentA+'%, cyan '+percentB+'%, green '+percentB+'%)');
+		$('.noUi-connects').css("background" , 'linear-gradient(to right, pink '+percentA+'%, cyan '+percentA+'%, cyan '+percentA+'%, cyan '+percentB+'%, lime '+percentB+'%)');
 	
 
         });
@@ -381,7 +381,7 @@ $(document).ready(function () {
             console.log(groupPlacement);
 
             console.warn(groupCArray[g][0].toString());
-            (groupOfGroupsArray[groupPlacement + 0]).push([groupCArray[g][0], "green"]); //to later select the background color for highest groups
+            (groupOfGroupsArray[groupPlacement + 0]).push([groupCArray[g][0], "lime"]); //to later select the background color for highest groups
             groupPlacement++;
             if (groupPlacement > (numberOfGroups - 1)) {
                 // console.log(groupPlacement);
@@ -539,7 +539,7 @@ for (var i = 0; i<allStudentBoxIds.length; i++){
             console.log(groupPlacement);
 
             console.warn(groupCArray[g][0].toString());
-            (groupOfGroupsArray[groupPlacement + 0]).push([groupCArray[g][0], "green"]); //to later select the background color for highest groups
+            (groupOfGroupsArray[groupPlacement + 0]).push([groupCArray[g][0], "lime"]); //to later select the background color for highest groups
             groupPlacement++;
             if (groupPlacement > (numberOfGroups - 1)) {
                 // console.log(groupPlacement);
