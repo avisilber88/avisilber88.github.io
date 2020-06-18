@@ -379,7 +379,7 @@ $(document).ready(function () {
             shuffle(groupOfGroupsArray[k]);
             var testIdName = groupOfGroupsArray[k][0][0] + "";
             var testIdTag = testIdName.replace(/\s+/g, '');
-            document.getElementById(allGroupIds[k]).innerHTML = "Group Number: " + (k + 1) + "<p><input type='text'  name='organicCompoundCoefficient' id = '" + testIdTag + "' value='" + testIdName + "' style='background-color:" + groupOfGroupsArray[k][0][1] + "'></input>";
+            document.getElementById(allGroupIds[k]).innerHTML = "Group Number: " + (k + 1) + "<br>"+"<input type='text'  name='organicCompoundCoefficient' id = '" + testIdTag + "' value='" + testIdName + "' style='background-color:" + groupOfGroupsArray[k][0][1] + "'></input>";
             allStudentBoxIds.push(testIdTag + "");
             for (var i = 1; i < groupOfGroupsArray[k].length; i++) {
                 // alert (groupOfGroupsArray[k].length+" of group " + k+ " person is "+testIdName);
