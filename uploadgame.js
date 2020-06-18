@@ -324,7 +324,7 @@ $(document).ready(function () {
         }
     }
     var groupByGroups = function (numberOfGroups) {
-        document.getElementById('selectionsBox').innerHTML = "<div class = 'finalizeGroups'> <span style='font-size: xx-large'> Finalize Names as Necessary and then click Done:</span> <button type ='button' id ='finalizeGroupsButton' style = 'font-size: xx-large'>Finalize Groups<button></div>";
+        document.getElementById('selectionsBox').innerHTML = "<div class = 'finalizeGroups'> <span style='font-size: xx-large'> Finalize Names as Necessary and then click Done:</span> <button type ='button' id ='finalizeGroupsButton' style = 'font-size: xx-large'>Finalize Groups</button></div>";
 
         $(".studentsContainerTwo").slideToggle();
         console.log(groupAArray.toString());
