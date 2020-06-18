@@ -156,9 +156,9 @@ $(document).ready(function () {
 
             pips: {
                 mode: 'count',
-                values: (largestScore - smallestScore),
-                stepped: false,
-                density: 40
+                values: (largestScore - smallestScore+1),
+                stepped: true,
+                density: 100,
             },
 			// width: 500px,
         });
