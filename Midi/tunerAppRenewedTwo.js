@@ -211,13 +211,104 @@ var tieAmountOne = 1;
 var tieAmountTwo = 1;
 var smallestNoteDenominator = 8;
 var wholesToTieAtTheBeginning = 0;
-var startingXSetting=600;
-var setupAFirstNote=false;
-var firstNotationToCome=false;
-var singAndTargetPlacement=600;
+var startingXSetting = 600;
+var setupAFirstNote = false;
+var firstNotationToCome = false;
+var singAndTargetPlacement = 600;
 noteOnListener(0, 0);
 
+// select the INPUT element that will handle
+// the file selection.
+let sourceofmidi = document.getElementById('filereader');
+// provide the File source and a callback function
+let importArray = [];
+let ticksOfThisNote = 0;
+let lastNote = 0;
+let currentNote = 0;
+var midiToNoteArray = 24;
+var trackPicked=false;
+var channels=0;
+MidiParser.parse(sourceofmidi, function (obj) {
+    let noteContainingTrack = 0;
+    for (var i = 0; i < (obj.track.length); i++) {
+        try {
+            for (var j = 0; j < (obj.track[i].event.length); j++) {
+				
+                if ((obj.track[i].event[j].type == 9)&&(!trackPicked)) {
+						console.log("channel "+obj.track[i].event[j].channel);
+					if (channels<(Number(obj.track[i].event[j].channel))){
+					channels=obj.track[i].event[j].channel;
+										
+					alert (channels);
+										}
+                    noteContainingTrack = i;
+                    // trackPicked=true;// alert(i);
+                }
+            }
+        } catch (error) {}
 
+    }
+	// channels=6;
+    // alert (obj.track.length); // when I return to this, elle's song works but hercules doesn't...
+    singingTimeArray = [];
+    for (var i = 0; i < (obj.track[noteContainingTrack].event.length); i++) {
+        // console.log(obj.track[obj.track.length-1].event[0].data);
+        // console.log(obj.timeDivision);
+        var importTicksPerBeat = obj.timeDivision;
+
+        // console.log(obj.track[2].event[i].deltaTime);
+        // console.log(obj.track[noteContainingTrack].event[i].type);
+        ticksOfThisNote = ticksOfThisNote + obj.track[noteContainingTrack].event[i].deltaTime; //add the time of the message to the building message.
+        if ((obj.track[noteContainingTrack].event[i].type == 9)&&(obj.track[noteContainingTrack].event[i].channel == channels)) { //if note on
+            // ticksOfThisNote=ticksOfThisNote+obj.track[2].event[i].deltaTime; //add the time of the message to the building message.
+            lastNote = currentNote + 0;
+            // alert (lastNote);
+
+            if (lastNote != 0) {
+                singingTimeArray.push([lastNote - 24, (60 * (ticksOfThisNote + 0) / importTicksPerBeat) / currentBPM, 0]);
+            }
+            currentNote = obj.track[noteContainingTrack].event[i].data[0];
+            ticksOfThisNote = 0;
+        }
+
+    }
+    console.log(singingTimeArray.toString());
+    try {
+        synth.triggerRelease();
+        stopAllNotes();
+    } catch (error) {}
+    // alert(rhythmSequenceArray.toString());
+    sequenceArray = [];
+    sequenceCopy = [];
+    arpeggioArray = [];
+    chordSequenceArray = [];
+    chordSequenceCopy = [];
+    buttonsCaptured = false;
+    captureButtons = true;
+    buttonStartEndTimes = [];
+    buttonPlay = true;
+    // buttonStartEndTimes.push([0, new Date(new Date().getTime())]);
+    // if (buttonStartEndTimes.length > 1) {
+    // // alert("long");
+    // singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000, 0]);
+    // buttonStartEndTimes.shift();
+    // // console.log(singingTimeArray.toString());
+    // }
+    captureButtons = false;
+    buttonsCaptured = true;
+    singingCaptured = true;
+    sequencePlay = true;
+    nonReferencePlay = true;
+    newQuestionTime = true;
+    arrayOfSungNotesOnly = [];
+    for (i = 0; i < singingTimeArray.length; i++) {
+        arrayOfSungNotesOnly.push(basicNote(singingTimeArray[i][0]));
+    }
+    console.log(singingTimeArray.toString());
+    findKey(arrayOfSungNotesOnly);
+
+    // console.log(obj.track[2].event[i].data);
+});
 // const VF = Vex.Flow;
 
 // // Create a VexFlow renderer attaced to the DIV element "boo"
@@ -432,50 +523,50 @@ const visibleTargetNoteGroups = [];
 
 // Add a note to the staff from the notes array (if there are any left).
 // document.getElementById('add-note').addEventListener('click', (e) => {
-    // if (!firstNoteShown) {
+// if (!firstNoteShown) {
 
-        // makeAndShowANote(37, 2, "referenceNote");
-        // makeAndShowANote(50, 2, "referenceNote");
-        // makeAndShowANote(40, 2, "singingNote");
-        // makeAndShowANote(41, 2, "targetNote");
-        // // makeAndShowANote(47,2, "singingNote");
-        // firstNoteShown = true;
-    // } else {
-        // makeAndShowANote(37, 2, "referenceNote");
-        // makeAndShowANote(50, 2, "referenceNote");
-        // makeAndShowANote(45, 2, "targetNote");
-        // makeAndShowANote(47, 2, "singingNote");
-    // }
-    // // note = notes.shift();
-    // // if(!note) return;
-    // // const group = context.openGroup();
-    // // visibleNoteGroups.push(group);
-    // // note.draw();
-    // // context.closeGroup();
-    // // group.classList.add('scroll');
-    // // // Force a dom-refresh by asking for the group's bounding box. Why? Most
-    // // // modern browsers are smart enough to realize that adding .scroll class
-    // // // hasn't changed anything about the rendering, so they wait to apply it
-    // // // at the next dom refresh, when they can apply any other changes at the
-    // // // same time for optimization. However, if we allow that to happen,
-    // // // then sometimes the note will immediately jump to its fully transformed
-    // // // position -- because the transform will be applied before the class with
-    // // // its transition rule.
-    // // const box = group.getBoundingClientRect();
-    // // group.classList.add('scrolling');
+// makeAndShowANote(37, 2, "referenceNote");
+// makeAndShowANote(50, 2, "referenceNote");
+// makeAndShowANote(40, 2, "singingNote");
+// makeAndShowANote(41, 2, "targetNote");
+// // makeAndShowANote(47,2, "singingNote");
+// firstNoteShown = true;
+// } else {
+// makeAndShowANote(37, 2, "referenceNote");
+// makeAndShowANote(50, 2, "referenceNote");
+// makeAndShowANote(45, 2, "targetNote");
+// makeAndShowANote(47, 2, "singingNote");
+// }
+// // note = notes.shift();
+// // if(!note) return;
+// // const group = context.openGroup();
+// // visibleNoteGroups.push(group);
+// // note.draw();
+// // context.closeGroup();
+// // group.classList.add('scroll');
+// // // Force a dom-refresh by asking for the group's bounding box. Why? Most
+// // // modern browsers are smart enough to realize that adding .scroll class
+// // // hasn't changed anything about the rendering, so they wait to apply it
+// // // at the next dom refresh, when they can apply any other changes at the
+// // // same time for optimization. However, if we allow that to happen,
+// // // then sometimes the note will immediately jump to its fully transformed
+// // // position -- because the transform will be applied before the class with
+// // // its transition rule.
+// // const box = group.getBoundingClientRect();
+// // group.classList.add('scrolling');
 
-    // // // If a user doesn't answer in time make the note fall below the staff
-    // // window.setTimeout(() => {
-    // // const index = visibleNoteGroups.indexOf(group);
-    // // if(index === -1) return;
-    // // group.classList.add('too-slow');
-    // // visibleNoteGroups.shift();
-    // // }, 5000);
+// // // If a user doesn't answer in time make the note fall below the staff
+// // window.setTimeout(() => {
+// // const index = visibleNoteGroups.indexOf(group);
+// // if(index === -1) return;
+// // group.classList.add('too-slow');
+// // visibleNoteGroups.shift();
+// // }, 5000);
 // });
 
 // If a user plays/identifies the note in time, send it up to note heaven.
 // document.getElementById('right-answer').addEventListener('click', (e) => {
-    // rightAnswer();
+// rightAnswer();
 // })
 
 function durationNoteSelectTwentyFour(localBeatCount) {
@@ -498,10 +589,10 @@ function durationNoteSelect(localBeatCount) {
         beatCount = durationNoteSelectEight(localBeatCount);
         wholesToTieAtTheBeginning = Math.floor(beatCount / 8);
         beatCount = beatCount % 8;
-		if ((beatCount==0)&&(wholesToTieAtTheBeginning==1)){
-		beatCount=8;
-		wholesToTieAtTheBeginning=0;
-		}
+        if ((beatCount == 0) && (wholesToTieAtTheBeginning == 1)) {
+            beatCount = 8;
+            wholesToTieAtTheBeginning = 0;
+        }
         //the code below is for 1/8 where each case is the numerator
         switch (beatCount) {
         case 1:
@@ -608,9 +699,9 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
         var lastImageNote = currentImageNote;
         var currentImageNote = notes.shift();
         var currentSecondImageNote = note2.shift();
-		var currentWholeImageNote= noteWhole.shift();
+        var currentWholeImageNote = noteWhole.shift();
         let noteStr = noteArray[noteArrayNum][1];
-		// noteStr='E5';
+        // noteStr='E5';
         // alert (noteStr);
         let partOne = noteStr.slice(0, 1) + '';
         let partTwo = noteStr.slice(+2) + '';
@@ -620,9 +711,9 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
         //Start AREA OF TIES!
 
 
-		if (wholesToTieAtTheBeginning>0){
-			if (noteArrayNum >= 36) {
-				noteWhole = [
+        if (wholesToTieAtTheBeginning > 0) {
+            if (noteArrayNum >= 36) {
+                noteWhole = [
                     [partOne, partTwo, partThree]
                 ].map(([letter, acc, octave]) => {
 
@@ -638,9 +729,8 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
                     // tickContext.addTickable(note)
                     return note;
                 });
-			}
-			else{
-				noteWhole = [
+            } else {
+                noteWhole = [
                     [partOne, partTwo, partThree]
                 ].map(([letter, acc, octave]) => {
 
@@ -656,8 +746,8 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
                     // tickContext.addTickable(note)
                     return note;
                 });
-			}
-		}
+            }
+        }
         if (tieOn) {
             // console.log("tie on");
             if (noteArrayNum >= 36) {
@@ -692,7 +782,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
 
                     return note;
                 });
-				note2 = [
+                note2 = [
                     [partOne, partTwo, partThree, tieAmountTwo]
                 ].map(([letter, acc, octave, tieAmount]) => {
 
@@ -722,7 +812,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
                     // tickContext.addTickable(note)
                     return note;
                 });
-				
+
             } else {
                 notes = [
                     [partOne, partTwo, partThree, tieAmountOne]
@@ -785,7 +875,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
                     // tickContext.addTickable(note)
                     return note;
                 });
-				
+
                 // tiedNote = new VF.StaveTie({
                 // first_note: notes[0],
                 // last_note: note2[0],
@@ -901,25 +991,24 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
                 fillStyle: 'red'
             }); //chartreuse
             try {
-				let transformMatrix=5;
-					// console.warn(visibleReferenceNoteGroups.length);
-				if (sequencePlay){
-					transformMatrix = window.getComputedStyle(visibleReferenceNoteGroups[visibleReferenceNoteGroups.length - 2]).transform;
+                let transformMatrix = 5;
+                // console.warn(visibleReferenceNoteGroups.length);
+                if (sequencePlay) {
+                    transformMatrix = window.getComputedStyle(visibleReferenceNoteGroups[visibleReferenceNoteGroups.length - 2]).transform;
+                } else {
+                    transformMatrix = window.getComputedStyle(visibleReferenceNoteGroups[visibleReferenceNoteGroups.length - 1]).transform;
+
                 }
-				else{ 
-					transformMatrix = window.getComputedStyle(visibleReferenceNoteGroups[visibleReferenceNoteGroups.length - 1]).transform;             
-				
-				}
-				// console.warn("it is "+transformMatrix);
-				// transformMatrix will be something like 'matrix(1, 0, 0, 1, -118, 0)'
+                // console.warn("it is "+transformMatrix);
+                // transformMatrix will be something like 'matrix(1, 0, 0, 1, -118, 0)'
                 // where, since we're only translating in x, the 4th property will be
                 // the current x-translation. You can dive into the gory details of
                 // CSS3 transform matrices (along with matrix multiplication) if you want
                 // at http://www.useragentman.com/blog/2011/01/07/css3-matrix-transform-for-the-mathematically-challenged/
                 const x = transformMatrix.split(',')[4].trim();
-				// console.warn(x);
-                singAndTargetPlacement=Math.floor(x) + startingXSetting;
-				
+                // console.warn(x);
+                singAndTargetPlacement = Math.floor(x) + startingXSetting;
+
             } catch (error) {
                 // alert ("hi");
                 console.error(error.toString());
@@ -969,10 +1058,10 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
 
             tickContext.addTickable(currentSecondImageNote);
         }
-		if (noteWhole.length ==1){
-			currentWholeImageNote = noteWhole.shift();
+        if (noteWhole.length == 1) {
+            currentWholeImageNote = noteWhole.shift();
             tickContext.addTickable(currentWholeImageNote);
-		}
+        }
         if (!currentImageNote)
             return;
         const group = context.openGroup();
@@ -992,86 +1081,85 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
             if (sequencePlay) {
                 try {
                     // alert ("hi");
-					visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group)].classList.add('prescroll');
-					} catch (error) {alert ("hi"); }
-					   try {
+                    visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group)].classList.add('prescroll');
+                } catch (error) {
+                    alert("hi");
+                }
+                try {
                     // alert ("hi");
-					visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group)].classList.add('nextNote');
-					} catch (error) { }
-					try {
+                    visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group)].classList.add('nextNote');
+                } catch (error) {}
+                try {
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 1].classList.remove('prescroll');
-					} catch (error) { }
-					try {
+                } catch (error) {}
+                try {
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 1].classList.remove('nextNote');
-					} catch (error) { }
-					try {
+                } catch (error) {}
+                try {
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 1].classList.add('currentnote');
-					} catch (error) { }
-					try {
+                } catch (error) {}
+                try {
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.remove('currentnote');
-					} catch (error) { }
-					try {
+                } catch (error) {}
+                try {
                     // visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.add('scroll');
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.remove('partscroll');
-					} catch (error) { }
-					try {
+                } catch (error) {}
+                try {
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.remove('partscrolling');
-					} catch (error) { }
-					try {
+                } catch (error) {}
+                try {
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.add('scroll');
-					} catch (error) { }
-					try {
+                } catch (error) {}
+                try {
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.add('scrolling');
 
-                } catch (error) { }
+                } catch (error) {}
             }
             // console.error(referenceGroups.toString());
         }
-		let startingSetX=startingXSetting-wholesToTieAtTheBeginning*25;
-		if (tieOn){
-			startingSetX=startingSetX-50;
-		}			
-			
-			
-		
+        let startingSetX = startingXSetting - wholesToTieAtTheBeginning * 25;
+        if (tieOn) {
+            startingSetX = startingSetX - 50;
+        }
 
-		for (i = 0; i < wholesToTieAtTheBeginning; i++){
-			tiedNote = new VF.StaveTie({
-                first_note: currentImageNote,
-                last_note: currentWholeImageNote,
-                first_indices: [0],
-                last_indices: [0]
-            })
-		    tickContext.preFormat().setX(startingSetX);
-			currentWholeImageNote.draw();	
-            tickContext.preFormat().setX(startingSetX+12);
-			tiedNote.setContext(context).draw();
-			startingSetX=startingSetX+25;
-		}
-		tickContext.preFormat().setX(startingSetX);
-		if (setupAFirstNote){
-            tickContext.preFormat().setX(startingXSetting+25);
-			setupAFirstNote=false;
-		}
-			else{
+        for (i = 0; i < wholesToTieAtTheBeginning; i++) {
+            tiedNote = new VF.StaveTie({
+                    first_note: currentImageNote,
+                    last_note: currentWholeImageNote,
+                    first_indices: [0],
+                    last_indices: [0]
+                })
+                tickContext.preFormat().setX(startingSetX);
+            currentWholeImageNote.draw();
+            tickContext.preFormat().setX(startingSetX + 12);
+            tiedNote.setContext(context).draw();
+            startingSetX = startingSetX + 25;
+        }
+        tickContext.preFormat().setX(startingSetX);
+        if (setupAFirstNote) {
+            tickContext.preFormat().setX(startingXSetting + 25);
+            setupAFirstNote = false;
+        } else {
             tickContext.preFormat().setX(startingXSetting);
-			}
-		if ((voiceType=="singingNote")||(voiceType=="targetNote")){
-		tickContext.preFormat().setX(singAndTargetPlacement);
-		}
+        }
+        if ((voiceType == "singingNote") || (voiceType == "targetNote")) {
+            tickContext.preFormat().setX(singAndTargetPlacement);
+        }
         currentImageNote.draw();
-        if (tieOn){tickContext.preFormat().setX(startingSetX+25);
-        currentSecondImageNote.draw();
-        tiedNote = new VF.StaveTie({
-                first_note: currentImageNote,
-                last_note: currentSecondImageNote,
-                first_indices: [0],
-                last_indices: [0]
-            })
+        if (tieOn) {
+            tickContext.preFormat().setX(startingSetX + 25);
+            currentSecondImageNote.draw();
+            tiedNote = new VF.StaveTie({
+                    first_note: currentImageNote,
+                    last_note: currentSecondImageNote,
+                    first_indices: [0],
+                    last_indices: [0]
+                })
 
-            tickContext.preFormat().setX(startingSetX+12);
-        tiedNote.setContext(context).draw();
-		}
+                tickContext.preFormat().setX(startingSetX + 12);
+            tiedNote.setContext(context).draw();
+        }
         // tiedNote.draw();
         context.closeGroup();
 
@@ -1090,13 +1178,13 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
         // its transition rule.
         const box = group.getBoundingClientRect();
         group.classList.add('partscrolling');
-		wholesToTieAtTheBeginning=0;
-		        tieOn = false;
-		dotTheSecondNote=false;
+        wholesToTieAtTheBeginning = 0;
+        tieOn = false;
+        dotTheSecondNote = false;
         // If a user doesn't answer in time make the note fall below the staff
         window.setTimeout(() => {
             if (voiceType == "singingNote") {
-				
+
                 const index = visibleSingingNoteGroups.indexOf(group);
                 if (index === -1)
                     return;
@@ -3486,6 +3574,29 @@ function findNote(e) { //Avi thinks this determines what note frequency the note
                 return r;
     return -1
 }
+
+function findNoteDeviation(e) { //returns a range of -.5 to .5//Avi copied the other one to make this one. FASCINATING. so it breaks it down to minimize the for loops.
+
+    if (254.285 >= e) {
+        if (89.903 >= e) {
+            for (var r = 0; 17 >= r; r++)
+                if (e > noteBorders[r][0] && e <= noteBorders[r][1])
+                    return (((noteBorders[r][1] + noteBorders[r][0]) / 2 - e) / (noteBorders[r][1] - noteBorders[r][0]))
+        } else
+            for (var r = 18; 35 >= r; r++)
+                if (e > noteBorders[r][0] && e <= noteBorders[r][1])
+                    return (((noteBorders[r][1] + noteBorders[r][0]) / 2 - e) / (noteBorders[r][1] - noteBorders[r][0]))
+    } else if (719.225 >= e) {
+        for (var r = 36; 53 >= r; r++)
+            if (e > noteBorders[r][0] && e <= noteBorders[r][1])
+                return (((noteBorders[r][1] + noteBorders[r][0]) / 2 - e) / (noteBorders[r][1] - noteBorders[r][0]))
+    } else
+        for (var r = 54; 71 >= r; r++)
+            if (e > noteBorders[r][0] && e <= noteBorders[r][1])
+                return (((noteBorders[r][1] + noteBorders[r][0]) / 2 - e) / (noteBorders[r][1] - noteBorders[r][0]))
+                return -1
+}
+
 // function playASequence() {
 // // if (!sequenceStarted){
 // // sequenceStarted=true;
@@ -3864,7 +3975,157 @@ function playMajorScale(scaleRootArrayPlace) {
 // alert ("ti");
 // setTimeout(playANote(12+scaleRootArrayPlace), 0);
 // alert ("do");
+function isolateAWorkingKey(theSequenceYouSung) {
+    let totalDeviation = 0;
+    let justCheckingDeviation = 0;
+    theSequenceYouSung = JSON.parse(JSON.stringify(theSequenceYouSung));
+    let theSequenceYouSungLowestFinder = JSON.parse(JSON.stringify(theSequenceYouSung));
+    let lowestNote = 100;
+    let lowestPlace = 0;
+    for (var o = 0; o < theSequenceYouSungLowestFinder.length; o++) {
+        if (lowestNote > theSequenceYouSungLowestFinder[o][0]) {
+            lowestNote = theSequenceYouSungLowestFinder[o][0] + 0;
+            lowestPlace = o + 0;
+        }
+    }
+    let firstNoteAndRange = [theSequenceYouSung[lowestPlace][0], noteBorders[theSequenceYouSung[lowestPlace][0]][0], noteBorders[theSequenceYouSung[lowestPlace][0]][1]];
+    let tweakAmount = 0;
+    let hundredthSize = ((firstNoteAndRange[2] - firstNoteAndRange[1]) / 100);
+    let increment = 0;
+    let lowestDeviation = 100;
+    let correctedSequence = [];
+    // for (var i=0; i<theSequenceYouSung.length; i++){
+    // totalDeviation=totalDeviation+Math.abs(theSequenceYouSung[i][3]);
+    // // justCheckingDeviation=justCheckingDeviation+Math.abs(findNoteDeviation(theSequenceYouSung[i][4]+increment));
+    // }
+    for (var j = 0; j < 100; j++) {
+        increment = (j - (hundredthSize / 2)) * hundredthSize;
+        justCheckingDeviation = 0;
+        for (var i = 0; i < theSequenceYouSung.length; i++) {
+            // totalDeviation=totalDeviation+Math.abs(theSequenceYouSung[i][3]);
+            justCheckingDeviation = justCheckingDeviation + Math.abs(findNoteDeviation(theSequenceYouSung[i][4] + increment));
+        }
+        if (justCheckingDeviation < lowestDeviation) {
+            lowestDeviation = justCheckingDeviation + 0;
+            tweakAmount = increment + 0;
+        }
+    }
+    console.warn(theSequenceYouSung.toString());
+    for (var k = 0; k < theSequenceYouSung.length; k++) {
+        correctedSequence.push([findNote(theSequenceYouSung[k][4] + increment) + 0, theSequenceYouSung[k][1] + 0, theSequenceYouSung[k][2] + 0]);
+    }
+    console.warn(correctedSequence.toString());
 
+    // alert (firstNoteAndRange[0]+" and then an increment of " +increment+ " with a deviation of "+lowestDeviation + " which is an improvement over "+totalDeviation + " after "+theSequenceYouSung.length+" notes.");
+
+    // alert (totalDeviation+" vs "+justCheckingDeviation);
+    return correctedSequence; //This should now return a sequence of new notes that are now in the key.
+}
+
+function compoundNeighborTones(theSequenceYouSung) {
+    let correctedSequence = [];
+    let originalSequenceLength = theSequenceYouSung.length + 0;
+    console.warn(theSequenceYouSung.toString());
+    theSequenceYouSung = JSON.parse(JSON.stringify(theSequenceYouSung));
+    for (var k = 0; k < (theSequenceYouSung.length - 1); k++) {
+        let index = originalSequenceLength - k - 1;
+        if (theSequenceYouSung[index - 1][0] == theSequenceYouSung[index][0]) {
+            theSequenceYouSung[index - 1][1] = theSequenceYouSung[index - 1][1] + theSequenceYouSung[index][1];
+            theSequenceYouSung.splice(index, 1);
+        }
+        console.warn(theSequenceYouSung.toString());
+    }
+    //beginning to try to address the fact that we randomly record octaves up or down in here.. don't know what that is about.
+    theSequenceYouSung = JSON.parse(JSON.stringify(theSequenceYouSung));
+    originalSequenceLength = theSequenceYouSung.length + 0;
+    let averageNumber = 0;
+    let totalNumbers = 0;
+    let sumNumbers = 0;
+    for (var l = 0; l < (theSequenceYouSung.length - 1); l++) {
+        if (theSequenceYouSung[l][0] > 0) {
+            totalNumbers++;
+            sumNumbers = sumNumbers + theSequenceYouSung[l][0];
+        }
+    }
+    averageNumber = sumNumbers / totalNumbers;
+
+    for (var i = 0; i < (theSequenceYouSung.length - 1); i++) {
+        let index = originalSequenceLength - i - 1;
+        if ((theSequenceYouSung[index - 1][0] == (theSequenceYouSung[index][0] + 12)) && ((theSequenceYouSung[index][0]) < averageNumber)) { //if this one is 12 below the one before, and it is less than the average
+            theSequenceYouSung[index - 1][1] = theSequenceYouSung[index - 1][1] + theSequenceYouSung[index][1];
+            theSequenceYouSung.splice(index, 1);
+        } else if ((theSequenceYouSung[index - 1][0] == (theSequenceYouSung[index][0] - 12)) && ((theSequenceYouSung[index][0]) > averageNumber)) { //if this one is 12 higher the one before, and it is higher than the average
+            theSequenceYouSung[index - 1][1] = theSequenceYouSung[index - 1][1] + theSequenceYouSung[index][1];
+            theSequenceYouSung.splice(index, 1);
+        } else if ((theSequenceYouSung[index - 1][0] == (theSequenceYouSung[index][0] + 24)) && ((theSequenceYouSung[index][0]) < averageNumber)) { //if this one is 12 below the one before, and it is less than the average
+            theSequenceYouSung[index - 1][1] = theSequenceYouSung[index - 1][1] + theSequenceYouSung[index][1];
+            theSequenceYouSung.splice(index, 1);
+        } else if ((theSequenceYouSung[index - 1][0] == (theSequenceYouSung[index][0] - 24)) && ((theSequenceYouSung[index][0]) > averageNumber)) { //if this one is 12 higher the one before, and it is higher than the average
+            theSequenceYouSung[index - 1][1] = theSequenceYouSung[index - 1][1] + theSequenceYouSung[index][1];
+            theSequenceYouSung.splice(index, 1);
+        }
+        console.warn(theSequenceYouSung.toString());
+    }
+
+    //ending to try to address the fact that we randomly record octaves up or down in here.. don't know what that is about.
+    return theSequenceYouSung;
+}
+
+function compoundShortTones(theSequenceYouSung) {
+    theSequenceYouSung = JSON.parse(JSON.stringify(theSequenceYouSung));
+    let correctedSequence = [];
+    let removeNotesArray = [];
+    console.warn("at the beginning of compounding " + theSequenceYouSung.toString());
+    for (var i = 0; sequenceLength > i; i++) {
+        let thisNoteTime = theSequenceYouSung[i][1] + 0;
+
+        thisNoteTime = thisNoteTime / (60 / currentBPM);
+        thisNoteTime = Math.round(thisNoteTime * 2) / 2;
+        console.warn(thisNoteTime);
+        if (thisNoteTime == 0) {
+            // console.warn("we removed " + i + " " + theSequenceYouSung[i].toString()); //fixed this spot
+            // alert (i+0);
+            removeNotesArray.push(i + 0);
+        }
+        // else {
+        // theSequenceYouSung[i][1] = thisNoteTime;
+        // randomNoteNum = theSequenceYouSung[i][0];
+
+        // if (keyType == "major") {
+        // // console.log("new is " + newLastRandomScaleNum);
+        // randomScaleNum = getScaleNumMajorNote(randomNoteNum);
+        // } else {
+        // // alert ("hi");
+        // // console.log("newMinor is " + newLastRandomScaleNum);
+        // randomScaleNum = getScaleNumMinorNote(randomNoteNum);
+        // }
+        // theSequenceYouSung[i][2] = randomScaleNum + 0;
+        // // console.log(noteArray[theSequenceYouSung[i][0]][1] + " for " + thisNoteTime);
+        // }
+    }
+    for (var i = 0; (removeNotesArray.length) > i; i++) { //fixed this spot
+        let index = removeNotesArray[removeNotesArray.length - i - 1]; //fixed this spot
+        console.warn(index + " is index is " + theSequenceYouSung.toString());
+        try {
+            if (theSequenceYouSung[index - 1][0] == theSequenceYouSung[index][0]) {
+                theSequenceYouSung[index - 1][1] = theSequenceYouSung[index - 1][1] + theSequenceYouSung[index][1];
+            }
+        } catch (error) {}
+        try {
+            if (theSequenceYouSung[index + 1][0] == theSequenceYouSung[index][0]) {
+                theSequenceYouSung[index + 1][1] = theSequenceYouSung[index + 1][1] + theSequenceYouSung[index][1];
+            }
+        } catch (error) {}
+        theSequenceYouSung.splice(index, 1);
+        //fixed this spot
+        // console.warn(theSequenceYouSung.toString());
+    }
+    // for (var i=0; i<theSequenceYouSung.length; i++){
+
+
+    // }
+    return theSequenceYouSung;
+}
 
 function stopAllNotes() {
     try {
@@ -4715,22 +4976,22 @@ function repeatOnFrame() {
         }
         // console.log(sequenceCopy.toString());
         // console.log(sequenceArray.toString());
-			if (firstNotationToCome){
-				// alert(sequenceArray[0][0]+" "+sequenceArray[0][1]);
-				
-                makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
-				
-				// alert("checkpointTwo");
-				firstNotationToCome=false;
-				setupAFirstNote=true;
-			}
-            let currentNoteInfo = sequenceArray.shift();
-			
-            if (sequenceArray.length > 0) {
-                makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
-            } else {
-                makeAndShowANote(sequenceCopy[0][0], sequenceCopy[0][1], "referenceNote");
-            }
+        if (firstNotationToCome) {
+            // alert(sequenceArray[0][0]+" "+sequenceArray[0][1]);
+
+            makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
+
+            // alert("checkpointTwo");
+            firstNotationToCome = false;
+            setupAFirstNote = true;
+        }
+        let currentNoteInfo = sequenceArray.shift();
+
+        if (sequenceArray.length > 0) {
+            makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
+        } else {
+            makeAndShowANote(sequenceCopy[0][0], sequenceCopy[0][1], "referenceNote");
+        }
         // let currentRandomScaleNum=
         // console.log(currentNoteInfo.toString());
         currentNoteBeats = currentNoteInfo[1] + 0;
@@ -4950,13 +5211,13 @@ function repeatOnFrame() {
 
         if ((!sequenceStarted) && (sequenceArray.length > 0)) {
             // console.log(arpeggioSequenceArray.length+" "+arpeggioSequenceArray.toString());
-			if (firstNotationToCome){
+            if (firstNotationToCome) {
                 makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
-				firstNotationToCome=false;
-				setupAFirstNote=true;
-			}
+                firstNotationToCome = false;
+                setupAFirstNote = true;
+            }
             let currentNoteInfo = sequenceArray.shift();
-			
+
             if (sequenceArray.length > 0) {
                 makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
             } else {
@@ -5242,7 +5503,7 @@ function repeatOnFrame() {
         newScore = true;
         // startScoreTimer();
         // pauseScore();
-		firstNotationToCome=true;
+        firstNotationToCome = true;
         newQuestionTime = false;
 
         stopAllNotes();
@@ -5279,7 +5540,7 @@ function repeatOnFrame() {
 
             }
         } else if (singingCaptured) {
-            if (!buttonPlay) {
+            if (!buttonPlay) { //if we are playing with the voices not the buttons. // SINGINGMODEKEYFINDER Singing Mode Key Finder
 
                 // console.log("the original singing array " + (singingTimeArray).toString());
                 // console.log("the original singing array " + gimmeThatAgainAsNoteAndBeats(singingTimeArray).toString());
@@ -5295,26 +5556,36 @@ function repeatOnFrame() {
                 beatsExpected = 0.00;
                 sequenceFirst = true;
                 sequenceLength = sequenceArray.length;
+                sequenceArray = JSON.parse(JSON.stringify(isolateAWorkingKey(sequenceArray))); // planning here.
+                sequenceArray = JSON.parse(JSON.stringify(compoundShortTones(sequenceArray))); // planning here.
+                sequenceArray = JSON.parse(JSON.stringify(compoundNeighborTones(sequenceArray))); // planning here.
+
+                sequenceLength = sequenceArray.length;
+                arrayOfSungNotesOnly = [];
+                for (i = 0; i < sequenceArray.length; i++) {
+                    arrayOfSungNotesOnly.push(basicNote(sequenceArray[i][0]));
+                }
 
                 findKey(arrayOfSungNotesOnly);
                 let removeNotesArray = [];
                 let shiftNotesArray = [];
-                let temporarySequence = [];
-
-                // console.log(sequenceArray.toString());
-                temporarySequence = JSON.parse(JSON.stringify(sequenceArray));
-
-                // console.log(temporarySequence.toString());
-                let temporarayArrayOfSungNotesOnly = [];
+                let temporarySequence = JSON.parse(JSON.stringify(compoundShortTones(sequenceArray)));
+                console.warn("just before the final removals " + sequenceArray.toString());
+                // BEGIN FIXED AREA 6 11 2020 FOR FIXING 0 NOTELENGTH OF NOTES
                 for (var i = 0; sequenceLength > i; i++) {
                     let thisNoteTime = sequenceArray[i][1] + 0;
+                    console.log("currently " + sequenceArray[i][1]);
+
                     thisNoteTime = thisNoteTime / (60 / currentBPM);
-                    thisNoteTime = Math.round(thisNoteTime * 2) / 2; //this makes it so we round to the nearest 1/24 note. now nearest 1/8th note
-                    if (thisNoteTime == 0) {
-                        // console.log("we removed " + i + " " + noteArray[sequenceArray[i][0]][1] + isItInKey(sequenceArray[i][0]));
+                    thisNoteTime = Math.round(thisNoteTime * 2) / 2;
+                    console.warn(thisNoteTime);
+                    console.log("currently " + sequenceArray[i][1]);
+                    if ((thisNoteTime == 0) || (sequenceArray[i][0] < 0)) {
+                        // console.warn("we removed " + i + " " + sequenceArray[i].toString()); //fixed this spot
+                        // alert (i+0);
                         removeNotesArray.push(i + 0);
                     } else {
-                        temporarySequence[i][1] = thisNoteTime + 0;
+                        sequenceArray[i][1] = thisNoteTime;
                         randomNoteNum = sequenceArray[i][0];
 
                         if (keyType == "major") {
@@ -5330,148 +5601,19 @@ function repeatOnFrame() {
 
                         // console.log(noteArray[sequenceArray[i][0]][1] + " for " + thisNoteTime);
                     }
+                    // console.log("currently "+ sequenceArray[i][1]);
                 }
-                // console.log("sung Notes " + arrayOfSungNotesOnly.toString());
-                arrayOfSungNotesOnly = [];
-                // console.log(temporarySequence.toString());
-                for (var i = 0; removeNotesArray.length > i; i++) {
-                    // let index = sequenceArray.indexOf(removeNotesArray[i]);
-                    temporarySequence.splice(removeNotesArray[i] - i, 1);
+                for (var i = 0; (removeNotesArray.length) > i; i++) { //fixed this spot
+                    let index = removeNotesArray[removeNotesArray.length - i - 1]; //fixed this spot
+                    console.warn(index + " is index is " + sequenceArray.toString()); //fixed this spot
+                    sequenceArray.splice(index, 1); //fixed this spot
+                    // console.warn(sequenceArray.toString());
                 }
+                sequenceLength = sequenceArray.length;
+                console.warn("just after the final removals " + sequenceArray.toString());
+                alert(sequenceArray.toString());
 
-                // console.log(gimmeThatAgainAsNoteAndBeats(temporarySequence).toString());
-                let blah = [];
-                arrayOfSungNotesOnly = [];
-                for (i = 0; i < temporarySequence.length; i++) {
-                    arrayOfSungNotesOnly.push(basicNote(temporarySequence[i][0]));
-                }
-                // console.log("sung Notes now "+arrayOfSungNotesOnly.toString());
-                findKey(arrayOfSungNotesOnly);
-                //after keydecide
-                //before keyshift
-                removeNotesArray = [];
-                shiftNotesArray = [];
-                temporarySequence = [];
-
-                // console.log("After round one, singing array " + (sequenceArray).toString());
-                // console.log("After round one, singing array " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
-
-                // console.log(sequenceArray.toString());
-                temporarySequence = JSON.parse(JSON.stringify(sequenceArray));
-
-                // console.log("gimmeThatAgainAsNoteAndBeats(temporarySequence).toString());
-                temporarayArrayOfSungNotesOnly = [];
-                for (var i = 0; sequenceLength > i; i++) {
-                    let thisNoteTime = sequenceArray[i][1] + 0;
-                    thisNoteTime = thisNoteTime / (60 / currentBPM);
-                    thisNoteTime = Math.round(thisNoteTime * 6) / 6; //this makes it so we round to the nearest 1/24 note.
-                    if (thisNoteTime == 0) {
-                        // console.log("we removed " + i + " " + noteArray[sequenceArray[i][0]][1] + isItInKey(sequenceArray[i][0]));
-                        removeNotesArray.push(i + 0);
-                    } else {
-
-                        // console.log("After round a, singing array " + (sequenceArray).toString());
-                        // console.log("After round a, singing array " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
-                        temporarySequence[i][1] = thisNoteTime + 0;
-
-                        // console.log("After round b, singing array " + (sequenceArray).toString());
-                        // console.log("After round b, singing array " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
-                        randomNoteNum = sequenceArray[i][0];
-
-                        if (keyType == "major") {
-                            // console.log("new is " + newLastRandomScaleNum);
-                            randomScaleNum = getScaleNumMajorNote(randomNoteNum);
-                        } else {
-                            // alert ("hi");
-                            // console.log("newMinor is " + newLastRandomScaleNum);
-                            randomScaleNum = getScaleNumMinorNote(randomNoteNum);
-                        }
-                        sequenceArray[i][2] = randomScaleNum + 0;
-                        beatsExpected = beatsExpected + thisNoteTime;
-
-                        // console.log(noteArray[sequenceArray[i][0]][1] + " for " + thisNoteTime);
-                    }
-                }
-                // console.log("sung Notes " + arrayOfSungNotesOnly.toString());
-                arrayOfSungNotesOnly = [];
-                // console.log("before changing key-temporary " + temporarySequence.toString());
-                // console.log("before changing key-temporary " + gimmeThatAgainAsNoteAndBeats(temporarySequence).toString());
-
-                let noteOneForComparison = 0;
-                let noteTwoForComparison = 0;
-                for (var i = 0; removeNotesArray.length > i; i++) {
-                    // alert("did one");
-                    // let index = sequenceArray.indexOf(removeNotesArray[i]);
-                    if (removeNotesArray.length > 1) {
-
-                        if (Math.abs(removeNotesArray[i] - removeNotesArray[i + 1]) == 1) { //if two notes were deleted next to eachother, hence I may literally be singing on a fence.
-                            noteOneForComparison = sequenceArray[removeNotesArray[i]][0];
-                            noteTwoForComparison = sequenceArray[removeNotesArray[i + 1]][0];
-
-                            // console.log("About to shift notes " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
-                            //if the first note is in the key  console.log("we removed " + i + " " + noteArray[sequenceArray[i][0]][1] + isItInKey(sequenceArray[i][0]));
-                            if (!(isItInKey(basicNote(noteOneForComparison)))) { //if the 1st note is not in key, add its note time to the second note.
-                                sequenceArray[removeNotesArray[i + 1]][1] = sequenceArray[removeNotesArray[i + 1]][1] + sequenceArray[removeNotesArray[i]][1];
-                                sequenceArray[removeNotesArray[i]][1] = 0;
-                                temporarySequence.splice(removeNotesArray[i] - i, 1);
-                            } else if (!(isItInKey(basicNote(noteTwoForComparison)))) { //if the 2nd note is not in key, add its note time to the first one.
-                                sequenceArray[removeNotesArray[i]][1] = sequenceArray[removeNotesArray[i + 1]][1] + sequenceArray[removeNotesArray[i]][1];
-                                sequenceArray[removeNotesArray[i + 1]][1] = 0;
-                                temporarySequence.splice(removeNotesArray[i + 1] - i, 1);
-                            }
-                            // console.log("just shifted notes " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
-                        }
-                    }
-                    // temporarySequence.splice(removeNotesArray[i]-i, 1);
-                }
-                //after key shift
-                arrayOfSungNotesOnly = [];
-                for (i = 0; i < temporarySequence.length; i++) {
-                    arrayOfSungNotesOnly.push(basicNote(temporarySequence[i][0]));
-                }
-
-                removeNotesArray = [];
-                shiftNotesArray = [];
-
-                console.log("After round two, singing array " + (sequenceArray).toString());
-                console.log("After round two, singing array " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
-                for (var i = 0; sequenceLength > i; i++) {
-                    let thisNoteTime = sequenceArray[i][1] + 0;
-
-                    thisNoteTime = thisNoteTime / (60 / currentBPM);
-                    thisNoteTime = Math.round(thisNoteTime * 2) / 2; //this makes it so we round to the nearest 1/8 note.
-                    if (thisNoteTime == 0) {
-                        // console.log("we removed " + i + " " + noteArray[sequenceArray[i][0]][1] + isItInKey(sequenceArray[i][0]));
-                        removeNotesArray.push(i + 0);
-                    } else {
-                        sequenceArray[i][1] = thisNoteTime + 0;
-                        randomNoteNum = sequenceArray[i][0];
-
-                        if (keyType == "major") {
-                            // console.log("new is " + newLastRandomScaleNum);
-                            randomScaleNum = getScaleNumMajorNote(randomNoteNum);
-                        } else {
-                            // alert ("hi");
-                            // console.log("newMinor is " + newLastRandomScaleNum);
-                            randomScaleNum = getScaleNumMinorNote(randomNoteNum);
-                        }
-                        sequenceArray[i][2] = randomScaleNum + 0;
-                        beatsExpected = beatsExpected + thisNoteTime;
-
-                        // console.log(noteArray[sequenceArray[i][0]][1] + " for " + thisNoteTime);
-                    }
-                }
-                for (var i = 0; removeNotesArray.length > i; i++) {
-                    // let index = sequenceArray.indexOf(removeNotesArray[i]);
-                    if (removeNotesArray.length > 1) {
-                        if (Math.abs(removeNotesArray[i] - removeNotesArray[i]) == 1) {}
-                    }
-                    sequenceArray.splice(removeNotesArray[i] - i, 1);
-                }
-
-                console.log("After round three, singing array " + (sequenceArray).toString());
-                console.log("After round three, singing array " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
-                // console.log("just removed notes " + gimmeThatAgainAsNoteAndBeats(sequenceArray).toString());
+                // END FIXED AREA 6 11 2020 FOR FIXING 0 NOTELENGTH OF NOTES
                 // alert(sequenceArray.toString());
                 // randomNoteNum = sequenceArray[0][0];
                 // if (keyType == "major") {
@@ -5523,7 +5665,10 @@ function repeatOnFrame() {
                 // beatsExpected = beatsExpected + thisNoteTime;
                 // console.log("beats" + thisNoteTime);
                 // console.log(beatsExpected + " is beats amount");
-
+                arrayOfSungNotesOnly = [];
+                for (i = 0; i < sequenceArray.length; i++) {
+                    arrayOfSungNotesOnly.push(basicNote(sequenceArray[i][0]));
+                }
                 findKey(arrayOfSungNotesOnly);
                 for (var i = 0; (Math.floor((beatsExpected - 2) / 4) + 1) > i; i++) {
                     if (i == 0) {
@@ -5572,10 +5717,9 @@ function repeatOnFrame() {
                 // chordSequenceCopy.unshift([chordSequenceCopy[0][0], 4, chordSequenceCopy[0][2]]);
 
                 sequenceCopy = [];
-                sequenceCopy = JSON.parse(JSON.stringify(sequenceArray));
+                sequenceCopy = sequenceArray.slice();
 
                 //nonreference section end
-
 
             } else if (buttonPlay) {
                 referenceNoteArray = [];
@@ -5592,16 +5736,16 @@ function repeatOnFrame() {
 
                 findKey(arrayOfSungNotesOnly);
                 let removeNotesArray = [];
-								// BEGIN FIXED AREA 6 11 2020 FOR FIXING 0 NOTELENGTH OF NOTES
+                // BEGIN FIXED AREA 6 11 2020 FOR FIXING 0 NOTELENGTH OF NOTES
                 for (var i = 0; sequenceLength > i; i++) {
                     let thisNoteTime = sequenceArray[i][1];
 
                     thisNoteTime = thisNoteTime / (60 / currentBPM);
                     thisNoteTime = Math.round(thisNoteTime * 2) / 2;
-					console.warn(thisNoteTime);
+                    console.warn(thisNoteTime);
                     if (thisNoteTime == 0) {
                         // console.warn("we removed " + i + " " + sequenceArray[i].toString()); //fixed this spot
-						// alert (i+0);
+                        // alert (i+0);
                         removeNotesArray.push(i + 0);
                     } else {
                         sequenceArray[i][1] = thisNoteTime;
@@ -5622,13 +5766,13 @@ function repeatOnFrame() {
                     }
                 }
                 for (var i = 0; (removeNotesArray.length) > i; i++) { //fixed this spot
-                    let index = removeNotesArray[removeNotesArray.length-i-1]; //fixed this spot
-					console.warn(index+" is index is "+sequenceArray.toString());  //fixed this spot
+                    let index = removeNotesArray[removeNotesArray.length - i - 1]; //fixed this spot
+                    console.warn(index + " is index is " + sequenceArray.toString()); //fixed this spot
                     sequenceArray.splice(index, 1); //fixed this spot
-					// console.warn(sequenceArray.toString());
+                    // console.warn(sequenceArray.toString());
                 }
-				
-				// END FIXED AREA 6 11 2020 FOR FIXING 0 NOTELENGTH OF NOTES
+
+                // END FIXED AREA 6 11 2020 FOR FIXING 0 NOTELENGTH OF NOTES
                 // alert(sequenceArray.toString());
                 // randomNoteNum = sequenceArray[0][0];
                 // if (keyType == "major") {
@@ -5919,9 +6063,9 @@ function repeatOnFrame() {
             }
         }
         r = randomNoteNum;
-		if (!sequencePlay){
-			makeAndShowANote(r, 2, "referenceNote");
-		}
+        if (!sequencePlay) {
+            makeAndShowANote(r, 2, "referenceNote");
+        }
         if (!paused) {
             lastMostRecentPostingNum = mostRecentPostingNum + 0;
 
@@ -6007,7 +6151,7 @@ function repeatOnFrame() {
     //console.log("sup");
 
     frameCounter++,
-    Date.now() - startTime >= 30 && (measureLength = frameCounter, minDrawMLength = frameCounter * minDrawRate, startTime = Date.now(), frameCounter = 0), // Avi Changed this from 450 to 250 on 5-23
+    Date.now() - startTime >= 60 && (measureLength = frameCounter, minDrawMLength = frameCounter * minDrawRate, startTime = Date.now(), frameCounter = 0), // Avi Changed this from 450 to 250 on 5-23
     analyzer.getFloatTimeDomainData(timeDomainData);
     var e = bitCounter / findWaveLength(timeDomainData, window.globk * 24, window.globk * 1200, 10, 10, .016, Math.ceil(10 / window.globk)); //e is the value of the sound
     if (e > 0) {
@@ -6049,6 +6193,7 @@ function repeatOnFrame() {
         // youAreSinging = true;
         // }
         // }
+        console.log("you are singing " + noteArray[findNote(e)][1] + " " + r);
         measurements.push([e, findNote(e)]),
         measurements.length > measureLength && (measurements = measurements.slice(measurements.length - measureLength));
         for (var r = 0, t = 0, o = 0, n = measurements.length, a = 0; n > a; a++) {
@@ -6399,7 +6544,7 @@ function gimmeThatAgainAsNoteAndBeats(aSequenceArray) {
 function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
     frequenceEnhancedTech || (e += e * (enhancedFreq(0, 20) - 15) / 1e3); //LOOK HERE AVI THIS MIGHT BE A GOOD SPOT TO UPDATE THE TICKER.
     var r = findNote(e); //converting the noteArray
-    var thanote = findNote(e);
+    var thanote = r + 0;
 
     //console.log((thanote)+","+(findNote(randomNoteNum)+4))
     if (sequencePlay) {
@@ -6415,8 +6560,25 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
         var legalInterval = 5; //getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 0);
     } else if (intervalDirection == "fourthDown") {
         var legalInterval = 7; //getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 0);
-    }
+    } else if (intervalDirection == "allHarmonies") {
+        if (keyType == "major") {
+            // console.log("new is " + newLastRandomScaleNum);
+            randomScaleNum = getScaleNumMajorNote(randomNoteNum);
+        } else {
+            // alert ("hi");
+            // console.log("newMinor is " + newLastRandomScaleNum);
+            randomScaleNum = getScaleNumMinorNote(randomNoteNum);
+        }
+        var legalInterval = getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
+        var legalIntervalTwo = getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
+        if (toSolFej(keyOf, randomScaleNum) == "Fa") {
+            var legalIntervalThree = 7;
+        } else {
+            var legalIntervalThree = 5;
+        }
+        var legalIntervalFour = 7;
 
+    }
 
     //console.log(basicNote(thanote));
     // console.log(noteArray[randomNoteNum+legalInterval][1]);
@@ -6430,13 +6592,15 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
         // console.log(singingTimeArray.toString());
         // }
         // }
+
+
         if (r != mostRecentSungNum) { //I currently don't have any way of recognizing that notes were changed. this boolean is a placeholder.
             try {
                 console.log("you are singing " + noteArray[r][1] + " " + r);
                 // console.log(0/5);
                 buttonStartEndTimes.push([r, new Date(new Date().getTime())]);
                 if (buttonStartEndTimes.length > 1) {
-                    singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000.00001, 0]);
+                    singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000, 0, findNoteDeviation(e), e]);
                     // console.log(singingTimeArray.toString());
                     buttonStartEndTimes.shift();
                 }
@@ -6473,17 +6637,17 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
         // youAreSinging = true;
         // }
     }
-    if (((basicNote(thanote)) == (basicNote((randomNoteNum) + legalInterval))) && (!paused)) { //WHAT TO DO WHEN correct
+    if ((((basicNote(thanote)) == (basicNote((randomNoteNum) + legalInterval))) || ((intervalDirection == "allHarmonies") && ((((basicNote(thanote)) == (basicNote((randomNoteNum) + legalIntervalTwo)))) || (((basicNote(thanote)) == (basicNote((randomNoteNum) + legalIntervalThree)))) || (((basicNote(thanote)) == (basicNote((randomNoteNum) + legalIntervalFour))))))) && (!paused)) { //WHAT TO DO WHEN correct
         // unpauseScore();
         // console.log("awesome");
 
         wrongPoints = 0;
         wrongNote = false;
         newWrong = true;
-		if (newScore){
-		    makeAndShowANote(randomNoteNum + legalInterval, 1, "targetNote");
-			makeAndShowANote(thanote, 1, "singingNote");
-		}
+        if (newScore) {
+            makeAndShowANote(randomNoteNum + legalInterval, 1, "targetNote");
+            makeAndShowANote(thanote, 1, "singingNote");
+        }
         startScoreTimer();
         // updateTimer();
         if ((sequencePlay) && (!nonReferencePlay)) {
@@ -6519,8 +6683,8 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
 
         }
     } else { //WHAT TO DO WHEN WRONG
-	    makeAndShowANote(randomNoteNum + legalInterval, 1, "targetNote");
-		makeAndShowANote(thanote, 1, "singingNote");
+        makeAndShowANote(randomNoteNum + legalInterval, 1, "targetNote");
+        makeAndShowANote(thanote, 1, "singingNote");
         // console.log("not awesome");
         if ((sequencePlay) && (score > 0)) {
             startWrongTimer();
@@ -6955,7 +7119,7 @@ function beginAudio(e) { //Avi thinks It all begins here.
     }
 }
 var noteArray = [
-    [32.703, "C1", "C1"], //0
+    [32.703, "C1", "C1"], //0  midinumber+24
     [34.648, "C1#", "C2b"],
     [36.708, "D1", "D1"],
     [38.891, "D1#", "E1b"],
@@ -7039,6 +7203,10 @@ $('#thirdUp').click(function () {
     document.getElementById("fourthDown").style.background = buttonNormalColor;
     document.getElementById("fourthUp").innerHTML = "4th up";
     document.getElementById("fourthUp").style.background = buttonNormalColor;
+
+    document.getElementById("allHarmonies").innerHTML = "mixed harmonies (all of these but unisons)";
+    document.getElementById("allHarmonies").style.background = buttonNormalColor;
+
     intervalDirection = "up";
     if (intervalDirection == "up") {
         majorCheck = true;
@@ -7235,6 +7403,8 @@ $('#thirdDown').click(function () {
     document.getElementById("fourthDown").style.background = buttonNormalColor;
     document.getElementById("fourthUp").innerHTML = "4th up";
     document.getElementById("fourthUp").style.background = buttonNormalColor;
+    document.getElementById("allHarmonies").innerHTML = "mixed harmonies (all of these but unisons)";
+    document.getElementById("allHarmonies").style.background = buttonNormalColor;
     intervalDirection = "down";
     if (intervalDirection == "up") {
         document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + "third above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
@@ -7268,6 +7438,8 @@ $('#unison').click(function () {
     document.getElementById("fourthDown").style.background = buttonNormalColor;
     document.getElementById("fourthUp").innerHTML = "4th up";
     document.getElementById("fourthUp").style.background = buttonNormalColor;
+    document.getElementById("allHarmonies").innerHTML = "mixed harmonies (all of these but unisons)";
+    document.getElementById("allHarmonies").style.background = buttonNormalColor;
     intervalDirection = "unison";
     if (intervalDirection == "up") {
         document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one third " + thirdType + " above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
@@ -7300,6 +7472,8 @@ $('#fourthUp').click(function () {
     document.getElementById("fourthDown").style.background = buttonNormalColor;
     document.getElementById("fourthUp").innerHTML = "4th up (selected)";
     document.getElementById("fourthUp").style.background = buttonColor;
+    document.getElementById("allHarmonies").innerHTML = "mixed harmonies (all of these but unisons)";
+    document.getElementById("allHarmonies").style.background = buttonNormalColor;
     intervalDirection = "fourthUp";
     if (intervalDirection == "up") {
         document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + " third above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
@@ -7332,6 +7506,8 @@ $('#fourthDown').click(function () {
     document.getElementById("fourthDown").style.background = buttonColor;
     document.getElementById("fourthUp").innerHTML = "4th up";
     document.getElementById("fourthUp").style.background = buttonNormalColor;
+    document.getElementById("allHarmonies").innerHTML = "mixed harmonies (all of these but unisons)";
+    document.getElementById("allHarmonies").style.background = buttonNormalColor;
     intervalDirection = "fourthDown";
     if (intervalDirection == "up") {
         document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + " third above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
@@ -7350,6 +7526,27 @@ $('#fourthDown').click(function () {
         }
         document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
     }
+
+});
+
+$('#allHarmonies').click(function () {
+    document.getElementById("thirdDown").innerHTML = "3rd down";
+    document.getElementById("thirdUp").innerHTML = "3rd up";
+    document.getElementById("unison").innerHTML = "unison";
+    document.getElementById("unison").style.background = buttonNormalColor;
+    document.getElementById("thirdDown").style.background = buttonNormalColor;
+    document.getElementById("thirdUp").style.background = buttonNormalColor;
+    document.getElementById("fourthDown").innerHTML = "4th down";
+    document.getElementById("fourthDown").style.background = buttonNormalColor;
+    document.getElementById("fourthUp").innerHTML = "4th up";
+    document.getElementById("fourthUp").style.background = buttonNormalColor;
+    document.getElementById("allHarmonies").innerHTML = "mixed harmonies (all of these but unisons)  (selected)";
+    document.getElementById("allHarmonies").style.background = buttonColor;
+    intervalDirection = "allHarmonies";
+    if (intervalDirection == "allHarmonies") {
+        document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing any 3rd, 4th, 5th, or 6th</b> <p style='font-size: 20px;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+    }
+    newQuestionTime = true;
 
 });
 $(function () {
@@ -7686,17 +7883,17 @@ $('#sequenceOff').click(function () {
     document.getElementById("sequenceOn").style.background = buttonNormalColor;
     document.getElementById("complexSequence").innerHTML = "Complex Sequence (beta)";
     document.getElementById("complexSequence").style.background = buttonNormalColor;
-	    singingTimeArray = [];
-        sequenceArray = [];
-        sequenceCopy = [];
-        arpeggioArray = [];
-        chordSequenceArray = [];
-        chordSequenceCopy = [];
-        buttonsCaptured = false;
-        captureButtons = false;
-		singingCaptured=false;
-		buttonPlay=false;
-        buttonStartEndTimes = [];
+    singingTimeArray = [];
+    sequenceArray = [];
+    sequenceCopy = [];
+    arpeggioArray = [];
+    chordSequenceArray = [];
+    chordSequenceCopy = [];
+    buttonsCaptured = false;
+    captureButtons = false;
+    singingCaptured = false;
+    buttonPlay = false;
+    buttonStartEndTimes = [];
     sequencePlay = false;
     newQuestionTime = true;
     nonReferencePlay = false;
@@ -7714,18 +7911,18 @@ $('#sequenceOn').click(function () {
     document.getElementById("complexSequence").style.background = buttonNormalColor;
     slider.noUiSlider.set([4, 4]);
     sequenceLength = 2;
-		    singingTimeArray = [];
-        sequenceArray = [];
-        sequenceCopy = [];
-        arpeggioArray = [];
-        chordSequenceArray = [];
-        chordSequenceCopy = [];
-        buttonsCaptured = false;
-        captureButtons = false;
-		
-		buttonPlay=false;
-		singingCaptured=false;
-        buttonStartEndTimes = [];
+    singingTimeArray = [];
+    sequenceArray = [];
+    sequenceCopy = [];
+    arpeggioArray = [];
+    chordSequenceArray = [];
+    chordSequenceCopy = [];
+    buttonsCaptured = false;
+    captureButtons = false;
+
+    buttonPlay = false;
+    singingCaptured = false;
+    buttonStartEndTimes = [];
     $("#sequenceLengthAmount").val(2);
     noteLengthMin = 4;
     noteLengthMax = 4;
@@ -7747,18 +7944,18 @@ $('#complexSequence').click(function () {
     noteLengthMin = 1;
     noteLengthMax = 2;
     sequenceLength = 8;
-		singingTimeArray = [];
-        sequenceArray = [];
-        sequenceCopy = [];
-        arpeggioArray = [];
-        chordSequenceArray = [];
-        chordSequenceCopy = [];
-        buttonsCaptured = false;
-        captureButtons = false;
-		
-		buttonPlay=false;
-		singingCaptured=false;
-        buttonStartEndTimes = [];
+    singingTimeArray = [];
+    sequenceArray = [];
+    sequenceCopy = [];
+    arpeggioArray = [];
+    chordSequenceArray = [];
+    chordSequenceCopy = [];
+    buttonsCaptured = false;
+    captureButtons = false;
+
+    buttonPlay = false;
+    singingCaptured = false;
+    buttonStartEndTimes = [];
     slider.noUiSlider.set([1, 2]);
     // $("#slider-horizontal-BPMAmount").slide(78);
     $("#BPMAmount").val(78);
@@ -8270,10 +8467,10 @@ $('#capture-by-sound-button').click(function () {
         buttonStartEndTimes = [];
     } else {
         buttonPlay = false;
-        buttonStartEndTimes.push([0, new Date(new Date().getTime())]);
+        buttonStartEndTimes.push([0, new Date(new Date().getTime()), 0, 0]);
         if (buttonStartEndTimes.length > 1) {
             // alert("long");
-            singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000, 0]);
+            singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000, 0, findNoteDeviation(0), 0]);
             buttonStartEndTimes.shift();
             // console.log(singingTimeArray.toString());
         }
@@ -8328,6 +8525,8 @@ $('#capture-by-buttons-button').click(function () {
             arrayOfSungNotesOnly.push(basicNote(singingTimeArray[i][0]));
         }
         findKey(arrayOfSungNotesOnly);
+
+        console.log(singingTimeArray.toString()); //singbybuttons
     }
 });
 $('#testing-button-base-case').click(function () {
@@ -8765,4 +8964,4 @@ $('#playAgainButton').click(function () {
     // }
 });
 initTuner();
-window.tuner_rand = 8319731;
+window.tuner_rand = 1111111;

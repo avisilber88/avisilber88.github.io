@@ -15,10 +15,15 @@
 <link rel="stylesheet" href="vendor/piano.css" type="text/css">
 <link rel="stylesheet" href="vendor/preloader.css" type="text/css">
 <link rel="stylesheet" href="vendor/notationmovementharmony.css" type="text/css">
-
+<style>
+body {
+margin-left: 20px;
+}
+</style>
 </head>
 <body class="tuner">
 
+<script src="papaparse.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -26,6 +31,7 @@
 	
     <script src="vendor/nouislider.js"></script>
     <script src="vendor/Tone.js"></script>
+    <script src="vendor/main.js"></script>
     <script src="vendor/vexflow-min.js"></script>
 	    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
 
@@ -49,6 +55,7 @@
 <!-- } -->
 <!-- </script> -->
 <h3> Press "Turn on the Tuner" to Begin, there are adjustable settings both above and below the tuner on the page</h3>
+
 <div class = "options-info">
  <button type ='button' id ="usePiano">Use Piano</button>
  <button type ='button' id ="useSynth" style=background:#00cc00>Use Synth (selected)</button>
@@ -86,7 +93,7 @@
  <button type ='button' id ="unison" >Unison</button>
  <button type ='button' id ="fourthDown" >4th down</button>
  <button type ='button' id ="fourthUp" >4th up</button>
- 
+  <button type ='button' id ="allHarmonies" >mixed harmonies (all of these but unisons) (beta)</button>
   <span style="font-size:16px">Select what harmony interval you would like to practice</span>
  <p><p>
  <button type ='button' id ="majorScale" style=background:#00cc00>Major Scale (selected)</button>
@@ -262,6 +269,7 @@ Time = <span id="countdown">01:00</span>
 			<div class="row justify-content-start">	
 			<button type ='button' id ="capture-by-sound-button">Record a sequence by singing it (in Beta)</button>
 			<button type ='button' id ="capture-by-buttons-button">Record a sequence by pressing note buttons above the tuner, on the piano below, or using a midi device.</button>
+			<input type="file" data-buttonText="Your label here." id="filereader"/ > Import a Midi file as a sequence.
 			</div>
 			<p> 			
 			<p>
