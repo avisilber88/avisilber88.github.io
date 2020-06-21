@@ -559,7 +559,7 @@ $(document).ready(function () {
             var testIdTag = testIdName.replace(/\s+/g, '');
             var groupIdTag = "groupThing" + k;
             var groupIdTagNumber = "groupNumber" + k;
-            document.getElementById(allGroupIds[k]).innerHTML = "<div id = '" + groupIdTag + "'>Group Number: <input type='text'  name='o' id = '" + groupIdTagNumber + "' value='" + (k + 1) + "' style='width: 10%'></input></div><br>" + "<div class='card' id = '" + testIdTag + "'><div class='container'> <h4><b>" + testIdName + "</b></h4></div></div>";
+            document.getElementById(allGroupIds[k]).innerHTML = "<div id = '" + groupIdTag + "'>Group: <input type='text'  name='o' id = '" + groupIdTagNumber + "' value='" + (k + 1) + "' style='width: 35%'></input></div><br>" + "<div class='card' id = '" + testIdTag + "'><div class='container'> <h4><b>" + testIdName + "</b></h4></div></div>";
             groupNamesArray.push([groupIdTag + "", groupIdTagNumber + ""]);
             document.getElementById(testIdTag + "").classList.add(groupOfGroupsArray[k][0][2]);
 
@@ -771,7 +771,7 @@ $(document).ready(function () {
             var testIdTag = testIdName.replace(/\s+/g, '');
             var groupIdTag = "groupThing" + k;
             var groupIdTagNumber = "groupNumber" + k;
-            document.getElementById(allGroupIds[k]).innerHTML = "<div id = '" + groupIdTag + "'>Group Number: <input type='text'  name='o' id = '" + groupIdTagNumber + "' value='" + (k + 1) + "' style='width: 10%'></input></div><br>" + "<div class='card' id = '" + testIdTag + "'><div class='container'> <h4><b>" + testIdName + "</b></h4></div></div>";
+            document.getElementById(allGroupIds[k]).innerHTML = "<div id = '" + groupIdTag + "'>Group: <input type='text'  name='o' id = '" + groupIdTagNumber + "' value='" + (k + 1) + "' style='width: 35%'></input></div><br>" + "<div class='card' id = '" + testIdTag + "'><div class='container'> <h4><b>" + testIdName + "</b></h4></div></div>";
             groupNamesArray.push([groupIdTag + "", groupIdTagNumber + ""]);
             document.getElementById(testIdTag + "").classList.add(groupOfGroupsArray[k][0][2]);
 
@@ -893,7 +893,7 @@ $(document).ready(function () {
             // document.getElementById(allStudentBoxIds[0]).style.backgroundColor="gray";
             for (var l = 0; l < groupNamesArray.length; l++) {
                 let tempnum = document.getElementById(groupNamesArray[l][1]).value + "";
-                document.getElementById(groupNamesArray[l][0]).innerHTML = "Group Number: " + tempnum + "";
+                document.getElementById(groupNamesArray[l][0]).innerHTML = "Group: " + tempnum + "";
 
             }
             for (var j = 0; j < allStudentBoxIds.length; j++) {
