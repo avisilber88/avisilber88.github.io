@@ -26,6 +26,7 @@ $(document).ready(function () {
     var lockNames = false;
     var groupNamesArray = [];
 	var nottargetednum=0;
+	var groupingMethod="heterogeneous";
     $(".studentsContainerOne").slideToggle();
     $(".studentsContainerTwo").slideToggle();
     //Step 1 Upload the file!
@@ -681,7 +682,7 @@ $(document).ready(function () {
             // document.getElementById(allStudentBoxIds[0]).style.backgroundColor="gray";
             for (var l = 0; l < groupNamesArray.length; l++) {
                 let tempnum = document.getElementById(groupNamesArray[l][1]).value + "";
-                document.getElementById(groupNamesArray[l][0]).innerHTML = "Group Number: " + tempnum + "";
+                document.getElementById(groupNamesArray[l][0]).innerHTML = "Group: " + tempnum + "";
 
             }
             for (var j = 0; j < allStudentBoxIds.length; j++) {
