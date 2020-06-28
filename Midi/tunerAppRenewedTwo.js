@@ -481,7 +481,7 @@ MidiParser.parse(sourceofmidi, function (obj) {
             // console.log(obj.track[obj.track.length-1].event[0].data);
             // console.log(obj.timeDivision);
             var importTicksPerBeat = obj.timeDivision;
-
+			
             // console.log(obj.track[2].event[i].deltaTime);
             // console.log(obj.track[noteContainingTrack].event[i].type);
             ticksOfThisNote = ticksOfThisNote + obj.track[noteContainingTrack].event[i].deltaTime; //add the time of the message to the building message.
@@ -493,6 +493,9 @@ MidiParser.parse(sourceofmidi, function (obj) {
                 if (lastNote != 0) {
                     singingTimeArray.push([lastNote - 24, (60 * (ticksOfThisNote + 0) / importTicksPerBeat) / currentBPM, 0]);
                 }
+				else{
+				singingTimeArray.push([72, (60 * (ticksOfThisNote + 0) / importTicksPerBeat) / currentBPM, 0]);
+				}
                 currentNote = obj.track[noteContainingTrack].event[i].data[0];
                 ticksOfThisNote = 0;
             }
@@ -5493,6 +5496,7 @@ function repeatOnFrame() {
                 randomScaleNum = randomNoteScaleNum + 0;
                 // console.log("the note is " + randomScaleNum);
             }
+			if (noteArray[randomNoteNum][1]!="rest"){
             if (intervalDirection == "up") {
                 // alert(noteArray[randomNoteNum][1]);
                 majorCheck = true;
@@ -5519,6 +5523,7 @@ function repeatOnFrame() {
                 }
                 document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
             }
+			}
             // if (sequencePlay) {
             // randomNoteNum = currentRandomNoteNum + 0;
             // }
@@ -5539,6 +5544,7 @@ function repeatOnFrame() {
                 // console.log("sup "+ sequenceArray.toString());
 
             }
+			
 
         }
 
@@ -7434,7 +7440,7 @@ var noteArray = [
     [440, "A4", "A4"],
     [466.16, "A4#", "B4b"],
     [493.88, "B4", "B4"],
-    [523.25, "C5", "C5"],
+    [523.25, "C5", "C5"], //48
     [554.37, "C5#", "D5b"],
     [587.33, "D5", "D5"],
     [622.25, "D5#", "E5b"],
@@ -7446,7 +7452,7 @@ var noteArray = [
     [880, "A5", "A5"],
     [932.33, "A5#", "B5b"],
     [987.77, "B5", "B5"],
-    [1046.5, "C6", "C6"], //Avi is not sure but he thinks this is 53
+    [1046.5, "C6", "C6"], //Avi is not sure but he thinks this is 60
     [1108.7, "C6#", "D6b"],
     [1174.7, "D6", "D6"],
     [1244.5, "D6#", "E6b"],
@@ -7457,7 +7463,8 @@ var noteArray = [
     [1661.2, "G6#", "A6b"],
     [1760, "A6", "A6"],
     [1864.7, "A6#", "B6b"],
-    [1975.5, "B6", "B6"]
+    [1975.5, "B6", "B6"],
+	[1000000, "rest", "rest"],
 ];
 $('#thirdUp').click(function () {
     document.getElementById("thirdDown").innerHTML = "3rd down";
