@@ -43,12 +43,13 @@ margin-left: 20px;
 <div class="all-wide">
 <div class="content">
 <h2> Welcome to Harmony Sense, Practice Singing in Harmony! </h2>
-
- <button type ='button' id ="directions" onclick="alert('Eventually, Ill tell you what to do here! Isnt that nifty?!')">Instructions Guide</button>
+<div id ="topButtons">
+ <button type ='button' id ="directions" onclick="alert('Level 1:One note over and over again. Do ten reps, and then the interval changes(3rd up, 3rd down, 4th up, 5th up)\n\nLevel 2:The note changes each time. And interval changes.\n\nLevel 3: (under construction)One note over and over again. Intervals shuffle each time.\n\nLevel 4: (under construction)Sequence of 2 notes, same interval for each (The interval changes every 10 reps)\n\nLevel 5: (under construction)nSequence of notes 2 (The interval changes each rep, every 10 reps the length of the sequence lengthens)\n\nLevel 6: (under construction)Sequence of notes (The interval changes each note, every 10 reps the length of the sequence lengthens)\n\nLevel 7: (under construction)Sequence of notes with background music (rules just like level 6)\n\nLevel 8: (under construction)Sequence of notes with varying lengths without background music (The interval changes each rep, every 10 reps the length of the sequence lengthens by 4)\n\nLevel 9: (under construction)Sequence of notes with varying lengths without background music (The interval changes each note, every 10 reps the length of the sequence lengthens by 4)\n\nLevel 10: (under construction)Sequence of notes with varying lengths with background music (rules just like level 9)\n\n Plan-Your-Own:(Under Construction)Import or play in your own reference sequence.\n\nFreestyle: Decide your own harmonic excercise routine\n\n')">Instructions Guide</button>
   <button type ='button' id ="excercises" onclick="alert('Eventually, Ill tell you about excercise ideas')">Excercise Suggestions</button>
-   <button type ='button' id ="testing-button-base-case">test base case</button>
-   <button type ='button' id ="testing-button-test-case-one">test case one</button>
-   <button type ='button' id ="testing-button-test-case-zero">test case zero</button>
+   <button type ='button' id ="testing-button-base-case">Level One</button>
+   <button type ='button' id ="testing-button-test-case-one">Level Two</button>
+   <button type ='button' id ="testing-button-test-case-zero">Freestyle</button>
+   </div>
 <!-- <script> -->
 <!-- function directions() { -->
     <!-- alert('Eventually, Ill tell you what to do here! Isnt that nifty?!'); -->
@@ -56,7 +57,7 @@ margin-left: 20px;
 <!-- </script> -->
 <h3> Press "Turn on the Tuner" to Begin, there are adjustable settings both above and below the tuner on the page</h3>
 
-<div class = "options-info">
+<div class = "options-info" id='instrumentSettings'>
  <button type ='button' id ="usePiano">Use Piano</button>
  <button type ='button' id ="useSynth" style=background:#00cc00>Use Synth (selected)</button>
  <button type ='button' id ="useHumanVoice">Use Human Voice</button>
@@ -88,6 +89,7 @@ margin-left: 20px;
   <span class = "accompaniment-buttons" style="font-size:16px">Select whether to have drums on or off</span>
  <p>
  </div>
+ <div id = 'harmonyChoices'>
  <button type ='button' id ="thirdDown">3rd down</button>
  <button type ='button' id ="thirdUp" style=background:#00cc00>3rd up (selected)</button>
  <button type ='button' id ="unison" >Unison</button>
@@ -95,13 +97,16 @@ margin-left: 20px;
  <button type ='button' id ="fourthUp" >4th up</button>
   <button type ='button' id ="allHarmonies" >mixed harmonies (all of these but unisons) (beta)</button>
   <span style="font-size:16px">Select what harmony interval you would like to practice</span>
+  </div>
  <p><p>
+ <div id = 'scaleChoices'>
  <button type ='button' id ="majorScale" style=background:#00cc00>Major Scale (selected)</button>
  <button type ='button' id ="natMinorScale">Natural Minor Scale</button>
  <span style="font-size:16px">Choose your Reference Scale Type</span>
  <p>
  <select id = "referenceKeySelect" name = "referenceKeySelect"> <option id = "c" value = "C"> C </option> <option id = "cSharp" value = "C#/Db"> C#/Db </option><option id = "d" value = "D"> D </option><option id = "dSharp" value = "D#/Eb"> D#/Eb </option> <option id = "E" value = "E"> E </option> <option id = "f" value = "F"> F </option><option id = "fSharp" value = "F#/Gb"> F#/Gb </option><option id = "g" value = "G"> G </option> <option id = "gSharp" value = "G#/Ab"> G#/Ab </option><option id = "a" value = "A"> A </option><option id = "aSharp" value = "A#/Bb"> A#/Bb </option> <option id = "b" value = "B"> B </option></select>
  <span style="font-size:16px">Choose your Reference Key</span>
+ </div>
  <p>
  <button type ='button' id ="doButton">Do</button>
   <button type ='button' id ="reButton">Re</button>
@@ -121,8 +126,8 @@ Time = <span id="countdown">01:00</span>
 | Avg Time = <span id="averagetime"></span> seconds 
 <button type ='button' id ="hide-button">Hide Advanced Options</button>  
 <!-- <div class = "container justify-content-start"> -->
-  <div class="row justify-content-start">
-	<div class = "col-xs-offset-0 col-xs-7 col-sm-7 col-md-7 col-lg-7" style=>
+  <div style = "display:flex; justify-content: center">
+	<div>
 		<div id="tunerframe">
 			<div id="tunerback"style="width:80%;">
 				<img id="preloader" alt="Loading..." src="anim.gif" style="display: block;margin-left: auto;margin-right: auto;" >
@@ -162,6 +167,7 @@ Time = <span id="countdown">01:00</span>
 			<button type ='button' id ="playAgainButton">Play Reference Note Again</button>
 			<p>
 		</div>
+		<div id = "volumeChoices">
 			<div class="row justify-content-start">
 			<p>
 				<!-- <div class = "col-sm-4"> -->
@@ -187,19 +193,21 @@ Time = <span id="countdown">01:00</span>
 					<input type="text" id="referenceamount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
 				<!-- </div> -->
 			</div>
+			</div>
 			<p>
 			<div class="options-info row justify-content-start">
 				<button type ='button' id ="continuousOn">On</button>
 				<button type ='button' id ="continuousOff"style=background:#00cc00>Off (selected)</button>
 				<span style="font-size:16px">Continuous Mode</span>
 			</div><p>
-			 <div class="options-info row justify-content-start">
+			 <div class="options-info row justify-content-start" id="sequenceChoices">
 				
 				<button type ='button' id ="sequenceOff"style=background:#00cc00>Single Notes (selected)</button>
 				<button type ='button' id ="sequenceOn">Basic Sequence</button>
 				<button type ='button' id ="complexSequence">Complex Sequence (Beta)</button>
 				<span style="font-size:16px">Sequence Mode</span>
 			</div>
+			<div id = "sequenceSettingChoices">
 						<div class="options-info row justify-content-start">		
 					<p>
 					<p>
@@ -243,6 +251,7 @@ Time = <span id="countdown">01:00</span>
 				<!-- </div> -->
 				</div>
 			</div>
+			</div>
 			
 					
 			
@@ -266,6 +275,7 @@ Time = <span id="countdown">01:00</span>
 			<p> Note: You can still sing in any octave as long as your relative interval is correct.</span>
 			</div>
 			<p>
+			<div  id="recruitYourOwnChoices">
 			<div class="row justify-content-start">	
 			<button type ='button' id ="capture-by-sound-button">Record a sequence by singing it (in Beta)</button>
 			<button type ='button' id ="capture-by-buttons-button">Record a sequence by pressing note buttons above the tuner, on the piano below, or using a midi device.</button>
@@ -277,7 +287,7 @@ Time = <span id="countdown">01:00</span>
 			<button type ='button' id ="mute-button">mute Mic</button>
 			<button type ='button' id ="unmute-button">unMute Mic</button>
 			</div>
-	</div>
+	
 	<div>
 <ul class="set"></li>  	
 <li id = "whitec" class="white e"></li>
@@ -319,6 +329,7 @@ Time = <span id="countdown">01:00</span>
 	<button type ='button' id ="chord-progression-names">In Chord Names</button>
 	<button type ='button' id ="chord-progression-next">new Chord Progression</button>
 	<span id ="chordProgressionMessage"><p> If you'd like to know what chord progression you are listeening to, click above.</span>
+	</div>
 	</div>
 	<audio id = "sound-kick0" data-src = "samplestwo/kick.mp4"></audio>
 	<audio id = "sound-snare0" data-src = "samplestwo/snare.mp4"></audio>

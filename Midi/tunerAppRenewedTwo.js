@@ -215,8 +215,195 @@ var startingXSetting = 600;
 var setupAFirstNote = false;
 var firstNotationToCome = false;
 var singAndTargetPlacement = 600;
+var allTheButtons = [];
+var allTheButtonsWithStatus = []; //[buttonid, status]
+var scoreLevel = "freestyle";
+var currentLevelScore = 0;
+var visualMode="both";
+var notesChangeable=true;
 noteOnListener(0, 0);
 
+
+
+
+// document.getElementById('topButtons').style.display='none';
+// document.getElementById('instrumentSettings').style.display='none';
+// document.getElementById('harmonyChoices').style.display='none';
+// document.getElementById('scaleChoices').style.display='none';
+// document.getElementById('volumeChoices').style.display='none';
+// document.getElementById('sequenceChoices').style.display='none';
+// document.getElementById('sequenceSettingChoices').style.display='none';
+// document.getElementById('recruitYourOwnChoices').style.display='none';
+// document.getElementById('recruitYourOwnChoices').style.display='none';
+
+//this isn't being used
+// var function updateButtonStatuses() {
+// allTheButtonsWithStatus=[topButtons, "usePiano", "useSynth", "useHumanVoice", "accompanimentOn", "accompanimentOff", "arpeggiosOn", "arpeggiosOff", "arpeggio-zero", "arpeggio-one", "arpeggio-two", "play-root-on", "play-root-off", "inversionsOn", "inversionsOff", "rhythmOn", "rhythmOff", "thirdDown", "thirdUp", "unison", "fourthDown", "fourthUp", "allHarmonies", "useSynth", "useSynth", ];
+// for (var i=0; i <allTheButtons.length; i++){
+// allTheButtonsWithStatus.push(allTheButtons[i]+"", document.getElementById(allTheButtons[i]).style.display));
+// alert (allTheButtonsWithStatus[0]+" "+allTheButtonsWithStatus[1]);
+// }
+// $('accompanimentOff').click();
+//
+function swapVisualMode() {
+    if (visualMode == "both") {
+        visualMode = "tuner";
+        document.getElementById('tunerframe').style.display = 'block';
+
+        document.getElementById('staff-box').style.display = 'none';
+		
+    } else if (visualMode == "tuner") {
+        visualMode = "sheetMusic";
+
+        document.getElementById('tunerframe').style.display = 'none';
+
+        document.getElementById('staff-box').style.display = 'block';
+    } else if (visualMode == "sheetMusic"){
+
+        visualMode = "tuner";
+
+        document.getElementById('tunerframe').style.display = 'block';
+
+        document.getElementById('staff-box').style.display = 'none';
+			renderer.resize(500, 200);
+			startingXSetting=400;
+			
+            document.getElementById('staff-box').style.paddingRight = '20px';
+    }
+}
+
+function setVisualMode(visualModeLocal){
+	    if (visualModeLocal == "both") {
+        visualModeLocal = "both";
+        document.getElementById('tunerframe').style.display = 'block';
+
+        document.getElementById('staff-box').style.display = 'block';
+		renderer.resize(700, 200);
+		startingXSetting=600;
+		
+            document.getElementById('staff-box').style.paddingRight = '0px';
+    } else if (visualModeLocal == "tuner") {
+        visualModeLocal = "tuner";
+
+        document.getElementById('tunerframe').style.display = 'block';
+
+        document.getElementById('staff-box').style.display = 'none';
+    } else if (visualModeLocal == "sheetMusic"){ 
+
+            visualModeLocal = "sheetMusic";
+
+            document.getElementById('tunerframe').style.display = 'none';
+
+            document.getElementById('staff-box').style.display = 'block';
+            document.getElementById('staff-box').style.paddingRight = '20px';
+			renderer.resize(500, 200);
+			startingXSetting=400;
+			
+        
+    }
+}
+
+
+function clearButtons() {
+    // document.getElementById('topButtons').style.display = 'none';
+    document.getElementById('instrumentSettings').style.display = 'none';
+    document.getElementById('harmonyChoices').style.display = 'none';
+    document.getElementById('scaleChoices').style.display = 'none';
+    document.getElementById('volumeChoices').style.display = 'none';
+    document.getElementById('sequenceChoices').style.display = 'none';
+    document.getElementById('sequenceSettingChoices').style.display = 'none';
+    document.getElementById('recruitYourOwnChoices').style.display = 'none';
+    document.getElementById('staff-box').style.display = 'none';
+    document.getElementById('hide-button').style.display = 'none';
+	$("button.tuneron").click();
+}
+function allButtonsOn() {
+    document.getElementById('topButtons').style.display = 'block';
+    document.getElementById('instrumentSettings').style.display = 'block';
+    document.getElementById('harmonyChoices').style.display = 'block';
+    document.getElementById('scaleChoices').style.display = 'block';
+    document.getElementById('volumeChoices').style.display = 'block';
+    document.getElementById('sequenceChoices').style.display = 'block';
+    document.getElementById('sequenceSettingChoices').style.display = 'block';
+    document.getElementById('recruitYourOwnChoices').style.display = 'block';
+    document.getElementById('staff-box').style.display = 'block';
+    document.getElementById('hide-button').style.display = 'block';
+	setVisualMode("both");
+}
+function setupSimpleMode() {
+    document.getElementById("accompanimentOff").click();
+    clearButtons();
+    scoreLevel = "levels";
+    // accompaniment=false;'
+    accompanimentOff.click();
+}
+function setupFreestyleMode() {
+    document.getElementById("accompanimentOff").click();
+    allButtonsOn();
+    scoreLevel = "freestyle";
+    // accompaniment=false;'
+    // accompanimentOff.click();
+}
+
+function setupLevelOne() { //one note over and over again. sameintervals, 3rd, 4th, 5th)
+    // accompaniment = false;
+    scoreLevel = "levelOne";
+	
+	notesChangeable=false;
+    clearButtons();
+    accompanimentOff.click();
+	setVisualMode("sheetMusic");
+	globalTimeRequirement=1;
+    // document.getElementById('tunerframe').style.display = 'none';
+}
+
+function setupLevelTwo() { //one note over and over again. (different intervals, 3rd, 4th, 5th)
+    accompaniment = false;
+    scoreLevel = "levelTwo";
+    clearButtons();
+    accompanimentOff.click();
+	setVisualMode("sheetMusic");
+	
+	globalTimeRequirement=1;
+}
+function setupLevelThree() { //the note changes under you. And interval changes.
+    accompaniment = false;
+    scoreLevel = "levelThree";
+    clearButtons();
+    accompanimentOff.click();
+}
+function setupLevelFour() { //Sequence of 2 notes (basic sequence - accompaniment)
+    accompaniment = false;
+    scoreLevel = "levelFour";
+    clearButtons();
+    accompanimentOff.click();
+}
+function setupLevelFive() { //Sequence of 3 notes (basic sequence - accompaniment)
+    accompaniment = false;
+    scoreLevel = "levelFive";
+    clearButtons();
+    accompanimentOff.click();
+}
+function setupLevelSix() { //Sequence	    (basic sequence + accompaniment).
+    accompaniment = true;
+    // sequence-mode=
+    scoreLevel = "levelSix";
+    accompanimentOn.click();
+    clearButtons();
+}
+
+function songWritingWorkshop() { //Sequence	    (basic sequence + accompaniment).
+    accompaniment = true;
+    // sequence-mode=
+    scoreLevel = "levelSix";
+    accompanimentOn.click();
+    clearButtons();
+
+    document.getElementById('recruitYourOwnChoices').style.display = 'block';
+	
+}
+
+//the above isn't being used
 // select the INPUT element that will handle
 // the file selection.
 let sourceofmidi = document.getElementById('filereader');
@@ -226,52 +413,102 @@ let ticksOfThisNote = 0;
 let lastNote = 0;
 let currentNote = 0;
 var midiToNoteArray = 24;
-var trackPicked=false;
-var channels=0;
+var trackPicked = false;
+var channels = 0;
+
+// channels=6;
+
+
 MidiParser.parse(sourceofmidi, function (obj) {
-    let noteContainingTrack = 0;
-    for (var i = 0; i < (obj.track.length); i++) {
-        try {
-            for (var j = 0; j < (obj.track[i].event.length); j++) {
-				
-                if ((obj.track[i].event[j].type == 9)&&(!trackPicked)) {
-						console.log("channel "+obj.track[i].event[j].channel);
-					if (channels<(Number(obj.track[i].event[j].channel))){
-					channels=obj.track[i].event[j].channel;
-										
-					alert (channels);
-										}
-                    noteContainingTrack = i;
-                    // trackPicked=true;// alert(i);
+    var midiFormatType = obj.formatType;
+    var midiFormatType2 = obj.formatType;
+    // alert(midiFormatType);
+    // midiFormatType=1;
+    if (midiFormatType == 1) {
+        let newTempo = obj.timeDivision / 3 * 4;
+        let tempNewTempo = 0;
+        let noteContainingTrack = 0;
+        for (var i = 0; i < (obj.track.length); i++) {
+            try {
+                for (var j = 0; j < (obj.track[i].event.length); j++) {
+
+                    if ((obj.track[i].event[j].type == 9) && (!trackPicked)) {
+                        console.log("channel " + obj.track[i].event[j].channel);
+                        if (channels < (Number(obj.track[i].event[j].channel))) {
+                            channels = obj.track[i].event[j].channel;
+
+                            // alert(channels);
+                        }
+                        noteContainingTrack = i;
+                        // trackPicked=true;// alert(i);
+                    }
+
+                    if (obj.track[i].event[j].metaType == 81) {
+                        // alert (obj.track[i].event[j].data);
+                        tempNewTempo = Math.round(1 / (obj.track[i].event[j].data / 60000000));
+                        // alert (tempNewTempo);
+                    }
+
+                    // alert(newTempo);
                 }
+
+            } catch (error) {
+                console.log(error)
             }
-        } catch (error) {}
 
-    }
-	// channels=6;
-    // alert (obj.track.length); // when I return to this, elle's song works but hercules doesn't...
-    singingTimeArray = [];
-    for (var i = 0; i < (obj.track[noteContainingTrack].event.length); i++) {
-        // console.log(obj.track[obj.track.length-1].event[0].data);
-        // console.log(obj.timeDivision);
-        var importTicksPerBeat = obj.timeDivision;
-
-        // console.log(obj.track[2].event[i].deltaTime);
-        // console.log(obj.track[noteContainingTrack].event[i].type);
-        ticksOfThisNote = ticksOfThisNote + obj.track[noteContainingTrack].event[i].deltaTime; //add the time of the message to the building message.
-        if ((obj.track[noteContainingTrack].event[i].type == 9)&&(obj.track[noteContainingTrack].event[i].channel == channels)) { //if note on
-            // ticksOfThisNote=ticksOfThisNote+obj.track[2].event[i].deltaTime; //add the time of the message to the building message.
-            lastNote = currentNote + 0;
-            // alert (lastNote);
-
-            if (lastNote != 0) {
-                singingTimeArray.push([lastNote - 24, (60 * (ticksOfThisNote + 0) / importTicksPerBeat) / currentBPM, 0]);
-            }
-            currentNote = obj.track[noteContainingTrack].event[i].data[0];
-            ticksOfThisNote = 0;
         }
 
+        // if (midiFormatType==0){ // A COP OUT. THIS IS ONLY BECAUSE I DONT KNOW WHAT TO DO WITH BIG MIDI LIKE HERCULES
+        // channels=1;
+        // }
+        if (tempNewTempo > 30) {
+            // alert ("hi "+tempNewTempo);
+            newTempo = tempNewTempo;
+        } else {
+            // alert ("hi2 "+tempNewTempo);
+            let otherNewTempo = prompt("What tempo is the song you are importing?");
+            if (otherNewTempo) {
+                newTempo = otherNewTempo;
+            }
+        }
+        // alert (obj.track.length); // when I return to this, elle's song works but hercules doesn't...
+        singingTimeArray = [];
+
+        $("#BPMAmount").val(newTempo);
+
+        currentBPM = newTempo;
+        for (var i = 0; i < (obj.track[noteContainingTrack].event.length); i++) {
+            // console.log(obj.track[obj.track.length-1].event[0].data);
+            // console.log(obj.timeDivision);
+            var importTicksPerBeat = obj.timeDivision;
+
+            // console.log(obj.track[2].event[i].deltaTime);
+            // console.log(obj.track[noteContainingTrack].event[i].type);
+            ticksOfThisNote = ticksOfThisNote + obj.track[noteContainingTrack].event[i].deltaTime; //add the time of the message to the building message.
+            if ((obj.track[noteContainingTrack].event[i].type == 9) && (obj.track[noteContainingTrack].event[i].channel == channels)) { //if note on
+                // ticksOfThisNote=ticksOfThisNote+obj.track[2].event[i].deltaTime; //add the time of the message to the building message.
+                lastNote = currentNote + 0;
+                // alert (lastNote);
+
+                if (lastNote != 0) {
+                    singingTimeArray.push([lastNote - 24, (60 * (ticksOfThisNote + 0) / importTicksPerBeat) / currentBPM, 0]);
+                }
+                currentNote = obj.track[noteContainingTrack].event[i].data[0];
+                ticksOfThisNote = 0;
+            }
+
+        }
+        lastNote = currentNote + 0;
+        // alert (lastNote);
+
+        if (lastNote != 0) {
+            singingTimeArray.push([lastNote - 24, (60 * (ticksOfThisNote + 0) / importTicksPerBeat) / currentBPM, 0]);
+        }
+
+    } else if (midiFormatType == 0) {
+        alert("sorry, this midi type is not supported at this time");
     }
+
     console.log(singingTimeArray.toString());
     try {
         synth.triggerRelease();
@@ -681,7 +918,7 @@ function showANote() {
     }, 5000);
 }
 
-function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
+async function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
     // console.log("The Note Message has " + noteArrayNum + " " + voiceType + " " + theNoteLength);
     if (notationMode == "movingNotesMode") {
         // if (Math.round(theNoteLength) == 3) {
@@ -5531,7 +5768,23 @@ function repeatOnFrame() {
             if (rhythmPlay) {
                 startRhythmTimer();
             }
-            randomScaleNum = Math.floor(Math.random() * 7);
+            if ((scoreLevel == "freestyle") || (currentLevelScore == 0) || (notesChangeable)) {
+                // alert (scoreLevel+" "+currentLevelScore);
+                randomScaleNum = Math.floor(Math.random() * 7);
+                // alert ("Now you'll be practicing a new note");
+            }
+			if (scoreLevel !="freestyle"){
+			if (currentLevelScore==10){
+				intervalDirection="down";
+				alert ("now practice doing a 3rd down of this note");
+			} else if (currentLevelScore==20){
+				intervalDirection="fourthUp";
+				alert ("now practice doing a 4th up of this note (Note: This is the same as a 5th down)");
+			}else if (currentLevelScore==30){
+				intervalDirection="fourthDown";
+				alert ("now practice doing a 5th up of this note (Note: This is the same as a 4th down)");
+			}
+			}
             if (keyType == "major") {
                 randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter;
             } else {
@@ -6295,6 +6548,19 @@ window.requestAnimationFrame || (window.requestAnimationFrame = function () {
 }
     ());
 
+window.onresize = function(event) {
+
+// tunerWidth = Math.floor($("#tunerframe").width() - 0);
+// tunerWidth > 600 && (tunerWidth = 600),
+// $("#tunerback").css({
+    // width: tunerWidth,
+    // height: .92 * tunerWidth,
+    // "margin-bottom": .08 * tunerWidth
+// }),
+// $("#tunerframe").css({
+    // "margin-bottom": .1 * tunerWidth
+// });
+}
 function initTuner() {
     $("#preloader").remove();
     var e = "-analytics.";
@@ -6676,6 +6942,7 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
             currentScore = 0;
             scoreTimeBeats = 0;
             totalScore++;
+            currentLevelScore++;
             document.getElementById("totalscore").innerHTML = "#Correct = " + totalScore;
             previousNote = noteArray[((randomNoteNum) + legalInterval)][1];
             harmonizeBecauseYouRight();
@@ -8530,85 +8797,90 @@ $('#capture-by-buttons-button').click(function () {
     }
 });
 $('#testing-button-base-case').click(function () {
-    $(".regular-mode").slideToggle();
-    $(".sequence-mode").slideToggle();
-    // if (!captureButtons) {
+    // $(".regular-mode").slideToggle();
+    // $(".sequence-mode").slideToggle();
+    // // if (!captureButtons) {
 
-    singingTimeArray = [];
-    sequenceArray = [];
-    sequenceCopy = [];
-    arpeggioArray = [];
-    chordSequenceArray = [];
-    // if (buttonStartEndTimes.length > 1) {
-    // // alert("long");
-    // singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1])/1000.01]);
-    // buttonStartEndTimes.shift();
-    // console.log(singingTimeArray.toString());
+    // singingTimeArray = [];
+    // sequenceArray = [];
+    // sequenceCopy = [];
+    // arpeggioArray = [];
+    // chordSequenceArray = [];
+    // // if (buttonStartEndTimes.length > 1) {
+    // // // alert("long");
+    // // singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1])/1000.01]);
+    // // buttonStartEndTimes.shift();
+    // // console.log(singingTimeArray.toString());
+    // // }
+    // singingTimeArray.push([0 + noteAdapter, 4, 0]);
+    // singingTimeArray.push([2 + noteAdapter, 4, 1]);
+    // rootNoteLength = 2;
+    // captureButtons = false;
+    // buttonsCaptured = true;
+    // singingCaptured = true;
+    // sequencePlay = true;
+    // newQuestionTime = true;
+    // arpeggiosOn.click();
+    // rootOnButton.click();
+    // arpeggioTwoButton.click();
     // }
-    singingTimeArray.push([0 + noteAdapter, 4, 0]);
-    singingTimeArray.push([2 + noteAdapter, 4, 1]);
-    rootNoteLength = 2;
-    captureButtons = false;
-    buttonsCaptured = true;
-    singingCaptured = true;
-    sequencePlay = true;
-    newQuestionTime = true;
-    arpeggiosOn.click();
-    rootOnButton.click();
-    arpeggioTwoButton.click();
-    // }
+	
+    setupLevelOne();
 });
 $('#testing-button-test-case-one').click(function () {
-    $(".regular-mode").slideToggle();
-    $(".sequence-mode").slideToggle();
-    if (!captureButtons) {
+    // $(".regular-mode").slideToggle();
+    // $(".sequence-mode").slideToggle();
+    // if (!captureButtons) {
 
-        singingTimeArray = [];
-        sequenceArray = [];
-        sequenceCopy = [];
-        if (buttonStartEndTimes.length > 1) {
-            // alert("long");
-            singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000, 0]);
-            buttonStartEndTimes.shift();
-            // console.log(singingTimeArray.toString());
-        }
-        singingTimeArray.push([0 + noteAdapter, 4, 0]);
-        singingTimeArray.push([2 + noteAdapter, 4, 1]);
-        rootNoteLength = 1.5;
-        captureButtons = false;
-        buttonsCaptured = true;
-        singingCaptured = true;
-        sequencePlay = true;
-        newQuestionTime = true;
-        arpeggiosOn.click();
-        rootOnButton.click();
-        arpeggioTwoButton.click();
-    }
+    // singingTimeArray = [];
+    // sequenceArray = [];
+    // sequenceCopy = [];
+    // if (buttonStartEndTimes.length > 1) {
+    // // alert("long");
+    // singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000, 0]);
+    // buttonStartEndTimes.shift();
+    // // console.log(singingTimeArray.toString());
+    // }
+    // singingTimeArray.push([0 + noteAdapter, 4, 0]);
+    // singingTimeArray.push([2 + noteAdapter, 4, 1]);
+    // rootNoteLength = 1.5;
+    // captureButtons = false;
+    // buttonsCaptured = true;
+    // singingCaptured = true;
+    // sequencePlay = true;
+    // newQuestionTime = true;
+    // arpeggiosOn.click();
+    // rootOnButton.click();
+    // arpeggioTwoButton.click();
+    // }
+    setupLevelTwo();
 });
 $('#testing-button-test-case-zero').click(function () {
-    $(".regular-mode").slideToggle();
-    $(".sequence-mode").slideToggle();
-    if (!captureButtons) {
+    // $(".regular-mode").slideToggle();
+    // $(".sequence-mode").slideToggle();
+    // if (!captureButtons) {
 
-        singingTimeArray = [];
-        sequenceArray = [];
-        sequenceCopy = [];
-        if (buttonStartEndTimes.length > 1) {
-            // alert("long");
-            singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000, 0]);
-            buttonStartEndTimes.shift();
-            // console.log(singingTimeArray.toString());
-        }
-        singingTimeArray.push([0 + noteAdapter, 4, 0]);
-        singingTimeArray.push([2 + noteAdapter, 4, 1]);
-        captureButtons = false;
-        buttonsCaptured = true;
-        singingCaptured = true;
-        sequencePlay = true;
-        newQuestionTime = true;
-        arpeggiosOff.click();
-        rootOffButton.click();
-    }
+    // singingTimeArray = [];
+    // sequenceArray = [];
+    // sequenceCopy = [];
+    // if (buttonStartEndTimes.length > 1) {
+    // // alert("long");
+    // singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000, 0]);
+    // buttonStartEndTimes.shift();
+    // // console.log(singingTimeArray.toString());
+    // }
+    // singingTimeArray.push([0 + noteAdapter, 4, 0]);
+    // singingTimeArray.push([2 + noteAdapter, 4, 1]);
+    // captureButtons = false;
+    // buttonsCaptured = true;
+    // singingCaptured = true;
+    // sequencePlay = true;
+    // newQuestionTime = true;
+    // arpeggiosOff.click();
+    // rootOffButton.click();
+    // }
+
+    setupFreestyleMode();
 });
 $('#accompanimentOn').click(function () {
     if (!accompaniment) {
@@ -8962,6 +9234,9 @@ $('#playAgainButton').click(function () {
 
     // }
     // }
+
 });
+
+// songWritingWorkshop();
 initTuner();
 window.tuner_rand = 1111111;
