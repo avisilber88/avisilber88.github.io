@@ -319,6 +319,8 @@ function clearButtons() {
 	$("button.tuneron").click();
 }
 function allButtonsOn() {
+		document.getElementById('scoreRow').style.display = 'block';
+	document.getElementById('octaves').style.display = 'block';
 	document.getElementById('topButtons').style.display = 'block';
 	document.getElementById('instrumentSettings').style.display = 'block';
 	document.getElementById('harmonyChoices').style.display = 'block';
@@ -330,6 +332,7 @@ function allButtonsOn() {
 	document.getElementById('staff-box').style.display = 'block';
 	document.getElementById('hide-button').style.display = 'block';
 	setVisualMode("both");
+	// document.getElementById('tunerAndSettings').style.display = 'block';
 }
 function setupSimpleMode() {
 	document.getElementById("accompanimentOff").click();
@@ -348,7 +351,24 @@ function setupFreestyleMode() {
 	// accompaniment=false;'
 	// accompanimentOff.click();
 }
+function playYourOwn() {
+	intervalRotationType = "normal";
+	lengthRotationType = "normal";
+	document.getElementById("accompanimentOn").click();
+	allButtonsOn();
+	scoreLevel = "freestyle";
+	notesChangeable = true;
+		document.getElementById('tunerframe').style.display = 'none';
 
+		document.getElementById('staff-box').style.display = 'none';
+		clearButtons();
+	document.getElementById('scoreRow').style.display = 'none';
+	document.getElementById('octaves').style.display = 'none';
+	// document.getElementById('tunerAndSettings').style.display = 'none';
+	document.getElementById('recruitYourOwnChoices').style.display = 'block';
+	// accompaniment=false;'
+	// accompanimentOff.click();
+}
 function setupLevelOne() { //one note over and over again. sameintervals, 3rd, 4th, 5th)
 	// accompaniment = false;
 	intervalRotationType = "scoreBased";
@@ -372,6 +392,7 @@ function setupLevelTwo() { //the note changes under you. And interval changes.
 
 	scoreLevel = "levelTwo";
 	notesChangeable = true;
+	allButtonsOn();
 	clearButtons();
 	accompanimentOff.click();
 	setVisualMode("sheetMusic");
@@ -384,6 +405,7 @@ function setupLevelThree() { //one note over and over again. (different interval
 	scoreLevel = "levelThree";
 	lengthRotationType = "normal";
 	notesChangeable = false;
+	allButtonsOn();
 	clearButtons();
 	accompanimentOff.click();
 	setVisualMode("sheetMusic");
@@ -394,8 +416,10 @@ function setupLevelFour() { //Sequence of 2 notes, same interval for each (The i
 	intervalRotationType = "scoreBased";
 	scoreLevel = "levelFour";
 	lengthRotationType = "normal";
+	allButtonsOn();
 	clearButtons();
 	sequenceOn.click();
+	setVisualMode("sheetMusic");
 	accompanimentOff.click();
 }
 function setupLevelFive() { //Sequence of notes 2 (The interval changes each rep, every 10 reps the length of the sequence lengthens)\n\n
@@ -403,7 +427,9 @@ function setupLevelFive() { //Sequence of notes 2 (The interval changes each rep
 	intervalRotationType = "randomIntervals";
 	scoreLevel = "levelFive";
 	lengthRotationType = "scoreBased";
+	allButtonsOn();
 	clearButtons();
+	setVisualMode("sheetMusic");
 	sequenceOn.click();
 	accompanimentOff.click();
 }
@@ -414,7 +440,9 @@ function setupLevelSix() { //Sequence of notes (The interval changes each note, 
 	// sequence-mode=
 	lengthRotationType = "scoreBased";
 	scoreLevel = "levelSix";
+	allButtonsOn();
 	clearButtons();
+	setVisualMode("sheetMusic");
 	sequenceOn.click();
 	accompanimentOff.click();
 }
@@ -425,7 +453,9 @@ function setupLevelSeven() { //Sequence of notes with background music (rules ju
 	// sequence-mode=
 	scoreLevel = "levelSeven";
 	lengthRotationType = "scoreBased";
+	allButtonsOn();
 	clearButtons();
+	setVisualMode("sheetMusic");
 	accompanimentOn.click();
 	sequenceOn.click();
 }
@@ -436,8 +466,10 @@ function setupLevelEight() { //Sequence of notes with varying lengths without ba
 	// sequence-mode=
 	scoreLevel = "levelEight";
 	lengthRotationType = "scoreBasedByFour";
+	allButtonsOn();
 	clearButtons();
 	sequenceLength = 4;
+	setVisualMode("sheetMusic");
 	accompanimentOff.click();
 	complexSequence.click();
 }
@@ -448,9 +480,11 @@ function setupLevelNine() { //Sequence of notes with varying lengths without bac
 	scoreLevel = "levelNine";
 	intervalRotationType = "randomIntervalsEachNote";
 	lengthRotationType = "scoreBasedByFour";
+	allButtonsOn();
 
 	clearButtons();
 	sequenceLength = 4;
+	setVisualMode("sheetMusic");
 	accompanimentOff.click();
 	complexSequence.click();
 }
@@ -462,8 +496,10 @@ function setupLevelTen() { //Sequence of notes with varying lengths with backgro
 	scoreLevel = "levelTen";
 	intervalRotationType = "randomIntervalsEachNote";
 	lengthRotationType = "scoreBasedByFour";
+	allButtonsOn();
 	clearButtons();
 	sequenceLength = 4;
+	setVisualMode("sheetMusic");
 	accompanimentOn.click();
 	complexSequence.click();
 }
@@ -8903,6 +8939,7 @@ $('#hide-button').click(function () {
 
 });
 $('#capture-by-sound-button').click(function () {
+
 	$("button.tuneron").click();
 	if (!singCaptureButtons) {
 		try {
@@ -8918,6 +8955,7 @@ $('#capture-by-sound-button').click(function () {
 		singCaptureButtons = true;
 		buttonStartEndTimes = [];
 	} else {
+			allButtonsOn();
 		buttonPlay = false;
 		buttonStartEndTimes.push([0, new Date(new Date().getTime()), 0, 0]);
 		if (buttonStartEndTimes.length > 1) {
@@ -8941,6 +8979,7 @@ $('#capture-by-sound-button').click(function () {
 	}
 });
 $('#capture-by-buttons-button').click(function () {
+	
 	$("button.tuneron").click();
 	if (!captureButtons) {
 		try {
@@ -8958,6 +8997,7 @@ $('#capture-by-buttons-button').click(function () {
 		captureButtons = true;
 		buttonStartEndTimes = [];
 	} else {
+		allButtonsOn();
 		buttonPlay = true;
 		buttonStartEndTimes.push([0, new Date(new Date().getTime())]);
 		if (buttonStartEndTimes.length > 1) {
@@ -9043,6 +9083,10 @@ $('#testing-button-test-case-one').click(function () {
 
 $('#level-three').click(function () {
 	setupLevelThree();
+});
+
+$('#play-your-own').click(function () {
+	playYourOwn();
 });
 $('#level-four').click(function () {
 	setupLevelFour();

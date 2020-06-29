@@ -44,8 +44,8 @@ margin-left: 20px;
 <div class="content">
 <h2> Welcome to Harmony Sense, Practice Singing in Harmony! </h2>
 <div id ="topButtons">
- <button type ='button' id ="directions" onclick="alert('Level 1:One note over and over again. Do ten reps, and then the interval changes(3rd up, 3rd down, 4th up, 5th up)\n\nLevel 2:The note changes each time. And interval changes.\n\nLevel 3: (under construction)One note over and over again. Intervals shuffle each time.\n\nLevel 4: (under construction)Sequence of 2 notes, same interval for each (The interval changes every 10 reps)\n\nLevel 5: (under construction)nSequence of notes 2 (The interval changes each rep, every 10 reps the length of the sequence lengthens)\n\nLevel 6: (under construction)Sequence of notes (The interval changes each note, every 10 reps the length of the sequence lengthens)\n\nLevel 7: (under construction)Sequence of notes with background music (rules just like level 6)\n\nLevel 8: (under construction)Sequence of notes with varying lengths without background music (The interval changes each rep, every 10 reps the length of the sequence lengthens by 4)\n\nLevel 9: (under construction)Sequence of notes with varying lengths without background music (The interval changes each note, every 10 reps the length of the sequence lengthens by 4)\n\nLevel 10: (under construction)Sequence of notes with varying lengths with background music (rules just like level 9)\n\n Plan-Your-Own:(Under Construction)Import or play in your own reference sequence.\n\nFreestyle: Decide your own harmonic excercise routine\n\n')">Instructions Guide</button>
-  <button type ='button' id ="excercises" onclick="alert('Eventually, Ill tell you about excercise ideas')">Excercise Suggestions</button>
+ <button type ='button' id ="directions" onclick="alert('Single Notes \nLevel 1: One note repeated. Interval changes every 10 reps.\nLevel 2: #1 but the note changes each rep\nLevel 3: One note repeatedly. Intervals shuffle each rep\n\nSequences\nLevel 4: Sequence of 2 notes, interval changes every 10 reps\nLevel 5: Sequence of notes, new interval each rep, every 10 reps the length of the sequence lengthens\nLevel 6: Sequence of notes, the interval changes each note. Sequence lengthens every 10 reps\nLevel 7: #6 but with music\nLevel 8: Sequence of notes with varying lengths, same intervals. Every 10 reps the sequence lengthens\nLevel 9: #8 but the intervals change every note\nLevel 10: #9 with music\n\nDo more\nPlan-Your-Own: Import or play in your own sequence.\nFreestyle: Decide your own harmonic excercise routine')">Instructions Guide</button>
+  <!-- <button type ='button' id ="excercises" onclick="alert('Eventually, Ill tell you about excercise ideas')">Excercise Suggestions</button> -->
    <button type ='button' id ="testing-button-base-case">Level One</button>
    <button type ='button' id ="testing-button-test-case-one">Level Two</button>
    <button type ='button' id ="level-three">Level Three</button>
@@ -57,6 +57,7 @@ margin-left: 20px;
    <button type ='button' id ="level-nine">Level Nine</button>
    <button type ='button' id ="level-ten">Level Ten</button>
    <button type ='button' id ="testing-button-test-case-zero">Freestyle</button>
+   <button type ='button' id ="play-your-own">Play-Your-Own</button>
    </div>
 <!-- <script> -->
 <!-- function directions() { -->
@@ -128,13 +129,15 @@ margin-left: 20px;
 <p>
 
 <p>
+<div id = "scoreRow">
 <button type ='button' id ="pauseButton">Pause Timer and Sound</button>  
 Time = <span id="countdown">01:00</span>
 |   <span id="totalscore"># Correct = 0</span>
 | Avg Time = <span id="averagetime"></span> seconds 
 <button type ='button' id ="hide-button">Hide Advanced Options</button>  
+</div>
 <!-- <div class = "container justify-content-start"> -->
-  <div style = "display:flex; justify-content: center">
+  <div style = "display:flex; justify-content: center" id= "tunerAndSettings">
 	<div>
 		<div id="tunerframe">
 			<div id="tunerback"style="width:80%;">
@@ -273,7 +276,7 @@ Time = <span id="countdown">01:00</span>
 	</div>
 
 	<div class="options-info">
-			<div class="row justify-content-start">
+			<div class="row justify-content-start" id = "octaves">
 			<button type ='button' id ="octave2">Octave 2</button>
 			<button type ='button' id ="octave3" style=background:#00cc00>Octave 3 (selected)</button>
 			<button type ='button' id ="octave4">Octave 4</button>
@@ -291,10 +294,10 @@ Time = <span id="countdown">01:00</span>
 			</div>
 			<p> 			
 			<p>
-			<div class="row justify-content-start">	
-			<button type ='button' id ="mute-button">mute Mic</button>
-			<button type ='button' id ="unmute-button">unMute Mic</button>
-			</div>
+			<!-- <div class="row justify-content-start">	 -->
+			<!-- <button type ='button' id ="mute-button">mute Mic</button> -->
+			<!-- <button type ='button' id ="unmute-button">unMute Mic</button> -->
+			<!-- </div> -->
 	
 	<div>
 <ul class="set"></li>  	
