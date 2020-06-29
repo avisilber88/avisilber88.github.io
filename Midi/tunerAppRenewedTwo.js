@@ -305,6 +305,8 @@ function setVisualMode(visualModeLocal){
 
 
 function clearButtons() {
+	
+    sequenceOff.click();
     // document.getElementById('topButtons').style.display = 'none';
     document.getElementById('instrumentSettings').style.display = 'none';
     document.getElementById('harmonyChoices').style.display = 'none';
@@ -351,6 +353,7 @@ function setupLevelOne() { //one note over and over again. sameintervals, 3rd, 4
 	
 	notesChangeable=false;
     clearButtons();
+	
     accompanimentOff.click();
 	setVisualMode("sheetMusic");
 	globalTimeRequirement=1;
@@ -408,10 +411,7 @@ function songWritingWorkshop() { //Sequence	    (basic sequence + accompaniment)
 // the file selection.
 let sourceofmidi = document.getElementById('filereader');
 // provide the File source and a callback function
-let importArray = [];
-let ticksOfThisNote = 0;
-let lastNote = 0;
-let currentNote = 0;
+
 var midiToNoteArray = 24;
 var trackPicked = false;
 var channels = 0;
@@ -420,6 +420,10 @@ var channels = 0;
 
 
 MidiParser.parse(sourceofmidi, function (obj) {
+	let importArray = [];
+let ticksOfThisNote = 0;
+let lastNote = 0;
+let currentNote = 0;
     var midiFormatType = obj.formatType;
     var midiFormatType2 = obj.formatType;
     // alert(midiFormatType);
