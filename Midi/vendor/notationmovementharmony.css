@@ -22,16 +22,16 @@
 }
 
 .scroll {
-transition: transform 3s linear, opacity 0.05s ease-out, fill 0.2s linear;
+/* transition: transform 3s linear, opacity 0.05s ease-out, fill 0.2s linear; */
 }
 
 .currentnote {
-transform: translate (-100px, 0);
+/* transform: translate (-100px, 0); */
 outline: solid 1px blue;
 color: green;
 }
 .nextNote {
-transform: translate (-200px, 0);
+/* transform: translate (-200px, 0); */
 outline: none;
 color: none;
 }
@@ -44,21 +44,66 @@ outline: none;
 }
 
 .prescroll{
-transition: transform 16s linear, opacity 0.05s ease-out, fill 0.2s linear;
+/* transition: transform 16s linear, opacity 0.05s ease-out, fill 0.2s linear; */
 }
 .partscroll{
-transition: transform 7s linear, opacity 0.05s ease-out, fill 0.2s linear;
+/* transition: transform 7s linear, opacity 0.05s ease-out, fill 0.2s linear; */
 }
 
 .partscrolling {
-  transform: translate(-400px, 0);
+  /* transform: translate(-400px, 0); */
 }
 
 
 .correct {
   opacity: 0;
+  outline: none;
+color: none;
 }
 
 .too-slow {
-  transform: translate(-800px, 2000px);
+  /* transform: translate(-800px, 2000px); */
+}
+
+
+.scroll {
+/* transition: transform 3s linear, opacity 0.05s ease-out, fill 0.2s linear; */
+}
+
+.currentnotestationary {
+/* transform: translate (-100px, 0); */
+outline: solid 1px blue;
+color: green;
+}
+.nextNotestationary {
+/* transform: translate (-200px, 0); */
+outline: none;
+color: none;
+}
+.notcurrentnotestationary {
+outline: none;
+}
+
+.scrollingstationary {
+  /* transform: translate(-800px, 0); */
+}
+
+.prescrollstationary{
+/* transition: transform 16s linear, opacity 0.05s ease-out, fill 0.2s linear; */
+}
+.partscrollstationary{
+/* transition: transform 7s linear, opacity 0.05s ease-out, fill 0.2s linear; */
+}
+
+.partscrollingstationary {
+  /* transform: translate(-400px, 0); */
+}
+
+
+.correctstationary {
+  opacity: 0;
+}
+
+.too-slowstationary {
+  /* transform: translate(-800px, 2000px); */
 }

@@ -1,7 +1,7 @@
 
 
 
-ul {
+ul.pianolist{
   height:18.875em;
   width:80em;
   margin:5em auto;
@@ -10,7 +10,7 @@ ul {
 
 }
 
-li {
+li.pianolist{
   margin:0;
   padding:0;
   list-style:none;
@@ -18,7 +18,7 @@ li {
   float:left
 }
 
-ul .white {
+ul .pianolist.white {
   height:16em;
   width:4em;
   z-index:1;
@@ -29,7 +29,7 @@ ul .white {
   background:linear-gradient(to bottom,#eee 0%,#fff 100%)
 }
 
-ul .white:active {
+ul .pianolist.white:active {
   border-top:1px solid #777;
   border-left:1px solid #999;
   border-bottom:1px solid #999;
@@ -37,7 +37,7 @@ ul .white:active {
   background:linear-gradient(to bottom,#fff 0%,#e9e9e9 100%)
 }
 
-.black {
+.pianolist.black {
   height:8em;
   width:2em;
   margin:0 0 0 -1em;
@@ -53,14 +53,19 @@ ul .white:active {
   background:linear-gradient(to right,#444 0%,#222 100%)
 }
 
-.a,.g,.f,.d,.c {
+ul .a, ul .g, ul .f, ul .d, ul .c {
   margin:0 0 0 -1em
 }
 
-ul li:first-child {
+ul .e {
+	background-color:green;
+  margin:0 0 0 0
+}
+
+ul .pianolist li:first-child {
   border-radius:5px 0 5px 5px
 }
 
-ul li:last-child {
+ul .pianolist li:last-child {
   border-radius:0 5px 5px 5px
 }
