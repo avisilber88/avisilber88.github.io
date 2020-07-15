@@ -385,6 +385,7 @@ function clearButtons() {
 	// document.getElementById('topButtons').style.display = 'none';
 	
 	document.getElementById('opening-card').style.display = 'none';
+	document.getElementById('opening-card').style.display = 'none';
 	document.getElementById('card-section').style.display = 'block';
 	document.getElementById('instrumentSettings').style.display = 'none';
 	document.getElementById('harmonyChoices').style.display = 'none';
@@ -426,19 +427,28 @@ function setupSimpleMode() {
 }
 function setupFreestyleMode() {
 	
+	document.getElementById('opening-card').style.display = 'none';
+	document.getElementById('card-section').style.display = 'block';
+	document.getElementById('opening-info').style.display = 'block';
+	
 	intervalRotationType = "normal";
 	lengthRotationType = "normal";
-	document.getElementById("accompanimentOff").click();
-	allButtonsOn();
+		allButtonsOn();
+	turnAccompanimentOff();
+
 		document.getElementById('level-progress').style.display = 'none';
-		document.getElementById('lesson-name').style.display = 'none';
-		document.getElementById('lesson-directions').style.display = 'none';
+		document.getElementById('lesson-directions').innerHTML = "";
+		document.getElementById('lesson-name').innerHTML = "";
 	scoreLevel = "freestyle";
 	notesChangeable = true;
 	// accompaniment=false;'
 	// turnAccompanimentOff();
 }
 function playYourOwn() {
+	document.getElementById('opening-card').style.display = 'none';
+	document.getElementById('card-section').style.display = 'block';
+	document.getElementById('opening-info').style.display = 'block';
+	
 	intervalRotationType = "normal";
 	lengthRotationType = "normal";
 	document.getElementById("accompanimentOn").click();
@@ -449,10 +459,12 @@ function playYourOwn() {
 
 		document.getElementById('staff-box').style.display = 'none';
 		clearButtons();
+	document.getElementById('opening-card').style.display = 'none';
+	document.getElementById('card-section').style.display = 'block';
 	document.getElementById('scoreRow').style.display = 'none';
+		document.getElementById('lesson-directions').innerHTML = "";
+		document.getElementById('lesson-name').innerHTML = "";
 		document.getElementById('level-progress').style.display = 'none';
-		document.getElementById('lesson-name').style.display = 'none';
-		document.getElementById('lesson-directions').style.display = 'none';
 	document.getElementById('octaves').style.display = 'none';
 	// document.getElementById('tunerAndSettings').style.display = 'none';
 	document.getElementById('recruitYourOwnChoices').style.display = 'block';
