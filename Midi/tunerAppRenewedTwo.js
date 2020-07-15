@@ -202,7 +202,7 @@ var rememberSingingGroup;
 var rememberTargetGroup;
 var referenceGroups = [];
 var rememberReferenceGroup;
-var notationMode = "movingNotesMode";
+var notationMode = "stationaryNotesMode";
 var dotTheNote = false;
 var dotTheSecondNote = false;
 var tieOn = false;
@@ -211,10 +211,10 @@ var tieAmountOne = 1;
 var tieAmountTwo = 1;
 var smallestNoteDenominator = 8;
 var wholesToTieAtTheBeginning = 0;
-var startingXSetting = 600;
+var startingXSetting = 400;
 var setupAFirstNote = false;
 var firstNotationToCome = false;
-var singAndTargetPlacement = 600;
+var singAndTargetPlacement = 400;
 var allTheButtons = [];
 var allTheButtonsWithStatus = []; //[buttonid, status]
 var scoreLevel = "freestyle";
@@ -224,7 +224,14 @@ var notesChangeable = true;
 var intervalRotationType = "normal";
 var lengthRotationType = "normal";
 var sequenceIntervalArray = [];
+var staffWidth=500;
+var numOfThisNoteInSequence=0;
+var wrongTarget ='blue';
+var correctTarget='lime';
+var colorTarget=wrongTarget;
+var answerRevealed=false;
 noteOnListener(0, 0);
+document.getElementById('level-progress').style.display='none';
 
 // document.getElementById('topButtons').style.display='none';
 // document.getElementById('instrumentSettings').style.display='none';
@@ -245,12 +252,56 @@ noteOnListener(0, 0);
 // }
 // $('accompanimentOff').click();
 //
+
+function alertIntervalMessage(interval){
+if (interval=="up"){
+	alert ("For this next note, sing a 3rd above the reference in the key of " + numToKeyName(keyOf) +" major");
+} else if (interval=="down"){
+	alert ("For this next note, sing a 3rd below the reference in the key of " + numToKeyName(keyOf) +" major");
+} else if (interval=="fourthUp"){
+	alert ("For this next note, sing a 4th above the reference in the key of " + numToKeyName(keyOf) +" major");
+} else if (interval=="fourthDown"){
+	alert ("For this next note, sing a 4th below the reference in the key of " + numToKeyName(keyOf) +" major");
+} 
+}
+function setProgressGoals(goal1, goal2, goal3, goal4){
+document.getElementById('levelOneNotProgress').innerHTML=goal1;
+document.getElementById('levelTwoNotProgress').innerHTML=goal2;
+document.getElementById('levelThreeNotProgress').innerHTML=goal3;
+document.getElementById('levelFourNotProgress').innerHTML=goal4;
+}
+
+function updateProgress(){
+	// alert (currentLevelScore);
+	// alert (((currentLevelScore/40)*100)+'%');
+if (currentLevelScore<=10){
+	document.getElementById('levelOneProgress').style.width=((currentLevelScore/40)*100)+'%';
+	document.getElementById('levelOneNotProgress').style.width=(25-((currentLevelScore/40)*100))+'%';
+	document.getElementById('levelOneProgress').innerHTML=(currentLevelScore) + "/10";
+} else if (currentLevelScore<=20){
+	document.getElementById('levelTwoProgress').style.width=(((currentLevelScore-10)/40)*100)+'%';
+	document.getElementById('levelTwoNotProgress').style.width=(25-(((currentLevelScore-10)/40)*100))+'%';
+	document.getElementById('levelTwoProgress').innerHTML=((currentLevelScore-10)) + "/10";
+} else if (currentLevelScore<=30){
+	document.getElementById('levelThreeProgress').style.width=(((currentLevelScore-20)/40)*100)+'%';
+	document.getElementById('levelThreeNotProgress').style.width=(25-(((currentLevelScore-20)/40)*100))+'%';
+	document.getElementById('levelThreeProgress').innerHTML=((currentLevelScore-20)) + "/10";
+} else if (currentLevelScore<=40){
+	document.getElementById('levelFourProgress').style.width=(((currentLevelScore-30)/40)*100)+'%';
+	document.getElementById('levelFourNotProgress').style.width=(25-(((currentLevelScore-30)/40)*100))+'%';
+	document.getElementById('levelFourProgress').innerHTML=((currentLevelScore-30)) + "/10";
+}
+}
+
+
+
 function swapVisualMode() {
 	if (visualMode == "both") {
 		visualMode = "tuner";
 		document.getElementById('tunerframe').style.display = 'block';
 
 		document.getElementById('staff-box').style.display = 'none';
+		document.getElementById('viewBox').style.borderWidth='0px';
 
 	} else if (visualMode == "tuner") {
 		visualMode = "sheetMusic";
@@ -258,6 +309,8 @@ function swapVisualMode() {
 		document.getElementById('tunerframe').style.display = 'none';
 
 		document.getElementById('staff-box').style.display = 'block';
+		
+		document.getElementById('viewBox').style.borderWidth='1px';
 	} else if (visualMode == "sheetMusic") {
 
 		visualMode = "tuner";
@@ -265,8 +318,11 @@ function swapVisualMode() {
 		document.getElementById('tunerframe').style.display = 'block';
 
 		document.getElementById('staff-box').style.display = 'none';
-		renderer.resize(500, 200);
-		startingXSetting = 400;
+		
+		document.getElementById('viewBox').style.borderWidth='1px';
+		staffWidth=500;
+		renderer.resize(staffWidth, 200);
+		startingXSetting = staffWidth-100;
 
 		document.getElementById('staff-box').style.paddingRight = '20px';
 	}
@@ -274,30 +330,50 @@ function swapVisualMode() {
 
 function setVisualMode(visualModeLocal) {
 	if (visualModeLocal == "both") {
+		
+	document.getElementById('viewBox').style.borderWidth='0px';
+	document.getElementById('viewStaff').classList.remove('active');
+	document.getElementById('viewTuner').classList.remove('active');
+	document.getElementById('viewBoth').classList.remove('active');
+	document.getElementById('viewBoth').classList.add('active');
 		visualModeLocal = "both";
 		document.getElementById('tunerframe').style.display = 'block';
 
 		document.getElementById('staff-box').style.display = 'block';
-		renderer.resize(700, 200);
-		startingXSetting = 600;
+		staffWidth=500;
+		renderer.resize(staffWidth, 200);
+		startingXSetting = staffWidth-100;
 
 		document.getElementById('staff-box').style.paddingRight = '0px';
 	} else if (visualModeLocal == "tuner") {
+		
+		document.getElementById('viewBox').style.borderWidth='1px';
+	document.getElementById('viewStaff').classList.remove('active');
+	document.getElementById('viewTuner').classList.remove('active');
+	document.getElementById('viewBoth').classList.remove('active');
+	document.getElementById('viewTuner').classList.add('active');
 		visualModeLocal = "tuner";
 
 		document.getElementById('tunerframe').style.display = 'block';
 
 		document.getElementById('staff-box').style.display = 'none';
 	} else if (visualModeLocal == "sheetMusic") {
+		
+	document.getElementById('viewStaff').classList.remove('active');
+	document.getElementById('viewTuner').classList.remove('active');
+	document.getElementById('viewBoth').classList.remove('active');
+	document.getElementById('viewStaff').classList.add('active');
 
 		visualModeLocal = "sheetMusic";
 
+		document.getElementById('viewBox').style.borderWidth='1px';
 		document.getElementById('tunerframe').style.display = 'none';
 
 		document.getElementById('staff-box').style.display = 'block';
 		document.getElementById('staff-box').style.paddingRight = '20px';
-		renderer.resize(500, 200);
-		startingXSetting = 400;
+		staffWidth=500;
+		renderer.resize(staffWidth, 200);
+		startingXSetting = staffWidth-100;
 
 	}
 }
@@ -307,6 +383,9 @@ function clearButtons() {
 	sequenceOff.click();
 	restartTimer();
 	// document.getElementById('topButtons').style.display = 'none';
+	
+	document.getElementById('opening-card').style.display = 'none';
+	document.getElementById('card-section').style.display = 'block';
 	document.getElementById('instrumentSettings').style.display = 'none';
 	document.getElementById('harmonyChoices').style.display = 'none';
 	document.getElementById('scaleChoices').style.display = 'none';
@@ -316,12 +395,16 @@ function clearButtons() {
 	document.getElementById('recruitYourOwnChoices').style.display = 'none';
 	document.getElementById('staff-box').style.display = 'none';
 	document.getElementById('hide-button').style.display = 'none';
+	document.getElementById('opening-info').style.display = 'none';
+	
 	$("button.tuneron").click();
 }
 function allButtonsOn() {
+	
+		document.getElementById('level-progress').style.display = 'block';
 		document.getElementById('scoreRow').style.display = 'block';
 	document.getElementById('octaves').style.display = 'block';
-	document.getElementById('topButtons').style.display = 'block';
+	// document.getElementById('topButtons').style.display = 'block';
 	document.getElementById('instrumentSettings').style.display = 'block';
 	document.getElementById('harmonyChoices').style.display = 'block';
 	document.getElementById('scaleChoices').style.display = 'block';
@@ -339,17 +422,21 @@ function setupSimpleMode() {
 	clearButtons();
 	scoreLevel = "levels";
 	// accompaniment=false;'
-	accompanimentOff.click();
+	turnAccompanimentOff();
 }
 function setupFreestyleMode() {
+	
 	intervalRotationType = "normal";
 	lengthRotationType = "normal";
 	document.getElementById("accompanimentOff").click();
 	allButtonsOn();
+		document.getElementById('level-progress').style.display = 'none';
+		document.getElementById('lesson-name').style.display = 'none';
+		document.getElementById('lesson-directions').style.display = 'none';
 	scoreLevel = "freestyle";
 	notesChangeable = true;
 	// accompaniment=false;'
-	// accompanimentOff.click();
+	// turnAccompanimentOff();
 }
 function playYourOwn() {
 	intervalRotationType = "normal";
@@ -363,14 +450,21 @@ function playYourOwn() {
 		document.getElementById('staff-box').style.display = 'none';
 		clearButtons();
 	document.getElementById('scoreRow').style.display = 'none';
+		document.getElementById('level-progress').style.display = 'none';
+		document.getElementById('lesson-name').style.display = 'none';
+		document.getElementById('lesson-directions').style.display = 'none';
 	document.getElementById('octaves').style.display = 'none';
 	// document.getElementById('tunerAndSettings').style.display = 'none';
 	document.getElementById('recruitYourOwnChoices').style.display = 'block';
 	// accompaniment=false;'
-	// accompanimentOff.click();
+	// turnAccompanimentOff();
 }
 function setupLevelOne() { //one note over and over again. sameintervals, 3rd, 4th, 5th)
 	// accompaniment = false;
+
+
+	
+		document.getElementById('level-progress').style.display = 'block';
 	intervalRotationType = "scoreBased";
 	lengthRotationType = "normal";
 
@@ -378,8 +472,11 @@ function setupLevelOne() { //one note over and over again. sameintervals, 3rd, 4
 
 	notesChangeable = false;
 	clearButtons();
-
-	accompanimentOff.click();
+	
+		document.getElementById("lesson-name").innerHTML="Level 1:";
+		document.getElementById("lesson-directions").innerHTML="Directions: One note over and over again. Do ten reps, and then the interval changes(3rd up, 3rd down, 4th up, 5th up)\n\n";
+		
+	turnAccompanimentOff();
 	setVisualMode("sheetMusic");
 	globalTimeRequirement = 1;
 	// document.getElementById('tunerframe').style.display = 'none';
@@ -394,9 +491,12 @@ function setupLevelTwo() { //the note changes under you. And interval changes.
 	notesChangeable = true;
 	allButtonsOn();
 	clearButtons();
-	accompanimentOff.click();
+	turnAccompanimentOff();
 	setVisualMode("sheetMusic");
-
+	
+		document.getElementById("lesson-name").innerHTML="Level 2:"
+		document.getElementById("lesson-directions").innerHTML="Directions: The note changes each time. And interval changes.";
+		
 	globalTimeRequirement = 1;
 }
 function setupLevelThree() { //one note over and over again. (different intervals, 3rd, 4th, 5th)
@@ -407,7 +507,10 @@ function setupLevelThree() { //one note over and over again. (different interval
 	notesChangeable = false;
 	allButtonsOn();
 	clearButtons();
-	accompanimentOff.click();
+	turnAccompanimentOff();	
+		document.getElementById("lesson-name").innerHTML="Level 3: ";
+		document.getElementById("lesson-directions").innerHTML="Directions:  One note repeatedly. Intervals shuffle each rep";
+		
 	setVisualMode("sheetMusic");
 }
 function setupLevelFour() { //Sequence of 2 notes, same interval for each (The interval changes every 10 reps)\n\n
@@ -419,8 +522,11 @@ function setupLevelFour() { //Sequence of 2 notes, same interval for each (The i
 	allButtonsOn();
 	clearButtons();
 	sequenceOn.click();
-	setVisualMode("sheetMusic");
-	accompanimentOff.click();
+	setVisualMode("sheetMusic");	
+		document.getElementById("lesson-name").innerHTML="Level 4:";
+		document.getElementById("lesson-directions").innerHTML="Directions: Sequence of 2 notes, interval changes every 10 reps";
+		
+	turnAccompanimentOff();
 }
 function setupLevelFive() { //Sequence of notes 2 (The interval changes each rep, every 10 reps the length of the sequence lengthens)\n\n
 	accompaniment = false;
@@ -429,12 +535,15 @@ function setupLevelFive() { //Sequence of notes 2 (The interval changes each rep
 	lengthRotationType = "scoreBased";
 	allButtonsOn();
 	clearButtons();
-	setVisualMode("sheetMusic");
+	setVisualMode("sheetMusic");	
+		document.getElementById("lesson-name").innerHTML="Level 5:";
+		document.getElementById("lesson-directions").innerHTML="Directions: Sequence of notes, new interval each rep, every 10 reps the length of the sequence lengthens";
+		
 	sequenceOn.click();
-	accompanimentOff.click();
+	turnAccompanimentOff();
 }
 function setupLevelSix() { //Sequence of notes (The interval changes each note, every 10 reps the length of the sequence lengthens)\n\n
-
+// clearAllNotes();
 	accompaniment = true;
 	intervalRotationType = "randomIntervalsEachNote"; //THIS MUST BE CHANGED
 	// sequence-mode=
@@ -442,9 +551,12 @@ function setupLevelSix() { //Sequence of notes (The interval changes each note, 
 	scoreLevel = "levelSix";
 	allButtonsOn();
 	clearButtons();
-	setVisualMode("sheetMusic");
+	setVisualMode("sheetMusic");	
+		document.getElementById("lesson-name").innerHTML="Level 6:";
+		document.getElementById("lesson-directions").innerHTML="Sequence of notes, the interval changes each note. Sequence lengthens every 10 reps";
+		
 	sequenceOn.click();
-	accompanimentOff.click();
+	turnAccompanimentOff();
 }
 function setupLevelSeven() { //Sequence of notes with background music (rules just like level 6)\n\n
 	intervalRotationType = "randomIntervalsEachNote"; //THIS MUST BE CHANGED
@@ -455,12 +567,15 @@ function setupLevelSeven() { //Sequence of notes with background music (rules ju
 	lengthRotationType = "scoreBased";
 	allButtonsOn();
 	clearButtons();
-	setVisualMode("sheetMusic");
-	accompanimentOn.click();
+	setVisualMode("sheetMusic");	
+		document.getElementById("lesson-name").innerHTML="Level 7:";
+		document.getElementById("lesson-directions").innerHTML="Directions: Sequence of notes, the interval changes each note. Sequence lengthens every 10 reps. Same as #6, but now with background music!!!";
+		
 	sequenceOn.click();
+	turnAccompanimentOn();
 }
 function setupLevelEight() { //Sequence of notes with varying lengths without background music (The interval changes each rep, every 10 reps the length of the sequence lengthens by 4)\n\n
-
+// clearAllNotes();
 	intervalRotationType = "randomIntervals";
 	accompaniment = true;
 	// sequence-mode=
@@ -468,13 +583,16 @@ function setupLevelEight() { //Sequence of notes with varying lengths without ba
 	lengthRotationType = "scoreBasedByFour";
 	allButtonsOn();
 	clearButtons();
-	sequenceLength = 4;
-	setVisualMode("sheetMusic");
-	accompanimentOff.click();
+	setVisualMode("sheetMusic");	
+		document.getElementById("lesson-name").innerHTML="Level 8:";
+		document.getElementById("lesson-directions").innerHTML="Directions: Sequence of notes with varying lengths, same intervals. Every 10 reps the sequence lengthens";
+		
 	complexSequence.click();
+	turnAccompanimentOff();
+	sequenceLength = 4;
 }
 function setupLevelNine() { //Sequence of notes with varying lengths without background music (The interval changes each note, every 10 reps the length of the sequence lengthens by 4)\n\n
-	
+	// clearAllNotes();
 	accompaniment = true;
 	// sequence-mode=
 	scoreLevel = "levelNine";
@@ -483,14 +601,17 @@ function setupLevelNine() { //Sequence of notes with varying lengths without bac
 	allButtonsOn();
 
 	clearButtons();
-	sequenceLength = 4;
-	setVisualMode("sheetMusic");
-	accompanimentOff.click();
+	setVisualMode("sheetMusic");	
+		document.getElementById("lesson-name").innerHTML="Level 9:";
+		document.getElementById("lesson-directions").innerHTML="Sequence of notes with varying lengths and intervals. Every 10 reps the sequence lengthens";
+		
+	turnAccompanimentOff();
 	complexSequence.click();
+	sequenceLength = 4;
 }
 function setupLevelTen() { //Sequence of notes with varying lengths with background music (rules just like level 9)\n\n
 	intervalRotationType = "randomIntervalsEachNote"; //THIS MUST BE CHANGED
-
+// clearAllNotes();
 	accompaniment = true;
 	// sequence-mode=
 	scoreLevel = "levelTen";
@@ -498,17 +619,19 @@ function setupLevelTen() { //Sequence of notes with varying lengths with backgro
 	lengthRotationType = "scoreBasedByFour";
 	allButtonsOn();
 	clearButtons();
-	sequenceLength = 4;
-	setVisualMode("sheetMusic");
-	accompanimentOn.click();
+	setVisualMode("sheetMusic");	
+		document.getElementById("lesson-name").innerHTML="Level 10:";
+		document.getElementById("lesson-directions").innerHTML="Sequence of notes with varying lengths and intervals. Every 10 reps the sequence lengthens. Same as #9, but now with background music!!";
+	turnAccompanimentOn();
 	complexSequence.click();
+	sequenceLength = 4;
 }
 
 function songWritingWorkshop() {
 	accompaniment = true;
 	// sequence-mode=
 	scoreLevel = "writingWorkshop";
-	accompanimentOn.click();
+	turnAccompanimentOn();
 	clearButtons();
 
 	document.getElementById('recruitYourOwnChoices').style.display = 'block';
@@ -724,7 +847,7 @@ var div = document.getElementById("staff-box")
 	var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
 
 // Configure the rendering context.
-renderer.resize(700, 200);
+renderer.resize(500, 200); //size of the box
 var context = renderer.getContext();
 
 // A tickContext is required to draw anything that would be placed
@@ -1589,6 +1712,575 @@ async function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
 
 		}, 10000);
 	}
+	else if (notationMode=="stationaryNotesMode"){
+		theNoteLength = durationNoteSelect(theNoteLength);
+		// console.log(theNoteLength);
+		var lastImageNote = currentImageNote;
+		var currentImageNote = notes.shift();
+		var currentSecondImageNote = note2.shift();
+		var currentWholeImageNote = noteWhole.shift();
+		let noteStr = noteArray[noteArrayNum][1];
+		// noteStr='E5';
+		// alert (noteStr);
+		let partOne = noteStr.slice(0, 1) + '';
+		let partTwo = noteStr.slice(+2) + '';
+		let partThree = noteStr.slice(1, 2) + '';
+		// alert (partOne+" "+partTwo+" "+partThree+" "+wholesToTieAtTheBeginning);
+		noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
+		//Start AREA OF TIES!
+
+
+		if (wholesToTieAtTheBeginning > 0) {
+			if (noteArrayNum >= 36) {
+				noteWhole = [
+					[partOne, partTwo, partThree]
+				].map(([letter, acc, octave]) => {
+
+					const note = new VF.StaveNote({
+							clef: 'treble',
+							keys: [`${letter}${acc}/${octave}`],
+							duration: durations[4],
+						})
+						.setContext(context)
+						.setStave(staveTreble);
+					if (acc)
+						note.addAccidental(0, new VF.Accidental(acc));
+					// tickContext.addTickable(note)
+					return note;
+				});
+			} else {
+				noteWhole = [
+					[partOne, partTwo, partThree]
+				].map(([letter, acc, octave]) => {
+
+					const note = new VF.StaveNote({
+							clef: 'treble',
+							keys: [`${letter}${acc}/${octave}`],
+							duration: durations[4],
+						})
+						.setContext(context)
+						.setStave(staveTreble);
+					if (acc)
+						note.addAccidental(0, new VF.Accidental(acc));
+					// tickContext.addTickable(note)
+					return note;
+				});
+			}
+		}
+		if (tieOn) {
+			// console.log("tie on");
+			if (noteArrayNum >= 36) {
+				notes = [
+					[partOne, partTwo, partThree, tieAmountOne]
+				].map(([letter, acc, octave, tieAmount]) => {
+
+					const note = new VF.StaveNote({
+							clef: 'treble',
+							keys: [`${letter}${acc}/${octave}`],
+							duration: durations[tieAmount],
+						})
+						.setContext(context)
+						.setStave(staveTreble);
+
+					// If a StaveNote has an accidental, we must render it manually.
+					// This is so that you get full control over whether to render
+					// an accidental depending on the musical context. Here, if we
+					// have one, we want to render it. (Theoretically, we might
+					// add logic to render a natural sign if we had the same letter
+					// name previously with an accidental. Or, perhaps every twelfth
+					// note or so we might render a natural sign randomly, just to be
+					// sure our user who's learning to read accidentals learns
+					// what the natural symbol means.)
+					if (dotTheNote) {
+						note.addDot(0);
+						dotTheNote = false;
+					}
+					if (acc)
+						note.addAccidental(0, new VF.Accidental(acc));
+					// tickContext.addTickable(note)
+
+					return note;
+				});
+				note2 = [
+					[partOne, partTwo, partThree, tieAmountTwo]
+				].map(([letter, acc, octave, tieAmount]) => {
+
+					const note = new VF.StaveNote({
+							clef: 'treble',
+							keys: [`${letter}${acc}/${octave}`],
+							duration: durations[tieAmount],
+						})
+						.setContext(context)
+						.setStave(staveTreble);
+
+					// If a StaveNote has an accidental, we must render it manually.
+					// This is so that you get full control over whether to render
+					// an accidental depending on the musical context. Here, if we
+					// have one, we want to render it. (Theoretically, we might
+					// add logic to render a natural sign if we had the same letter
+					// name previously with an accidental. Or, perhaps every twelfth
+					// note or so we might render a natural sign randomly, just to be
+					// sure our user who's learning to read accidentals learns
+					// what the natural symbol means.)
+					if (dotTheSecondNote) {
+						note.addDot(0);
+						dotTheNote = false;
+					}
+					if (acc)
+						note.addAccidental(0, new VF.Accidental(acc));
+					// tickContext.addTickable(note)
+					return note;
+				});
+
+			} else {
+				notes = [
+					[partOne, partTwo, partThree, tieAmountOne]
+				].map(([letter, acc, octave, tieAmount]) => {
+
+					const note = new VF.StaveNote({
+							clef: 'bass',
+							keys: [`${letter}${acc}/${octave}`],
+							duration: durations[tieAmount],
+						})
+						.setContext(context)
+						.setStave(staveBass);
+
+					// If a StaveNote has an accidental, we must render it manually.
+					// This is so that you get full control over whether to render
+					// an accidental depending on the musical context. Here, if we
+					// have one, we want to render it. (Theoretically, we might
+					// add logic to render a natural sign if we had the same letter
+					// name previously with an accidental. Or, perhaps every twelfth
+					// note or so we might render a natural sign randomly, just to be
+					// sure our user who's learning to read accidentals learns
+					// what the natural symbol means.)
+					if (dotTheNote) {
+						note.addDot(0);
+						dotTheNote = false;
+					}
+					if (acc)
+						note.addAccidental(0, new VF.Accidental(acc));
+					// tickContext.addTickable(note)
+					return note;
+				});
+
+				note2 = [
+					[partOne, partTwo, partThree, tieAmountTwo]
+				].map(([letter, acc, octave, tieAmount]) => {
+
+					const note = new VF.StaveNote({
+							clef: 'bass',
+							keys: [`${letter}${acc}/${octave}`],
+							duration: durations[tieAmount],
+						})
+						.setContext(context)
+						.setStave(staveBass);
+
+					// If a StaveNote has an accidental, we must render it manually.
+					// This is so that you get full control over whether to render
+					// an accidental depending on the musical context. Here, if we
+					// have one, we want to render it. (Theoretically, we might
+					// add logic to render a natural sign if we had the same letter
+					// name previously with an accidental. Or, perhaps every twelfth
+					// note or so we might render a natural sign randomly, just to be
+					// sure our user who's learning to read accidentals learns
+					// what the natural symbol means.)
+					if (dotTheSecondNote) {
+						note.addDot(0);
+						dotTheNote = false;
+					}
+					if (acc)
+						note.addAccidental(0, new VF.Accidental(acc));
+					// tickContext.addTickable(note)
+					return note;
+				});
+
+				// tiedNote = new VF.StaveTie({
+				// first_note: notes[0],
+				// last_note: note2[0],
+				// first_indices: [0],
+				// last_indices: [0]
+				// });
+			}
+			// tickContext.addTickable(tiedNote.setContext(context));
+		} else {
+
+			// console.log("tie off");
+			//END AREA OF TIES!
+
+
+			//Start AREA OF NO TIES!
+			if (noteArrayNum >= 36) {
+				notes = [
+					[partOne, partTwo, partThree]
+				].map(([letter, acc, octave]) => {
+					const note = new VF.StaveNote({
+							clef: 'treble',
+							keys: [`${letter}${acc}/${octave}`],
+							duration: durations[theNoteLength],
+						})
+						.setContext(context)
+						.setStave(staveTreble);
+
+					// If a StaveNote has an accidental, we must render it manually.
+					// This is so that you get full control over whether to render
+					// an accidental depending on the musical context. Here, if we
+					// have one, we want to render it. (Theoretically, we might
+					// add logic to render a natural sign if we had the same letter
+					// name previously with an accidental. Or, perhaps every twelfth
+					// note or so we might render a natural sign randomly, just to be
+					// sure our user who's learning to read accidentals learns
+					// what the natural symbol means.)
+					if (dotTheNote) {
+						note.addDot(0);
+						dotTheNote = false;
+					}
+					if (acc)
+						note.addAccidental(0, new VF.Accidental(acc));
+					tickContext.addTickable(note)
+
+					return note;
+				});
+
+			} else {
+				notes = [
+					[partOne, partTwo, partThree]
+				].map(([letter, acc, octave]) => {
+					const note = new VF.StaveNote({
+							clef: 'bass',
+							keys: [`${letter}${acc}/${octave}`],
+							duration: durations[theNoteLength],
+						})
+						.setContext(context)
+						.setStave(staveBass);
+
+					// If a StaveNote has an accidental, we must render it manually.
+					// This is so that you get full control over whether to render
+					// an accidental depending on the musical context. Here, if we
+					// have one, we want to render it. (Theoretically, we might
+					// add logic to render a natural sign if we had the same letter
+					// name previously with an accidental. Or, perhaps every twelfth
+					// note or so we might render a natural sign randomly, just to be
+					// sure our user who's learning to read accidentals learns
+					// what the natural symbol means.)
+					if (dotTheNote) {
+						note.addDot(0);
+						dotTheNote = false;
+					}
+					if (acc)
+						note.addAccidental(0, new VF.Accidental(acc));
+					tickContext.addTickable(note)
+
+					return note;
+				});
+			}
+
+		}
+		//END AREA OF NO TIES!
+
+		if (voiceType == "referenceNote") {
+
+			notes[0].setKeyStyle(0, {
+				fillStyle: 'black'
+			});
+			if (notes.length > 1) {
+				notes[1].setKeyStyle(0, {
+					fillStyle: 'black'
+				});
+			}
+
+		} else if (voiceType == "targetNote") {
+			try {
+				// if ((wrongNote) && (!(scoreTimeStart.getTime() > now.getTime()))) {
+				// // alert("sup fool");
+				// // scorePauseTime= previousScorePauseTime+(now.getTime() - scorePauseTime;
+				// // scoreTimeStart.setTime(scoreTimeStart.getTime()+(now.getTime()-scoreTimeStart.getTime())/8);
+				// // wrongTimer=new Date();
+				// // wrongPoints=0;
+				// // scoreTimeSatart=new Date();
+				// // newScore=false;
+				// }
+				// console.log (rememberSingingGroup);
+				visibleTargetNoteGroups[0].classList.add('correct');
+				visibleTargetNoteGroups.shift();
+				// visibleTargetNoteGroups[rememberTargetGroup].classList.add('correct');
+
+			} catch (error) {}
+			notes[0].setKeyStyle(0, {
+				fillStyle: 'red'
+			}); //chartreuse
+			try {
+				// let transformMatrix = 5;
+				// // console.warn(visibleReferenceNoteGroups.length);
+				// if (sequencePlay) {
+					// // transformMatrix = window.getComputedStyle(visibleReferenceNoteGroups[visibleReferenceNoteGroups.length - 2]).transform;
+				// } else {
+					// // transformMatrix = window.getComputedStyle(visibleReferenceNoteGroups[visibleReferenceNoteGroups.length - 1]).cx;
+
+				// }
+				// console.warn("it is "+transformMatrix);
+				// transformMatrix will be something like 'matrix(1, 0, 0, 1, -118, 0)'
+				// where, since we're only translating in x, the 4th property will be
+				// the current x-translation. You can dive into the gory details of
+				// CSS3 transform matrices (along with matrix multiplication) if you want
+				// at http://www.useragentman.com/blog/2011/01/07/css3-matrix-transform-for-the-mathematically-challenged/
+				// console.warn(visibleReferenceNoteGroups.length+" "+transformMatrix.toString());
+				console.warn(startingXSetting+" "+sequenceLength+" "+(numOfThisNoteInSequence));
+				console.warn(startingXSetting/(sequenceLength)*(numOfThisNoteInSequence-2));
+				
+				// const x = transformMatrix.split(',')[4].trim();
+				// const x = transformMatrix.replace("px", "");
+				// console.warn(x);
+			if (sequencePlay){
+				singAndTargetPlacement = (startingXSetting/(sequenceLength)*(numOfThisNoteInSequence-2))//Math.floor(x);
+				if (singAndTargetPlacement<0){
+					singAndTargetPlacement = (sequenceLength-1)*startingXSetting/(sequenceLength);
+				}
+			}
+			else {
+					singAndTargetPlacement = startingXSetting/(sequenceLength)*(numOfThisNoteInSequence-1)//Math.floor(x);
+			}
+			} catch (error) {
+				// alert ("hi");
+				console.error(error.toString());
+				tickContext.preFormat().setX(startingXSetting);
+			} //.setX(visibleNoteGroups[0].getX());//.setX(tickContext.getTickables().getX());
+			// alert (visibleNoteGroups.getX().toString());
+			// alert notes[0].
+		} else if (voiceType == "singingNote") {
+			try {
+				// if ((wrongNote) && (!(scoreTimeStart.getTime() > now.getTime()))) {
+				// // alert("sup fool");
+				// // scorePauseTime= previousScorePauseTime+(now.getTime() - scorePauseTime;
+				// // scoreTimeStart.setTime(scoreTimeStart.getTime()+(now.getTime()-scoreTimeStart.getTime())/8);
+				// // wrongTimer=new Date();
+				// // wrongPoints=0;
+				// // scoreTimeSatart=new Date();
+				// // newScore=false;
+				// }
+				// console.log(rememberSingingGroup);
+				// visibleSingingNoteGroups[rememberSingingGroup].classList.add('correct');
+				visibleSingingNoteGroups[0].classList.add('correct');
+				visibleSingingNoteGroups.shift();
+			} catch (error) {}
+		
+			// let color = rgb(0, 155+score, 0);
+
+			notes[0].setKeyStyle(0, {
+				fillStyle: colorTarget
+			});
+		
+			
+			//GO HERE TO UPDATE COLOR AS YOU GET THE NOTE RIGHT!!!
+			try {
+				// console.log(visibleReferenceNoteGroups.length + " is the length");
+				const transformMatrix = window.getComputedStyle(visibleReferenceNoteGroups[visibleReferenceNoteGroups.length - 1]).transform;
+				// transformMatrix will be something like 'matrix(1, 0, 0, 1, -118, 0)'
+				// where, since we're only translating in x, the 4th property will be
+				// the current x-translation. You can dive into the gory details of
+				// CSS3 transform matrices (along with matrix multiplication) if you want
+				// at http://www.useragentman.com/blog/2011/01/07/css3-matrix-transform-for-the-mathematically-challenged/
+				const x = transformMatrix.split(',')[4].trim();
+				tickContext.preFormat().setX(Math.floor(x) + startingXSetting); //.setX(visibleNoteGroups[0].getX());//.setX(tickContext.getTickables().getX());
+				// alert (visibleNoteGroups.getX().toString());
+				// alert notes[0].
+			} catch (error) {
+				tickContext.preFormat().setX(startingXSetting);
+			}
+		}
+		currentImageNote = notes.shift();
+		tickContext.addTickable(currentImageNote);
+		if (note2.length == 1) {
+			currentSecondImageNote = note2.shift();
+
+			tickContext.addTickable(currentSecondImageNote);
+		}
+		if (noteWhole.length == 1) {
+			currentWholeImageNote = noteWhole.shift();
+			tickContext.addTickable(currentWholeImageNote);
+		}
+		if (!currentImageNote)
+			return;
+		const group = context.openGroup();
+
+		// visibleNoteGroups.push(group);
+		// alert(visibleNoteGroups[0].));
+		// console.log(voiceType);
+		if (voiceType == "singingNote") {
+			visibleSingingNoteGroups.push(group);
+			rememberSingingGroup = visibleSingingNoteGroups.indexOf(group);
+		} else if (voiceType == "targetNote") {
+			visibleTargetNoteGroups.push(group);
+			rememberTargetGroup = visibleTargetNoteGroups.indexOf(group);
+		} else if (voiceType == "referenceNote") {
+			visibleReferenceNoteGroups.push(group);
+			referenceGroups.push(visibleReferenceNoteGroups.indexOf(group));
+			if (sequencePlay) {
+
+				try {
+				visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group)].classList.add('nextNotestationary');
+				} catch (error) {}
+				try {
+					visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 1].classList.remove('prescrollstationary');
+				} catch (error) {}
+				try {
+					visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 1].classList.remove('nextNotestationary');
+				} catch (error) {}
+				try {
+					visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 1].classList.add('currentnotestationary');
+				} catch (error) {}
+				try {
+					visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.remove('currentnotestationary');
+				} catch (error) {}
+				try {
+					// visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.add('scroll');
+					visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.remove('partscrollstationary');
+				} catch (error) {}
+				try {
+					visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.remove('partscrollingstationary');
+				} catch (error) {}
+				try {
+					visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.add('nextnotestationary');
+				} catch (error) {}
+				try {
+					visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.add('scrollingstationary');
+
+				} catch (error) {}
+			}
+			// console.error(referenceGroups.toString());
+		}
+		let startingSetX = startingXSetting - wholesToTieAtTheBeginning * 25;
+		startingSetX = startingSetX/sequenceLength*numOfThisNoteInSequence;
+		
+		if (tieOn) {
+			startingSetX = startingSetX - 50;
+		}
+
+		for (i = 0; i < wholesToTieAtTheBeginning; i++) {
+			tiedNote = new VF.StaveTie({
+					first_note: currentImageNote,
+					last_note: currentWholeImageNote,
+					first_indices: [0],
+					last_indices: [0]
+				})
+				tickContext.preFormat().setX(startingSetX);
+			currentWholeImageNote.draw();
+			tickContext.preFormat().setX(startingSetX + 12);
+			tiedNote.setContext(context).draw();
+			startingSetX = startingSetX + 25;
+		}
+		tickContext.preFormat().setX(startingSetX);
+		if (setupAFirstNote) {
+			tickContext.preFormat().setX(startingXSetting/sequenceLength*numOfThisNoteInSequence);
+			setupAFirstNote = false;
+		} else {
+			tickContext.preFormat().setX(startingXSetting/sequenceLength*numOfThisNoteInSequence);
+		}
+		if ((voiceType == "singingNote") || (voiceType == "targetNote")) {
+			tickContext.preFormat().setX(singAndTargetPlacement);
+		}
+		currentImageNote.draw();
+		if (tieOn) {
+			tickContext.preFormat().setX(startingSetX + 25);
+			currentSecondImageNote.draw();
+			tiedNote = new VF.StaveTie({
+					first_note: currentImageNote,
+					last_note: currentSecondImageNote,
+					first_indices: [0],
+					last_indices: [0]
+				})
+
+				tickContext.preFormat().setX(startingSetX + 12);
+			tiedNote.setContext(context).draw();
+		}
+		if (voiceType=="referenceNote"){
+			
+		// numOfThisNoteInSequence++; 7-15-20
+		// alert (numOfThisNoteInSequence);
+		}
+		// tiedNote.draw();
+		context.closeGroup();
+
+		// console.log(currentImageNote.toString());
+		// console.log(group.toString());
+		// group.setAttributeNS(null, "fill", "blue");
+
+		group.classList.add('partscroll');
+		// Force a dom-refresh by asking for the group's bounding box. Why? Most
+		// modern browsers are smart enough to realize that adding .scroll class
+		// hasn't changed anything about the rendering, so they wait to apply it
+		// at the next dom refresh, when they can apply any other changes at the
+		// same time for optimization. However, if we allow that to happen,
+		// then sometimes the note will immediately jump to its fully transformed
+		// position -- because the transform will be applied before the class with
+		// its transition rule.
+		const box = group.getBoundingClientRect();
+		group.classList.add('partscrolling');
+		wholesToTieAtTheBeginning = 0;
+		tieOn = false;
+		dotTheSecondNote = false;
+		// If a user doesn't answer in time make the note fall below the staff
+		window.setTimeout(() => {
+			if (voiceType == "singingNote") {
+
+				const index = visibleSingingNoteGroups.indexOf(group);
+				if (index === -1)
+					return;
+				group.classList.add('too-slow');
+				visibleSingingNoteGroups.shift();
+
+			} else if (voiceType == "targetNote") {
+				const index = visibleTargetNoteGroups.indexOf(group);
+				if (index === -1)
+					return;
+				group.classList.add('too-slow');
+				visibleTargetNoteGroups.shift();
+
+			} else if (voiceType == "referenceNote") {
+				const index = visibleReferenceNoteGroups.indexOf(group);
+				if (index === -1)
+					return;
+				group.classList.add('too-slow');
+				// visibleReferenceNoteGroups.shift();
+				// if (referenceGroups.includes(index + 0)) {
+				// referenceGroups.splice(referenceGroups.indexOf(index + 0), 1);
+				// makeAndShowANote(randomNoteNum, 2, "referenceNote");
+				// }
+				// referenceGroups = referenceGroups.map(function (value) {
+				// return value - 1;
+				// });
+				// if (referenceGroups.includes(index + 0)) {
+				// referenceGroups.splice(referenceGroups.indexOf(index + 0), 1);
+				// makeAndShowANote(randomNoteNum, 2, "referenceNote");
+				// }
+
+			}
+			// const index = visibleNoteGroups.indexOf(group);
+
+
+		}, 10000);
+	}
+}
+function clearAllNotes(){
+	try{
+		
+// alert (visibleReferenceNoteGroups.length);
+visibleTargetNoteGroups.forEach(element => element.classList.add('correct'));
+
+visibleSingingNoteGroups.forEach(element => element.classList.add('correct'));
+visibleSingingNoteGroups.splice(0, visibleReferenceNoteGroups.length);
+visibleTargetNoteGroups.splice(0, visibleReferenceNoteGroups.length);
+visibleReferenceNoteGroups.forEach(element => element.classList.add('correct'));
+
+visibleReferenceNoteGroups.forEach(element => element.classList.remove('currentnotestationary'));
+
+visibleReferenceNoteGroups.splice(0, visibleReferenceNoteGroups.length);
+// alert (visibleReferenceNoteGroups.length);
+// const visibleReferenceNoteGroups=[];
+// visibleReferenceNoteGroups=[];
+// alert ('hi');
+	}
+	catch(error){alert (visibleReferenceNoteGroups.toString());}
 }
 
 function rightAnswer() {
@@ -4531,6 +5223,23 @@ function stopRootNotes() {
 	} catch (error) {}
 }
 
+function stopVoices(){
+	// alert ("hi");
+	try {
+		for (var i = 0; i < audioArray.length; i++) {
+			try {
+				console.warn(audioArray[i][1][1]);
+			if (audioArray[i][1][1]=="humanVoice"){
+			
+				audioArray[i][0].pause();
+			}
+			
+			} catch (error) {alert ("hi")}
+		}
+			// alert ("ho");
+	} catch (error) {console.error(error.toString)}
+}
+
 function amplifyMedia(mediaElem, multiplier) {
 	var context = new(window.AudioContext || window.webkitAudioContext),
 	result = {
@@ -5345,6 +6054,7 @@ function repeatOnFrame() {
 			newWrong = false;
 			wrongNote = false;
 			wrongPoints = 0;
+			// numOfThisNoteInSequence=0;
 			// startScoreTimer();
 			pauseScore();
 		}
@@ -5354,7 +6064,7 @@ function repeatOnFrame() {
 			// alert(sequenceArray[0][0]+" "+sequenceArray[0][1]);
 
 			makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
-
+			numOfThisNoteInSequence++;
 			// alert("checkpointTwo");
 			firstNotationToCome = false;
 			setupAFirstNote = true;
@@ -5363,8 +6073,11 @@ function repeatOnFrame() {
 
 		if (sequenceArray.length > 0) {
 			makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
+			numOfThisNoteInSequence++;
 		} else {
+			numOfThisNoteInSequence=0;
 			makeAndShowANote(sequenceCopy[0][0], sequenceCopy[0][1], "referenceNote");
+			numOfThisNoteInSequence++;
 		}
 		// let currentRandomScaleNum=
 		// console.log(currentNoteInfo.toString());
@@ -5408,25 +6121,25 @@ function repeatOnFrame() {
 			// alert("hi");
 			majorCheck = true;
 			getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
-			document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + " third above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+			document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one " + thirdType + " third above that:<p style='font-size: 20px;  color: red'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;  color: black;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 			majorCheck = false;
 		} else if (intervalDirection == "down") {
 			majorCheck = true;
 			getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
-			document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + " third below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+			document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one " + thirdType + " third below that:<p style='font-size: 20px;  color: red'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 			majorCheck = false;
 		} else if (intervalDirection == "unison") {
-			document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing that";
+			document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing that";
 		} else if (intervalDirection == "fourthUp") {
 			if (toSolFej(keyOf, randomScaleNum) == "Fa") {
 				newQuestionTime = true;
 			}
-			document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+			document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth above that:<p style='font-size: 20px; color: red'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 		} else if (intervalDirection == "fourthDown") {
 			if (toSolFej(keyOf, randomScaleNum) == "Fa") {
 				newQuestionTime = true;
 			}
-			document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+			document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 		}
 		//beginningtakenfromharmonizebecauseyougotitrright
 		lastReference = currentRandomNoteNum + 0;
@@ -5464,7 +6177,7 @@ function repeatOnFrame() {
 		startArpeggioTimer();
 		startRhythmTimer();
 		if (sequenceArray.length == 0) {
-
+			console.error ('6115'); //7-15-2020
 			sequenceArray = sequenceCopy.slice();
 
 			// console.log("sup "+ sequenceArray.toString());
@@ -5476,14 +6189,17 @@ function repeatOnFrame() {
 			chordSequenceStarted = false; //proceed to the next note.
 
 		}
+		// console.warn("is it started "+chordSequenceStarted);
 		if ((!chordSequenceStarted) && (chordSequenceArray.length > 0) && (!paused)) { //TRANSPLANT BEGIN //Avi thinks he should definitely return here!!
-
+			
 			if (chordSequenceArray.length == (chordSequenceLength)) { // this is the beginning of the sequence every time.
 				score = 0;
 				scoreTimeBeats = 0;
 				currentScore = 0;
 				previousScorePauseTimeAmount = 0;
 				scorePauseTimeAmount = 0;
+				
+				// numOfThisNoteInSequence=0;
 				// scorePauseTimeAmount=0;
 				newScore = true;
 				newWrong = false;
@@ -5491,7 +6207,14 @@ function repeatOnFrame() {
 				wrongPoints = 0;
 				// startScoreTimer();
 				pauseScore();
+				
+				console.error('6144'); //7-15-2020
+					
 				sequenceArray = sequenceCopy.slice();
+				// numOfThisNoteInSequence=0;
+				console.error("copy is " +sequenceCopy.length+ " length of sequence is "+sequenceArray.length+ " num of notes is "+numOfThisNoteInSequence);
+				
+				console.error(sequenceArray.toString());
 				// console.log(sequenceArray.toString());
 				synth.triggerRelease();
 				sequenceStarted = true;
@@ -5570,7 +6293,7 @@ function repeatOnFrame() {
 			startArpeggioTimer();
 			startRhythmTimer();
 			if (chordSequenceArray.length == 0) {
-
+				
 				chordSequenceArray = chordSequenceCopy.slice();
 				// alert (chordSequenceArray.length);
 				// console.log("sup "+ sequenceArray.toString());
@@ -5591,15 +6314,21 @@ function repeatOnFrame() {
 			// console.log(arpeggioSequenceArray.length+" "+arpeggioSequenceArray.toString());
 			if (firstNotationToCome) {
 				makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
+			numOfThisNoteInSequence++;
 				firstNotationToCome = false;
 				setupAFirstNote = true;
 			}
 			let currentNoteInfo = sequenceArray.shift();
 
 			if (sequenceArray.length > 0) {
+				console.error("length of sequence is "+sequenceArray.length+ " num of notes is "+numOfThisNoteInSequence);
 				makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
+			numOfThisNoteInSequence++;
 			} else {
+				console.error("restarted numnotes");
+				numOfThisNoteInSequence=0;
 				makeAndShowANote(sequenceCopy[0][0], sequenceCopy[0][1], "referenceNote");
+			numOfThisNoteInSequence++;
 			}
 
 			// console.log(currentNoteInfo.toString()+" "+arpeggioSequenceStarted);
@@ -5645,25 +6374,25 @@ function repeatOnFrame() {
 					getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
 
 					// console.log("the note is " + randomScaleNum);
-					document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + " third above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+					document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one " + thirdType + " third above that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;  color: black;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 					majorCheck = false;
 				} else if (intervalDirection == "down") {
 					majorCheck = true;
 					getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
-					document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + " third below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+					document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one " + thirdType + " third below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 					majorCheck = false;
 				} else if (intervalDirection == "unison") {
-					document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing that";
+					document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing that";
 				} else if (intervalDirection == "fourthUp") {
 					if (toSolFej(keyOf, randomScaleNum) == "Fa") {
 						newQuestionTime = true;
 					}
-					document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+					document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth above that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 				} else if (intervalDirection == "fourthDown") {
 					if (toSolFej(keyOf, randomScaleNum) == "Fa") {
 						newQuestionTime = true;
 					}
-					document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+					document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 				}
 			}
 			// if (sequencePlay) {
@@ -5879,6 +6608,10 @@ function repeatOnFrame() {
 	}
 
 	if (newQuestionTime == true) {
+		numOfThisNoteInSequence=0;
+		// alert ("a new questions!");
+		chordSequenceStarted=false;
+		clearAllNotes();
 		currentScore = 0;
 		score = 0;
 		wrongPoints = 0;
@@ -5922,6 +6655,7 @@ function repeatOnFrame() {
 			}
 			if (scoreLevel != "freestyle") {
 				if (intervalRotationType == "scoreBased") {
+					setProgressGoals ("3rd Up", "3rd Down", "4th Up", "4th Down");
 					if (currentLevelScore == 10) {
 						intervalDirection = "down";
 						alert("now practice doing a 3rd down of this note");
@@ -5934,8 +6668,16 @@ function repeatOnFrame() {
 					}
 				} else if (intervalRotationType == "randomIntervals") {
 					intervalDirection = getRandomInterval();
+					if (scoreLevel == "levelThree"){
+					setProgressGoals ("Random Intervals with Note #1", "Random Intervals with Note #2", "Random Intervals with Note #3", "Random Intervals with Note #4");
+						alertIntervalMessage(intervalDirection);
+					}
+				
+					
 				}
 				if (lengthRotationType == "scoreBased") {
+					// alert ("hi");
+					setProgressGoals ("2 notes", "3 Notes", "4 Notes", "5 Notes");
 					if (currentLevelScore == 10) {
 						sequenceLength = 3;
 						// alert("now practice doing a 3rd down of this note");
@@ -5947,6 +6689,7 @@ function repeatOnFrame() {
 						// alert("now practice doing a 5th up of this note (Note: This is the same as a 4th down)");
 					}
 				} else if (lengthRotationType == "scoreBasedByFour") {
+					setProgressGoals ("4 Notes", "8 Notes", "12 Notes", "16 Notes");
 					if (currentLevelScore == 10) {
 						sequenceLength = 8;
 						// alert("now practice doing a 3rd down of this note");
@@ -5957,6 +6700,10 @@ function repeatOnFrame() {
 						sequenceLength = 16;
 						// alert("now practice doing a 5th up of this note (Note: This is the same as a 4th down)");
 					}
+				}
+							updateProgress();
+				if (currentLevelScore==40){
+					alert ("Congratulations! You have completed this level. Select a new level from the 'select level' menu");
 				}
 
 			}
@@ -6302,13 +7049,13 @@ function repeatOnFrame() {
 
 				sequenceCopy = [];
 				sequenceCopy = sequenceArray.slice();
-
 				//nonreference section end
 			}
 		} else { // regular sequenceplay is on
 		// alert ("hi");
 			if (scoreLevel != "freestyle") {
 				if (intervalRotationType == "scoreBased") {
+					setProgressGoals ("3rd Up", "3rd Down", "4th Up", "4th Down");
 					if (currentLevelScore == 10) {
 						intervalDirection = "down";
 						alert("now practice doing a 3rd down of this note");
@@ -6323,6 +7070,8 @@ function repeatOnFrame() {
 					intervalDirection = getRandomInterval();
 				}
 				if (lengthRotationType == "scoreBased") {
+					
+					setProgressGoals ("4 Notes", "8 Notes", "12 Notes", "16 Notes");
 					if (currentLevelScore == 10) {
 						sequenceLength = 3;
 						// alert("now practice doing a 3rd down of this note");
@@ -6334,6 +7083,8 @@ function repeatOnFrame() {
 						// alert("now practice doing a 5th up of this note (Note: This is the same as a 4th down)");
 					}
 				} else if (lengthRotationType == "scoreBasedByFour") {
+					
+					setProgressGoals ("4 Notes", "8 Notes", "12 Notes", "16 Notes");
 					if (currentLevelScore == 10) {
 						sequenceLength = 8;
 						// alert("now practice doing a 3rd down of this note");
@@ -6344,6 +7095,10 @@ function repeatOnFrame() {
 						sequenceLength = 16;
 						// alert("now practice doing a 5th up of this note (Note: This is the same as a 4th down)");
 					}
+				}
+					updateProgress();
+				if (currentLevelScore==40){
+					alert ("Congratulations! You have completed this level. Select a new level from the 'select level' menu");
 				}
 
 			}
@@ -6497,6 +7252,8 @@ function repeatOnFrame() {
 
 				sequenceCopy = [];
 				sequenceCopy = sequenceArray.slice();
+				
+				console.error("started with "+sequenceArray.toString()); //7-15-2020
 				// sequenceCopy.unshift([sequenceCopy[0][0], 2, sequenceCopy[0][2]]);
 
 			}
@@ -6514,30 +7271,31 @@ function repeatOnFrame() {
 				// alert("hi");
 				majorCheck = true;
 				getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
-				document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + " third above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+				document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one " + thirdType + " third above that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;  color: black;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 				majorCheck = false;
 			} else if (intervalDirection == "down") {
 				majorCheck = true;
 				getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
-				document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + " third below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+				document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one " + thirdType + " third below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 				majorCheck = false;
 			} else if (intervalDirection == "unison") {
-				document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing that";
+				document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing that";
 			} else if (intervalDirection == "fourthUp") {
 				if (toSolFej(keyOf, randomScaleNum) == "Fa") {
 					newQuestionTime = true;
 				}
-				document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+				document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth above that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 			} else if (intervalDirection == "fourthDown") {
 				if (toSolFej(keyOf, randomScaleNum) == "Fa") {
 					newQuestionTime = true;
 				}
-				document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+				document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 			}
 		}
 		r = randomNoteNum;
 		if (!sequencePlay) {
 			makeAndShowANote(r, 2, "referenceNote");
+			numOfThisNoteInSequence++;
 		}
 		if (!paused) {
 			lastMostRecentPostingNum = mostRecentPostingNum + 0;
@@ -7131,8 +7889,10 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
 		wrongNote = false;
 		newWrong = true;
 		if (newScore) {
-			makeAndShowANote(randomNoteNum + legalInterval, 1, "targetNote");
+			colorTarget=correctTarget;
+			// makeAndShowANote(randomNoteNum + legalInterval, 1, "targetNote");
 			makeAndShowANote(thanote, 1, "singingNote");
+			
 		}
 		startScoreTimer();
 		// updateTimer();
@@ -7161,8 +7921,14 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
 			score = 0;
 			currentScore = 0;
 			scoreTimeBeats = 0;
+			if (!answerRevealed){
 			totalScore++;
+			
 			currentLevelScore++;
+			}
+			else{
+			answerRevealed=false;
+			}
 			document.getElementById("totalscore").innerHTML = "#Correct = " + totalScore;
 			previousNote = noteArray[((randomNoteNum) + legalInterval)][1];
 			harmonizeBecauseYouRight();
@@ -7170,8 +7936,11 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
 
 		}
 	} else { //WHAT TO DO WHEN WRONG
+		colorTarget=wrongTarget;
+		
 		makeAndShowANote(randomNoteNum + legalInterval, 1, "targetNote");
 		makeAndShowANote(thanote, 1, "singingNote");
+		
 		// console.log("not awesome");
 		if ((sequencePlay) && (score > 0)) {
 			startWrongTimer();
@@ -7699,23 +8468,23 @@ $('#thirdUp').click(function () {
 	if (intervalDirection == "up") {
 		majorCheck = true;
 		getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + " third above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) +
-				((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one " + thirdType + " third above that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) +
+				((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;  color: black;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 		majorCheck = false;
 	} else if (intervalDirection == "down") {
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + " third below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one " + thirdType + " third below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 	} else if (intervalDirection == "unison") {
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing that";
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing that";
 	} else if (intervalDirection == "fourthUp") {
 		if (toSolFej(keyOf, randomScaleNum) == "Fa") {
 			newQuestionTime = true;
 		}
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth above that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 	} else if (intervalDirection == "fourthDown") {
 		if (toSolFej(keyOf, randomScaleNum) == "Fa") {
 			newQuestionTime = true;
 		}
-		document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 	}
 });
 var slider = document.getElementById('noteLengthSlider');
@@ -7862,7 +8631,7 @@ $(function () {
 		min: 60,
 		max: 200,
 		value: 100,
-		slide: function (event, ui) {
+		stop: function (event, ui) {
 			$("#BPMAmount").val(ui.value);
 			currentBPM = Number(document.getElementById("BPMAmount").value) + 0;
 			newQuestionTime = true;
@@ -7871,9 +8640,10 @@ $(function () {
 	$("#BPMAmount").val($("#slider-horizontal-BPMAmount").slider("value"));
 	currentBPM = Number(document.getElementById("BPMAmount").value) + 0;
 	// console.log("it is " + sequenceLength);
-
+		stopAllNotes();
+		clearAllNotes();
 	newQuestionTime = true;
-	stopAllNotes();
+
 });
 // $('#amount').change(function () {
 // accompanimentVolume=Number(document.getElementById("amount").value)+0;
@@ -7895,24 +8665,24 @@ $('#thirdDown').click(function () {
 	document.getElementById("allHarmonies").style.background = buttonNormalColor;
 	intervalDirection = "down";
 	if (intervalDirection == "up") {
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + "third above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one " + thirdType + "third above that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;  color: black;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 	} else if (intervalDirection == "down") {
 		majorCheck = true;
 		getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + " third below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one " + thirdType + " third below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 		majorCheck = false;
 	} else if (intervalDirection == "unison") {
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing that";
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing that";
 	} else if (intervalDirection == "fourthUp") {
 		if (toSolFej(keyOf, randomScaleNum) == "Fa") {
 			newQuestionTime = true;
 		}
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth above that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 	} else if (intervalDirection == "fourthDown") {
 		if (toSolFej(keyOf, randomScaleNum) == "Fa") {
 			newQuestionTime = true;
 		}
-		document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 	}
 });
 $('#unison').click(function () {
@@ -7930,21 +8700,21 @@ $('#unison').click(function () {
 	document.getElementById("allHarmonies").style.background = buttonNormalColor;
 	intervalDirection = "unison";
 	if (intervalDirection == "up") {
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one third " + thirdType + " above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one third " + thirdType + " above that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;  color: black;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 	} else if (intervalDirection == "down") {
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one third below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one third below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 	} else if (intervalDirection == "unison") {
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing that";
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing that";
 	} else if (intervalDirection == "fourthUp") {
 		if (toSolFej(keyOf, randomScaleNum) == "Fa") {
 			newQuestionTime = true;
 		}
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth above that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 	} else if (intervalDirection == "fourthDown") {
 		if (toSolFej(keyOf, randomScaleNum) == "Fa") {
 			newQuestionTime = true;
 		}
-		document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 	}
 
 });
@@ -7964,21 +8734,21 @@ $('#fourthUp').click(function () {
 	document.getElementById("allHarmonies").style.background = buttonNormalColor;
 	intervalDirection = "fourthUp";
 	if (intervalDirection == "up") {
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + " third above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one " + thirdType + " third above that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;  color: black;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 	} else if (intervalDirection == "down") {
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one third below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one third below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 	} else if (intervalDirection == "unison") {
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing that";
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing that";
 	} else if (intervalDirection == "fourthUp") {
 		if (toSolFej(keyOf, randomScaleNum) == "Fa") {
 			newQuestionTime = true;
 		}
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth above that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 	} else if (intervalDirection == "fourthDown") {
 		if (toSolFej(keyOf, randomScaleNum) == "Fa") {
 			newQuestionTime = true;
 		}
-		document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 	}
 
 });
@@ -7998,21 +8768,21 @@ $('#fourthDown').click(function () {
 	document.getElementById("allHarmonies").style.background = buttonNormalColor;
 	intervalDirection = "fourthDown";
 	if (intervalDirection == "up") {
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one " + thirdType + " third above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one " + thirdType + " third above that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;  color: black;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 	} else if (intervalDirection == "down") {
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one third below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one third below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 	} else if (intervalDirection == "unison") {
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing that";
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing that";
 	} else if (intervalDirection == "fourthUp") {
 		if (toSolFej(keyOf, randomScaleNum) == "Fa") {
 			newQuestionTime = true;
 		}
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth above that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth above that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 	} else if (intervalDirection == "fourthDown") {
 		if (toSolFej(keyOf, randomScaleNum) == "Fa") {
 			newQuestionTime = true;
 		}
-		document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing one fourth below that:<p style='font-size: 20px;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 	}
 
 });
@@ -8032,7 +8802,7 @@ $('#allHarmonies').click(function () {
 	document.getElementById("allHarmonies").style.background = buttonColor;
 	intervalDirection = "allHarmonies";
 	if (intervalDirection == "allHarmonies") {
-		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;'>Sing any 3rd, 4th, 5th, or 6th</b> <p style='font-size: 20px;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;'>Your last note was " + previousNote;
+		document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing any 3rd, 4th, 5th, or 6th</b> <p style='font-size: 20px;  color: black;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
 	}
 	newQuestionTime = true;
 
@@ -8455,6 +9225,18 @@ $('#complexSequence').click(function () {
 	sequencePlay = true;
 	newQuestionTime = true;
 	nonReferencePlay = true;
+});
+
+$('#viewTuner').click(function () {
+	
+setVisualMode("tuner");
+});
+$('#viewStaff').click(function () {
+setVisualMode("sheetMusic");
+});
+$('#viewBoth').click(function () {
+	
+setVisualMode("both");
 });
 $('#whitec').click(function () {
 	justPlayingScaleFam = true;
@@ -9136,7 +9918,8 @@ $('#testing-button-test-case-zero').click(function () {
 
 	setupFreestyleMode();
 });
-$('#accompanimentOn').click(function () {
+$('#accompanimentOn').click(turnAccompanimentOn);
+function turnAccompanimentOn () {
 	if (!accompaniment) {
 		$(".accompaniment-buttons").slideToggle();
 
@@ -9150,9 +9933,13 @@ $('#accompanimentOn').click(function () {
 	document.getElementById("accompanimentOff").style.background = buttonNormalColor;
 	accompaniment = true;
 
-	playAgainButton.click();
-});
-$('#accompanimentOff').click(function () {
+	playItAgain();
+}
+
+
+$('#accompanimentOff').click(turnAccompanimentOff);
+
+function turnAccompanimentOff() {
 	if (accompaniment) {
 		$(".accompaniment-buttons").slideToggle();
 		if (!arpeggioPlay) {
@@ -9165,8 +9952,9 @@ $('#accompanimentOff').click(function () {
 	document.getElementById("accompanimentOn").style.background = buttonNormalColor;
 	document.getElementById("accompanimentOff").style.background = buttonColor;
 	accompaniment = false;
-	playAgainButton.click();
-});
+	playItAgain();
+}
+
 
 $('#arpeggiosOn').click(function () {
 	if (!arpeggioPlay) {
@@ -9177,7 +9965,7 @@ $('#arpeggiosOn').click(function () {
 	document.getElementById("arpeggiosOn").style.background = buttonColor;
 	document.getElementById("arpeggiosOff").style.background = buttonNormalColor;
 	arpeggioPlay = true;
-	playAgainButton.click();
+	playItAgain();
 });
 $('#arpeggiosOff').click(function () {
 	if (arpeggioPlay) {
@@ -9232,7 +10020,7 @@ $('#rhythmOn').click(function () {
 	document.getElementById("rhythmOn").style.background = buttonColor;
 	document.getElementById("rhythmOff").style.background = buttonNormalColor;
 	rhythmPlay = true;
-	playAgainButton.click();
+	playItAgain();
 });
 $('#rhythmOff').click(function () {
 	// if (rhythmPlay) {
@@ -9266,7 +10054,7 @@ $('#arpeggio-zero').click(function () {
 	document.getElementById("arpeggio-one").style.background = buttonNormalColor;
 	document.getElementById("arpeggio-two").style.background = buttonNormalColor;
 	arpeggioChoice = 0;
-	playAgainButton.click();
+	playItAgain();
 
 });
 $('#arpeggio-one').click(function () {
@@ -9278,7 +10066,7 @@ $('#arpeggio-one').click(function () {
 	document.getElementById("arpeggio-two").style.background = buttonNormalColor;
 	arpeggioChoice = 1;
 
-	playAgainButton.click();
+	playItAgain();
 
 });
 $('#arpeggio-two').click(function () {
@@ -9290,7 +10078,7 @@ $('#arpeggio-two').click(function () {
 	document.getElementById("arpeggio-two").style.background = buttonColor;
 	arpeggioChoice = 2;
 
-	playAgainButton.click();
+	playItAgain();
 
 });
 $('#play-root-on').click(function () {
@@ -9299,7 +10087,7 @@ $('#play-root-on').click(function () {
 	document.getElementById("play-root-on").style.background = buttonColor;
 	document.getElementById("play-root-off").style.background = buttonNormalColor;
 	rootPlay = true;
-	playAgainButton.click();
+	playItAgain();
 });
 $('#play-root-off').click(function () {
 	document.getElementById("play-root-off").innerHTML = "Off (selected)";
@@ -9307,7 +10095,7 @@ $('#play-root-off').click(function () {
 	document.getElementById("play-root-on").style.background = buttonNormalColor;
 	document.getElementById("play-root-off").style.background = buttonColor;
 	rootPlay = false;
-	playAgainButton.click();
+	playItAgain();
 });
 $('#useSynth').click(function () {
 	document.getElementById("usePiano").innerHTML = "Use Piano";
@@ -9322,7 +10110,7 @@ $('#useSynth').click(function () {
 
 		stopAllNotes();
 	} catch (error) {}
-	playAgainButton.click();
+	playItAgain();
 
 });
 
@@ -9341,7 +10129,7 @@ $('#useHumanVoice').click(function () {
 	try {
 		stopAllNotes();
 	} catch (error) {}
-	playAgainButton.click();
+	playItAgain();
 });
 
 $('#usePiano').click(function () {
@@ -9358,7 +10146,7 @@ $('#usePiano').click(function () {
 	try {
 		stopAllNotes();
 	} catch (error) {}
-	playAgainButton.click();
+	playItAgain();
 });
 
 $('#octave2').click(function () {
@@ -9370,10 +10158,13 @@ $('#octave2').click(function () {
 	document.getElementById("octave4").style.background = buttonNormalColor;
 	document.getElementById("octave5").innerHTML = "Octave 5";
 	document.getElementById("octave5").style.background = buttonNormalColor;
+	
+sequenceCopy.forEach(element => element[0]=element[0]-noteAdapter+0);
 	noteAdapter = 12;
+sequenceCopy.forEach(element => element[0]=element[0]+noteAdapter+0);
 	updateReferences();
-
-	playAgainButton.click();
+	
+	playItAgain();
 });
 
 $('#octave3').click(function () {
@@ -9385,10 +10176,13 @@ $('#octave3').click(function () {
 	document.getElementById("octave4").innerHTML = "Octave 4";
 	document.getElementById("octave5").innerHTML = "Octave 5";
 	document.getElementById("octave5").style.background = buttonNormalColor;
+	
+sequenceCopy.forEach(element => element[0]=element[0]-noteAdapter+0);
 	noteAdapter = 24;
+sequenceCopy.forEach(element => element[0]=element[0]+noteAdapter+0);
 	updateReferences();
 
-	playAgainButton.click();
+	playItAgain();
 });
 
 $('#octave4').click(function () {
@@ -9401,10 +10195,12 @@ $('#octave4').click(function () {
 
 	document.getElementById("octave5").innerHTML = "Octave 5";
 	document.getElementById("octave5").style.background = buttonNormalColor;
+sequenceCopy.forEach(element => element[0]=element[0]-noteAdapter+0);
 	noteAdapter = 36;
+sequenceCopy.forEach(element => element[0]=element[0]+noteAdapter+0);
 	updateReferences();
 
-	playAgainButton.click();
+	playItAgain();
 });
 
 $('#octave5').click(function () {
@@ -9417,21 +10213,28 @@ $('#octave5').click(function () {
 
 	document.getElementById("octave5").innerHTML = "Octave 5 (selected)";
 	document.getElementById("octave5").style.background = buttonColor;
+sequenceCopy.forEach(element => element[0]=element[0]-noteAdapter+0);
 	noteAdapter = 48;
+sequenceCopy.forEach(element => element[0]=element[0]+noteAdapter+0);
 	updateReferences();
 
-	playAgainButton.click();
+	playItAgain();
 });
 
-$('#playAgainButton').click(function () {
+$('#playAgainButton').click(playItAgain);
+
+function playItAgain() {
 	r = randomNoteNum;
 
 	if (!paused) {
 		mostRecentPostingNum = r;
+		try{
 		gauge.update({
 			majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
 			units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
 		});
+		}
+	catch(error){}
 	} else {
 		gauge.update({
 			units: "Paused"
@@ -9444,9 +10247,133 @@ $('#playAgainButton').click(function () {
 		rootSequenceCopy = [];
 		arpeggioAdded = false;
 	}
-
+	stopAllNotes();
+	clearAllNotes();
+	// alert (sequenceArray.length);
+	numOfThisNoteInSequence=0;
+	firstNotationToCome = true;
+			// setupAFirstNote = false;
+			// alert (sequencePlay);
+	if ((sequencePlay)){
+	if (nonReferencePlay){
+	
+	// sequenceArray= sequenceCopy.slice();
+	chordSequenceStarted=false;
+	chordSequenceArray = chordSequenceCopy.slice();}
+	else{
+		sequenceStarted=false;
+	sequenceArray= sequenceCopy.slice();
+	
+	console.error(sequenceArray.toString());
+	}
+	}	else{
+	// alert ("not a sequence");
 	makeAndShowANote(randomNoteNum, 2, "referenceNote");
+			numOfThisNoteInSequence++;
 	playANote(randomNoteNum);
+	}
+	
+	// var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));
+	// //	alert (""+soundId(getNoteName(note)));
+	// // if audio(const playPromise = audio.play();
+	// // if (playPromise !== null) {
+	// // playPromise.catch(() => {
+	// // audio.pause();
+	// // audio.volume = 1.0;
+	// // if (audio.readyState >= 2) {
+	// // audio.currentTime = 0;
+	// // // audio.play();
+	// // }
+	// // })
+	// // }
+	// // if (audio) {
+
+	// // }
+
+	// //press();
+	// //playNote(midiNoteToFrequency(note));
+	// //press(note);
+	// //if (velocity > 0) {
+	// if (audio) {
+	// audio.pause();
+	// audio.volume = 1.0;
+	// if (audio.readyState >= 2) {
+	// audio.currentTime = 0;
+	// var promise = audio.play();
+
+	// if (promise !== undefined) {
+	// promise.then(_ => {
+	// // Autoplay started!
+	// }).catch(error => {
+	// //alert ("it worked");
+	// // Autoplay was prevented.
+	// // Show a "Play" button so that user can start playback.
+	// });
+	// }
+
+	// }
+	// }
+
+}
+
+$('#playTargetButton').click(function () {
+	answerRevealed=true;
+	if (intervalDirection == "up") {
+		var legalInterval = getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
+	} else if (intervalDirection == "down") {
+		var legalInterval = getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
+	} else if (intervalDirection == "unison") {
+		var legalInterval = 0; //getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 0);
+	} else if (intervalDirection == "fourthUp") {
+		var legalInterval = 5; //getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 0);
+	} else if (intervalDirection == "fourthDown") {
+		var legalInterval = 7; //getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 0);
+	} else if (intervalDirection == "allHarmonies") {
+		if (keyType == "major") {
+			// console.log("new is " + newLastRandomScaleNum);
+			randomScaleNum = getScaleNumMajorNote(randomNoteNum);
+		} else {
+			// alert ("hi");
+			// console.log("newMinor is " + newLastRandomScaleNum);
+			randomScaleNum = getScaleNumMinorNote(randomNoteNum);
+		}
+		var legalInterval = getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
+		var legalIntervalTwo = getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
+		if (toSolFej(keyOf, randomScaleNum) == "Fa") {
+			var legalIntervalThree = 7;
+		} else {
+			var legalIntervalThree = 5;
+		}
+		var legalIntervalFour = 7;
+
+	}
+	r = randomNoteNum+legalInterval;
+	// alert ('r');
+	if (!paused) {
+		mostRecentPostingNum = r;
+		gauge.update({
+			majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
+			units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
+		});
+	} else {
+		gauge.update({
+			units: "Paused"
+		}); //sets the 3 notes in there.
+	}
+	// if (arpeggioPlay) {
+		// arpeggioSequenceArray = [];
+		// rootSequenceArray = [];
+		// arpeggioSequenceCopy = [];
+		// rootSequenceCopy = [];
+		// arpeggioAdded = false;
+	// }
+
+	// makeAndShowANote(randomNoteNum, 2, "referenceNote");
+	let tempInstrument=instrument+"";
+	stopVoices();
+	instrument="humanVoice"
+	playANote(r);
+	instrument=tempInstrument+"";
 
 	// var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));
 	// //	alert (""+soundId(getNoteName(note)));
@@ -9490,7 +10417,7 @@ $('#playAgainButton').click(function () {
 	// }
 
 });
-
 // songWritingWorkshop();
+document.getElementById('card-section').style.display='none';
 initTuner();
 window.tuner_rand = 1111111;

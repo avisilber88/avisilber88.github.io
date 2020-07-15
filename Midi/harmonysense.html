@@ -7,9 +7,10 @@
 <meta name="robots" content="index, follow" >
 <meta name="viewport" content="width=device-width, user-scalable=yes" >
 <meta name="theme-color" content="#5F3FBC" >
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"> -->
 <link rel="stylesheet" href="style31.css" type="text/css">
 <link rel="stylesheet" href="vendor/nouislider.min.css" type="text/css">
 <link rel="stylesheet" href="vendor/piano.css" type="text/css">
@@ -17,17 +18,25 @@
 <link rel="stylesheet" href="vendor/notationmovementharmony.css" type="text/css">
 <style>
 body {
-margin-left: 20px;
+background-color:E9EBEE
+<!-- margin-left: 20px; -->
+}
+button {
+border-radius: 6px
 }
 </style>
 </head>
-<body class="tuner">
+<body class="tuner" style = "background-color:#E9EBEE">
 
-<script src="papaparse.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+<!-- <script src="papaparse.min.js"></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>	
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>	 -->
 	
     <script src="vendor/nouislider.js"></script>
     <script src="vendor/Tone.js"></script>
@@ -40,32 +49,106 @@ margin-left: 20px;
     <progress id="preload-progress-bar"></progress>
 </div>
 
-<div class="all-wide">
-<div class="content">
-<h2> Welcome to Harmony Sense, Practice Singing in Harmony! </h2>
-<div id ="topButtons">
- <button type ='button' id ="directions" onclick="alert('Single Notes \nLevel 1: One note repeated. Interval changes every 10 reps.\nLevel 2: #1 but the note changes each rep\nLevel 3: One note repeatedly. Intervals shuffle each rep\n\nSequences\nLevel 4: Sequence of 2 notes, interval changes every 10 reps\nLevel 5: Sequence of notes, new interval each rep, every 10 reps the length of the sequence lengthens\nLevel 6: Sequence of notes, the interval changes each note. Sequence lengthens every 10 reps\nLevel 7: #6 but with music\nLevel 8: Sequence of notes with varying lengths, same intervals. Every 10 reps the sequence lengthens\nLevel 9: #8 but the intervals change every note\nLevel 10: #9 with music\n\nDo more\nPlan-Your-Own: Import or play in your own sequence.\nFreestyle: Decide your own harmonic excercise routine')">Instructions Guide</button>
+<div class="all-wide" style = "background-color: #E9EBEE">
+<div class = "container">
+<nav class="navbar fixed-top navbar-light bg-light" style = "border-bottom-width: 5px; background-color: black">
+<!-- padding-top: 20px; padding-bottom: 20px; background-color: none !important"> -->
+  <!-- <a class="navbar-brand" href="#">View</a> -->
+  <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation"> -->
+    <!-- <span class="navbar-toggler-icon"></span> -->
+  <!-- </button> -->
+
+  <!-- <div class="navbar-nav"> -->
+  <!-- <span class = "nav nav-item"> -->
+  <!-- Welcome to Harmony Sense -->
+  <!-- </span> -->
+<ul class="nav nav-tabs" style = "border-bottom-width: 0px; height:40px">
+<li class="nav-item">
+<!-- <span style = "font-size: 13px"> -->
+<span class = "nav-link">
+Welcome to Harmony Sense
+</span><!-- </span> -->
+</li>
+  <li class="nav-item">
+  <button type ='button' class="nav-link" id ="directions" onclick="alert('Single Notes \nLevel 1: One note repeated. Interval changes every 10 reps.\nLevel 2: #1 but the note changes each rep\nLevel 3: One note repeatedly. Intervals shuffle each rep\n\nSequences\nLevel 4: Sequence of 2 notes, interval changes every 10 reps\nLevel 5: Sequence of notes, new interval each rep, every 10 reps the length of the sequence lengthens\nLevel 6: Sequence of notes, the interval changes each note. Sequence lengthens every 10 reps\nLevel 7: #6 but with music\nLevel 8: Sequence of notes with varying lengths, same intervals. Every 10 reps the sequence lengthens\nLevel 9: #8 but the intervals change every note\nLevel 10: #9 with music\n\nDo more\nPlan-Your-Own: Import or play in your own sequence.\nFreestyle: Decide your own harmonic excercise routine')">Instructions Guide</button>
+  </li>
+  
+  <li class="navbar-nav nav-item dropdown">
+<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Select Level
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenu2" style = "background-color: white">
+<button class="dropdown-item" type ='button' id ="testing-button-base-case">Level One</button>
+   <button class="dropdown-item" type ='button' id ="testing-button-test-case-one">Level Two</button>
+   <button class="dropdown-item" type ='button' id ="level-three">Level Three</button>
+   <button class="dropdown-item" type ='button' id ="level-four">Level Four</button>
+   <button class="dropdown-item" type ='button' id ="level-five">Level Five</button>
+   <button class="dropdown-item" type ='button' id ="level-six">Level Six</button>
+   <button class="dropdown-item" type ='button' id ="level-seven">Level Seven</button>
+   <button class="dropdown-item" type ='button' id ="level-eight">Level Eight</button>
+   <button class="dropdown-item" type ='button' id ="level-nine">Level Nine</button>
+   <button class="dropdown-item" type ='button' id ="level-ten">Level Ten</button>
+      <!-- <a class="dropdown-item" href="#">Action</a> -->
+      <!-- <a class="dropdown-item" href="#">Another action</a> -->
+      <!-- <a class="dropdown-item" href="#">Something else here</a> -->
+   <div class="dropdown-divider" style = "background-color: #E9EBEE"></div>
+   <button class="dropdown-item" type ='button' id ="testing-button-test-case-zero">Freestyle</button>
+   <button class="dropdown-item" type ='button' id ="play-your-own">Play-Your-Own</button>
+      <!-- <a class="dropdown-item" href="#">Separated link</a> -->
+    </div>
+  </li>			
+  <!-- <li class="nav-item"> -->
+    <!-- <a class="nav-link" href="#">Link</a> -->
+  <!-- </li> -->
+  <!-- <li class="nav-item"> -->
+    <!-- <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a> -->
+  <!-- </li> -->
+</ul>
   <!-- <button type ='button' id ="excercises" onclick="alert('Eventually, Ill tell you about excercise ideas')">Excercise Suggestions</button> -->
-   <button type ='button' id ="testing-button-base-case">Level One</button>
-   <button type ='button' id ="testing-button-test-case-one">Level Two</button>
-   <button type ='button' id ="level-three">Level Three</button>
-   <button type ='button' id ="level-four">Level Four</button>
-   <button type ='button' id ="level-five">Level Five</button>
-   <button type ='button' id ="level-six">Level Six</button>
-   <button type ='button' id ="level-seven">Level Seven</button>
-   <button type ='button' id ="level-eight">Level Eight</button>
-   <button type ='button' id ="level-nine">Level Nine</button>
-   <button type ='button' id ="level-ten">Level Ten</button>
-   <button type ='button' id ="testing-button-test-case-zero">Freestyle</button>
-   <button type ='button' id ="play-your-own">Play-Your-Own</button>
-   </div>
+<!-- </div> -->
+</nav>
+</div>
+<!-- <div class="content"> -->
+<div class="card" style = "margin:35px">
+<!-- <h2> Welcome to Harmony Sense, Practice Singing in Harmony! </h2> -->
+<!-- <div id ="topButtons" class = "card-header"> -->
+
+   <!-- </div> -->
 <!-- <script> -->
 <!-- function directions() { -->
     <!-- alert('Eventually, Ill tell you what to do here! Isnt that nifty?!'); -->
 <!-- } -->
 <!-- </script> -->
-<h3> Press "Turn on the Tuner" to Begin, there are adjustable settings both above and below the tuner on the page</h3>
 
+<div id = "opening-card" class = "card-body">
+<h3> Welcome to Harmony Sense!<br><br>Select your level from above, or select freestyle to open up all of the options and settings (how it used to look before). </h3>
+</div>
+
+<div id = "card-section" class = "card-body">
+<h3 id = "opening-info"> Press "Turn on the Tuner" to Begin, there are adjustable settings both above and below the tuner on the page</h3>
+<h3 id = "lesson-name">sss</h3>
+<h2 id = "lesson-directions"></h2><br>
+<div id = "level-progress">
+<div class="progress">
+<!-- level 1 progress -->
+  <div class="progress-bar" id="levelOneProgress" role="progressbar" style="width: 0%; background: green" aria-valuenow="15" aria-valuemin="0" aria-valuemax="25">3rd up</div>
+<!-- level 1 not yet completed -->
+  <div class="progress-bar" id="levelOneNotProgress" role="progressbar" style="width: 25%; background: #e9ecef; border-right-color: black; border-right-style:solid; color: green" aria-valuenow="20" aria-valuemin="0" aria-valuemax="25">3rd up</div>
+<!-- level 2 progress -->
+  <div class="progress-bar" id="levelTwoProgress" role="progressbar" style="width: 0%; background: blue" aria-valuenow="15" aria-valuemin="0" aria-valuemax="25"></div>
+<!-- level 2 not yet completed -->
+  <div class="progress-bar" id="levelTwoNotProgress" role="progressbar" style="width: 25%; background: #e9ecef; color: blue; border-right-color: black; border-right-style:solid" aria-valuenow="20" aria-valuemin="0" aria-valuemax="25">3rd down</div>
+<!-- level 1 progress -->
+  <div class="progress-bar" id="levelThreeProgress" role="progressbar" style="width: 0%; background: green" aria-valuenow="15" aria-valuemin="0" aria-valuemax="25"></div>
+<!-- level 1 not yet completed -->
+  <div class="progress-bar" id="levelThreeNotProgress" role="progressbar" style="width: 25%; background: #e9ecef; color: green; border-right-color: black; border-right-style:solid" aria-valuenow="20" aria-valuemin="0" aria-valuemax="25">4th up</div>
+<!-- level 4 progress -->
+  <div class="progress-bar" id="levelFourProgress" role="progressbar" style="width: 0%; background: blue" aria-valuenow="15" aria-valuemin="0" aria-valuemax="25"></div>
+<!-- level 4 not yet completed -->
+  <div class="progress-bar" id="levelFourNotProgress" role="progressbar" style="width: 25%; background: #e9ecef; color: blue; border-right-color: black; border-right-style:solid" aria-valuenow="20" aria-valuemin="0" aria-valuemax="25">4th down</div>
+
+</div>
+</div>
 <div class = "options-info" id='instrumentSettings'>
  <button type ='button' id ="usePiano">Use Piano</button>
  <button type ='button' id ="useSynth" style=background:#00cc00>Use Synth (selected)</button>
@@ -137,8 +220,39 @@ Time = <span id="countdown">01:00</span>
 <button type ='button' id ="hide-button">Hide Advanced Options</button>  
 </div>
 <!-- <div class = "container justify-content-start"> -->
-  <div style = "display:flex; justify-content: center" id= "tunerAndSettings">
-	<div>
+  <div style = "display:flex; justify-content: left" id= "tunerAndSettings">
+	<!-- <div style = "border-width: 10px; border-style: solid"> -->
+<div class = "card" id = "viewBox" style = "margin-top: 5px; border-width:0px; background-color: "white">
+	<!-- above we have just opened the div that contains the tuner and the staff -->
+	
+<nav class="navbar navbar-light bg-light" style = "border-width: .5px; border-bottom-width: .5px; border-style:solid; border-color: #dee2e6; padding: 0rem; background: white">
+  <!-- <a class="navbar-brand" href="#">View</a> -->
+  <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation"> -->
+    <!-- <span class="navbar-toggler-icon"></span> -->
+  <!-- </button> -->
+
+  <!-- <div class="navbar" > -->
+    <ul class="nav nav-tabs" style = "border-bottom-width: 1px">
+  <li class="nav-item">
+    <button type = 'button' class="nav-link" id="viewTuner" style = "border-width: 1px; bordor-color: white; margin-left: 2px; margin-right:2px; border-radius: 0px; border-top-left-radius: 20px">Tuner</button>
+  </li>
+  <li class="nav-item">
+    <button type = 'button' class="nav-link" id="viewStaff" style = "margin-right:2px; bordor-color: white; border-radius: 0px; border-top-left-radius: 20px">Staff</button>
+  </li>
+  <li class="nav-item">
+    <button type = 'button' class="nav-link active" id="viewBoth" style = "margin-right:2px; bordor-color: white; border-radius: 0px; border-top-left-radius: 20px">Both</button>
+  </li>
+  <li class="nav-item">
+	<span style= "font-size: 18px" class="nav-link"> Select your interface </span>
+  </li>
+  <!-- <li class="nav-item"> -->
+    <!-- <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a> -->
+  <!-- </li> -->
+</ul>
+
+  <!-- </div> -->
+</nav>
+		
 		<div id="tunerframe">
 			<div id="tunerback"style="width:80%;">
 				<img id="preloader" alt="Loading..." src="anim.gif" style="display: block;margin-left: auto;margin-right: auto;" >
@@ -152,11 +266,11 @@ Time = <span id="countdown">01:00</span>
 		})(document, 'tunerAppRenewedTwo.js');
 		</script>
 		
-	<div class="row justify-content-start" style="margint-right:50vw">
+	<div class="justify-content-start" style="margint-right:50vw">
 	
 <div id="staff-box"></div>
 
-<div class="row justify-content-start">
+<div class="justify-content-start">
 	
 	<!-- <div id="controls"> -->
   <!-- <button id='add-note'>Add Note</button> -->
@@ -166,7 +280,8 @@ Time = <span id="countdown">01:00</span>
 <div id="staff-box-two"></div>
 </div>
 </div>		
-	</div>
+	</div> 
+	<!-- this is the end of the box with the tuner and the staff -->
 	<div class="col-xs-offset-0 col-xs-4 col-sm-5 justify-content-start">
 		<!-- <div class="all-wide"> -->
 		<div class="row justify-content-start">
@@ -176,6 +291,7 @@ Time = <span id="countdown">01:00</span>
 			<p>
 			
 			<button type ='button' id ="playAgainButton">Play Reference Note Again</button>
+			<button type ='button' id ="playTargetButton">Reveal Target Note (you lose the point)</button>
 			<p>
 		</div>
 		<div id = "volumeChoices">
@@ -300,31 +416,31 @@ Time = <span id="countdown">01:00</span>
 			<!-- </div> -->
 	
 	<div>
-<ul class="set"></li>  	
-<li id = "whitec" class="white e"></li>
-<li id = "whitecs" class="black ds"></li>
-<li id = "whited" class="white d"></li>
- <li id = "whiteds" class="black cs"></li>
-	  <li id = "whitee" class="white c"></li>
-  <li id = "whitef" class="white b"></li>
-  <li id = "whitefs" class="black as"></li>
-  <li id = "whiteg" class="white a"></li>
-  <li id = "whitegs" class="black gs"></li>
-  <li id = "whitea" class="white g"></li>
-  <li id = "whiteas" class="black fs"></li>
-  <li id = "whiteb" class="white f"></li>
-<li id = "whitectwo" class="white e"></li>
-<li id = "whitecstwo" class="black ds"></li>
-<li id = "whitedtwo" class="white d"></li>
- <li id = "whitedstwo" class="black cs"></li>
- <li id = "whiteetwo" class="white c"></li>
-  <li id = "whiteftwo" class="white b"></li>
-  <li id = "whitefstwo" class="black as"></li>
-  <li id = "whitegtwo" class="white a"></li>
-  <li id = "whitegstwo" class="black gs"></li>
-  <li id = "whiteatwo" class="white g"></li>
-  <li id = "whiteastwo" class="black fs"></li>
-  <li id = "whitebtwo" class="white f"></li>
+<ul class="set pianolist"></li>  	
+<li id = "whitec" class="white e pianolist"></li>
+<li id = "whitecs" class="black ds pianolist"></li>
+<li id = "whited" class="white d pianolist"></li>
+ <li id = "whiteds" class="black cs pianolist"></li>
+	  <li id = "whitee" class="white c pianolist"></li>
+  <li id = "whitef" class="white b pianolist"></li>
+  <li id = "whitefs" class="black as pianolist"></li>
+  <li id = "whiteg" class="white a pianolist"></li>
+  <li id = "whitegs" class="black gs pianolist"></li>
+  <li id = "whitea" class="white g pianolist"></li>
+  <li id = "whiteas" class="black fs pianolist"></li>
+  <li id = "whiteb" class="white f pianolist"></li>
+<li id = "whitectwo" class="white e pianolist"></li>
+<li id = "whitecstwo" class="black ds pianolist"></li>
+<li id = "whitedtwo" class="white d  pianolist"></li>
+ <li id = "whitedstwo" class="black cs pianolist"></li>
+ <li id = "whiteetwo" class="white c pianolist"></li>
+  <li id = "whiteftwo" class="white b pianolist"></li>
+  <li id = "whitefstwo" class="black as pianolist"></li>
+  <li id = "whitegtwo" class="white a pianolist"></li>
+  <li id = "whitegstwo" class="black gs pianolist"></li>
+  <li id = "whiteatwo" class="white g pianolist"></li>
+  <li id = "whiteastwo" class="black fs pianolist"></li>
+  <li id = "whitebtwo" class="white f pianolist"></li>
 
 
 </ul>
@@ -443,7 +559,8 @@ Time = <span id="countdown">01:00</span>
 <div style="clear:both;"></div>
 </div>
 </div>
-
+</div>
+</div>
 
 <script src="helper.js"></script>
 <script src="vendor/preloader.js"></script>
