@@ -469,6 +469,8 @@ function playYourOwn() {
 	// document.getElementById('tunerAndSettings').style.display = 'none';
 	document.getElementById('recruitYourOwnChoices').style.display = 'block';
 	// accompaniment=false;'
+	
+	setVisualMode("sheetMusic");
 	// turnAccompanimentOff();
 }
 function setupLevelOne() { //one note over and over again. sameintervals, 3rd, 4th, 5th)
@@ -2163,15 +2165,17 @@ async function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
 		}
 		let startingSetX = startingXSetting - wholesToTieAtTheBeginning * 25;
 		startingSetX = startingSetX/sequenceLength*numOfThisNoteInSequence;
-		
+		let tieOffset=0;
 		if (tieOn) {
 			startingSetX = startingSetX - 50;
 		}
 
 		for (i = 0; i < wholesToTieAtTheBeginning; i++) {
+			
+			// alert ("hi");
 			tiedNote = new VF.StaveTie({
-					first_note: currentImageNote,
-					last_note: currentWholeImageNote,
+					first_note: currentWholeImageNote,
+					last_note: currentImageNote,
 					first_indices: [0],
 					last_indices: [0]
 				})
@@ -2180,20 +2184,22 @@ async function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
 			tickContext.preFormat().setX(startingSetX + 12);
 			tiedNote.setContext(context).draw();
 			startingSetX = startingSetX + 25;
+			tieOffset=25;
 		}
 		tickContext.preFormat().setX(startingSetX);
 		if (setupAFirstNote) {
-			tickContext.preFormat().setX(startingXSetting/sequenceLength*numOfThisNoteInSequence);
+			tickContext.preFormat().setX(startingXSetting/sequenceLength*numOfThisNoteInSequence+tieOffset);
 			setupAFirstNote = false;
 		} else {
-			tickContext.preFormat().setX(startingXSetting/sequenceLength*numOfThisNoteInSequence);
+			tickContext.preFormat().setX(startingXSetting/sequenceLength*numOfThisNoteInSequence+tieOffset);
 		}
 		if ((voiceType == "singingNote") || (voiceType == "targetNote")) {
 			tickContext.preFormat().setX(singAndTargetPlacement);
 		}
 		currentImageNote.draw();
 		if (tieOn) {
-			tickContext.preFormat().setX(startingSetX + 25);
+			alert ("hi");
+			tickContext.preFormat().setX(startingSetX + 50);
 			currentSecondImageNote.draw();
 			tiedNote = new VF.StaveTie({
 					first_note: currentImageNote,
@@ -6623,6 +6629,9 @@ function repeatOnFrame() {
 		numOfThisNoteInSequence=0;
 		// alert ("a new questions!");
 		chordSequenceStarted=false;
+		if (!nonReferencePlay){
+		sequenceStarted=false;
+		}
 		clearAllNotes();
 		currentScore = 0;
 		score = 0;
@@ -6648,6 +6657,7 @@ function repeatOnFrame() {
 			rhythmSequenceCopy = [];
 		}
 		if (!sequencePlay) {
+			if (accompaniment){
 			chordIsDone = true;
 			if (arpeggioPlay) {
 				if (rootPlay) {
@@ -6660,6 +6670,7 @@ function repeatOnFrame() {
 			if (rhythmPlay) {
 				startRhythmTimer();
 			}
+			}
 			if ((scoreLevel == "freestyle") || (currentLevelScore == 0) || (notesChangeable)) {
 				// alert (scoreLevel+" "+currentLevelScore);
 				randomScaleNum = Math.floor(Math.random() * 7);
@@ -6668,7 +6679,9 @@ function repeatOnFrame() {
 			if (scoreLevel != "freestyle") {
 				if (intervalRotationType == "scoreBased") {
 					setProgressGoals ("3rd Up", "3rd Down", "4th Up", "4th Down");
-					if (currentLevelScore == 10) {
+					if (currentLevelScore == 0) {
+						intervalDirection = "up";
+					} else if (currentLevelScore == 10) {
 						intervalDirection = "down";
 						alert("now practice doing a 3rd down of this note");
 					} else if (currentLevelScore == 20) {
@@ -6690,7 +6703,9 @@ function repeatOnFrame() {
 				if (lengthRotationType == "scoreBased") {
 					// alert ("hi");
 					setProgressGoals ("2 notes", "3 Notes", "4 Notes", "5 Notes");
-					if (currentLevelScore == 10) {
+					if (currentLevelScore == 0) {
+						sequenceLength = 2;
+					} else if (currentLevelScore == 10) {
 						sequenceLength = 3;
 						// alert("now practice doing a 3rd down of this note");
 					} else if (currentLevelScore == 20) {
@@ -6702,7 +6717,9 @@ function repeatOnFrame() {
 					}
 				} else if (lengthRotationType == "scoreBasedByFour") {
 					setProgressGoals ("4 Notes", "8 Notes", "12 Notes", "16 Notes");
-					if (currentLevelScore == 10) {
+					if (currentLevelScore == 0) {
+						sequenceLength = 4;
+					} else if (currentLevelScore == 10) {
 						sequenceLength = 8;
 						// alert("now practice doing a 3rd down of this note");
 					} else if (currentLevelScore == 20) {
@@ -7068,7 +7085,9 @@ function repeatOnFrame() {
 			if (scoreLevel != "freestyle") {
 				if (intervalRotationType == "scoreBased") {
 					setProgressGoals ("3rd Up", "3rd Down", "4th Up", "4th Down");
-					if (currentLevelScore == 10) {
+					if (currentLevelScore == 0) {
+						intervalDirection = "up";
+					} else if (currentLevelScore == 10) {
 						intervalDirection = "down";
 						alert("now practice doing a 3rd down of this note");
 					} else if (currentLevelScore == 20) {
@@ -7083,8 +7102,11 @@ function repeatOnFrame() {
 				}
 				if (lengthRotationType == "scoreBased") {
 					
-					setProgressGoals ("4 Notes", "8 Notes", "12 Notes", "16 Notes");
-					if (currentLevelScore == 10) {
+					setProgressGoals ("2 notes", "3 Notes", "4 Notes", "5 Notes");
+					
+					if (currentLevelScore == 0) {
+						sequenceLength = 2;
+					} else if (currentLevelScore == 10) {
 						sequenceLength = 3;
 						// alert("now practice doing a 3rd down of this note");
 					} else if (currentLevelScore == 20) {
@@ -7097,7 +7119,9 @@ function repeatOnFrame() {
 				} else if (lengthRotationType == "scoreBasedByFour") {
 					
 					setProgressGoals ("4 Notes", "8 Notes", "12 Notes", "16 Notes");
-					if (currentLevelScore == 10) {
+					if (currentLevelScore == 0) {
+						sequenceLength = 4;
+					} else if (currentLevelScore == 10) {
 						sequenceLength = 8;
 						// alert("now practice doing a 3rd down of this note");
 					} else if (currentLevelScore == 20) {
@@ -9098,6 +9122,25 @@ var updateScaleAdapter = function (selected) {
 	}
 }
 
+
+   $("#my-dialog").dialog({modal:true,
+                            autoOpen: false,
+                            buttons: {
+                              Ok: function() {
+                                $( this ).dialog( "close" );
+                              }
+                            }
+    });
+    // var counter = 0;
+    
+    // var intervalID = setInterval(function() {
+       
+      // // Update counter info
+      // $("#counter").html(++counter);
+      // // Show dialog
+      // $("#my-dialog").dialog("open");
+    // }, 1000);
+	
 $('#natMinorScale').click(function () {
 	document.getElementById("natMinorScale").innerHTML = "Natural Minor Scale (selected)";
 	document.getElementById("majorScale").innerHTML = "Major Scale";
@@ -9943,8 +9986,20 @@ function turnAccompanimentOn () {
 	document.getElementById("accompanimentOn").innerHTML = "On (selected)";
 	document.getElementById("accompanimentOn").style.background = buttonColor;
 	document.getElementById("accompanimentOff").style.background = buttonNormalColor;
+	
 	accompaniment = true;
-
+	chordIsDone=true;
+			if (arpeggioPlay) {
+				if (rootPlay) {
+					startRootTimer();
+					startArpeggioTimer();
+				} else {
+					startArpeggioTimer();
+				}
+			}
+			if (rhythmPlay) {
+				startRhythmTimer();
+			}
 	playItAgain();
 }
 
@@ -9998,7 +10053,10 @@ $('#chord-progression-roman').click(function () {
 		for (i = 0; i < chordSequenceCopy.length; i++) {
 			romanString = romanString + "-" + getRomanNumeral(chordSequenceCopy[i][2]);
 		}
-		alert(romanString);
+		    $("#alertMessage").html(romanString);
+      // // Show dialog
+      $("#my-dialog").dialog("open");
+		// alert(romanString);
 	}
 });
 $('#chord-progression-names').click(function () {
@@ -10011,7 +10069,9 @@ $('#chord-progression-names').click(function () {
 		for (i = 0; i < chordSequenceCopy.length; i++) {
 			romanString = romanString + "-" + getChordNameAltered(chordSequenceCopy[i][2], noteArray[chordSequenceCopy[i][0]][1]);
 		}
-		alert(romanString);
+		    $("#alertMessage").html(romanString);
+      // // Show dialog
+      $("#my-dialog").dialog("open");
 	}
 });
 $('#chord-progression-next').click(function () {
