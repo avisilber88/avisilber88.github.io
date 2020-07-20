@@ -7987,10 +7987,13 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
 		newWrong = true;
 		if (newScore) {
 			colorTarget=correctTarget;
+	
 			// makeAndShowANote(randomNoteNum + legalInterval, 1, "targetNote");
 			makeAndShowANote(thanote, 1, "singingNote");
 			
 		}
+		visibleSingingNoteGroups[0].style.backgroundColor='blue';
+		console.warn(visibleSingingNoteGroups[0].style.color); //7-20-20
 		startScoreTimer();
 		// updateTimer();
 		if ((sequencePlay) && (!nonReferencePlay)) {
@@ -8065,6 +8068,7 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
 	}
 	//console.log(noteArray[43][1]); // Here Avi is writing down what note is being played based on the find note thing.
 	//alert (r+"");
+	document.getElementById('staffScore').innerHTML=Math.floor(score)+'% completed';
 	if ((-1 != r) && (!paused)) {
 
 		var t = (noteArray[r + 1] || [2093])[0] - noteArray[r][0],
