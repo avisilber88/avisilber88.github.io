@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" prefix="og: http://ogp.me/ns#">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Practice Harmonizing in Thirds</title>
+<meta name="robots" content="index, follow" >
+<meta name="viewport" content="width=device-width, user-scalable=yes" >
+<meta name="theme-color" content="#5F3FBC" >
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"> -->
+<link rel="stylesheet" href="style31.css" type="text/css">
+<link rel="stylesheet" href="vendor/nouislider.min.css" type="text/css">
+<link rel="stylesheet" href="vendor/piano.css" type="text/css">
+<link rel="stylesheet" href="vendor/preloader.css" type="text/css">
+<link rel="stylesheet" href="vendor/notationmovementharmony.css" type="text/css">
+<style>
+body {
+background-color:E9EBEE
+<!-- margin-left: 20px; -->
+}
+button {
+border-radius: 6px
+}
+</style>
+</head>
+<body class="tuner" style = "background-color:#E9EBEE">
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+<!-- <script src="papaparse.min.js"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>	 -->
+	
+    <script src="vendor/nouislider.js"></script>
+    <script src="vendor/Tone.js"></script>
+    <script src="vendor/main.js"></script>
+    <script src="vendor/vexflow-min.js"></script>
+	    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+
+<div id="app-preloader">
+    <label for="preload-progress-bar">Downloading sounds and image files: <span class="progress-percentage"></span></label>
+    <progress id="preload-progress-bar"></progress>
+</div>
+
+<div class="all-wide" style = "background-color: #E9EBEE">
+<div class = "container">
+<nav class="navbar fixed-top navbar-light bg-light" style = "border-bottom-width: 5px; background-color: black">
+<!-- padding-top: 20px; padding-bottom: 20px; background-color: none !important"> -->
+  <!-- <a class="navbar-brand" href="#">View</a> -->
+  <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation"> -->
+    <!-- <span class="navbar-toggler-icon"></span> -->
+  <!-- </button> -->
+
+  <!-- <div class="navbar-nav"> -->
+  <!-- <span class = "nav nav-item"> -->
+  <!-- Welcome to Harmony Sense -->
+  <!-- </span> -->
+<ul class="nav nav-tabs" style = "border-bottom-width: 0px; height:40px">
+<li class="nav-item">
+<!-- <span style = "font-size: 13px"> -->
+<span class = "nav-link">
+Welcome to Harmony Sense
+</span><!-- </span> -->
+</li>
+  <li class="nav-item">
+  <button type ='button' class="nav-link" id ="directions" onclick="alert('Single Notes \nLevel 1: One note repeated. Interval changes every 10 reps.\nLevel 2: #1 but the note changes each rep\nLevel 3: One note repeatedly. Intervals shuffle each rep\n\nSequences\nLevel 4: Sequence of 2 notes, interval changes every 10 reps\nLevel 5: Sequence of notes, new interval each rep, every 10 reps the length of the sequence lengthens\nLevel 6: Sequence of notes, the interval changes each note. Sequence lengthens every 10 reps\nLevel 7: #6 but with music\nLevel 8: Sequence of notes with varying lengths, same intervals. Every 10 reps the sequence lengthens\nLevel 9: #8 but the intervals change every note\nLevel 10: #9 with music\n\nDo more\nPlan-Your-Own: Import or play in your own sequence.\nFreestyle: Decide your own harmonic excercise routine')">Instructions Guide</button>
+  </li>
+  
+  <li class="navbar-nav nav-item dropdown">
+<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Select Level
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenu2" style = "background-color: white">
+<button class="dropdown-item" hidden type ='button' id ="testing-button-base-case">Level One</button>
+   <button class="dropdown-item" hidden type ='button' id ="testing-button-test-case-one">Level Two</button>
+   <button class="dropdown-item" hidden type ='button' id ="level-three">Level Three</button>
+   <button class="dropdown-item" hidden type ='button' id ="level-four">Level Four</button>
+   <button class="dropdown-item" hidden type ='button' id ="level-five">Level Five</button>
+   <button class="dropdown-item" hidden type ='button' id ="level-six">Level Six</button>
+   <button class="dropdown-item" hidden type ='button' id ="level-seven">Level Seven</button>
+   <button class="dropdown-item" hidden type ='button' id ="level-eight">Level Eight</button>
+   <button class="dropdown-item" hidden type ='button' id ="level-nine">Level Nine</button>
+   <button class="dropdown-item" hidden type ='button' id ="level-ten">Level Ten</button>
+      <!-- <a class="dropdown-item" href="#">Action</a> -->
+      <!-- <a class="dropdown-item" href="#">Another action</a> -->
+      <!-- <a class="dropdown-item" href="#">Something else here</a> -->
+   <div class="dropdown-divider" style = "background-color: #E9EBEE"></div>
+   <button class="dropdown-item" type ='button' id ="rhythm-sense">Rhythm Sense</button>
+   <button class="dropdown-item" hidden type ='button' id ="testing-button-test-case-zero">Freestyle</button>
+   <button class="dropdown-item" hidden type ='button' id ="play-your-own">Play-Your-Own</button>
+      <!-- <a class="dropdown-item" href="#">Separated link</a> -->
+    </div>
+  </li>			
+  <!-- <li class="nav-item"> -->
+    <!-- <a class="nav-link" href="#">Link</a> -->
+  <!-- </li> -->
+  <!-- <li class="nav-item"> -->
+    <!-- <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a> -->
+  <!-- </li> -->
+</ul>
+  <!-- <button type ='button' id ="excercises" onclick="alert('Eventually, Ill tell you about excercise ideas')">Excercise Suggestions</button> -->
+<!-- </div> -->
+</nav>
+</div>
+<!-- <div class="content"> -->
+<div class="card" style = "margin:35px">
+<!-- <h2> Welcome to Harmony Sense, Practice Singing in Harmony! </h2> -->
+<!-- <div id ="topButtons" class = "card-header"> -->
+
+   <!-- </div> -->
+<!-- <script> -->
+<!-- function directions() { -->
+    <!-- alert('Eventually, Ill tell you what to do here! Isnt that nifty?!'); -->
+<!-- } -->
+<!-- </script> -->
+
+<div id = "opening-card" class = "card-body">
+<h3 id="welcomefam"> Welcome to Harmony Sense!<br><br>Select your level from above, or select freestyle to open up all of the options and settings (how it used to look before). </h3>
+</div>
+
+<div id = "card-section" class = "card-body">
+<h3 id = "opening-info"> Press "Turn on the Tuner" to Begin, there are adjustable settings both above and below the tuner on the page</h3>
+<h3 id = "lesson-name">sss</h3>
+<h2 id = "lesson-directions"></h2><br>
+<div id = "level-progress">
+<div class="progress">
+<!-- level 1 progress -->
+  <div class="progress-bar" id="levelOneProgress" role="progressbar" style="width: 0%; background: green" aria-valuenow="15" aria-valuemin="0" aria-valuemax="25">3rd up</div>
+<!-- level 1 not yet completed -->
+  <div class="progress-bar" id="levelOneNotProgress" role="progressbar" style="width: 25%; background: #e9ecef; border-right-color: black; border-right-style:solid; color: green" aria-valuenow="20" aria-valuemin="0" aria-valuemax="25">3rd up</div>
+<!-- level 2 progress -->
+  <div class="progress-bar" id="levelTwoProgress" role="progressbar" style="width: 0%; background: blue" aria-valuenow="15" aria-valuemin="0" aria-valuemax="25"></div>
+<!-- level 2 not yet completed -->
+  <div class="progress-bar" id="levelTwoNotProgress" role="progressbar" style="width: 25%; background: #e9ecef; color: blue; border-right-color: black; border-right-style:solid" aria-valuenow="20" aria-valuemin="0" aria-valuemax="25">3rd down</div>
+<!-- level 1 progress -->
+  <div class="progress-bar" id="levelThreeProgress" role="progressbar" style="width: 0%; background: green" aria-valuenow="15" aria-valuemin="0" aria-valuemax="25"></div>
+<!-- level 1 not yet completed -->
+  <div class="progress-bar" id="levelThreeNotProgress" role="progressbar" style="width: 25%; background: #e9ecef; color: green; border-right-color: black; border-right-style:solid" aria-valuenow="20" aria-valuemin="0" aria-valuemax="25">4th up</div>
+<!-- level 4 progress -->
+  <div class="progress-bar" id="levelFourProgress" role="progressbar" style="width: 0%; background: blue" aria-valuenow="15" aria-valuemin="0" aria-valuemax="25"></div>
+<!-- level 4 not yet completed -->
+  <div class="progress-bar" id="levelFourNotProgress" role="progressbar" style="width: 25%; background: #e9ecef; color: blue; border-right-color: black; border-right-style:solid" aria-valuenow="20" aria-valuemin="0" aria-valuemax="25">4th down</div>
+
+</div>
+</div>
+<div class = "options-info" id='instrumentSettings'>
+ <button type ='button' id ="usePiano">Use Piano</button>
+ <button type ='button' id ="useSynth" style=background:#00cc00>Use Synth (selected)</button>
+ <button type ='button' id ="useHumanVoice">Use Human Voice</button>
+  <span style="font-size:16px">Select a reference tone: Piano (short tones), Human Voice (long tones), Synth (long tones) <p></span>
+ <p>
+ <button type ='button' id ="accompanimentOn"style=background:#00cc00>On (selected)</button>
+ <button type ='button' id ="accompanimentOff" >Off</button>
+ <span style="font-size:16px">Select whether or not to have chordal accompaniment</span>
+ <p class = "accompaniment-buttons">
+ <button type ='button' class = "accompaniment-buttons" id ="arpeggiosOn"style=background:#00cc00>On (selected)</button>
+ <button type ='button' class = "accompaniment-buttons" id ="arpeggiosOff" >Off</button>
+ <span class = "accompaniment-buttons" style="font-size:16px">Select whether or not to arpeggiate the accompaniment</span>
+ <button type ='button' class = "arpeggio-type-buttons accompaniment-buttons" id ="arpeggio-zero"style=background:#00cc00>A (selected)</button>
+ <button type ='button' class = "arpeggio-type-buttons accompaniment-buttons" id ="arpeggio-one">B</button>
+ <button type ='button' class = "arpeggio-type-buttons accompaniment-buttons" id ="arpeggio-two">C</button>
+ <span class = "arpeggio-type-buttons accompaniment-buttons" style="font-size:16px">Select an Arpeggio</span>
+ <p class = "arpeggio-type-buttons">
+ <button type ='button' class = "arpeggio-type-buttons accompaniment-buttons" id ="play-root-on" style=background:#00cc00>On (selected)</button>
+ <button type ='button' class = "arpeggio-type-buttons accompaniment-buttons" id ="play-root-off">Off</button>
+  <span class = "arpeggio-type-buttons accompaniment-buttons" style="font-size:16px">Select whether or not to play the root in the bass (in beta)</span>
+ <p class = "accompaniment-buttons">
+ <button type ='button' class = "accompaniment-buttons" id ="inversionsOn"style=background:#00cc00>On (selected)</button>
+ <button type ='button' class = "accompaniment-buttons" id ="inversionsOff" >Off</button>
+  <span class = "accompaniment-buttons" style="font-size:16px">Select whether to vary inversions in accompaniment</span>
+ <p>
+  <p class = "accompaniment-buttons">
+ <button type ='button' class = "rhythm-type-buttons accompaniment-buttons" id ="rhythmOn"style=background:#00cc00>On (selected)</button>
+ <button type ='button' class = "rhythm-type-buttons accompaniment-buttons" id ="rhythmOff" >Off</button>
+  <span class = "accompaniment-buttons" style="font-size:16px">Select whether to have drums on or off</span>
+ <p>
+ </div>
+ <div id = 'harmonyChoices'>
+ <button type ='button' id ="thirdDown">3rd down</button>
+ <button type ='button' id ="thirdUp" style=background:#00cc00>3rd up (selected)</button>
+ <button type ='button' id ="unison" >Unison</button>
+ <button type ='button' id ="fourthDown" >4th down</button>
+ <button type ='button' id ="fourthUp" >4th up</button>
+  <button type ='button' id ="allHarmonies" >mixed harmonies (all of these but unisons) (beta)</button>
+  <span style="font-size:16px">Select what harmony interval you would like to practice</span>
+  </div>
+ <p><p>
+ <div id = 'scaleChoices'>
+ <button type ='button' id ="majorScale" style=background:#00cc00>Major Scale (selected)</button>
+ <button type ='button' id ="natMinorScale">Natural Minor Scale</button>
+ <span style="font-size:16px">Choose your Reference Scale Type</span>
+ <p>
+ <select id = "referenceKeySelect" name = "referenceKeySelect"> <option id = "c" value = "C"> C </option> <option id = "cSharp" value = "C#/Db"> C#/Db </option><option id = "d" value = "D"> D </option><option id = "dSharp" value = "D#/Eb"> D#/Eb </option> <option id = "E" value = "E"> E </option> <option id = "f" value = "F"> F </option><option id = "fSharp" value = "F#/Gb"> F#/Gb </option><option id = "g" value = "G"> G </option> <option id = "gSharp" value = "G#/Ab"> G#/Ab </option><option id = "a" value = "A"> A </option><option id = "aSharp" value = "A#/Bb"> A#/Bb </option> <option id = "b" value = "B"> B </option></select>
+ <span style="font-size:16px">Choose your Reference Key</span>
+ </div>
+ <p>
+ <div id = "scale-buttons">
+ <button type ='button' id ="doButton">Do</button>
+  <button type ='button' id ="reButton">Re</button>
+   <button type ='button' id ="miButton">Mi</button>
+    <button type ='button' id ="faButton">Fa</button>
+	 <button type ='button' id ="solButton">Sol</button>
+	  <button type ='button' id ="laButton">La</button>
+	   <button type ='button' id ="tiButton">Ti</button>
+	    <button type ='button' id ="do2Button">Do(high)</button>  
+		<span style="font-size:16px">play notes in key for reference</span>
+		</div>
+<p>
+
+<p>
+<div id = "scoreRow">
+<button type ='button' id ="pauseButton">Pause Timer and Sound</button>  
+Time = <span id="countdown">01:00</span>
+|   <span id="totalscore"># Correct = 0</span>
+| Avg Time = <span id="averagetime"></span> seconds 
+<button type ='button' id ="hide-button">Hide Advanced Options</button>  
+</div>
+<!-- <div class = "container justify-content-start"> -->
+
+<div class = "card" id = "rhythmBox" hidden style = "margin-top: 5px; border-width:0px; background-color: "white">
+<div class = "container">
+<div class = "row" id = "kick-row">
+<div class = "col steprowtitle" id = "kick-row-title"> kick </div>
+<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "kickstepone"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "kicksteptwo"></div>
+<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "kickstepthree"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "kickstepfour"></div>
+<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "kickstepfive"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "kickstepsix"></div>
+<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "kickstepseven"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "kickstepeight"></div>
+<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "kickstepnine"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "kickstepten"></div>
+<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "kickstepeleven"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "kicksteptwelve"></div>
+<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "kickstepthirteen"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "kickstepfourteen"></div>
+<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "kickstepfifteen"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "kickstepsixteen"></div>
+</div>
+
+
+<div class = "row" id = "clap-row">
+<div class = "col steprowtitle" id = "clap-row-title"> clap </div>
+<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "clapstepone"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "clapsteptwo"></div>
+<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "clapstepthree"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "clapstepfour"></div>
+<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "clapstepfive"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "clapstepsix"></div>
+<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "clapstepseven"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "clapstepeight"></div>
+<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "clapstepnine"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "clapstepten"></div>
+<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "clapstepeleven"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "clapsteptwelve"></div>
+<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "clapstepthirteen"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "clapstepfourteen"></div>
+<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "clapstepfifteen"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "clapstepsixteen"></div>
+</div>
+
+<div class = "row" id = "hat-row">
+<div class = "col steprowtitle" id = "hat-row-title"> hat </div>
+<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "hatstepone"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "hatsteptwo"></div>
+<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "hatstepthree"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "hatstepfour"></div>
+<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "hatstepfive"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "hatstepsix"></div>
+<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "hatstepseven"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "hatstepeight"></div>
+<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "hatstepnine"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "hatstepten"></div>
+<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "hatstepeleven"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "hatsteptwelve"></div>
+<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "hatstepthirteen"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "hatstepfourteen"></div>
+<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "hatstepfifteen"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "hatstepsixteen"></div>
+</div>
+
+
+<div class = "row" id = "snare-row">
+<div class = "col steprowtitle" id = "snare-row-title"> snare </div>
+<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "snarestepone"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "snaresteptwo"></div>
+<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "snarestepthree"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "snarestepfour"></div>
+<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "snarestepfive"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "snarestepsix"></div>
+<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "snarestepseven"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "snarestepeight"></div>
+<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "snarestepnine"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "snarestepten"></div>
+<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "snarestepeleven"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "snaresteptwelve"></div>
+<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "snarestepthirteen"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "snarestepfourteen"></div>
+<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "snarestepfifteen"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "snarestepsixteen"></div>
+</div>
+<!-- <div class = "col"> -->
+<!-- <div class = "row"> -->
+<!-- kick -->
+<!-- </div> -->
+<!-- <div class = "row"> -->
+<!-- hat -->
+<!-- </div> -->
+<!-- <div class = "row"> -->
+<!-- snare -->
+<!-- </div> -->
+<!-- <div class = "row"> -->
+<!-- note -->
+<!-- </div> -->
+<!-- </div> -->
+<!-- <div class = "col"> -->
+<!-- <div class = "row"> -->
+<!-- kick -->
+<!-- </div> -->
+<!-- <div class = "row"> -->
+<!-- hat -->
+<!-- </div> -->
+<!-- <div class = "row"> -->
+<!-- snare -->
+<!-- </div> -->
+<!-- <div class = "row"> -->
+<!-- note -->
+<!-- </div> -->
+<!-- </div> -->
+</div>	
+
+<!-- <h2>hi</h2> -->
+<button type ='button' id ="submitDrums" hidden style = "margin-top: 50px">Check your answer</button>
+<button type ='button' id ="rhythmFreestyleButton" style = "margin-top: 50px">Turn Freestyle Mode On</button>
+
+</div>
+
+  <div style = "display:flex; justify-content: left" id= "tunerAndSettings">
+	<!-- <div style = "border-width: 10px; border-style: solid"> -->
+<div class = "card" id = "viewBox" style = "margin-top: 5px; border-width:0px; background-color: "white">
+	<!-- above we have just opened the div that contains the tuner and the staff -->
+	
+<nav class="navbar navbar-light bg-light" style = "border-width: .5px; border-bottom-width: .5px; border-style:solid; border-color: #dee2e6; padding: 0rem; background: white">
+  <!-- <a class="navbar-brand" href="#">View</a> -->
+  <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation"> -->
+    <!-- <span class="navbar-toggler-icon"></span> -->
+  <!-- </button> -->
+
+  <!-- <div class="navbar" > -->
+    <ul class="nav nav-tabs" style = "border-bottom-width: 1px">
+  <li class="nav-item">
+    <button type = 'button' class="nav-link" id="viewTuner" style = "border-width: 1px; bordor-color: white; margin-left: 2px; margin-right:2px; border-radius: 0px; border-top-left-radius: 20px">Tuner</button>
+  </li>
+  <li class="nav-item">
+    <button type = 'button' class="nav-link" id="viewStaff" style = "margin-right:2px; bordor-color: white; border-radius: 0px; border-top-left-radius: 20px">Staff</button>
+  </li>
+  <li class="nav-item">
+    <button type = 'button' class="nav-link active" id="viewBoth" style = "margin-right:2px; bordor-color: white; border-radius: 0px; border-top-left-radius: 20px">Both</button>
+  </li>
+  <li class="nav-item">
+	<span style= "font-size: 18px" class="nav-link"> Select your interface </span>
+  </li>
+  <!-- <li class="nav-item"> -->
+    <!-- <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a> -->
+  <!-- </li> -->
+</ul>
+
+  <!-- </div> -->
+</nav>
+		
+		<div id="tunerframe">
+			<div id="tunerback"style="width:80%;">
+				<img id="preloader" alt="Loading..." src="anim.gif" style="display: block;margin-left: auto;margin-right: auto;" >
+				<canvas id="tunercanvas" style="width:80%;">
+				</canvas>
+			</div>
+		</div>
+		<script>
+		(function (d, e) {
+		var t=d.createElement("script");t.type="text/javascript",t.async=!0,t.src=e;var n=d.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n)
+		})(document, 'rhythmapp.js');
+		</script>
+		
+	<div class="justify-content-start" style="margint-right:50vw">
+	
+<div id="staff-box"></div>
+<div id="my-dialog" style="display:none" title="Harmony Sense Message"><span id="alertMessage"></span></div>
+<div class="justify-content-start">
+	
+	<!-- <div id="controls"> -->
+  <!-- <button id='add-note'>Add Note</button> -->
+  <!-- <button id='right-answer'>Right Answer</button> -->
+<!-- </div> -->
+
+<div id="staff-box-two"> <span id = "staffScore" style = "margin-left: 20%; font-size: 18px"></span></div>
+</div>
+</div>		
+	</div> 
+	<!-- this is the end of the box with the tuner and the staff -->
+	<div class="col-xs-offset-0 col-xs-4 col-sm-5 justify-content-start" id = "harmony-interact-column">
+		<!-- <div class="all-wide"> -->
+		<div class="row justify-content-start">
+		
+			
+			<span id="referenceText" style="font-size: 16px;">Your reference Note is blank, sing one third above that:(blanketyblank) in the key of C </span>
+			<p>
+			
+			<button type ='button' id ="playAgainButton">Play Reference Note Again</button>
+			<button type ='button' id ="playTargetButton">Reveal Target Note (you lose the point)</button>
+			<p>
+		</div>
+		<div id = "volumeChoices">
+			<div class="row justify-content-start">
+			<p>
+				<!-- <div class = "col-sm-4"> -->
+					
+					<div id="slider-horizontal" style="width:90%; max-width:300px;"></div>
+					<label for="amount" style="width:auto;">Accompaniment Volume:</label>
+					<input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div><div class = "col-sm-4"> -->
+			</div>	
+				<p>
+
+			<div class="row justify-content-start">
+			
+					<div id="slider-horizontal-rhythm" style="width:90%; max-width:300px;"></div><label for="rhythmamount">Drums Volume:</label>
+					<input type="text" id="rhythmamount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div> -->
+			</div>
+			<p>
+
+			<div class="row justify-content-start">
+			
+					<div id="slider-horizontal-reference" style="width:90%; max-width:300px;"></div><label for="referenceamount">Reference Volume:</label>
+					<input type="text" id="referenceamount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div> -->
+			</div>
+			</div>
+			<p>
+			<div class="options-info row justify-content-start">
+				<button type ='button' id ="continuousOn">On</button>
+				<button type ='button' id ="continuousOff"style=background:#00cc00>Off (selected)</button>
+				<span style="font-size:16px">Continuous Mode</span>
+			</div><p>
+			 <div class="options-info row justify-content-start" id="sequenceChoices">
+				
+				<button type ='button' id ="sequenceOff"style=background:#00cc00>Single Notes (selected)</button>
+				<button type ='button' id ="sequenceOn">Basic Sequence</button>
+				<button type ='button' id ="complexSequence">Complex Sequence (Beta)</button>
+				<span style="font-size:16px">Sequence Mode</span>
+			</div>
+			<div id = "sequenceSettingChoices">
+						<div class="options-info row justify-content-start">		
+					<p>
+					<p>
+					<div id="slider-horizontal-BPMAmount" style="width:90%; max-width:300px;"></div><label for="BPMAmount">Set the Tempo (BPM)</label>
+					<input  type="text" id="BPMAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div> -->
+			</div>
+			<div class="options-info sequence-mode row justify-content-start">
+					<span class = "sequence-mode"><p><p><p><br><b><u>Settings for Sequence Mode </u></b></span><p>
+					<div class = "sequence-mode" id="slider-horizontal-sequenceLengthAmount" style="width:90%; max-width:300px;"></div><label for="sequenceLengthAmount"># Notes in Sequence:</label>
+					<input type="text" id="sequenceLengthAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div> -->
+			</div>
+			
+			<div class="options-info sequence-mode row justify-content-start">
+			
+					<div class = "sequence-mode" id="slider-horizontal-melodicRangeAmount" style="width:90%; max-width:300px;"></div><label class = "sequence-mode" for="melodicRangeAmount">Melodic Range between notes(scale steps):</label>
+					<input class = "sequence-mode" type="text" id="melodicRangeAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div> -->
+			</div>
+	
+						<div class="options-info sequence-mode row justify-content-start">
+						</div>
+
+			<div class="options-info sequence-mode row justify-content-start">
+					<p><p><p><p><p><p><p><p><p><p>
+					<div class = "sequence-mode" id="noteLengthSlider" style="width:90%; max-width:300px;"></div>
+					<p><p><p><p>
+					</div>
+			<div class="options-info sequence-mode row justify-content-start">
+					<p><p><p><p><br>
+					<span class = "sequence-mode" style="font-size:16px">Set the minimum and maximum note length (# of beats held)</span>
+					<!-- <input type="text" id="noteLength" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;"> -->
+				<!-- </div> -->
+			</div>
+			<div class="options-info row justify-content-start">
+				<div class = "regular-mode">
+					<p><br><b><u>Settings for Regular Mode </u></b><p>
+					<div class = "regular-mode" id="slider-horizontal-timeRequirement" style="width:90%; max-width:300px;"></div><label for="timeRequirementAmount">Seconds to hold note:</label>
+					<input type="text" id="timeRequirementAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+				<!-- </div> -->
+				</div>
+			</div>
+			</div>
+			
+					
+			
+
+		<!-- </div> -->
+		<p>
+
+
+	</div>
+	
+	</div>
+
+	<div class="options-info">
+			<div class="row justify-content-start" id = "octaves">
+			<button type ='button' id ="octave2">Octave 2</button>
+			<button type ='button' id ="octave3" style=background:#00cc00>Octave 3 (selected)</button>
+			<button type ='button' id ="octave4">Octave 4</button>
+			<button type ='button' id ="octave5">Octave 5</button>
+			<button type ='button' id ="addAPerson">Add a person (debug)</button>
+			<p>
+			<span style="font-size:16px">Select above what octave you would like your reference note played in.
+			<p> Note: You can still sing in any octave as long as your relative interval is correct.</span>
+			</div>
+			<p>
+			<div  id="recruitYourOwnChoices">
+			<div class="row justify-content-start">	
+			<button type ='button' id ="capture-by-sound-button">Record a sequence by singing it (in Beta)</button>
+			<button type ='button' id ="capture-by-buttons-button">Record a sequence by pressing note buttons above the tuner, on the piano below, or using a midi device.</button>
+			<input type="file" data-buttonText="Your label here." id="filereader"/ > Import a Midi file as a sequence.
+			</div>
+			<p> 			
+			<p>
+			<!-- <div class="row justify-content-start">	 -->
+			<!-- <button type ='button' id ="mute-button">mute Mic</button> -->
+			<!-- <button type ='button' id ="unmute-button">unMute Mic</button> -->
+			<!-- </div> -->
+	
+	<div>
+<ul class="set pianolist"></li>  	
+<li id = "whitec" class="white e pianolist"></li>
+<li id = "whitecs" class="black ds pianolist"></li>
+<li id = "whited" class="white d pianolist"></li>
+ <li id = "whiteds" class="black cs pianolist"></li>
+	  <li id = "whitee" class="white c pianolist"></li>
+  <li id = "whitef" class="white b pianolist"></li>
+  <li id = "whitefs" class="black as pianolist"></li>
+  <li id = "whiteg" class="white a pianolist"></li>
+  <li id = "whitegs" class="black gs pianolist"></li>
+  <li id = "whitea" class="white g pianolist"></li>
+  <li id = "whiteas" class="black fs pianolist"></li>
+  <li id = "whiteb" class="white f pianolist"></li>
+<li id = "whitectwo" class="white e pianolist"></li>
+<li id = "whitecstwo" class="black ds pianolist"></li>
+<li id = "whitedtwo" class="white d  pianolist"></li>
+ <li id = "whitedstwo" class="black cs pianolist"></li>
+ <li id = "whiteetwo" class="white c pianolist"></li>
+  <li id = "whiteftwo" class="white b pianolist"></li>
+  <li id = "whitefstwo" class="black as pianolist"></li>
+  <li id = "whitegtwo" class="white a pianolist"></li>
+  <li id = "whitegstwo" class="black gs pianolist"></li>
+  <li id = "whiteatwo" class="white g pianolist"></li>
+  <li id = "whiteastwo" class="black fs pianolist"></li>
+  <li id = "whitebtwo" class="white f pianolist"></li>
+
+
+</ul>
+<p>
+<p>
+<p>
+<p>
+
+</div>		
+	
+	<div class="row justify-content-start">
+	<button type ='button' id ="chord-progression-roman">In Roman Numerals</button>
+	<button type ='button' id ="chord-progression-names">In Chord Names</button>
+	<button type ='button' id ="chord-progression-next">new Chord Progression</button>
+	<span id ="chordProgressionMessage"><p> If you'd like to know what chord progression you are listeening to, click above.</span>
+	</div>
+	</div>
+	<audio id = "sound-kick0" data-src = "samplestwo/kick.mp4"></audio>
+	<audio id = "sound-snare0" data-src = "samplestwo/snare.mp4"></audio>
+	<audio id = "sound-hat0" data-src = "samplestwo/hat.mp4"></audio>
+	<audio id = "sound-A2" data-src = "samplestwo/A2.mp4"></audio>
+	<audio id = "sound-Bb2" data-src = "samplestwo/Bb2.mp4"></audio>
+	<audio id = "sound-B2" data-src = "samplestwo/B2.mp4"></audio>
+	<audio id = "sound-Ab3" data-src = "samplestwo/Ab3.mp4"></audio>
+	<audio id = "sound-A3" data-src = "samplestwo/A3.mp4"></audio>
+	<audio id = "sound-Bb3" data-src = "samplestwo/Bb3.mp4"></audio>
+	<audio id = "sound-B3" data-src = "samplestwo/B3.mp4"></audio>
+	<audio id = "sound-C3" data-src = "samplestwo/C3.mp4"></audio>
+	<audio id = "sound-Db3" data-src = "samplestwo/Db3.mp4"></audio>
+	<audio id = "sound-D3" data-src = "samplestwo/D3.mp4"></audio>
+	<audio id = "sound-Eb3" data-src = "samplestwo/Eb3.mp4"></audio>
+	<audio id = "sound-E3" data-src = "samplestwo/E3.mp4"></audio>
+	<audio id = "sound-F3" data-src = "samplestwo/F3.mp4"></audio>
+	<audio id = "sound-Gb3" data-src = "samplestwo/Gb3.mp4"></audio>
+	<audio id = "sound-G3" data-src = "samplestwo/G3.mp4"></audio>
+	<audio id = "sound-Ab4" data-src = "samplestwo/Ab4.mp4"></audio>
+	<audio id = "sound-A4" data-src = "samplestwo/A4.mp4"></audio>
+	<audio id = "sound-Bb4" data-src = "samplestwo/Bb4.mp4"></audio>
+	<audio id = "sound-B4" data-src = "samplestwo/B4.mp4"></audio>
+	<audio id = "sound-C4" data-src = "samplestwo/C4.mp4"></audio>
+	<audio id = "sound-Db4" data-src = "samplestwo/Db4.mp4"></audio>
+	<audio id = "sound-D4" data-src = "samplestwo/D4.mp4"></audio>
+	<audio id = "sound-Eb4" data-src = "samplestwo/Eb4.mp4"></audio>
+	<audio id = "sound-E4" data-src = "samplestwo/E4.mp4"></audio>
+	<audio id = "sound-F4" data-src = "samplestwo/F4.mp4"></audio>
+	<audio id = "sound-Gb4" data-src = "samplestwo/Gb4.mp4"></audio>
+	<audio id = "sound-G4" data-src = "samplestwo/G4.mp4"></audio>
+	<audio id = "sound-C5" data-src = "samplestwo/C5.mp4"></audio>
+	<audio id = "sound-Db5" data-src = "samplestwo/5_Db4_4.mp4"></audio>
+	<audio id = "sound-D5" data-src = "samplestwo/5_D4_3.mp4"></audio>
+	<audio id = "sound-Eb5" data-src = "samplestwo/5_Eb4_3.mp4"></audio>
+	<audio id = "sound-E5" data-src = "samplestwo/5_E4_3.mp4"></audio>
+	<audio id = "sound-F5" data-src = "samplestwo/5_F4_3.mp4"></audio>
+	<audio id = "sound-Gb5" data-src = "samplestwo/5_Gb4_3.mp4"></audio>
+	<audio id = "sound-G5" data-src = "samplestwo/5_G4_2.mp4"></audio>
+	<audio id = "sound-Ab5" data-src = "samplestwo/5_Ab4_2.mp4"></audio>
+	<audio id = "sound-A5" data-src = "samplestwo/5_A4_2.mp4"></audio>
+	<audio id = "sound-Bb5" data-src = "samplestwo/5_Bb4_2.mp4"></audio>
+	<audio id = "sound-B5" data-src = "samplestwo/5_B4_2.mp4"></audio>
+	<audio id = "sound-C6" data-src = "samplestwo/5_C5_2.mp4"></audio>
+	
+	<audio id = "vsound-A1" data-src = "samplestwo/vA1.mp4"></audio>
+	<audio id = "vsound-Bb1" data-src = "samplestwo/vBb1.mp4"></audio>
+	<audio id = "vsound-B1" data-src = "samplestwo/vB1.mp4"></audio>
+	<audio id = "vsound-C2" data-src = "samplestwo/vC2.mp4"></audio>
+	<audio id = "vsound-Db2" data-src = "samplestwo/vDb2.mp4"></audio>
+	<audio id = "vsound-D2" data-src = "samplestwo/vD2.mp4"></audio>
+	<audio id = "vsound-Eb2" data-src = "samplestwo/vEb2.mp4"></audio>
+	<audio id = "vsound-E2" data-src = "samplestwo/vE2.mp4"></audio>
+	<audio id = "vsound-F2" data-src = "samplestwo/vF2.mp4"></audio>
+	<audio id = "vsound-Gb2" data-src = "samplestwo/vGb2.mp4"></audio>
+	<audio id = "vsound-G2" data-src = "samplestwo/vG2.mp4"></audio>
+	<audio id = "vsound-Ab2" data-src = "samplestwo/vAb2.mp4"></audio>
+	<audio id = "vsound-A2" data-src = "samplestwo/vA2.mp4"></audio>
+	<audio id = "vsound-Bb2" data-src = "samplestwo/vBb2.mp4"></audio>
+	<audio id = "vsound-B2" data-src = "samplestwo/vB2.mp4"></audio>
+	<audio id = "vsound-Ab3" data-src = "samplestwo/vAb3.mp4"></audio>
+	<audio id = "vsound-A3" data-src = "samplestwo/vA3.mp4"></audio>
+	<audio id = "vsound-Bb3" data-src = "samplestwo/vBb3.mp4"></audio>
+	<audio id = "vsound-B3" data-src = "samplestwo/vB3.mp4"></audio>
+	<audio id = "vsound-C3" data-src = "samplestwo/vC3.mp4"></audio>
+	<audio id = "vsound-Db3" data-src = "samplestwo/vDb3.mp4"></audio>
+	<audio id = "vsound-D3" data-src = "samplestwo/vD3.mp4"></audio>
+	<audio id = "vsound-Eb3" data-src = "samplestwo/vEb3.mp4"></audio>
+	<audio id = "vsound-E3" data-src = "samplestwo/vE3.mp4"></audio>
+	<audio id = "vsound-F3" data-src = "samplestwo/vF3.mp4"></audio>
+	<audio id = "vsound-Gb3" data-src = "samplestwo/vGb3.mp4"></audio>
+	<audio id = "vsound-G3" data-src = "samplestwo/vG3.mp4"></audio>
+	<audio id = "vsound-Ab4" data-src = "samplestwo/vAb4.mp4"></audio>
+	<audio id = "vsound-A4" data-src = "samplestwo/vA4.mp4"></audio>
+	<audio id = "vsound-Bb4" data-src = "samplestwo/vBb4.mp4"></audio>
+	<audio id = "vsound-B4" data-src = "samplestwo/vB4.mp4"></audio>
+	<audio id = "vsound-C4" data-src = "samplestwo/vC4.mp4"></audio>
+	<audio id = "vsound-Db4" data-src = "samplestwo/vDb4.mp4"></audio>
+	<audio id = "vsound-D4" data-src = "samplestwo/vD4.mp4"></audio>
+	<audio id = "vsound-Eb4" data-src = "samplestwo/vEb4.mp4"></audio>
+	<audio id = "vsound-E4" data-src = "samplestwo/vE4.mp4"></audio>
+	<audio id = "vsound-F4" data-src = "samplestwo/vF4.mp4"></audio>
+	<audio id = "vsound-Gb4" data-src = "samplestwo/vGb4.mp4"></audio>
+	<audio id = "vsound-G4" data-src = "samplestwo/vG4.mp4"></audio>
+	<audio id = "vsound-C5" data-src = "samplestwo/vC5.mp4"></audio>
+	<audio id = "vsound-Db5" data-src = "samplestwo/vDb5.mp4"></audio>
+	<audio id = "vsound-D5" data-src = "samplestwo/vD5.mp4"></audio>
+	<audio id = "vsound-Eb5" data-src = "samplestwo/vEb5.mp4"></audio>
+	<audio id = "vsound-E5" data-src = "samplestwo/vE5.mp4"></audio>
+	<audio id = "vsound-F5" data-src = "samplestwo/vF5.mp4"></audio>
+	<audio id = "vsound-Gb5" data-src = "samplestwo/vGb5.mp4"></audio>
+	<audio id = "vsound-G5" data-src = "samplestwo/vG5.mp4"></audio>
+	<audio id = "vsound-Ab5" data-src = "samplestwo/vAb5.mp4"></audio>
+	<audio id = "vsound-A5" data-src = "samplestwo/vA5.mp4"></audio>
+	<audio id = "vsound-Bb5" data-src = "samplestwo/vBb5.mp4"></audio>
+	<audio id = "vsound-B5" data-src = "samplestwo/vB5.mp4"></audio>
+	<audio id = "vsound-C6" data-src = "samplestwo/vC6.mp4"></audio>
+	<audio id = "rests" data-src = "samplestwo/rests.mp3"></audio>
+
+<div style="clear:both;"></div>
+</div>
+</div>
+</div>
+</div>
+
+<script src="helper.js"></script>
+<script src="vendor/preloader.js"></script>
+    
+</body>
+</html>

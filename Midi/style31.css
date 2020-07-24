@@ -273,4 +273,56 @@ ul.languages li { margin: 7px 0px 12px 0px; display: list-item; margin-right: 0p
 div.undermenu {display:none}
 }
 
+
+.steprowtitle {
+min-width: 70px;
+min-height: 50px;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+
+.selectedstep.beatonethree{
+	background: #a6b3bb;
+border-color: #5F5F5F;
+border-width: 1px;
+border-style: solid;
+}
+
+.unselectedstep.beatonethree{
+background: #515559;
+border-color: #5F5F5F;
+border-width: 1px;
+border-style: solid;
+}
+.selectedstep.beattwofour{
+	background: #d0a0a0;
+border-color: #5F5F5F;
+border-width: 1px;
+border-style: solid;
+}
+
+.unselectedstep.beattwofour{
+background: #594747;
+border-color: #5F5F5F;
+border-width: 1px;
+border-style: solid;
+}
+
+.rhythmstep  {
+min-height:50px;
+padding: 0px;
+min-width: .1%;
+/* width: 15px; */
+margin: 5px;
+margin-top: 5px;
+margin-bottom: 5px;
+border-radius: 7px;
+}
+.downbeat {
+min-height:50px;
+padding: 0px;
+min-width: .1%;
+/* width: 15px; */
+margin-left: 5px;
+}
 @media all and (min-width:1100px) { div.content{padding-left:15px;} }
