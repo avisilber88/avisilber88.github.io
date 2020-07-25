@@ -6403,6 +6403,12 @@ hatSequenceArray=[];
 hatStarted = true;
 
 hatSequenceArray.push(["hat", 4 , 0]);
+snareSequenceArray=[];
+snareStarted = true;
+
+snareSequenceArray.push(["rest", 1 , 0]);
+snareSequenceArray.push(["snare", 2 , 0]);
+snareSequenceArray.push(["snare", 1 , 0]);
 		kickSequenceArray=[];
 kickStarted = true;
 var remainingKicks=amountOfRandomKicks+0;
@@ -6419,11 +6425,13 @@ console.warn("kickStepsLeft " + kickStepsLeft+" remainingKicks "+remainingKicks)
 kickSequenceArray.push(["kick", kickStepsLeft/4 , 0]);
 kickSequenceCopy=kickSequenceArray.slice();
 hatSequenceCopy=hatSequenceArray.slice();
+snareSequenceCopy=snareSequenceArray.slice();
 console.warn(kickSequenceCopy.toString());
 console.warn(kickSequenceCopy.toString());
 }
 else{
 hatSequenceArray=hatSequenceCopy.slice();
+snareSequenceArray=snareSequenceCopy.slice();
 kickSequenceArray=kickSequenceCopy.slice();
 console.warn(hatSequenceCopy.toString());
 }
