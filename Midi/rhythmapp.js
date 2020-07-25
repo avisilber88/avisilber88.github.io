@@ -590,7 +590,7 @@ function updateProgress() {
     }
 }
 function checkForUpdatedDifficulty() {
-    if (currentLevelScore <= 5) {
+    if (currentLevelScore < 5) {
 		if (availableSteps=="quarters"){
 		numOfRandomSteps=1;
 		} else if (availableSteps=="eighths"){
@@ -598,7 +598,7 @@ function checkForUpdatedDifficulty() {
 		}else if (availableSteps=="sixteenths"){
 		numOfRandomSteps=2;
 		}
-      } else if (currentLevelScore <= 10) {
+      } else if (currentLevelScore < 10) {
 		if (availableSteps=="quarters"){
 		numOfRandomSteps=2;
 		} else if (availableSteps=="eighths"){
@@ -606,7 +606,7 @@ function checkForUpdatedDifficulty() {
 		}else if (availableSteps=="sixteenths"){
 		numOfRandomSteps=3;
 		}
-    } else if (currentLevelScore <= 15) {
+    } else if (currentLevelScore < 15) {
 		if (availableSteps=="quarters"){
 			backbeat=false;
 		numOfRandomSteps=2;
@@ -615,7 +615,7 @@ function checkForUpdatedDifficulty() {
 		}else if (availableSteps=="sixteenths"){
 		numOfRandomSteps=5;
 		}
-     } else if (currentLevelScore <= 20) {
+     } else if (currentLevelScore < 20) {
 		backbeat=false;
 		if (availableSteps=="quarters"){
 		numOfRandomSteps=1;
