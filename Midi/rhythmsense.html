@@ -78,7 +78,7 @@ Welcome to Harmony Sense
     Select Level
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenu2" style = "background-color: white">
-<button class="dropdown-item" hidden type ='button' id ="testing-button-base-case">Level One</button>
+	<button class="dropdown-item" hidden type ='button' id ="testing-button-base-case">Level One</button>
    <button class="dropdown-item" hidden type ='button' id ="testing-button-test-case-one">Level Two</button>
    <button class="dropdown-item" hidden type ='button' id ="level-three">Level Three</button>
    <button class="dropdown-item" hidden type ='button' id ="level-four">Level Four</button>
@@ -92,7 +92,13 @@ Welcome to Harmony Sense
       <!-- <a class="dropdown-item" href="#">Another action</a> -->
       <!-- <a class="dropdown-item" href="#">Something else here</a> -->
    <div class="dropdown-divider" style = "background-color: #E9EBEE"></div>
-   <button class="dropdown-item" type ='button' id ="rhythm-sense">Rhythm Sense</button>
+   <button class="dropdown-item" hidden type ='button' id ="rhythm-sense">Rhythm Sense</button>
+   <button class="dropdown-item" type ='button' id ="rhythm-level-one">1: Down Beats: Just for kicks</button>
+   <button class="dropdown-item" type ='button' id ="rhythm-level-two">2: Down Beats: Kick & Hat Tricks</button>
+   <button class="dropdown-item" type ='button' id ="rhythm-level-three">3: Down & Up Beats, Just for kicks</button>
+   <button class="dropdown-item" type ='button' id ="rhythm-level-four">4: Down & Up Beats, Kick & Hat Tricks</button>
+   <button class="dropdown-item" type ='button' id ="rhythm-level-five">5: Sweet 16, Just for Kicks</button>
+   <button class="dropdown-item" type ='button' id ="rhythm-level-six">6: Sweet 16, Kicks and Hat Tricks</button>
    <button class="dropdown-item" hidden type ='button' id ="testing-button-test-case-zero">Freestyle</button>
    <button class="dropdown-item" hidden type ='button' id ="play-your-own">Play-Your-Own</button>
       <!-- <a class="dropdown-item" href="#">Separated link</a> -->
@@ -338,9 +344,21 @@ Time = <span id="countdown">01:00</span>
 </div>	
 
 <!-- <h2>hi</h2> -->
-<button type ='button' id ="submitDrums" hidden style = "margin-top: 50px">Check your answer</button>
-<button type ='button' id ="rhythmFreestyleButton" style = "margin-top: 50px">Turn Freestyle Mode On</button>
+<div class="container">
+<div class = "row">
+<div class = "col">
+<button type ='button' id ="autocheckbutton" style = "margin-top: 50px; width: 50%">Turn Auto-Check On</button>
+</div>
+<div class = "col">
+<button type ='button' id ="submitDrums" style = "margin-top: 50px; width: 100%">Check your answer</button>
+</div>
 
+<div class = "col">
+<button type ='button' id ="nextRhythmButton" style = "margin-top: 50px; width: 100%">Give me another!</button>
+</div>
+</div>
+<button type ='button' id ="rhythmFreestyleButton" style = "margin-top: 50px; width: 100%">Turn Freestyle Mode On</button>
+</div>
 </div>
 
   <div style = "display:flex; justify-content: left" id= "tunerAndSettings">

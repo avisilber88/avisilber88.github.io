@@ -280,6 +280,65 @@ min-height: 50px;
 margin-top: 5px;
 margin-bottom: 5px;
 }
+.unselectable.selectedstep.beatonethree {
+	
+border-color: #a6b3bb;
+background: white;
+border-width: 3px;
+border-style: solid;
+margin: 3px;
+border-radius: 100px;
+}
+.unselectable.unselectedstep.beatonethree {
+border-color: #515559;
+background: white;
+border-width: 3px;
+border-style: solid;
+margin: 3px;
+border-radius: 100px;
+}
+.unselectable.selectedstep.beattwofour {
+	border-color: #594747;
+background: white;
+border-width: 3px;
+border-style: solid;
+margin: 3px;
+border-radius: 100px;
+}
+.unselectable.unselectedstep.beattwofour {
+	
+border-color: #594747;
+background: white;
+border-width: 3px;
+border-style: solid;
+margin: 3px;
+border-radius: 100px;
+}
+.lititup{
+border-color: #594747;
+border-width: 3px;
+border-style: solid;
+margin: 3px;
+/* padding: 3px; */
+border-radius: 0px;
+}
+.selectedstep.beatonethree.lititup{
+border-color: #a6b3bb;
+border-width: 3px;
+border-style: solid;
+margin: 3px;
+/* padding: 3px; */
+border-radius: 0px;
+}
+
+.unselectedstep.beatonethree.lititup{
+border-color: #a6b3bb;
+border-width: 3px;
+border-style: solid;
+margin: 3px;
+/* padding: 3px; */
+border-radius: 0px;
+}
 
 .selectedstep.beatonethree{
 	background: #a6b3bb;
