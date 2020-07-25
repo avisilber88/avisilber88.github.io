@@ -6767,7 +6767,7 @@ function setupStepClapSequence() {
             if (!firstclapsounded) {
                 firstclapsounded = true;
             } else {
-                clapSequenceArray.push(["snare", thisclapLength + 0, 0]);
+                clapSequenceArray.push(["openhat", thisclapLength + 0, 0]);
                 var thisclapLength = .25;
             }
         } else if (clapStepArray[stepnum].classList.contains("unselectedstep")) {
@@ -6781,9 +6781,9 @@ function setupStepClapSequence() {
     }
     if (firstclapsounded) {
         if (clapOnOne) {
-            clapSequenceArray.push(["snare", thisclapLength + 0 + clapsToAddToEnd, 0]);
+            clapSequenceArray.push(["openhat", thisclapLength + 0 + clapsToAddToEnd, 0]);
         } else {
-            clapSequenceArray.push(["snare", thisclapLength + 0, 0]);
+            clapSequenceArray.push(["openhat", thisclapLength + 0, 0]);
             clapSequenceArray.unshift(["rest", clapsToAddToEnd + 0, 0]);
         }
     }
