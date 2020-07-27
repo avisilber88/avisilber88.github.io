@@ -9,6 +9,37 @@
 <meta name="theme-color" content="#5F3FBC" >
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
+ <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-firestore.js"></script>
+    <script>
+       <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyD8HtP73rHKqt9klRdMCWQ2InBM5lhrWXc",
+    authDomain: "testproject-a9c91.firebaseapp.com",
+    databaseURL: "https://testproject-a9c91.firebaseio.com",
+    projectId: "testproject-a9c91",
+    storageBucket: "testproject-a9c91.appspot.com",
+    messagingSenderId: "493063455089",
+    appId: "1:493063455089:web:e94890481f804b85fbf6d0",
+    measurementId: "G-P4484M15K4"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+        firebase.initializeApp(config);
+    
+    </script>
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"> -->
 <link rel="stylesheet" href="style31.css" type="text/css">
@@ -77,17 +108,19 @@ Welcome to Harmony Sense
 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     Select Level
   </button>
+  
+  
   <div class="dropdown-menu" aria-labelledby="dropdownMenu2" style = "background-color: white">
-<button class="dropdown-item" type ='button' id ="testing-button-base-case">Level One</button>
-   <button class="dropdown-item" type ='button' id ="testing-button-test-case-one">Level Two</button>
-   <button class="dropdown-item" type ='button' id ="level-three">Level Three</button>
-   <button class="dropdown-item" type ='button' id ="level-four">Level Four</button>
-   <button class="dropdown-item" type ='button' id ="level-five">Level Five</button>
-   <button class="dropdown-item" type ='button' id ="level-six">Level Six</button>
-   <button class="dropdown-item" type ='button' id ="level-seven">Level Seven</button>
-   <button class="dropdown-item" type ='button' id ="level-eight">Level Eight</button>
-   <button class="dropdown-item" type ='button' id ="level-nine">Level Nine</button>
-   <button class="dropdown-item" type ='button' id ="level-ten">Level Ten</button>
+<button class="dropdown-item" hidden type ='button' id ="testing-button-base-case">Level One</button>
+   <button class="dropdown-item" hidden type ='button' id ="testing-button-test-case-one">Level Two</button>
+   <button class="dropdown-item" hidden type ='button' id ="level-three">Level Three</button>
+   <button class="dropdown-item" hidden type ='button' id ="level-four">Level Four</button>
+   <button class="dropdown-item" hidden type ='button' id ="level-five">Level Five</button>
+   <button class="dropdown-item" hidden type ='button' id ="level-six">Level Six</button>
+   <button class="dropdown-item" hidden type ='button' id ="level-seven">Level Seven</button>
+   <button class="dropdown-item" hidden type ='button' id ="level-eight">Level Eight</button>
+   <button class="dropdown-item" hidden type ='button' id ="level-nine">Level Nine</button>
+   <button class="dropdown-item" hidden type ='button' id ="level-ten">Level Ten</button>
       <!-- <a class="dropdown-item" href="#">Action</a> -->
       <!-- <a class="dropdown-item" href="#">Another action</a> -->
       <!-- <a class="dropdown-item" href="#">Something else here</a> -->
@@ -96,7 +129,11 @@ Welcome to Harmony Sense
    <button class="dropdown-item" type ='button' id ="play-your-own">Play-Your-Own</button>
       <!-- <a class="dropdown-item" href="#">Separated link</a> -->
     </div>
-  </li>			
+  </li>		
+<li>
+
+<button type = 'button' class="nav-link" id="login-button" style="position: absolute; right: 0" >Click Here to Login</button>
+</li>  
   <!-- <li class="nav-item"> -->
     <!-- <a class="nav-link" href="#">Link</a> -->
   <!-- </li> -->
@@ -121,7 +158,9 @@ Welcome to Harmony Sense
 <!-- </script> -->
 
 <div id = "opening-card" class = "card-body">
-<h3> Welcome to Harmony Sense!<br><br>Select your level from above, or select freestyle to open up all of the options and settings (how it used to look before). </h3>
+<h3 id="welcomefam" hidden> Welcome to Harmony Sense!<br><br>Select your level from above, or select freestyle to open up all of the options and settings (how it used to look before). </h3>
+<h3 id="welcomefamprelogin"> Welcome to Harmony Sense!<br><br>Please login with your name and e-mail address using the login button at the top right. </h3>
+
 </div>
 
 <div id = "card-section" class = "card-body">
@@ -397,6 +436,7 @@ Time = <span id="countdown">01:00</span>
 			<button type ='button' id ="octave3" style=background:#00cc00>Octave 3 (selected)</button>
 			<button type ='button' id ="octave4">Octave 4</button>
 			<button type ='button' id ="octave5">Octave 5</button>
+			<button type ='button' id ="addAPerson">Add a person (debug)</button>
 			<p>
 			<span style="font-size:16px">Select above what octave you would like your reference note played in.
 			<p> Note: You can still sing in any octave as long as your relative interval is correct.</span>
