@@ -11,6 +11,37 @@
 
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"> -->
+<!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-firestore.js"></script>
+    <script>
+       <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyD8HtP73rHKqt9klRdMCWQ2InBM5lhrWXc",
+    authDomain: "testproject-a9c91.firebaseapp.com",
+    databaseURL: "https://testproject-a9c91.firebaseio.com",
+    projectId: "testproject-a9c91",
+    storageBucket: "testproject-a9c91.appspot.com",
+    messagingSenderId: "493063455089",
+    appId: "1:493063455089:web:e94890481f804b85fbf6d0",
+    measurementId: "G-P4484M15K4"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+        firebase.initializeApp(config);
+    
+    </script>
 <link rel="stylesheet" href="style31.css" type="text/css">
 <link rel="stylesheet" href="vendor/nouislider.min.css" type="text/css">
 <link rel="stylesheet" href="vendor/piano.css" type="text/css">
@@ -66,7 +97,7 @@ border-radius: 6px
 <li class="nav-item">
 <!-- <span style = "font-size: 13px"> -->
 <span class = "nav-link">
-Welcome to Harmony Sense
+Welcome to Rhythm Sense
 </span><!-- </span> -->
 </li>
   <li class="nav-item">
@@ -91,19 +122,32 @@ Welcome to Harmony Sense
       <!-- <a class="dropdown-item" href="#">Action</a> -->
       <!-- <a class="dropdown-item" href="#">Another action</a> -->
       <!-- <a class="dropdown-item" href="#">Something else here</a> -->
-   <div class="dropdown-divider" style = "background-color: #E9EBEE"></div>
-   <button class="dropdown-item" hidden type ='button' id ="rhythm-sense">Rhythm Sense</button>
+	  
    <button class="dropdown-item" type ='button' id ="rhythm-level-one">1: Down Beats: Just for kicks</button>
    <button class="dropdown-item" type ='button' id ="rhythm-level-two">2: Down Beats: Kick & Hat Tricks</button>
    <button class="dropdown-item" type ='button' id ="rhythm-level-three">3: Down & Up Beats, Just for kicks</button>
    <button class="dropdown-item" type ='button' id ="rhythm-level-four">4: Down & Up Beats, Kick & Hat Tricks</button>
    <button class="dropdown-item" type ='button' id ="rhythm-level-five">5: Sweet 16, Just for Kicks</button>
    <button class="dropdown-item" type ='button' id ="rhythm-level-six">6: Sweet 16, Kicks and Hat Tricks</button>
+   <div class="dropdown-divider" style = "background-color: #E9EBEE"></div>
+   <button class="dropdown-item" type ='button' id ="rhythm-sense">Make Your Own Beat</button>
    <button class="dropdown-item" hidden type ='button' id ="testing-button-test-case-zero">Freestyle</button>
    <button class="dropdown-item" hidden type ='button' id ="play-your-own">Play-Your-Own</button>
       <!-- <a class="dropdown-item" href="#">Separated link</a> -->
     </div>
-  </li>			
+  </li>
+<li>
+
+<!-- <a type = 'button' class="nav-link" id="return-button" style="position: relative; right: 0; text-decoration:none; color: black" href = "https://avisilber88.github.io/chordsensehome.html" >Check out other music apps</a> -->
+<button type = 'button' class="nav-link" id="return-button" style="position: relative; right: 0; text-decoration:none; color: black" onclick="window.location.href='https://avisilber88.github.io/chordsensehome.html'" >See other music apps</a>
+
+
+
+</li>    
+<li>
+
+<button type = 'button' class="nav-link" id="login-button" style="position: absolute; right: 0" >Click Here to Login</button>
+</li>    
   <!-- <li class="nav-item"> -->
     <!-- <a class="nav-link" href="#">Link</a> -->
   <!-- </li> -->
@@ -128,7 +172,7 @@ Welcome to Harmony Sense
 <!-- </script> -->
 
 <div id = "opening-card" class = "card-body">
-<h3 id="welcomefam"> Welcome to Harmony Sense!<br><br>Select your level from above, or select freestyle to open up all of the options and settings (how it used to look before). </h3>
+<h3 id="welcomefam"> Welcome to Rhythm Sense!<br><br>Select your level from above, or select freestyle to open up all of the options and settings (how it used to look before). </h3>
 </div>
 
 <div id = "card-section" class = "card-body">
@@ -273,6 +317,69 @@ Time = <span id="countdown">01:00</span>
 <div class = "col rhythmstep beattwofour unselectedstep" id = "clapstepsixteen"></div>
 </div>
 
+
+<div class = "row" id = "inst5-row">
+<div class = "col steprowtitle" id = "inst5-row-title"> inst 5 </div>
+<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "inst5stepone"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "inst5steptwo"></div>
+<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "inst5stepthree"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "inst5stepfour"></div>
+<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "inst5stepfive"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "inst5stepsix"></div>
+<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "inst5stepseven"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "inst5stepeight"></div>
+<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "inst5stepnine"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "inst5stepten"></div>
+<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "inst5stepeleven"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "inst5steptwelve"></div>
+<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "inst5stepthirteen"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "inst5stepfourteen"></div>
+<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "inst5stepfifteen"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "inst5stepsixteen"></div>
+</div>
+
+
+<div class = "row" id = "inst6-row">
+<div class = "col steprowtitle" id = "inst6-row-title"> inst 6 </div>
+<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "inst6stepone"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "inst6steptwo"></div>
+<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "inst6stepthree"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "inst6stepfour"></div>
+<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "inst6stepfive"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "inst6stepsix"></div>
+<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "inst6stepseven"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "inst6stepeight"></div>
+<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "inst6stepnine"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "inst6stepten"></div>
+<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "inst6stepeleven"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "inst6steptwelve"></div>
+<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "inst6stepthirteen"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "inst6stepfourteen"></div>
+<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "inst6stepfifteen"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "inst6stepsixteen"></div>
+</div>
+
+
+<div class = "row" id = "inst7-row">
+<div class = "col steprowtitle" id = "inst7-row-title"> inst 7 </div>
+<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "inst7stepone"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "inst7steptwo"></div>
+<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "inst7stepthree"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "inst7stepfour"></div>
+<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "inst7stepfive"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "inst7stepsix"></div>
+<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "inst7stepseven"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "inst7stepeight"></div>
+<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "inst7stepnine"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "inst7stepten"></div>
+<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "inst7stepeleven"></div>
+<div class = "col rhythmstep beatonethree unselectedstep" id = "inst7steptwelve"></div>
+<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "inst7stepthirteen"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "inst7stepfourteen"></div>
+<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "inst7stepfifteen"></div>
+<div class = "col rhythmstep beattwofour unselectedstep" id = "inst7stepsixteen"></div>
+</div>
+
 <div class = "row" id = "hat-row">
 <div class = "col steprowtitle" id = "hat-row-title"> hat </div>
 <div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "hatstepone"></div>
@@ -357,7 +464,14 @@ Time = <span id="countdown">01:00</span>
 <button type ='button' id ="nextRhythmButton" style = "margin-top: 50px; width: 100%">Give me another!</button>
 </div>
 </div>
+<div class = "row">
+<div class = "col">
 <button type ='button' id ="rhythmFreestyleButton" style = "margin-top: 50px; width: 100%">Turn Freestyle Mode On</button>
+</div>
+<div class = "col">
+<button type ='button' id ="metronomeButton" style = "margin-top: 50px; width: 100%">Turn Metronome Off</button>
+</div>
+</div>
 </div>
 </div>
 
@@ -698,6 +812,10 @@ Time = <span id="countdown">01:00</span>
 	<audio id = "vsound-C6" data-src = "samplestwo/vC6.mp4"></audio>
 	<audio id = "rests" data-src = "samplestwo/rests.mp3"></audio>
 	<audio id = "sound-openhat0" data-src = "samplestwo/openhat.mp4"></audio>
+	<audio id = "sound-triangle0" data-src = "samplestwo/triangle.mp4"></audio>
+	<audio id = "sound-rim20" data-src = "samplestwo/rim2.mp4"></audio>
+	<audio id = "sound-rim0" data-src = "samplestwo/rim.mp4"></audio>
+	<audio id = "sound-clave0" data-src = "samplestwo/clave.wav"></audio>
 
 <div style="clear:both;"></div>
 </div>
