@@ -233,6 +233,7 @@ var colorTarget = wrongTarget;
 var answerRevealed = false;
 var whoItIsUsingThis = "";
 var ourLevelNumber = 0;
+var scorePerLevel=20;
 noteOnListener(0, 0);
 var loadDatabase = [];
 var db;
@@ -359,22 +360,24 @@ function setProgressGoals(goal1, goal2, goal3, goal4) {
 function updateProgress() {
     // alert (currentLevelScore);
     // alert (((currentLevelScore/40)*100)+'%');
-    if (currentLevelScore <= 10) {
-        document.getElementById('levelOneProgress').style.width = ((currentLevelScore / 40) * 100) + '%';
-        document.getElementById('levelOneNotProgress').style.width = (25 - ((currentLevelScore / 40) * 100)) + '%';
-        document.getElementById('levelOneProgress').innerHTML = (currentLevelScore) + "/10";
-    } else if (currentLevelScore <= 20) {
-        document.getElementById('levelTwoProgress').style.width = (((currentLevelScore - 10) / 40) * 100) + '%';
-        document.getElementById('levelTwoNotProgress').style.width = (25 - (((currentLevelScore - 10) / 40) * 100)) + '%';
-        document.getElementById('levelTwoProgress').innerHTML = ((currentLevelScore - 10)) + "/10";
-    } else if (currentLevelScore <= 30) {
-        document.getElementById('levelThreeProgress').style.width = (((currentLevelScore - 20) / 40) * 100) + '%';
-        document.getElementById('levelThreeNotProgress').style.width = (25 - (((currentLevelScore - 20) / 40) * 100)) + '%';
-        document.getElementById('levelThreeProgress').innerHTML = ((currentLevelScore - 20)) + "/10";
-    } else if (currentLevelScore <= 40) {
-        document.getElementById('levelFourProgress').style.width = (((currentLevelScore - 30) / 40) * 100) + '%';
-        document.getElementById('levelFourNotProgress').style.width = (25 - (((currentLevelScore - 30) / 40) * 100)) + '%';
-        document.getElementById('levelFourProgress').innerHTML = ((currentLevelScore - 30)) + "/10";
+	// score per level
+	// 
+    if (currentLevelScore <= (.25*scorePerLevel)) {
+        document.getElementById('levelOneProgress').style.width = ((currentLevelScore / scorePerLevel) * 100) + '%';
+        document.getElementById('levelOneNotProgress').style.width = (25 - ((currentLevelScore / scorePerLevel) * 100)) + '%';
+        document.getElementById('levelOneProgress').innerHTML = (currentLevelScore) + "/"+(scorePerLevel/4);
+    } else if (currentLevelScore <= (.5*scorePerLevel)) {
+        document.getElementById('levelTwoProgress').style.width = (((currentLevelScore - (.25*scorePerLevel)) / scorePerLevel) * 100) + '%';
+        document.getElementById('levelTwoNotProgress').style.width = (25 - (((currentLevelScore - (.25*scorePerLevel)) / scorePerLevel) * 100)) + '%';
+        document.getElementById('levelTwoProgress').innerHTML = ((currentLevelScore - (.25*scorePerLevel))) + "/"+(scorePerLevel/4);
+    } else if (currentLevelScore <= (.75*scorePerLevel)) {
+        document.getElementById('levelThreeProgress').style.width = (((currentLevelScore - (.5*scorePerLevel)) / scorePerLevel) * 100) + '%';
+        document.getElementById('levelThreeNotProgress').style.width = (25 - (((currentLevelScore - (.5*scorePerLevel)) / scorePerLevel) * 100)) + '%';
+        document.getElementById('levelThreeProgress').innerHTML = ((currentLevelScore - (.5*scorePerLevel))) + "/"+(scorePerLevel/4);
+    } else if (currentLevelScore <= scorePerLevel) {
+        document.getElementById('levelFourProgress').style.width = (((currentLevelScore - (.75*scorePerLevel)) / scorePerLevel) * 100) + '%';
+        document.getElementById('levelFourNotProgress').style.width = (25 - (((currentLevelScore - (.75*scorePerLevel)) / scorePerLevel) * 100)) + '%';
+        document.getElementById('levelFourProgress').innerHTML = ((currentLevelScore - (.75*scorePerLevel))) + "/"+(scorePerLevel/4);
     }
 }
 
@@ -6910,13 +6913,13 @@ function repeatOnFrame() {
                     setProgressGoals("3rd Up", "3rd Down", "4th Up", "4th Down");
                     if (currentLevelScore == 0) {
                         intervalDirection = "up";
-                    } else if (currentLevelScore == 10) {
+                    } else if (currentLevelScore == Math.floor(.25*scorePerLevel)) {
                         intervalDirection = "down";
                         alert("now practice doing a 3rd down of this note");
-                    } else if (currentLevelScore == 20) {
+                    } else if (currentLevelScore == Math.floor(.5*scorePerLevel)) {
                         intervalDirection = "fourthUp";
                         alert("now practice doing a 4th up of this note (Note: This is the same as a 5th down)");
-                    } else if (currentLevelScore == 30) {
+                    } else if (currentLevelScore == Math.floor(.75*scorePerLevel)) {
                         intervalDirection = "fourthDown";
                         alert("now practice doing a 5th up of this note (Note: This is the same as a 4th down)");
                     }
@@ -6933,13 +6936,13 @@ function repeatOnFrame() {
                     setProgressGoals("2 notes", "3 Notes", "4 Notes", "5 Notes");
                     if (currentLevelScore == 0) {
                         sequenceLength = 2;
-                    } else if (currentLevelScore == 10) {
+                    } else if (currentLevelScore == Math.floor(.25*scorePerLevel)) {
                         sequenceLength = 3;
                         // alert("now practice doing a 3rd down of this note");
-                    } else if (currentLevelScore == 20) {
+                    } else if (currentLevelScore == Math.floor(.5*scorePerLevel)) {
                         sequenceLength = 4;
                         // alert("now practice doing a 4th up of this note (Note: This is the same as a 5th down)");
-                    } else if (currentLevelScore == 30) {
+                    } else if (currentLevelScore == Math.floor(.75*scorePerLevel)) {
                         sequenceLength = 5;
                         // alert("now practice doing a 5th up of this note (Note: This is the same as a 4th down)");
                     }
@@ -6947,19 +6950,19 @@ function repeatOnFrame() {
                     setProgressGoals("4 Notes", "8 Notes", "12 Notes", "16 Notes");
                     if (currentLevelScore == 0) {
                         sequenceLength = 4;
-                    } else if (currentLevelScore == 10) {
+                    } else if (currentLevelScore == Math.floor(.25*scorePerLevel)) {
                         sequenceLength = 8;
                         // alert("now practice doing a 3rd down of this note");
-                    } else if (currentLevelScore == 20) {
+                    } else if (currentLevelScore == Math.floor(.5*scorePerLevel)) {
                         sequenceLength = 12;
                         // alert("now practice doing a 4th up of this note (Note: This is the same as a 5th down)");
-                    } else if (currentLevelScore == 30) {
+                    } else if (currentLevelScore == Math.floor(.75*scorePerLevel)) {
                         sequenceLength = 16;
                         // alert("now practice doing a 5th up of this note (Note: This is the same as a 4th down)");
                     }
                 }
                 updateProgress();
-                if (currentLevelScore >= 40) {
+                if (currentLevelScore >= scorePerLevel) {
                     alert("Congratulations! You have completed this level. Select a new level from the 'select level' menu");
                     addLevelCompleted(whoItIsUsingThis, theirEmail, scoreLevel);
 
@@ -7327,13 +7330,13 @@ function repeatOnFrame() {
                     setProgressGoals("3rd Up", "3rd Down", "4th Up", "4th Down");
                     if (currentLevelScore == 0) {
                         intervalDirection = "up";
-                    } else if (currentLevelScore == 10) {
+                    } else if (currentLevelScore == Math.floor(.25*scorePerLevel)) {
                         intervalDirection = "down";
                         alert("now practice doing a 3rd down of this note");
-                    } else if (currentLevelScore == 20) {
+                    } else if (currentLevelScore == Math.floor(.5*scorePerLevel)) {
                         intervalDirection = "fourthUp";
                         alert("now practice doing a 4th up of this note (Note: This is the same as a 5th down)");
-                    } else if (currentLevelScore == 30) {
+                    } else if (currentLevelScore == Math.floor(.75*scorePerLevel)) {
                         intervalDirection = "fourthDown";
                         alert("now practice doing a 5th up of this note (Note: This is the same as a 4th down)");
                     }
@@ -7346,13 +7349,13 @@ function repeatOnFrame() {
 
                     if (currentLevelScore == 0) {
                         sequenceLength = 2;
-                    } else if (currentLevelScore == 10) {
+                    } else if (currentLevelScore == Math.floor(.25*scorePerLevel)) {
                         sequenceLength = 3;
                         // alert("now practice doing a 3rd down of this note");
-                    } else if (currentLevelScore == 20) {
+                    } else if (currentLevelScore ==Math.floor(.5*scorePerLevel)) {
                         sequenceLength = 4;
                         // alert("now practice doing a 4th up of this note (Note: This is the same as a 5th down)");
-                    } else if (currentLevelScore == 30) {
+                    } else if (currentLevelScore == Math.floor(.75*scorePerLevel)) {
                         sequenceLength = 5;
                         // alert("now practice doing a 5th up of this note (Note: This is the same as a 4th down)");
                     }
@@ -7361,19 +7364,19 @@ function repeatOnFrame() {
                     setProgressGoals("4 Notes", "8 Notes", "12 Notes", "16 Notes");
                     if (currentLevelScore == 0) {
                         sequenceLength = 4;
-                    } else if (currentLevelScore == 10) {
+                    } else if (currentLevelScore == Math.floor(.25*scorePerLevel)) {
                         sequenceLength = 8;
                         // alert("now practice doing a 3rd down of this note");
-                    } else if (currentLevelScore == 20) {
+                    } else if (currentLevelScore == Math.floor(.5*scorePerLevel)) {
                         sequenceLength = 12;
                         // alert("now practice doing a 4th up of this note (Note: This is the same as a 5th down)");
-                    } else if (currentLevelScore == 30) {
+                    } else if (currentLevelScore == Math.floor(.75*scorePerLevel)) {
                         sequenceLength = 16;
                         // alert("now practice doing a 5th up of this note (Note: This is the same as a 4th down)");
                     }
                 }
                 updateProgress();
-                if (currentLevelScore >= 40) {
+                if (currentLevelScore >= Math.floor(scorePerLevel)) {
                     alert("Congratulations! You have completed this level. Select a new level from the 'select level' menu");
                     addLevelCompleted(whoItIsUsingThis, theirEmail, scoreLevel);
                     if (ourLevelNumber < levelToNum(scoreLevel)) {
@@ -10491,7 +10494,7 @@ $('#octave2').click(function () {
     sequenceCopy.forEach(element => element[0] = element[0] + noteAdapter + 0);
     updateReferences();
     // updateUnlockedLevelsByUser("test3", 3);
-    currentLevelScore = 40;
+    currentLevelScore = scorePerLevel;
     playItAgain();
 });
 
