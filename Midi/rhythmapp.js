@@ -840,11 +840,11 @@ function updateProgress() {
         alert("Congratulations! You have completed this level. Select a new level from the 'select level' menu");
         // alert (scoreLevel);
         addLevelCompleted(whoItIsUsingThis, theirEmail, scoreLevel);
-        if (ourLevelNumber < levelToNum(scoreLevel)) {
-            ourLevelNumber = levelToNum(scoreLevel);
+        if (ourLevelNumber < scoreLevel) {
+            ourLevelNumber = scoreLevel;
             updateTheLevel(ourLevelNumber);
         }
-        setupTheLevel(levelToNum(scoreLevel) + 1);
+        setupTheLevel(scoreLevel);
     }
 }
 function checkForUpdatedDifficulty() {
@@ -12252,7 +12252,7 @@ document.getElementById('kick-row').hidden=false;
 document.getElementById('hat-row').hidden=false;
 document.getElementById('snare-row').hidden=false;
     document.getElementById('level-progress').style.display = 'block';
-    setProgressGoals("3 random steps", "4 random steps", "6 random steps", "6 random steps, no snares");
+    setProgressGoals("3 random steps", "4 random steps", "6 random steps", "4 random steps, no snares");
     updateProgress();
     checkForUpdatedDifficulty();
 });
@@ -12272,13 +12272,13 @@ document.getElementById('kick-row').hidden=false;
 document.getElementById('hat-row').hidden=false;
 document.getElementById('snare-row').hidden=false;
     document.getElementById('level-progress').style.display = 'block';
-    setProgressGoals("3 random steps", "4 random steps", "6 random steps", "6 random steps, no snares");
+    setProgressGoals("3 random steps", "4 random steps", "6 random steps", "4 random steps, no snares");
     updateProgress();
     checkForUpdatedDifficulty();
 });
 
 $('#rhythm-level-seven').click(function () {
-    scoreLevel = 6;
+    scoreLevel = 7;
     rhythmVolume = 50;
     simplifiedDenominator = 1;
     clearRhythms();
@@ -12295,13 +12295,13 @@ document.getElementById('hat-row').hidden=false;
 document.getElementById('snare-row').hidden=false;
 document.getElementById('clap-row').hidden=false;
     document.getElementById('level-progress').style.display = 'block';
-    setProgressGoals("3 random steps", "4 random steps", "6 random steps", "6 random steps, no snares");
+    setProgressGoals("3 random steps", "4 random steps", "6 random steps", "4 random steps, no snares");
     updateProgress();
     checkForUpdatedDifficulty();
 });
 
 $('#rhythm-level-eight').click(function () {
-    scoreLevel = 6;
+    scoreLevel = 8;
     rhythmVolume = 50;
     simplifiedDenominator = 1;
     clearRhythms();
@@ -12324,7 +12324,7 @@ document.getElementById('inst5-row').hidden=false;
     // document.getElementById('snare-row').hidden=false;
     // document.getElementById('hat-row').hidden=false;
     document.getElementById('level-progress').style.display = 'block';
-    setProgressGoals("3 random steps", "4 random steps", "6 random steps", "6 random steps, no snares");
+    setProgressGoals("3 random steps", "4 random steps", "6 random steps", "4 random steps, no snares");
     updateProgress();
     checkForUpdatedDifficulty();
 });
@@ -12351,7 +12351,10 @@ $('#rhythm-level-nine').click(function () {
     // checkForUpdatedDifficulty();
 });
 $('#rhythmFreestyleButton').click(function () {
-    scoreLevel = "freestyle";
+	// if (!justcheckingit){
+		// scoreLevel = "freestyle";
+		// justcheckingit=true;
+	// }
     rhythmVolume = 50;
     if (rhythmFreestyle) {
         rhythmFreestyle = false;
