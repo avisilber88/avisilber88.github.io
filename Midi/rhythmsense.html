@@ -125,10 +125,13 @@ Welcome to Rhythm Sense
 	  
    <button class="dropdown-item" type ='button' id ="rhythm-level-one">1: Down Beats: Just for kicks</button>
    <button class="dropdown-item" type ='button' id ="rhythm-level-two">2: Down Beats: Kick & Hat Tricks</button>
-   <button class="dropdown-item" type ='button' id ="rhythm-level-three">3: Down & Up Beats, Just for kicks</button>
+   <button class="dropdown-item" type ='button' id ="rhythm-level-three">3: Down & Up Beats, Just for Kicks</button>
    <button class="dropdown-item" type ='button' id ="rhythm-level-four">4: Down & Up Beats, Kick & Hat Tricks</button>
    <button class="dropdown-item" type ='button' id ="rhythm-level-five">5: Sweet 16, Just for Kicks</button>
    <button class="dropdown-item" type ='button' id ="rhythm-level-six">6: Sweet 16, Kicks and Hat Tricks</button>
+   <button class="dropdown-item" type ='button' id ="rhythm-level-seven">7: Sweet 16, Kicks, Closed & Open Hat Tricks</button>
+   <button class="dropdown-item" type ='button' id ="rhythm-level-eight">8: Sweet 16, Throw in the Rims!</button>
+   <button class="dropdown-item" type ='button' id ="rhythm-level-nine">9: (Coming Soon)</button>
    <div class="dropdown-divider" style = "background-color: #E9EBEE"></div>
    <button class="dropdown-item" type ='button' id ="rhythm-sense">Make Your Own Beat</button>
    <button class="dropdown-item" hidden type ='button' id ="testing-button-test-case-zero">Freestyle</button>
@@ -265,18 +268,41 @@ Welcome to Rhythm Sense
 <p>
 
 <p>
-<div id = "scoreRow">
+<div class = "container scoreRow" hidden id = "scoreRow">
+<div class = "row">
+<div class = "col">
 <button type ='button' id ="pauseButton">Pause Timer and Sound</button>  
-Time = <span id="countdown">01:00</span>
-|   <span id="totalscore"># Correct = 0</span>
-| Avg Time = <span id="averagetime"></span> seconds 
+<span class = "questionbuttonrow">
+Time = </span><span class = "questionbuttonrow" id="countdown">01:00</span><span class = "questionbuttonrow">
+|  </span><span class = "questionbuttonrow" id="totalscore"># Correct = 0</span><span class = "questionbuttonrow">
+| Avg Time = </span><span class = "questionbuttonrow" id="averagetime"></span><span class = "questionbuttonrow"> seconds </span>
 <button type ='button' id ="hide-button">Hide Advanced Options</button>  
+</div>
+<div class="col temposlider" hidden>
+					<div id="slider-horizontal-BPMAmount" style="width:100%; max-width:300px; ;"></div><label for="BPMAmount">Set the Tempo (BPM)</label>
+					<input  type="text" id="BPMAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%; ">
+</div>
+</div>
 </div>
 <!-- <div class = "container justify-content-start"> -->
 
 <div class = "card" id = "rhythmBox" hidden style = "margin-top: 5px; border-width:0px; background-color: "white">
 <div class = "container">
-<div class = "row" id = "kick-row">
+<div class = "row kick-row" id = "kick-row">
+<div class = "col steprowpulldown" id = "kick-row-pulldown">
+	<button class="btn btn-secondary dropdown-toggle" type="button" id="kickdropdownMenuButton" style="margin-top: 5px; margin-bottom: 5px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+		<div class="dropdown-menu" aria-labelledby="dropdownMenu2" style = "background-color: white">
+			<button class="dropdown-item kick-row-choices kick-choice" hidden type ='button' onclick="setupThisRow('kick', 'Kick', 'kick')">Kick</button>
+			<button class="dropdown-item kick-row-choices hat-choice" hidden type ='button' onclick="setupThisRow('kick', 'Closed Hat','hat')">Closed Hat</button>
+			<button class="dropdown-item kick-row-choices openhat-choice" hidden type ='button' onclick="setupThisRow('kick', 'Open Hat', 'openhat')">Open Hat</button>
+			<button class="dropdown-item kick-row-choices clave-choice" hidden type ='button' onclick="setupThisRow('kick','Clave', 'clave')">Clave</button>
+			<button class="dropdown-item kick-row-choices triangle-choice" hidden type ='button' onclick="setupThisRow('kick','Triangle', 'triangle')">Triangle</button>
+			<button class="dropdown-item kick-row-choices rim-choice" hidden type ='button' onclick="setupThisRow('kick','Rim', 'rim')">Rim</button>
+			<button class="dropdown-item kick-row-choices tom-choice" hidden type ='button' onclick="setupThisRow('kick','Tom', 'tom')">Tom</button>
+			<button class="dropdown-item kick-row-choices perc-choice" hidden type ='button' onclick="setupThisRow('kick','Perc', 'perc')">Perc</button>
+			<button class="dropdown-item kick-row-choices snare-choice" hidden type ='button' onclick="setupThisRow('kick','Snare', 'snare')">Snare</button>
+		</div>
+</div>
 <div class = "col steprowtitle" id = "kick-row-title"> kick </div>
 <div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "kickstepone"></div>
 <div class = "col rhythmstep beatonethree unselectedstep" id = "kicksteptwo"></div>
@@ -297,7 +323,21 @@ Time = <span id="countdown">01:00</span>
 </div>
 
 
-<div class = "row" id = "clap-row">
+<div class = "row clap-row" id = "clap-row">
+<div class = "col steprowpulldown" id = "clap-row-pulldown">
+	<button class="btn btn-secondary dropdown-toggle" type="button" id="clapdropdownMenuButton" style="margin-top: 5px; margin-bottom: 5px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+		<div class="dropdown-menu" aria-labelledby="dropdownMenu2" style = "background-color: white">
+			<button class="dropdown-item clap-row-choices kick-choice" hidden type ='button' onclick="setupThisRow('clap', 'Kick', 'kick')">Kick</button>
+			<button class="dropdown-item clap-row-choices hat-choice" hidden type ='button' onclick="setupThisRow('clap', 'Closed Hat','hat')">Closed Hat</button>
+			<button class="dropdown-item clap-row-choices openhat-choice" hidden type ='button' onclick="setupThisRow('clap', 'Open Hat', 'openhat')">Open Hat</button>
+			<button class="dropdown-item clap-row-choices clave-choice" hidden type ='button' onclick="setupThisRow('clap','Clave', 'clave')">Clave</button>
+			<button class="dropdown-item clap-row-choices triangle-choice" hidden type ='button' onclick="setupThisRow('clap','Triangle', 'triangle')">Triangle</button>
+			<button class="dropdown-item clap-row-choices rim-choice" hidden type ='button' onclick="setupThisRow('clap','Rim', 'rim')">Rim</button>
+			<button class="dropdown-item clap-row-choices tom-choice" hidden type ='button' onclick="setupThisRow('clap','Tom', 'tom')">Tom</button>
+			<button class="dropdown-item clap-row-choices perc-choice" hidden type ='button' onclick="setupThisRow('clap','Perc', 'perc')">Perc</button>
+			<button class="dropdown-item clap-row-choices snare-choice" hidden type ='button' onclick="setupThisRow('clap','Snare', 'snare')">Snare</button>
+		</div>
+</div>
 <div class = "col steprowtitle" id = "clap-row-title"> open-hat </div>
 <div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "clapstepone"></div>
 <div class = "col rhythmstep beatonethree unselectedstep" id = "clapsteptwo"></div>
@@ -318,7 +358,21 @@ Time = <span id="countdown">01:00</span>
 </div>
 
 
-<div class = "row" id = "inst5-row">
+<div class = "row inst5-row" id = "inst5-row">
+<div class = "col steprowpulldown" id = "inst5-row-pulldown">
+	<button class="btn btn-secondary dropdown-toggle" type="button" id="inst5dropdownMenuButton" style="margin-top: 5px; margin-bottom: 5px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+		<div class="dropdown-menu" aria-labelledby="dropdownMenu2" style = "background-color: white">
+			<button class="dropdown-item inst5-row-choices kick-choice" hidden type ='button' onclick="setupThisRow('inst5', 'Kick', 'kick')">Kick</button>
+			<button class="dropdown-item inst5-row-choices hat-choice" hidden type ='button' onclick="setupThisRow('inst5', 'Closed Hat','hat')">Closed Hat</button>
+			<button class="dropdown-item inst5-row-choices openhat-choice" hidden type ='button' onclick="setupThisRow('inst5', 'Open Hat', 'openhat')">Open Hat</button>
+			<button class="dropdown-item inst5-row-choices clave-choice" hidden type ='button' onclick="setupThisRow('inst5','Clave', 'clave')">Clave</button>
+			<button class="dropdown-item inst5-row-choices triangle-choice" hidden type ='button' onclick="setupThisRow('inst5','Triangle', 'triangle')">Triangle</button>
+			<button class="dropdown-item inst5-row-choices rim-choice" hidden type ='button' onclick="setupThisRow('inst5','Rim', 'rim')">Rim</button>
+			<button class="dropdown-item inst5-row-choices tom-choice" hidden type ='button' onclick="setupThisRow('inst5','Tom', 'tom')">Tom</button>
+			<button class="dropdown-item inst5-row-choices perc-choice" hidden type ='button' onclick="setupThisRow('inst5','Perc', 'perc')">Perc</button>
+			<button class="dropdown-item inst5-row-choices snare-choice" hidden type ='button' onclick="setupThisRow('inst5','Snare', 'snare')">Snare</button>
+		</div>
+</div>
 <div class = "col steprowtitle" id = "inst5-row-title"> inst 5 </div>
 <div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "inst5stepone"></div>
 <div class = "col rhythmstep beatonethree unselectedstep" id = "inst5steptwo"></div>
@@ -339,7 +393,21 @@ Time = <span id="countdown">01:00</span>
 </div>
 
 
-<div class = "row" id = "inst6-row">
+<div class = "row inst6-row" id = "inst6-row">
+<div class = "col steprowpulldown" id = "inst6-row-pulldown">
+	<button class="btn btn-secondary dropdown-toggle" type="button" id="inst6dropdownMenuButton" style="margin-top: 5px; margin-bottom: 5px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+		<div class="dropdown-menu" aria-labelledby="dropdownMenu2" style = "background-color: white">
+			<button class="dropdown-item inst6-row-choices kick-choice" hidden type ='button' onclick="setupThisRow('inst6', 'Kick', 'kick')">Kick</button>
+			<button class="dropdown-item inst6-row-choices hat-choice" hidden type ='button' onclick="setupThisRow('inst6', 'Closed Hat','hat')">Closed Hat</button>
+			<button class="dropdown-item inst6-row-choices openhat-choice" hidden type ='button' onclick="setupThisRow('inst6', 'Open Hat', 'openhat')">Open Hat</button>
+			<button class="dropdown-item inst6-row-choices clave-choice" hidden type ='button' onclick="setupThisRow('inst6','Clave', 'clave')">Clave</button>
+			<button class="dropdown-item inst6-row-choices triangle-choice" hidden type ='button' onclick="setupThisRow('inst6','Triangle', 'triangle')">Triangle</button>
+			<button class="dropdown-item inst6-row-choices rim-choice" hidden type ='button' onclick="setupThisRow('inst6','Rim', 'rim')">Rim</button>
+			<button class="dropdown-item inst6-row-choices tom-choice" hidden type ='button' onclick="setupThisRow('inst6','Tom', 'tom')">Tom</button>
+			<button class="dropdown-item inst6-row-choices perc-choice" hidden type ='button' onclick="setupThisRow('inst6','Perc', 'perc')">Perc</button>
+			<button class="dropdown-item inst6-row-choices snare-choice" hidden type ='button' onclick="setupThisRow('inst6','Snare', 'snare')">Snare</button>
+		</div>
+</div>
 <div class = "col steprowtitle" id = "inst6-row-title"> inst 6 </div>
 <div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "inst6stepone"></div>
 <div class = "col rhythmstep beatonethree unselectedstep" id = "inst6steptwo"></div>
@@ -360,7 +428,21 @@ Time = <span id="countdown">01:00</span>
 </div>
 
 
-<div class = "row" id = "inst7-row">
+<div class = "row inst7-row" id = "inst7-row">
+<div class = "col steprowpulldown" id = "inst7-row-pulldown">
+	<button class="btn btn-secondary dropdown-toggle" type="button" id="inst7dropdownMenuButton" style="margin-top: 5px; margin-bottom: 5px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+		<div class="dropdown-menu" aria-labelledby="dropdownMenu2" style = "background-color: white">
+			<button class="dropdown-item inst7-row-choices kick-choice" hidden type ='button' onclick="setupThisRow('inst7', 'Kick', 'kick')">Kick</button>
+			<button class="dropdown-item inst7-row-choices hat-choice" hidden type ='button' onclick="setupThisRow('inst7', 'Closed Hat','hat')">Closed Hat</button>
+			<button class="dropdown-item inst7-row-choices openhat-choice" hidden type ='button' onclick="setupThisRow('inst7', 'Open Hat', 'openhat')">Open Hat</button>
+			<button class="dropdown-item inst7-row-choices clave-choice" hidden type ='button' onclick="setupThisRow('inst7','Clave', 'clave')">Clave</button>
+			<button class="dropdown-item inst7-row-choices triangle-choice" hidden type ='button' onclick="setupThisRow('inst7','Triangle', 'triangle')">Triangle</button>
+			<button class="dropdown-item inst7-row-choices rim-choice" hidden type ='button' onclick="setupThisRow('inst7','Rim', 'rim')">Rim</button>
+			<button class="dropdown-item inst7-row-choices tom-choice" hidden type ='button' onclick="setupThisRow('inst7','Tom', 'tom')">Tom</button>
+			<button class="dropdown-item inst7-row-choices perc-choice" hidden type ='button' onclick="setupThisRow('inst7','Perc', 'perc')">Perc</button>
+			<button class="dropdown-item inst7-row-choices snare-choice" hidden type ='button' onclick="setupThisRow('inst7','Snare', 'snare')">Snare</button>
+		</div>
+</div>
 <div class = "col steprowtitle" id = "inst7-row-title"> inst 7 </div>
 <div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "inst7stepone"></div>
 <div class = "col rhythmstep beatonethree unselectedstep" id = "inst7steptwo"></div>
@@ -380,7 +462,21 @@ Time = <span id="countdown">01:00</span>
 <div class = "col rhythmstep beattwofour unselectedstep" id = "inst7stepsixteen"></div>
 </div>
 
-<div class = "row" id = "hat-row">
+<div class = "row hat-row" id = "hat-row">
+<div class = "col steprowpulldown" id = "hat-row-pulldown">
+	<button class="btn btn-secondary dropdown-toggle" type="button" id="hatdropdownMenuButton" style="margin-top: 5px; margin-bottom: 5px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+		<div class="dropdown-menu" aria-labelledby="dropdownMenu2" style = "background-color: white">
+			<button class="dropdown-item hat-row-choices kick-choice" hidden type ='button' onclick="setupThisRow('hat', 'Kick', 'kick')">Kick</button>
+			<button class="dropdown-item hat-row-choices hat-choice" hidden type ='button' onclick="setupThisRow('hat', 'Closed Hat','hat')">Closed Hat</button>
+			<button class="dropdown-item hat-row-choices openhat-choice" hidden type ='button' onclick="setupThisRow('hat', 'Open Hat', 'openhat')">Open Hat</button>
+			<button class="dropdown-item hat-row-choices clave-choice" hidden type ='button' onclick="setupThisRow('hat','Clave', 'clave')">Clave</button>
+			<button class="dropdown-item hat-row-choices triangle-choice" hidden type ='button' onclick="setupThisRow('hat','Triangle', 'triangle')">Triangle</button>
+			<button class="dropdown-item hat-row-choices rim-choice" hidden type ='button' onclick="setupThisRow('hat','Rim', 'rim')">Rim</button>
+			<button class="dropdown-item hat-row-choices tom-choice" hidden type ='button' onclick="setupThisRow('hat','Tom', 'tom')">Tom</button>
+			<button class="dropdown-item hat-row-choices perc-choice" hidden type ='button' onclick="setupThisRow('hat','Perc', 'perc')">Perc</button>
+			<button class="dropdown-item hat-row-choices snare-choice" hidden type ='button' onclick="setupThisRow('hat','Snare', 'snare')">Snare</button>
+		</div>
+</div>
 <div class = "col steprowtitle" id = "hat-row-title"> hat </div>
 <div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "hatstepone"></div>
 <div class = "col rhythmstep beatonethree unselectedstep" id = "hatsteptwo"></div>
@@ -401,7 +497,21 @@ Time = <span id="countdown">01:00</span>
 </div>
 
 
-<div class = "row" id = "snare-row">
+<div class = "row snare-row" id = "snare-row">
+<div class = "col steprowpulldown" id = "snare-row-pulldown">
+	<button class="btn btn-secondary dropdown-toggle" type="button" id="snaredropdownMenuButton" style="margin-top: 5px; margin-bottom: 5px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+		<div class="dropdown-menu" aria-labelledby="dropdownMenu2" style = "background-color: white">
+			<button class="dropdown-item snare-row-choices kick-choice" hidden type ='button' onclick="setupThisRow('snare', 'Kick', 'kick')">Kick</button>
+			<button class="dropdown-item snare-row-choices hat-choice" hidden type ='button' onclick="setupThisRow('snare', 'Closed Hat','hat')">Closed Hat</button>
+			<button class="dropdown-item snare-row-choices openhat-choice" hidden type ='button' onclick="setupThisRow('snare', 'Open Hat', 'openhat')">Open Hat</button>
+			<button class="dropdown-item snare-row-choices clave-choice" hidden type ='button' onclick="setupThisRow('snare','Clave', 'clave')">Clave</button>
+			<button class="dropdown-item snare-row-choices triangle-choice" hidden type ='button' onclick="setupThisRow('snare','Triangle', 'triangle')">Triangle</button>
+			<button class="dropdown-item snare-row-choices rim-choice" hidden type ='button' onclick="setupThisRow('snare','Rim', 'rim')">Rim</button>
+			<button class="dropdown-item snare-row-choices tom-choice" hidden type ='button' onclick="setupThisRow('snare','Tom', 'tom')">Tom</button>
+			<button class="dropdown-item snare-row-choices perc-choice" hidden type ='button' onclick="setupThisRow('snare','Perc', 'perc')">Perc</button>
+			<button class="dropdown-item snare-row-choices snare-choice" hidden type ='button' onclick="setupThisRow('snare','Snare', 'snare')">Snare</button>
+		</div>
+</div>
 <div class = "col steprowtitle" id = "snare-row-title"> snare </div>
 <div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "snarestepone"></div>
 <div class = "col rhythmstep beatonethree unselectedstep" id = "snaresteptwo"></div>
@@ -451,8 +561,8 @@ Time = <span id="countdown">01:00</span>
 </div>	
 
 <!-- <h2>hi</h2> -->
-<div class="container">
-<div class = "row">
+<div class="container rhythmsettingbuttons" hidden id = "rhythmsettingbuttons">
+<div class = "row questionbuttonrow" hidden id = "questionbuttonrow">
 <div class = "col">
 <button type ='button' id ="autocheckbutton" style = "margin-top: 50px; width: 50%">Turn Auto-Check On</button>
 </div>
@@ -466,7 +576,7 @@ Time = <span id="countdown">01:00</span>
 </div>
 <div class = "row">
 <div class = "col">
-<button type ='button' id ="rhythmFreestyleButton" style = "margin-top: 50px; width: 100%">Turn Freestyle Mode On</button>
+<button type ='button' id ="rhythmFreestyleButton" style = "margin-top: 50px; width: 100%">Play What I have Showing</button>
 </div>
 <div class = "col">
 <button type ='button' id ="metronomeButton" style = "margin-top: 50px; width: 100%">Turn Metronome Off</button>
@@ -593,8 +703,8 @@ Time = <span id="countdown">01:00</span>
 						<div class="options-info row justify-content-start">		
 					<p>
 					<p>
-					<div id="slider-horizontal-BPMAmount" style="width:90%; max-width:300px;"></div><label for="BPMAmount">Set the Tempo (BPM)</label>
-					<input  type="text" id="BPMAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;">
+					<!-- <div id="slider-horizontal-BPMAmount" style="width:90%; max-width:300px;"></div><label for="BPMAmount">Set the Tempo (BPM)</label> -->
+					<!-- <input  type="text" id="BPMAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:20%;"> -->
 				<!-- </div> -->
 			</div>
 			<div class="options-info sequence-mode row justify-content-start">

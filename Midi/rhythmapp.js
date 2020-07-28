@@ -17,24 +17,24 @@ var highScoreKeys = [];
 var startTime;
 var rhythmSense = false;
 var messageOn = "on"
-var simplifiedDenominator=1;
-var availableSteps="sixteenths";
+    var simplifiedDenominator = 1;
+var availableSteps = "sixteenths";
 var source
 var timeDomainData
 var bitCounter
 var audioCtx
 var analyzer
 var correlator = "locator"
-var hr = "hr"
-var frameCounter = 0
-var measureLength = 25
-var minDrawRate = .6
-var minDrawMLength = measureLength * minDrawRate
-var oST = "ghost"
-var measurements = []
-var gaugeAccuracy = 5 // Avi says lower is less accurate sensitive, higher requires higher accuracy. It used to be set at 16.
-var gaugeNear = 1.4
-var tunerWidth = Math.floor($("#tunerframe").width() - 0);
+    var hr = "hr"
+    var frameCounter = 0
+    var measureLength = 25
+    var minDrawRate = .6
+    var minDrawMLength = measureLength * minDrawRate
+    var oST = "ghost"
+    var measurements = []
+    var gaugeAccuracy = 5 // Avi says lower is less accurate sensitive, higher requires higher accuracy. It used to be set at 16.
+    var gaugeNear = 1.4
+    var tunerWidth = Math.floor($("#tunerframe").width() - 0);
 var tempSequenceArray = [];
 var tempKickSequenceArray = [];
 var tempHatSequenceArray = [];
@@ -43,7 +43,18 @@ var tempClapSequenceArray = []; // inst copy
 var tempInst5SequenceArray = []; // inst copy
 var tempInst6SequenceArray = []; // inst copy
 var tempInst7SequenceArray = []; // inst copy
-var metronome=true;
+var metronome = true;
+var levelOneMessageShown = false;
+
+var levelTwoMessageShown = false;
+var levelThreeMessageShown = false;
+var levelFourMessageShown = false;
+var levelFiveMessageShown = false;
+var levelSixMessageShown = false;
+var levelSevenMessageShown = false;
+var levelEightMessageShown = false;
+var levelNineMessageShown = false;
+var levelTenMessageShown = false;
 
 var theirEmail;
 
@@ -174,48 +185,48 @@ var hatinstrument = "hat";
 var snareinstrument = "snare";
 var clapinstrument = "openhat"; // inst copy
 var randomizeClaps = false; // inst copy
-var clapSequenceStarted = false;  // inst copy
+var clapSequenceStarted = false; // inst copy
 var clapSequenceArray = []; // inst copy
-var clapSequencePlay = false;  // inst copy
-var currentclapBeats = 0;  // inst copy
+var clapSequencePlay = false; // inst copy
+var currentclapBeats = 0; // inst copy
 var clapTimeStart = 0; // inst copy
-var clapStepArray = [];  // inst copy
-var clapTimerStarted = false;  // inst copy
-var clapStarted = false;  // inst copy
-var clapSequenceCopy = [];  // inst copy
-var inst5SequenceStarted = false;  // inst copy
+var clapStepArray = []; // inst copy
+var clapTimerStarted = false; // inst copy
+var clapStarted = false; // inst copy
+var clapSequenceCopy = []; // inst copy
+var inst5SequenceStarted = false; // inst copy
 var inst5SequenceArray = []; // inst copy
-var inst5SequencePlay = false;  // inst copy
-var currentinst5Beats = 0;  // inst copy
+var inst5SequencePlay = false; // inst copy
+var currentinst5Beats = 0; // inst copy
 var inst5TimeStart = 0; // inst copy
 var inst5instrument = "openhat"; // inst copy
 var randomizeInst5 = false; // inst copy
-var inst5StepArray = [];  // inst copy
-var inst5TimerStarted = false;  // inst copy
-var inst5Started = false;  // inst copy
-var inst5SequenceCopy = [];  // inst copy
-var inst6SequenceStarted = false;  // inst copy
+var inst5StepArray = []; // inst copy
+var inst5TimerStarted = false; // inst copy
+var inst5Started = false; // inst copy
+var inst5SequenceCopy = []; // inst copy
+var inst6SequenceStarted = false; // inst copy
 var inst6SequenceArray = []; // inst copy
-var inst6SequencePlay = false;  // inst copy
-var currentinst6Beats = 0;  // inst copy
+var inst6SequencePlay = false; // inst copy
+var currentinst6Beats = 0; // inst copy
 var inst6TimeStart = 0; // inst copy
 var inst6instrument = "openhat"; // inst copy
 var randomizeInst6 = false; // inst copy
-var inst6StepArray = [];  // inst copy
-var inst6TimerStarted = false;  // inst copy
-var inst6Started = false;  // inst copy
-var inst6SequenceCopy = [];  // inst copy
-var inst7SequenceStarted = false;  // inst copy
+var inst6StepArray = []; // inst copy
+var inst6TimerStarted = false; // inst copy
+var inst6Started = false; // inst copy
+var inst6SequenceCopy = []; // inst copy
+var inst7SequenceStarted = false; // inst copy
 var inst7SequenceArray = []; // inst copy
-var inst7SequencePlay = false;  // inst copy
-var currentinst7Beats = 0;  // inst copy
+var inst7SequencePlay = false; // inst copy
+var currentinst7Beats = 0; // inst copy
 var inst7TimeStart = 0; // inst copy
 var inst7instrument = "openhat"; // inst copy
 var randomizeInst7 = false; // inst copy
-var inst7StepArray = [];  // inst copy
-var inst7TimerStarted = false;  // inst copy
-var inst7Started = false;  // inst copy
-var inst7SequenceCopy = [];  // inst copy
+var inst7StepArray = []; // inst copy
+var inst7TimerStarted = false; // inst copy
+var inst7Started = false; // inst copy
+var inst7SequenceCopy = []; // inst copy
 var hatSequenceStarted = false;
 var hatSequenceArray = [];
 var hatSequencePlay = false;
@@ -365,23 +376,22 @@ var hatStepArray = [];
 var snareStepArray = [];
 var rhythmFreestyle = false;
 var rhythmSpeedMode = false;
-var randomizeKicks=false;
-var randomizeHats=false;
-var noMorePoints=false;
-var numOfRandomSteps=2;
-var backbeat=true;
+var randomizeKicks = false;
+var randomizeHats = false;
+var noMorePoints = false;
+var numOfRandomSteps = 2;
+var backbeat = true;
 noteOnListener(0, 0);
 var loadDatabase = [];
 var db;
-
-
+var loginMessageShown = true;
 
 // init on doc ready
 $(document).ready(init);
 
 // sign-in anonymously
 var auth = function () {
-	// alert ("auth");
+    // alert ("auth");
     firebase.auth().signInAnonymously()
     .then(function (result) {
         db = firebase.firestore();
@@ -418,13 +428,25 @@ var init = function () {
     // $('#testthisish').click();
 };
 
-
-var logintothisapp = function (){
-tempname=prompt("what is your name?");
-tempemail=prompt("what is your e-mail?");
-if ((tempname.length>0)&&(tempemail.length>0)){
-updateUnlockedLevelsByUser(tempname, tempemail);
-}
+var logintothisapp = function () {
+    tempname = prompt("what is your name?");
+    tempemail = prompt("what is your e-mail?");
+    if ((tempname.length > 0) && (tempemail.length > 0)) {
+        loginMessageShown = false;
+        levelOneMessageShown = false;
+        levelTwoMessageShown = false;
+        levelThreeMessageShown = false;
+        levelFourMessageShown = false;
+        levelFiveMessageShown = false;
+        levelSixMessageShown = false;
+        levelSevenMessageShown = false;
+        levelEightMessageShown = false;
+        levelNineMessageShown = false;
+        levelTenMessageShown = false;
+        makeAClassVisible('rhythmsettingbuttons');
+        makeAClassVisible('scoreRow');
+        updateUnlockedLevelsByUser(tempname, tempemail);
+    }
 }
 document.getElementById('level-progress').style.display = 'none';
 
@@ -449,32 +471,31 @@ document.getElementById('level-progress').style.display = 'none';
 //
 
 
-function setRhythmInstrument (instvariablename, instrumentname, instrumentfilename){ //example: inst5, open hat, openhat
-if (instvariablename=="inst5"){
-	document.getElementById('inst5-row-title').innerHTML = instrumentname+"";
-	inst5instrument=instrumentfilename+"";
-} else if (instvariablename=="inst6"){
-	document.getElementById('inst6-row-title').innerHTML = instrumentname+"";
-	inst6instrument=instrumentfilename+"";
-} else if (instvariablename=="inst7"){
-	document.getElementById('inst7-row-title').innerHTML = instrumentname+"";
-	inst7instrument=instrumentfilename+"";
-} else if (instvariablename=="clap"){
-	document.getElementById('clap-row-title').innerHTML = instrumentname+"";
-	clapinstrument=instrumentfilename+"";
-} else if (instvariablename=="kick"){
-	document.getElementById('kick-row-title').innerHTML = instrumentname+"";
-	kickinstrument=instrumentfilename+"";
-} else if (instvariablename=="hat"){
-	document.getElementById('hat-row-title').innerHTML = instrumentname+"";
-	hatinstrument=instrumentfilename+"";
-} else if (instvariablename=="snare"){
-	document.getElementById('snare-row-title').innerHTML = instrumentname+"";
-	snareinstrument=instrumentfilename+"";
-} 
-	
-}
+function setRhythmInstrument(instvariablename, instrumentname, instrumentfilename) { //example: inst5, open hat, openhat
+    if (instvariablename == "inst5") {
+        document.getElementById('inst5-row-title').innerHTML = instrumentname + "";
+        inst5instrument = instrumentfilename + "";
+    } else if (instvariablename == "inst6") {
+        document.getElementById('inst6-row-title').innerHTML = instrumentname + "";
+        inst6instrument = instrumentfilename + "";
+    } else if (instvariablename == "inst7") {
+        document.getElementById('inst7-row-title').innerHTML = instrumentname + "";
+        inst7instrument = instrumentfilename + "";
+    } else if (instvariablename == "clap") {
+        document.getElementById('clap-row-title').innerHTML = instrumentname + "";
+        clapinstrument = instrumentfilename + "";
+    } else if (instvariablename == "kick") {
+        document.getElementById('kick-row-title').innerHTML = instrumentname + "";
+        kickinstrument = instrumentfilename + "";
+    } else if (instvariablename == "hat") {
+        document.getElementById('hat-row-title').innerHTML = instrumentname + "";
+        hatinstrument = instrumentfilename + "";
+    } else if (instvariablename == "snare") {
+        document.getElementById('snare-row-title').innerHTML = instrumentname + "";
+        snareinstrument = instrumentfilename + "";
+    }
 
+}
 
 function setupStepSequencerArray() {
     kickStepArray = []
@@ -495,7 +516,7 @@ function setupStepSequencerArray() {
     kickStepArray.unshift(document.getElementById("kicksteptwo"));
     kickStepArray.unshift(document.getElementById("kickstepone"));
 
-    clapStepArray = []                                                        // inst copy start
+    clapStepArray = []// inst copy start
     clapStepArray.unshift(document.getElementById("clapstepsixteen"));
     clapStepArray.unshift(document.getElementById("clapstepfifteen"));
     clapStepArray.unshift(document.getElementById("clapstepfourteen"));
@@ -511,11 +532,10 @@ function setupStepSequencerArray() {
     clapStepArray.unshift(document.getElementById("clapstepfour"));
     clapStepArray.unshift(document.getElementById("clapstepthree"));
     clapStepArray.unshift(document.getElementById("clapsteptwo"));
-    clapStepArray.unshift(document.getElementById("clapstepone"));               // inst copy end
-	
-	
-	
-    inst5StepArray = []                                                        // inst copy start
+    clapStepArray.unshift(document.getElementById("clapstepone")); // inst copy end
+
+
+    inst5StepArray = []// inst copy start
     inst5StepArray.unshift(document.getElementById("inst5stepsixteen"));
     inst5StepArray.unshift(document.getElementById("inst5stepfifteen"));
     inst5StepArray.unshift(document.getElementById("inst5stepfourteen"));
@@ -531,10 +551,10 @@ function setupStepSequencerArray() {
     inst5StepArray.unshift(document.getElementById("inst5stepfour"));
     inst5StepArray.unshift(document.getElementById("inst5stepthree"));
     inst5StepArray.unshift(document.getElementById("inst5steptwo"));
-    inst5StepArray.unshift(document.getElementById("inst5stepone"));               // inst copy end
-	
-	
-    inst6StepArray = []                                                        // inst copy start
+    inst5StepArray.unshift(document.getElementById("inst5stepone")); // inst copy end
+
+
+    inst6StepArray = []// inst copy start
     inst6StepArray.unshift(document.getElementById("inst6stepsixteen"));
     inst6StepArray.unshift(document.getElementById("inst6stepfifteen"));
     inst6StepArray.unshift(document.getElementById("inst6stepfourteen"));
@@ -550,9 +570,9 @@ function setupStepSequencerArray() {
     inst6StepArray.unshift(document.getElementById("inst6stepfour"));
     inst6StepArray.unshift(document.getElementById("inst6stepthree"));
     inst6StepArray.unshift(document.getElementById("inst6steptwo"));
-    inst6StepArray.unshift(document.getElementById("inst6stepone"));               // inst copy end
+    inst6StepArray.unshift(document.getElementById("inst6stepone")); // inst copy end
 
-    inst7StepArray = []                                                        // inst copy start
+    inst7StepArray = []// inst copy start
     inst7StepArray.unshift(document.getElementById("inst7stepsixteen"));
     inst7StepArray.unshift(document.getElementById("inst7stepfifteen"));
     inst7StepArray.unshift(document.getElementById("inst7stepfourteen"));
@@ -568,9 +588,9 @@ function setupStepSequencerArray() {
     inst7StepArray.unshift(document.getElementById("inst7stepfour"));
     inst7StepArray.unshift(document.getElementById("inst7stepthree"));
     inst7StepArray.unshift(document.getElementById("inst7steptwo"));
-    inst7StepArray.unshift(document.getElementById("inst7stepone"));               // inst copy end
-	
-	
+    inst7StepArray.unshift(document.getElementById("inst7stepone")); // inst copy end
+
+
     hatStepArray = []
     hatStepArray.unshift(document.getElementById("hatstepsixteen"));
     hatStepArray.unshift(document.getElementById("hatstepfifteen"));
@@ -609,19 +629,56 @@ function setupStepSequencerArray() {
 }
 
 var stepelements = document.getElementsByClassName("rhythmstep");
+var rowpulldownelements = document.getElementsByClassName("kick-row-choices");
+
+var makeARowPulldownVisible = function (rowclassname) {
+    let targetrollpulldownelements = document.getElementsByClassName(rowclassname);
+    for (var i = 0; i < targetrollpulldownelements.length; i++) {
+        targetrollpulldownelements[i].hidden = false;
+    }
+}
+
+var makeAClassVisible = function (rowclassname) {
+    let targetrollpulldownelements = document.getElementsByClassName(rowclassname);
+    for (var i = 0; i < targetrollpulldownelements.length; i++) {
+        targetrollpulldownelements[i].hidden = false;
+    }
+}
+
+var makeAClassInvisible = function (rowclassname) {
+    let targetrollpulldownelements = document.getElementsByClassName(rowclassname);
+    for (var i = 0; i < targetrollpulldownelements.length; i++) {
+        targetrollpulldownelements[i].hidden = true;
+    }
+}
+var makeARowPulldownInvisible = function (rowclassname) {
+    let targetrollpulldownelements = document.getElementsByClassName(rowclassname);
+    for (var i = 0; i < targetrollpulldownelements.length; i++) {
+        targetrollpulldownelements[i].hidden = true;
+    }
+}
+
+var setupThisRow = function (rowname, targetshowname, targetinstrumentfilename) {
+    setRhythmInstrument(rowname, targetshowname, targetinstrumentfilename); //example: inst5, open hat, openhat
+
+    // let targetrollpulldownelements = document.getElementsByClassName(rowclassname);
+    // for (var i = 0; i < targetrollpulldownelements.length; i++) {
+    // targetrollpulldownelements[i].hidden=false;
+    // }
+}
 
 var addrhythmsteplisteners = function () {
     // var rhythm = this.getAttribute("data-myattribute");
     // alert(rhythm);
-	if (!(this.classList.contains("unselectable"))){
-    if (this.classList.contains("unselectedstep")) {
-        this.classList.add("selectedstep");
-        this.classList.remove("unselectedstep");
-    } else if (this.classList.contains("selectedstep")) {
-        this.classList.add("unselectedstep");
-        this.classList.remove("selectedstep");
+    if (!(this.classList.contains("unselectable"))) {
+        if (this.classList.contains("unselectedstep")) {
+            this.classList.add("selectedstep");
+            this.classList.remove("unselectedstep");
+        } else if (this.classList.contains("selectedstep")) {
+            this.classList.add("unselectedstep");
+            this.classList.remove("selectedstep");
+        }
     }
-	}
     // setupStepRhythmSequence();
     if (rhythmFreestyle) {
         sequenceStarted = false;
@@ -646,15 +703,15 @@ function resetStepElements() {
             stepelements[i].classList.add("unselectedstep");
             stepelements[i].classList.remove("selectedstep");
         }
-		
+
         if (stepelements[i].classList.contains("unselectable")) {
-			// alert ("hi");
-			stepelements[i].classList.remove("unselectable");
-			
-		}
-		     
+            // alert ("hi");
+            stepelements[i].classList.remove("unselectable");
+
+        }
+
     }
-		// setupSteps();
+    // setupSteps();
 }
 
 function levelToNum(levelcomplete) {
@@ -702,31 +759,31 @@ function setProgressGoals(goal1, goal2, goal3, goal4) {
     updateProgress();
 }
 
-function setupSteps(){
+function setupSteps() {
 
-       for (var i = 0; i<16; i++){ 
-			if (availableSteps=="quarters"){
-				if (!((i==0)||(i==4)||(i==8)||(i==12))){
-					kickStepArray[i].classList.add('unselectable');
-					clapStepArray[i].classList.add('unselectable');  // inst copy
-					inst5StepArray[i].classList.add('unselectable');  // inst copy
-					inst6StepArray[i].classList.add('unselectable');  // inst copy
-					inst7StepArray[i].classList.add('unselectable');  // inst copy
-					hatStepArray[i].classList.add('unselectable');
-					snareStepArray[i].classList.add('unselectable');
-				}
-			} else if (availableSteps=="eighths"){
-				if (!((i==0)||(i==4)||(i==8)||(i==12)||(i==2)||(i==6)||(i==10)||(i==14))){
-					kickStepArray[i].classList.add('unselectable');
-					clapStepArray[i].classList.add('unselectable');  // inst copy
-					inst5StepArray[i].classList.add('unselectable');  // inst copy
-					inst6StepArray[i].classList.add('unselectable');  // inst copy
-					inst7StepArray[i].classList.add('unselectable');  // inst copy
-					hatStepArray[i].classList.add('unselectable');
-					snareStepArray[i].classList.add('unselectable');
-				}
-			}
-	   }
+    for (var i = 0; i < 16; i++) {
+        if (availableSteps == "quarters") {
+            if (!((i == 0) || (i == 4) || (i == 8) || (i == 12))) {
+                kickStepArray[i].classList.add('unselectable');
+                clapStepArray[i].classList.add('unselectable'); // inst copy
+                inst5StepArray[i].classList.add('unselectable'); // inst copy
+                inst6StepArray[i].classList.add('unselectable'); // inst copy
+                inst7StepArray[i].classList.add('unselectable'); // inst copy
+                hatStepArray[i].classList.add('unselectable');
+                snareStepArray[i].classList.add('unselectable');
+            }
+        } else if (availableSteps == "eighths") {
+            if (!((i == 0) || (i == 4) || (i == 8) || (i == 12) || (i == 2) || (i == 6) || (i == 10) || (i == 14))) {
+                kickStepArray[i].classList.add('unselectable');
+                clapStepArray[i].classList.add('unselectable'); // inst copy
+                inst5StepArray[i].classList.add('unselectable'); // inst copy
+                inst6StepArray[i].classList.add('unselectable'); // inst copy
+                inst7StepArray[i].classList.add('unselectable'); // inst copy
+                hatStepArray[i].classList.add('unselectable');
+                snareStepArray[i].classList.add('unselectable');
+            }
+        }
+    }
 }
 
 function resetProgress() {
@@ -750,7 +807,7 @@ function resetProgress() {
 function updateProgress() {
     // alert (currentLevelScore);
     // alert (((currentLevelScore/40)*100)+'%');
-	    if (currentLevelScore == 0) {
+    if (currentLevelScore == 0) {
         document.getElementById('levelOneProgress').style.width = ((0) * 100) + '%';
         document.getElementById('levelOneNotProgress').style.width = (25 - ((0) * 100)) + '%';
         document.getElementById('levelOneProgress').innerHTML = (0) + "/5";
@@ -779,109 +836,175 @@ function updateProgress() {
         document.getElementById('levelFourProgress').style.width = (((currentLevelScore - 15) / 20) * 100) + '%';
         document.getElementById('levelFourNotProgress').style.width = (25 - (((currentLevelScore - 15) / 20) * 100)) + '%';
         document.getElementById('levelFourProgress').innerHTML = ((currentLevelScore - 15)) + "/5";
+    } else if (currentLevelScore >= 20) {
+        alert("Congratulations! You have completed this level. Select a new level from the 'select level' menu");
+        // alert (scoreLevel);
+        addLevelCompleted(whoItIsUsingThis, theirEmail, scoreLevel);
+        if (ourLevelNumber < levelToNum(scoreLevel)) {
+            ourLevelNumber = levelToNum(scoreLevel);
+            updateTheLevel(ourLevelNumber);
+        }
+        setupTheLevel(levelToNum(scoreLevel) + 1);
     }
-	else if (currentLevelScore>=20){
-		   alert("Congratulations! You have completed this level. Select a new level from the 'select level' menu");
-		   // alert (scoreLevel);
-                    addLevelCompleted(whoItIsUsingThis, theirEmail, scoreLevel);
-                    if (ourLevelNumber < levelToNum(scoreLevel)) {
-                        ourLevelNumber = levelToNum(scoreLevel);
-                        updateTheLevel(ourLevelNumber);
-                    }
-                    setupTheLevel(levelToNum(scoreLevel) + 1);
-	}
 }
 function checkForUpdatedDifficulty() {
+	rhythmFreestyle=true;
+	rhythmFreestyleButton.click();
     if (currentLevelScore < 5) {
-		if (availableSteps=="quarters"){
-		numOfRandomSteps=1;
-		} else if (availableSteps=="eighths"){
-		numOfRandomSteps=1;
-		}else if (availableSteps=="sixteenths"){
-		numOfRandomSteps=2;
-		}
-      } else if (currentLevelScore < 10) {
-		if (availableSteps=="quarters"){
-		numOfRandomSteps=2;
-		} else if (availableSteps=="eighths"){
-		numOfRandomSteps=3;
-		}else if (availableSteps=="sixteenths"){
-		numOfRandomSteps=3;
-		}
+        if (availableSteps == "quarters") {
+            numOfRandomSteps = 1;
+        } else if (availableSteps == "eighths") {
+            numOfRandomSteps = 1;
+        } else if (availableSteps == "sixteenths") {
+            numOfRandomSteps = 2;
+        }
+    } else if (currentLevelScore < 10) {
+        if (availableSteps == "quarters") {
+            numOfRandomSteps = 2;
+        } else if (availableSteps == "eighths") {
+            numOfRandomSteps = 3;
+        } else if (availableSteps == "sixteenths") {
+            numOfRandomSteps = 3;
+        }
     } else if (currentLevelScore < 15) {
-		if (availableSteps=="quarters"){
-			backbeat=false;
-		numOfRandomSteps=2;
-		} else if (availableSteps=="eighths"){
-		numOfRandomSteps=5;
-		}else if (availableSteps=="sixteenths"){
-		numOfRandomSteps=5;
-		}
-     } else if (currentLevelScore < 20) {
-		backbeat=false;
-		if (availableSteps=="quarters"){
-		numOfRandomSteps=1;
-		} else if (availableSteps=="eighths"){
-		numOfRandomSteps=3;
-		}else if (availableSteps=="sixteenths"){
-		numOfRandomSteps=3;
-		}
-      }
+        if (availableSteps == "quarters") {
+            backbeat = false;
+            numOfRandomSteps = 2;
+        } else if (availableSteps == "eighths") {
+            numOfRandomSteps = 5;
+        } else if (availableSteps == "sixteenths") {
+            numOfRandomSteps = 5;
+        }
+    } else if (currentLevelScore < 20) {
+        backbeat = false;
+        if (availableSteps == "quarters") {
+            numOfRandomSteps = 1;
+        } else if (availableSteps == "eighths") {
+            numOfRandomSteps = 3;
+        } else if (availableSteps == "sixteenths") {
+            numOfRandomSteps = 3;
+        }
+    }
+    // updateTheLevel(ourLevelNumber);
+    makeAClassInvisible('steprowpulldown');
 }
 
-
-function hideAllLevels(){
-	document.getElementById('rhythm-level-one').hidden = true;
-        document.getElementById('rhythm-level-two').hidden = true;
-        document.getElementById('rhythm-level-three').hidden = true;
-        document.getElementById('rhythm-level-four').hidden = true;
-        document.getElementById('rhythm-level-five').hidden = true;
-        document.getElementById('rhythm-level-six').hidden = true;
-        // document.getElementById('rhythm-level-seven').hidden = true;
-        // document.getElementById('rhythm-level-eight').hidden = true;
-        // document.getElementById('rhythm-level-nine').hidden = true;
-        // document.getElementById('rhythm-level-ten').hidden = true;
+function hideAllLevels() {
+    document.getElementById('rhythm-level-one').hidden = true;
+    document.getElementById('rhythm-level-two').hidden = true;
+    document.getElementById('rhythm-level-three').hidden = true;
+    document.getElementById('rhythm-level-four').hidden = true;
+    document.getElementById('rhythm-level-five').hidden = true;
+    document.getElementById('rhythm-level-six').hidden = true;
+    document.getElementById('rhythm-level-seven').hidden = true;
+    document.getElementById('rhythm-level-eight').hidden = true;
+    document.getElementById('rhythm-level-nine').hidden = true;
+    // document.getElementById('rhythm-level-ten').hidden = true;
 }
 
 function updateTheLevel(levelNumber) {
-	if (levelNumber==0){
-	alertify ("We see you haven't completed a level here before, "+whoItIsUsingThis+". We've set up a new account for you. If you have logged in before and completed a level, chances are you typed something wrong. If that is the case, click login and try again. (Note: logins are case-sensitive)")
-              
-	}
-	else{
-	alertify (whoItIsUsingThis+"! Welcome back! You have at least a couple of levels unlocked! Check them out in the pulldown menu!");
-	}
-	hideAllLevels();
+    if (levelNumber == 0) {
+        if (!loginMessageShown) {
+            loginMessageShown = true;
+
+            alertify("We see you haven't completed a level here before, " + whoItIsUsingThis + ". We've set up a new account for you. If you have logged in before and completed a level, chances are you typed something wrong. If that is the case, click login and try again. (Note: logins are case-sensitive)")
+        }
+    } else {
+        if (!loginMessageShown) {
+            loginMessageShown = true;
+
+            alertify(whoItIsUsingThis + "! Welcome back! You have at least a couple of levels unlocked! Check them out in the pulldown menu!");
+        }
+    }
+    hideAllLevels();
     console.log(levelNumber);
     if (levelNumber >= 0) {
         document.getElementById('rhythm-level-one').hidden = false;
+        makeAClassVisible("kick-choice");
+        makeAClassVisible("kick-row");
+        //make the hat row become visible after this point!
     }
     if (levelNumber > 0) {
         document.getElementById('rhythm-level-two').hidden = false;
+        //make the snare row become visible after this point!
+        makeAClassVisible("hat-choice");
+        makeAClassVisible("hat-row");
+        setRhythmInstrument("hat", "closed hat", "hat");
+        if (!levelTwoMessageShown) {
+            levelTwoMessageShown = true;
+            alertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 2<br>-An additional instrument row, Closed Hats!!!!")
+        }
     }
     if (levelNumber > 1) {
         document.getElementById('rhythm-level-three').hidden = false;
+        //make the clave row become visible after this point!
+        makeAClassVisible("snare-choice");
+        makeAClassVisible("snare-row");
+        if (!levelThreeMessageShown) {
+            levelThreeMessageShown = true;
+            alertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 3<br>-An additional instrument row, Snares!!!!<br>(You had heard them before as the backbeat snares)")
+        }
     }
     if (levelNumber > 2) {
         document.getElementById('rhythm-level-four').hidden = false;
+        //make the open-hat row become visible after this point!
+        makeAClassVisible("clave-choice");
+        makeAClassVisible("inst6-row");
+
+        setRhythmInstrument("inst6", "clave", "clave");
+        if (!levelFourMessageShown) {
+            levelFourMessageShown = true;
+            alertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 4<br>-An additional instrument row, Claves!!!!<br>(You had heard them before as the metronome)")
+        }
     }
     if (levelNumber > 3) {
         document.getElementById('rhythm-level-five').hidden = false;
+        makeAClassVisible('temposlider');
+        makeAClassVisible("openhat-choice");
+        makeAClassVisible("clap-row");
+        setRhythmInstrument("clap", "open-hat", "openhat");
+        if (!levelFiveMessageShown) {
+            levelFiveMessageShown = true;
+            alertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 5<br>-An additional instrument row, Open Hats!!!!<br>And...<br>-A TEMPO SLIDER!!!!<br>(use this to change the tempo of your drum pattern)")
+        }
     }
     if (levelNumber > 4) {
         document.getElementById('rhythm-level-six').hidden = false;
+        makeAClassVisible('steprowpulldown');
+        makeAClassVisible('tom-choice');
+        makeAClassVisible('inst7-row');
+        setRhythmInstrument("inst7", "tom", "kick"); //replace kick with tom
+        if (!levelSixMessageShown) {
+            levelSixMessageShown = true;
+            alertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 6<br>-An additional instrument row, Toms!!!!<br>And...<br>-pull-down options to alter your step-sequencer/channel-rack layout!!!! <br>(Note: as you unlock more instruments, they will appear in these menus. All of the currently unlocked instruments are now available to you.)")
+        }
     }
-    // if (levelNumber > 5) {
-        // document.getElementById('rhythm-level-seven').hidden = false;
-    // }
-    // if (levelNumber > 6) {
-        // document.getElementById('rhythm-level-eight').hidden = false;
-    // }
-    // if (levelNumber > 7) {
-        // document.getElementById('rhythm-level-nine').hidden = false;
-    // }
+    if (levelNumber > 5) {
+        document.getElementById('rhythm-level-seven').hidden = false;
+        makeAClassVisible("rim-choice");
+        makeAClassVisible("inst5-row");
+        setRhythmInstrument("inst5", "rim", "rim");
+        if (!levelSevenMessageShown) {
+            levelSevenMessageShown = true;
+            alertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 7<br>-An additional instrument row, Rims!!!! <br>(Note: they have also been added to your instrument pulldowns!")
+        }
+    }
+    if (levelNumber > 6) {
+        document.getElementById('rhythm-level-eight').hidden = false;
+        makeAClassVisible("triangle-choice");
+        if (!levelEightMessageShown) {
+            levelEightMessageShown = true;
+            alertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-An additional instrument, the Triangle has been added to your instrument pulldowns!!!!<br><br>(more levels and unlockables coming soon)")
+        }
+    }
+    if (levelNumber > 7) {
+        if (!levelNineMessageShown) {
+            levelNineMessagShowne = true;
+            document.getElementById('rhythm-level-nine').hidden = false;
+        }
+    }
     // if (levelNumber > 8) {
-        // document.getElementById('rhythm-level-ten').hidden = false;
+    // document.getElementById('rhythm-level-ten').hidden = false;
     // }
 }
 
@@ -905,17 +1028,17 @@ function setupTheLevel(levelNumber) {
     if (levelNumber == 6) {
         document.getElementById('rhythm-level-six').click()
     }
-    // if (levelNumber == 7) {
-        // document.getElementById('rhythm-level-seven').click()
-    // }
-    // if (levelNumber == 8) {
-        // document.getElementById('rhythm-level-eight').click()
-    // }
-    // if (levelNumber == 9) {
-        // document.getElementById('rhythm-level-nine').click()
-    // }
+    if (levelNumber == 7) {
+        document.getElementById('rhythm-level-seven').click()
+    }
+    if (levelNumber == 8) {
+        document.getElementById('rhythm-level-eight').click()
+    }
+    if (levelNumber == 9) {
+        document.getElementById('rhythm-level-nine').click()
+    }
     // if (levelNumber == 10) {
-        // document.getElementById('rhythm-level-ten').click()
+    // document.getElementById('rhythm-level-ten').click()
     // }
 
 }
@@ -1004,29 +1127,29 @@ function setVisualMode(visualModeLocal) {
 }
 
 function clearRhythms() {
-document.getElementById('level-progress').style.display = 'none';
-	   totalScore = 0;
-	   currentLevelScore=0;
-	   randomizeKicks=false;
-randomizeHats=false;
-randomizeSnares=false;
-randomizeClaps=false;    // inst copy
-randomizeInst5=false;    // inst copy
-randomizeInst6=false;    // inst copy
-randomizeInst7=false;    // inst copy
-backbeat=false;
-document.getElementById('kick-row').hidden=true;
-document.getElementById('snare-row').hidden=true;
-document.getElementById('hat-row').hidden=true;
-document.getElementById('inst5-row').hidden=true;
-document.getElementById('clap-row').hidden=true;
-document.getElementById('inst6-row').hidden=true;
-document.getElementById('inst7-row').hidden=true;
+    document.getElementById('level-progress').style.display = 'none';
+    totalScore = 0;
+    currentLevelScore = 0;
+    randomizeKicks = false;
+    randomizeHats = false;
+    randomizeSnares = false;
+    randomizeClaps = false; // inst copy
+    randomizeInst5 = false; // inst copy
+    randomizeInst6 = false; // inst copy
+    randomizeInst7 = false; // inst copy
+    backbeat = false;
+    document.getElementById('kick-row').hidden = true;
+    document.getElementById('snare-row').hidden = true;
+    document.getElementById('hat-row').hidden = true;
+    document.getElementById('inst5-row').hidden = true;
+    document.getElementById('clap-row').hidden = true;
+    document.getElementById('inst6-row').hidden = true;
+    document.getElementById('inst7-row').hidden = true;
 
     currentLevelScore = 0;
     restartTimer();
-    clearAllNotes(); 
-	newQuestionTime = true;
+    clearAllNotes();
+    newQuestionTime = true;
     resetStepElements();
 }
 
@@ -1132,18 +1255,18 @@ function playYourOwn() {
 function setupRhythmSense() {
     rhythmSense = true;
     clearButtons();
-	clearRhythms();
+    clearRhythms();
     document.getElementById('octaves').style.display = 'none';
     document.getElementById('scale-buttons').style.display = 'none';
     document.getElementById('tunerAndSettings').style.display = 'none';
 
-document.getElementById('kick-row').hidden=false;
-document.getElementById('snare-row').hidden=false;
-document.getElementById('hat-row').hidden=false;
-document.getElementById('clap-row').hidden=false;
-document.getElementById('inst5-row').hidden=false;
-document.getElementById('inst6-row').hidden=false;
-document.getElementById('inst7-row').hidden=false;
+    // document.getElementById('kick-row').hidden=false;
+    // document.getElementById('snare-row').hidden=false;
+    // document.getElementById('hat-row').hidden=false;
+    // document.getElementById('clap-row').hidden=false;
+    // document.getElementById('inst5-row').hidden=false;
+    // document.getElementById('inst6-row').hidden=false;
+    // document.getElementById('inst7-row').hidden=false;
 
     document.getElementById('harmony-interact-column').style.display = 'none';
 
@@ -1157,34 +1280,33 @@ document.getElementById('inst7-row').hidden=false;
     turnAccompanimentOn();
     accompanimentVolume = 0;
     referenceVolume = 0;
-	// paused=true;
-	rhythmVolume=0;
-	// restartTimer();
+    // paused=true;
+    rhythmVolume = 0;
+    // restartTimer();
     repeatOnFrame();
-	
-	setupMakeYourOwnMode();
-	
+
+    setupMakeYourOwnMode();
+
 }
 
-
 function setupMakeYourOwnMode() {
+    // alert(ourLevelNumber);
+    clearRhythms();
+    updateTheLevel(ourLevelNumber);
+    // document.getElementById('kick-row').hidden=false;
+    // document.getElementById('snare-row').hidden=false;
+    // document.getElementById('hat-row').hidden=false;
+    // document.getElementById('clap-row').hidden=false;
+    // document.getElementById('inst5-row').hidden=false;
+    // document.getElementById('inst6-row').hidden=false;
+    // document.getElementById('inst7-row').hidden=false;
+    setRhythmInstrument("inst5", "rim", "rim");
+    setRhythmInstrument("inst6", "clave", "clave");
+    setRhythmInstrument("inst7", "tom", "kick");
 
-	clearRhythms();
-
-document.getElementById('kick-row').hidden=false;
-document.getElementById('snare-row').hidden=false;
-document.getElementById('hat-row').hidden=false;
-document.getElementById('clap-row').hidden=false;
-document.getElementById('inst5-row').hidden=false;
-document.getElementById('inst6-row').hidden=false;
-document.getElementById('inst7-row').hidden=false;
-setRhythmInstrument("inst5", "rim", "rim");
-setRhythmInstrument("inst6", "clave", "clave");
-setRhythmInstrument("inst7", "tom", "kick");
-
-setRhythmInstrument("hat", "closed hat", "hat");
+    setRhythmInstrument("hat", "closed hat", "hat");
     setupStepSequencerArray();
-	
+
 }
 
 function setupLevelOne() { //one note over and over again. sameintervals, 3rd, 4th, 5th)
@@ -3348,35 +3470,35 @@ function startHatTimer() {
     // updateTimer();
 }
 
-function startClapTimer() {     // inst copy  start
+function startClapTimer() { // inst copy  start
     clapTimerStarted = true;
     currentclapBeats = 0;
     // var arpeggioTimeLocal = new Date();
     // arpeggioTimeStart = new Date(arpeggioTimeLocal.getTime());
     // updateTimer();
-}                // inst copy end
-function startInst5Timer() {     // inst copy  start
+} // inst copy end
+function startInst5Timer() { // inst copy  start
     inst5TimerStarted = true;
     currentinst5Beats = 0;
     // var arpeggioTimeLocal = new Date();
     // arpeggioTimeStart = new Date(arpeggioTimeLocal.getTime());
     // updateTimer();
-}   
-function startInst6Timer() {     // inst copy  start
+}
+function startInst6Timer() { // inst copy  start
     inst6TimerStarted = true;
-	console.warn("hi");
+    console.warn("hi");
     currentinst6Beats = 0;
     // var arpeggioTimeLocal = new Date();
     // arpeggioTimeStart = new Date(arpeggioTimeLocal.getTime());
     // updateTimer();
-}  
- function startInst7Timer() {     // inst copy  start
+}
+function startInst7Timer() { // inst copy  start
     inst7TimerStarted = true;
     currentinst7Beats = 0;
     // var arpeggioTimeLocal = new Date();
     // arpeggioTimeStart = new Date(arpeggioTimeLocal.getTime());
     // updateTimer();
-}   
+}
 function startChordTimer() {
     chordTimerStarted = true;
     // var arpeggioTimeLocal = new Date();
@@ -3432,22 +3554,22 @@ function updateTimer() { //what to do when time zone
         kickTimeStart = new Date(now.getTime());
         kickTimerStarted = false;
     }
-    if (clapTimerStarted) {        // inst copy  start
+    if (clapTimerStarted) { // inst copy  start
         clapTimeStart = new Date(now.getTime());
         clapTimerStarted = false;
-    }                             // inst copy end
-	    if (inst5TimerStarted) {        // inst copy  start
+    } // inst copy end
+    if (inst5TimerStarted) { // inst copy  start
         inst5TimeStart = new Date(now.getTime());
         inst5TimerStarted = false;
-    }          
-	    if (inst6TimerStarted) {        // inst copy  start
+    }
+    if (inst6TimerStarted) { // inst copy  start
         inst6TimeStart = new Date(now.getTime());
         inst6TimerStarted = false;
-    }          
-	    if (inst7TimerStarted) {        // inst copy  start
+    }
+    if (inst7TimerStarted) { // inst copy  start
         inst7TimeStart = new Date(now.getTime());
         inst7TimerStarted = false;
-    }          
+    }
     if (hatTimerStarted) {
         hatTimeStart = new Date(now.getTime());
         hatTimerStarted = false;
@@ -3531,19 +3653,19 @@ function updateTimer() { //what to do when time zone
 
     clapTime = (now.getTime()) - clapTimeStart; //the Time of a note. // inst copy start
     clapTimeSeconds = ((clapTime % (1000 * 60)) / 1000);
-    clapTimeBeats = clapTimeSeconds / (60 / currentBPM);   // inst copy end
+    clapTimeBeats = clapTimeSeconds / (60 / currentBPM); // inst copy end
 
     inst5Time = (now.getTime()) - inst5TimeStart; //the Time of a note. // inst copy start
     inst5TimeSeconds = ((inst5Time % (1000 * 60)) / 1000);
-    inst5TimeBeats = inst5TimeSeconds / (60 / currentBPM);   // inst copy end
+    inst5TimeBeats = inst5TimeSeconds / (60 / currentBPM); // inst copy end
 
     inst6Time = (now.getTime()) - inst6TimeStart; //the Time of a note. // inst copy start
     inst6TimeSeconds = ((inst6Time % (1000 * 60)) / 1000);
-    inst6TimeBeats = inst6TimeSeconds / (60 / currentBPM);   // inst copy end
+    inst6TimeBeats = inst6TimeSeconds / (60 / currentBPM); // inst copy end
 
     inst7Time = (now.getTime()) - inst7TimeStart; //the Time of a note. // inst copy start
     inst7TimeSeconds = ((inst7Time % (1000 * 60)) / 1000);
-    inst7TimeBeats = inst7TimeSeconds / (60 / currentBPM);   // inst copy end
+    inst7TimeBeats = inst7TimeSeconds / (60 / currentBPM); // inst copy end
 
     hatTime = (now.getTime()) - hatTimeStart; //the Time of a note.
     hatTimeSeconds = ((hatTime % (1000 * 60)) / 1000);
@@ -6818,76 +6940,75 @@ function setupStepRhythmSequence() {
     if (rhythmFreestyle) {
         rhythmStarted = true;
         setupStepKickSequence();
-        setupStepClapSequence();        // inst copy
-        setupStepInst5Sequence();        // inst copy
-        setupStepInst6Sequence();        // inst copy
-        setupStepInst7Sequence();        // inst copy
+        setupStepClapSequence(); // inst copy
+        setupStepInst5Sequence(); // inst copy
+        setupStepInst6Sequence(); // inst copy
+        setupStepInst7Sequence(); // inst copy
         setupStepHatSequence();
         setupStepSnareSequence();
     } else {
         rhythmStarted = true;
-		if (backbeat){
-		setupBackbeat();
-		}
-		else{
-		snareSequenceArray = [];
-		snareSequenceCopy = [];
-        snareStarted = false;
-        snareStepArray[4].classList.add("unselectedstep");
-        snareStepArray[4].classList.remove("selectedstep");
-        snareStepArray[12].classList.add("unselectedstep");
-        snareStepArray[12].classList.remove("selectedstep");
-		tempSnareSequenceArray=[];
-		}
-		if (metronome){
-		setupMetronome();
-		}
-		if (randomizeKicks){
-        setupRandomKickSequence(numOfRandomSteps);
-		}
-		if (randomizeHats){
-        setupRandomHatSequence(numOfRandomSteps);
-		}	
-		if (randomizeClaps){                       // inst copy start
-        setupRandomClapSequence(numOfRandomSteps); 
-		}					                      // inst copy end
-		if (randomizeInst5){
-        setupRandomInst5Sequence(numOfRandomSteps);
-		}
-		if (randomizeInst6){
-        setupRandomInst6Sequence(numOfRandomSteps);
-		}
-		if (randomizeInst7){
-        setupRandomInst7Sequence(numOfRandomSteps);
-		}
-		if (randomizeSnares){
-        setupRandomSnareSequence(numOfRandomSteps);
-		}
+        if (backbeat) {
+            setupBackbeat();
+        } else {
+            snareSequenceArray = [];
+            snareSequenceCopy = [];
+            snareStarted = false;
+            snareStepArray[4].classList.add("unselectedstep");
+            snareStepArray[4].classList.remove("selectedstep");
+            snareStepArray[12].classList.add("unselectedstep");
+            snareStepArray[12].classList.remove("selectedstep");
+            tempSnareSequenceArray = [];
+        }
+        if (metronome) {
+            setupMetronome();
+        }
+        if (randomizeKicks) {
+            setupRandomKickSequence(numOfRandomSteps);
+        }
+        if (randomizeHats) {
+            setupRandomHatSequence(numOfRandomSteps);
+        }
+        if (randomizeClaps) { // inst copy start
+            setupRandomClapSequence(numOfRandomSteps);
+        } // inst copy end
+        if (randomizeInst5) {
+            setupRandomInst5Sequence(numOfRandomSteps);
+        }
+        if (randomizeInst6) {
+            setupRandomInst6Sequence(numOfRandomSteps);
+        }
+        if (randomizeInst7) {
+            setupRandomInst7Sequence(numOfRandomSteps);
+        }
+        if (randomizeSnares) {
+            setupRandomSnareSequence(numOfRandomSteps);
+        }
     }
 
 }
-function setupBackbeat(){
-		snareSequenceArray = [];
-        snareStarted = true;
-        snareStepArray[4].classList.add("selectedstep");
-        snareStepArray[4].classList.remove("unselectedstep");
-        snareStepArray[12].classList.add("selectedstep");
-        snareStepArray[12].classList.remove("unselectedstep");
-        snareSequenceArray.push(["rest", 1, 0]);
-        snareSequenceArray.push(["snare", 2, 0]);
-        snareSequenceArray.push(["snare", 1, 0]);
-		tempSnareSequenceArray=[];
-        tempSnareSequenceArray.push(["rest", 1, 0]);
-        tempSnareSequenceArray.push(["snare", 2, 0]);
-        tempSnareSequenceArray.push(["snare", 1, 0]);
-		
-}
-function setupMetronome(){
+function setupBackbeat() {
+    snareSequenceArray = [];
+    snareStarted = true;
+    snareStepArray[4].classList.add("selectedstep");
+    snareStepArray[4].classList.remove("unselectedstep");
+    snareStepArray[12].classList.add("selectedstep");
+    snareStepArray[12].classList.remove("unselectedstep");
+    snareSequenceArray.push(["rest", 1, 0]);
+    snareSequenceArray.push(["snare", 2, 0]);
+    snareSequenceArray.push(["snare", 1, 0]);
+    tempSnareSequenceArray = [];
+    tempSnareSequenceArray.push(["rest", 1, 0]);
+    tempSnareSequenceArray.push(["snare", 2, 0]);
+    tempSnareSequenceArray.push(["snare", 1, 0]);
 
- inst6SequenceArray = [];
- 	if (metronome){
-		// alertify("metronome");
-		setRhythmInstrument("inst6", "metronome", "clave");
+}
+function setupMetronome() {
+
+    inst6SequenceArray = [];
+    if (metronome) {
+        // alertify("metronome");
+        setRhythmInstrument("inst6", "metronome", "clave");
         inst6Started = true;
         inst6StepArray[0].classList.add("selectedstep");
         inst6StepArray[0].classList.remove("unselectedstep");
@@ -6901,18 +7022,17 @@ function setupMetronome(){
         inst6SequenceArray.push(["clave", 1, 0]);
         inst6SequenceArray.push(["clave", 1, 0]);
         inst6SequenceArray.push(["clave", 1, 0]);
-		tempInst6SequenceArray=[];
+        tempInst6SequenceArray = [];
         tempInst6SequenceArray.push(["triangle", 1, 0]);
         tempInst6SequenceArray.push(["clave", 1, 0]);
         tempInst6SequenceArray.push(["clave", 1, 0]);
         tempInst6SequenceArray.push(["clave", 1, 0]);
-		
+
         inst6SequenceCopy = inst6SequenceArray.slice();
-	}
-	else{
-		inst6SequenceCopy = [];
-        tempInst6SequenceArray=[];
-		inst6StepArray[0].classList.add("unselectedstep");
+    } else {
+        inst6SequenceCopy = [];
+        tempInst6SequenceArray = [];
+        inst6StepArray[0].classList.add("unselectedstep");
         inst6StepArray[0].classList.remove("selectedstep");
         inst6StepArray[4].classList.add("unselectedstep");
         inst6StepArray[4].classList.remove("selectedstep");
@@ -6920,40 +7040,40 @@ function setupMetronome(){
         inst6StepArray[8].classList.remove("selectedstep");
         inst6StepArray[12].classList.add("unselectedstep");
         inst6StepArray[12].classList.remove("selectedstep");
-	}
-	
+    }
+
 }
 function setupRandomKickSequence(amountOfRandomKicks) {
     // alertify ("hello");
     document.getElementById('kickstepone').classList.add("lititup");
     document.getElementById('snarestepone').classList.add("lititup");
-    document.getElementById('clapstepone').classList.add("lititup");       // inst copy
-    document.getElementById('inst5stepone').classList.add("lititup");       // inst copy
-    document.getElementById('inst6stepone').classList.add("lititup");       // inst copy
-    document.getElementById('inst7stepone').classList.add("lititup");       // inst copy
+    document.getElementById('clapstepone').classList.add("lititup"); // inst copy
+    document.getElementById('inst5stepone').classList.add("lititup"); // inst copy
+    document.getElementById('inst6stepone').classList.add("lititup"); // inst copy
+    document.getElementById('inst7stepone').classList.add("lititup"); // inst copy
     document.getElementById('hatstepone').classList.add("lititup");
     // document.getElementById('kickstepone').classList.remove('unselectedstep');
     // document.getElementById('kickstepone').classList.remove('selectedstep');
     if (kickSequenceCopy.length == 0) {
         // hatSequenceArray = [];
         // hatStarted = true;
-		
+
         // hatSequenceArray.push(["hat", 4 , 0]);
-		
+
         kickSequenceArray = [];
         kickStarted = true;
         var remainingKicks = amountOfRandomKicks + 0;
-        var kickStepsLeft = 16/simplifiedDenominator;
+        var kickStepsLeft = 16 / simplifiedDenominator;
         for (kickNum = 0; kickNum < amountOfRandomKicks; kickNum++) {
             // console.warn("kickStepsLeft " + kickStepsLeft + " remainingKicks " + remainingKicks);
             let thisRandomKickTime = Math.ceil(Math.random() * (kickStepsLeft - remainingKicks + 0))
-                kickSequenceArray.push([kickinstrument, thisRandomKickTime / (4/simplifiedDenominator), 0]);
+                kickSequenceArray.push([kickinstrument, thisRandomKickTime / (4 / simplifiedDenominator), 0]);
             remainingKicks = remainingKicks - 1;
             kickStepsLeft = kickStepsLeft - thisRandomKickTime;
 
             // console.warn("kickStepsLeft " + kickStepsLeft + " remainingKicks " + remainingKicks);
         }
-        kickSequenceArray.push([kickinstrument, kickStepsLeft / (4/simplifiedDenominator), 0]);
+        kickSequenceArray.push([kickinstrument, kickStepsLeft / (4 / simplifiedDenominator), 0]);
         kickSequenceCopy = kickSequenceArray.slice();
         // hatSequenceCopy = hatSequenceArray.slice();
         snareSequenceCopy = snareSequenceArray.slice();
@@ -6977,17 +7097,17 @@ function setupRandomHatSequence(amountOfRandomHats) {
         hatSequenceArray = [];
         hatStarted = true;
         var remainingHats = amountOfRandomHats + 0;
-        var hatStepsLeft = 16/simplifiedDenominator;
+        var hatStepsLeft = 16 / simplifiedDenominator;
         for (hatNum = 0; hatNum < amountOfRandomHats; hatNum++) {
             // console.warn("hatStepsLeft " + hatStepsLeft + " remainingHats " + remainingHats);
             let thisRandomHatTime = Math.ceil(Math.random() * (hatStepsLeft - remainingHats + 0))
-                hatSequenceArray.push([hatinstrument, thisRandomHatTime / (4/simplifiedDenominator), 0]);
+                hatSequenceArray.push([hatinstrument, thisRandomHatTime / (4 / simplifiedDenominator), 0]);
             remainingHats = remainingHats - 1;
             hatStepsLeft = hatStepsLeft - thisRandomHatTime;
 
             // console.warn("hatStepsLeft " + hatStepsLeft + " remainingHats " + remainingHats);
         }
-        hatSequenceArray.push([hatinstrument, hatStepsLeft / (4/simplifiedDenominator), 0]);
+        hatSequenceArray.push([hatinstrument, hatStepsLeft / (4 / simplifiedDenominator), 0]);
         // hatSequenceCopy = hatSequenceArray.slice();
         hatSequenceCopy = hatSequenceArray.slice();
         snareSequenceCopy = snareSequenceArray.slice();
@@ -7001,7 +7121,6 @@ function setupRandomHatSequence(amountOfRandomHats) {
     }
 }
 
-
 function setupRandomClapSequence(amountOfRandomClaps) {
     // alertify ("hello");
     // document.getElementById('hatstepone').classList.remove('unselectedstep');
@@ -7010,17 +7129,17 @@ function setupRandomClapSequence(amountOfRandomClaps) {
         clapSequenceArray = [];
         clapStarted = true;
         var remainingClaps = amountOfRandomClaps + 0;
-        var clapStepsLeft = 16/simplifiedDenominator;
+        var clapStepsLeft = 16 / simplifiedDenominator;
         for (clapNum = 0; clapNum < amountOfRandomClaps; clapNum++) {
             // console.warn("clapStepsLeft " + clapStepsLeft + " remainingClaps " + remainingClaps);
             let thisRandomClapTime = Math.ceil(Math.random() * (clapStepsLeft - remainingClaps + 0))
-                clapSequenceArray.push([clapinstrument, thisRandomClapTime / (4/simplifiedDenominator), 0]);
+                clapSequenceArray.push([clapinstrument, thisRandomClapTime / (4 / simplifiedDenominator), 0]);
             remainingClaps = remainingClaps - 1;
             clapStepsLeft = clapStepsLeft - thisRandomClapTime;
 
             // console.warn("clapStepsLeft " + clapStepsLeft + " remainingClaps " + remainingClaps);
         }
-        clapSequenceArray.push([clapinstrument, clapStepsLeft / (4/simplifiedDenominator), 0]);
+        clapSequenceArray.push([clapinstrument, clapStepsLeft / (4 / simplifiedDenominator), 0]);
         // clapSequenceCopy = clapSequenceArray.slice();
         clapSequenceCopy = clapSequenceArray.slice();
         snareSequenceCopy = snareSequenceArray.slice();
@@ -7034,7 +7153,6 @@ function setupRandomClapSequence(amountOfRandomClaps) {
     }
 }
 
-
 function setupRandomInst5Sequence(amountOfRandomInst5s) {
     // alertify ("hello");
     // document.getElementById('inst5stepone').classList.remove('unselectedstep');
@@ -7043,17 +7161,17 @@ function setupRandomInst5Sequence(amountOfRandomInst5s) {
         inst5SequenceArray = [];
         inst5Started = true;
         var remainingInst5s = amountOfRandomInst5s + 0;
-        var inst5StepsLeft = 16/simplifiedDenominator;
+        var inst5StepsLeft = 16 / simplifiedDenominator;
         for (inst5Num = 0; inst5Num < amountOfRandomInst5s; inst5Num++) {
             // console.warn("inst5StepsLeft " + inst5StepsLeft + " remainingInst5s " + remainingInst5s);
             let thisRandomInst5Time = Math.ceil(Math.random() * (inst5StepsLeft - remainingInst5s + 0))
-                inst5SequenceArray.push([inst5instrument, thisRandomInst5Time / (4/simplifiedDenominator), 0]);
+                inst5SequenceArray.push([inst5instrument, thisRandomInst5Time / (4 / simplifiedDenominator), 0]);
             remainingInst5s = remainingInst5s - 1;
             inst5StepsLeft = inst5StepsLeft - thisRandomInst5Time;
 
             // console.warn("inst5StepsLeft " + inst5StepsLeft + " remainingInst5s " + remainingInst5s);
         }
-        inst5SequenceArray.push([inst5instrument, inst5StepsLeft / (4/simplifiedDenominator), 0]);
+        inst5SequenceArray.push([inst5instrument, inst5StepsLeft / (4 / simplifiedDenominator), 0]);
         // inst5SequenceCopy = inst5SequenceArray.slice();
         inst5SequenceCopy = inst5SequenceArray.slice();
         snareSequenceCopy = snareSequenceArray.slice();
@@ -7067,7 +7185,6 @@ function setupRandomInst5Sequence(amountOfRandomInst5s) {
     }
 }
 
-
 function setupRandomInst6Sequence(amountOfRandomInst6s) {
     // alertify ("hello");
     // document.getElementById('inst6stepone').classList.remove('unselectedstep');
@@ -7076,17 +7193,17 @@ function setupRandomInst6Sequence(amountOfRandomInst6s) {
         inst6SequenceArray = [];
         inst6Started = true;
         var remainingInst6s = amountOfRandomInst6s + 0;
-        var inst6StepsLeft = 16/simplifiedDenominator;
+        var inst6StepsLeft = 16 / simplifiedDenominator;
         for (inst6Num = 0; inst6Num < amountOfRandomInst6s; inst6Num++) {
             // console.warn("inst6StepsLeft " + inst6StepsLeft + " remainingInst6s " + remainingInst6s);
             let thisRandomInst6Time = Math.ceil(Math.random() * (inst6StepsLeft - remainingInst6s + 0))
-                inst6SequenceArray.push([inst6instrument, thisRandomInst6Time / (4/simplifiedDenominator), 0]);
+                inst6SequenceArray.push([inst6instrument, thisRandomInst6Time / (4 / simplifiedDenominator), 0]);
             remainingInst6s = remainingInst6s - 1;
             inst6StepsLeft = inst6StepsLeft - thisRandomInst6Time;
 
             // console.warn("inst6StepsLeft " + inst6StepsLeft + " remainingInst6s " + remainingInst6s);
         }
-        inst6SequenceArray.push([inst6instrument, inst6StepsLeft / (4/simplifiedDenominator), 0]);
+        inst6SequenceArray.push([inst6instrument, inst6StepsLeft / (4 / simplifiedDenominator), 0]);
         // inst6SequenceCopy = inst6SequenceArray.slice();
         inst6SequenceCopy = inst6SequenceArray.slice();
         snareSequenceCopy = snareSequenceArray.slice();
@@ -7100,7 +7217,6 @@ function setupRandomInst6Sequence(amountOfRandomInst6s) {
     }
 }
 
-
 function setupRandomInst7Sequence(amountOfRandomInst7s) {
     // alertify ("hello");
     // document.getElementById('inst7stepone').classList.remove('unselectedstep');
@@ -7109,17 +7225,17 @@ function setupRandomInst7Sequence(amountOfRandomInst7s) {
         inst7SequenceArray = [];
         inst7Started = true;
         var remainingInst7s = amountOfRandomInst7s + 0;
-        var inst7StepsLeft = 16/simplifiedDenominator;
+        var inst7StepsLeft = 16 / simplifiedDenominator;
         for (inst7Num = 0; inst7Num < amountOfRandomInst7s; inst7Num++) {
             // console.warn("inst7StepsLeft " + inst7StepsLeft + " remainingInst7s " + remainingInst7s);
             let thisRandomInst7Time = Math.ceil(Math.random() * (inst7StepsLeft - remainingInst7s + 0))
-                inst7SequenceArray.push([inst7instrument, thisRandomInst7Time / (4/simplifiedDenominator), 0]);
+                inst7SequenceArray.push([inst7instrument, thisRandomInst7Time / (4 / simplifiedDenominator), 0]);
             remainingInst7s = remainingInst7s - 1;
             inst7StepsLeft = inst7StepsLeft - thisRandomInst7Time;
 
             // console.warn("inst7StepsLeft " + inst7StepsLeft + " remainingInst7s " + remainingInst7s);
         }
-        inst7SequenceArray.push([inst7instrument, inst7StepsLeft / (4/simplifiedDenominator), 0]);
+        inst7SequenceArray.push([inst7instrument, inst7StepsLeft / (4 / simplifiedDenominator), 0]);
         // inst7SequenceCopy = inst7SequenceArray.slice();
         inst7SequenceCopy = inst7SequenceArray.slice();
         snareSequenceCopy = snareSequenceArray.slice();
@@ -7133,7 +7249,6 @@ function setupRandomInst7Sequence(amountOfRandomInst7s) {
     }
 }
 
-
 function setupRandomSnareSequence(amountOfRandomSnares) {
     // alertify ("hello");
     // document.getElementById('snarestepone').classList.remove('unselectedstep');
@@ -7142,17 +7257,17 @@ function setupRandomSnareSequence(amountOfRandomSnares) {
         snareSequenceArray = [];
         snareStarted = true;
         var remainingSnares = amountOfRandomSnares + 0;
-        var snareStepsLeft = 16/simplifiedDenominator;
+        var snareStepsLeft = 16 / simplifiedDenominator;
         for (snareNum = 0; snareNum < amountOfRandomSnares; snareNum++) {
             // console.warn("snareStepsLeft " + snareStepsLeft + " remainingSnares " + remainingSnares);
             let thisRandomSnareTime = Math.ceil(Math.random() * (snareStepsLeft - remainingSnares + 0))
-                snareSequenceArray.push([snareinstrument, thisRandomSnareTime / (4/simplifiedDenominator), 0]);
+                snareSequenceArray.push([snareinstrument, thisRandomSnareTime / (4 / simplifiedDenominator), 0]);
             remainingSnares = remainingSnares - 1;
             snareStepsLeft = snareStepsLeft - thisRandomSnareTime;
 
             // console.warn("snareStepsLeft " + snareStepsLeft + " remainingSnares " + remainingSnares);
         }
-        snareSequenceArray.push([snareinstrument, snareStepsLeft / (4/simplifiedDenominator), 0]);
+        snareSequenceArray.push([snareinstrument, snareStepsLeft / (4 / simplifiedDenominator), 0]);
         // snareSequenceCopy = snareSequenceArray.slice();
         snareSequenceCopy = snareSequenceArray.slice();
         snareSequenceCopy = snareSequenceArray.slice();
@@ -7192,7 +7307,7 @@ function generateStepKickSequence() {
         }
 
     }
-	    if (firstkicksounded) {
+    if (firstkicksounded) {
         if (kickOnOne) {
             tempKickSequenceArray.push([kickinstrument, thiskickLength + 0 + kicksToAddToEnd, 0]);
         } else {
@@ -7245,7 +7360,7 @@ function generateStepHatSequence() {
     }
 }
 
-function generateStepClapSequence() {   //inst copy
+function generateStepClapSequence() { //inst copy
     tempClapSequenceArray = [];
     var firstclapsounded = false;
     var clapsToAddToEnd = 0;
@@ -7284,11 +7399,10 @@ function generateStepClapSequence() {   //inst copy
     if (rhythmSpeedMode) {
         checkMyRhythmAnswer();
     }
-}                      //inst copy
+} //inst copy
 
 
-
-function generateStepInst5Sequence() {   //inst copy
+function generateStepInst5Sequence() { //inst copy
     tempInst5SequenceArray = [];
     var firstinst5sounded = false;
     var inst5sToAddToEnd = 0;
@@ -7327,11 +7441,10 @@ function generateStepInst5Sequence() {   //inst copy
     if (rhythmSpeedMode) {
         checkMyRhythmAnswer();
     }
-}                      //inst copy
+} //inst copy
 
 
-
-function generateStepInst6Sequence() {   //inst copy
+function generateStepInst6Sequence() { //inst copy
     tempInst6SequenceArray = [];
     var firstinst6sounded = false;
     var inst6sToAddToEnd = 0;
@@ -7370,11 +7483,10 @@ function generateStepInst6Sequence() {   //inst copy
     if (rhythmSpeedMode) {
         checkMyRhythmAnswer();
     }
-}                      //inst copy
+} //inst copy
 
 
-
-function generateStepInst7Sequence() {   //inst copy
+function generateStepInst7Sequence() { //inst copy
     tempInst7SequenceArray = [];
     var firstinst7sounded = false;
     var inst7sToAddToEnd = 0;
@@ -7413,9 +7525,9 @@ function generateStepInst7Sequence() {   //inst copy
     if (rhythmSpeedMode) {
         checkMyRhythmAnswer();
     }
-}                      //inst copy
+} //inst copy
 
-function generateStepSnareSequence() {   //inst copy
+function generateStepSnareSequence() { //inst copy
     tempSnareSequenceArray = [];
     var firstsnaresounded = false;
     var snaresToAddToEnd = 0;
@@ -7454,29 +7566,29 @@ function generateStepSnareSequence() {   //inst copy
     if (rhythmSpeedMode) {
         checkMyRhythmAnswer();
     }
-}       
+}
 function checkMyRhythmAnswer() {
-    let didYouKickIt = ((JSON.stringify(tempKickSequenceArray) == JSON.stringify(kickSequenceCopy)) && (JSON.stringify(tempHatSequenceArray) == JSON.stringify(hatSequenceCopy))&& (JSON.stringify(tempClapSequenceArray) == JSON.stringify(clapSequenceCopy))&& (JSON.stringify(tempInst5SequenceArray) == JSON.stringify(inst5SequenceCopy))&& (JSON.stringify(tempInst6SequenceArray) == JSON.stringify(inst6SequenceCopy))&& (JSON.stringify(tempInst7SequenceArray) == JSON.stringify(inst7SequenceCopy))&& (JSON.stringify(tempSnareSequenceArray) == JSON.stringify(snareSequenceCopy)));  //inst copy
+    let didYouKickIt = ((JSON.stringify(tempKickSequenceArray) == JSON.stringify(kickSequenceCopy)) && (JSON.stringify(tempHatSequenceArray) == JSON.stringify(hatSequenceCopy)) && (JSON.stringify(tempClapSequenceArray) == JSON.stringify(clapSequenceCopy)) && (JSON.stringify(tempInst5SequenceArray) == JSON.stringify(inst5SequenceCopy)) && (JSON.stringify(tempInst6SequenceArray) == JSON.stringify(inst6SequenceCopy)) && (JSON.stringify(tempInst7SequenceArray) == JSON.stringify(inst7SequenceCopy)) && (JSON.stringify(tempSnareSequenceArray) == JSON.stringify(snareSequenceCopy))); //inst copy
 
     console.warn("temp hat sequence " + tempHatSequenceArray.toString() + " hat sequence " + hatSequenceCopy.toString());
     console.warn("temp kick sequence " + tempKickSequenceArray.toString() + " kick sequence " + kickSequenceCopy.toString());
     console.warn("temp snare sequence " + tempSnareSequenceArray.toString() + " snare sequence " + snareSequenceCopy.toString());
     if (didYouKickIt) {
-		
-		if (!noMorePoints){
-		currentLevelScore++;
-        totalScore++;
-		updateProgress();
-		}
-		noMorePoints=true;
+
+        if (!noMorePoints) {
+            currentLevelScore++;
+            totalScore++;
+            updateProgress();
+        }
+        noMorePoints = true;
         document.getElementById("totalscore").innerHTML = "#Correct = " + totalScore;
 
         alertify("Nice Job! You got that one! Hit 'Give me another!' to move on.")
         if (rhythmSpeedMode) {
-			checkForUpdatedDifficulty();
+            checkForUpdatedDifficulty();
             newQuestionTime = true;
             resetStepElements();
-			setupSteps();
+            setupSteps();
         }
     }
 }
@@ -7520,7 +7632,7 @@ function setupStepKickSequence() {
     console.warn(kickSequenceArray.toString());
 }
 
-function setupStepClapSequence() {       // inst copy  start
+function setupStepClapSequence() { // inst copy  start
     clapSequenceArray = [];
     clapStarted = true;
     var firstclapsounded = false;
@@ -7557,11 +7669,10 @@ function setupStepClapSequence() {       // inst copy  start
         }
     }
     // console.warn(clapSequenceArray.toString());
-}																					// inst copy
-				
+} // inst copy
 
 
-function setupStepInst5Sequence() {       // inst copy  start
+function setupStepInst5Sequence() { // inst copy  start
     inst5SequenceArray = [];
     inst5Started = true;
     var firstinst5sounded = false;
@@ -7598,11 +7709,10 @@ function setupStepInst5Sequence() {       // inst copy  start
         }
     }
     // console.warn(inst5SequenceArray.toString());
-}																					// inst copy
+} // inst copy
 
 
-
-function setupStepInst6Sequence() {       // inst copy  start
+function setupStepInst6Sequence() { // inst copy  start
     inst6SequenceArray = [];
     inst6Started = true;
     var firstinst6sounded = false;
@@ -7639,11 +7749,10 @@ function setupStepInst6Sequence() {       // inst copy  start
         }
     }
     // console.warn(inst6SequenceArray.toString());
-}																					// inst copy
+} // inst copy
 
 
-
-function setupStepInst7Sequence() {       // inst copy  start
+function setupStepInst7Sequence() { // inst copy  start
     inst7SequenceArray = [];
     inst7Started = true;
     var firstinst7sounded = false;
@@ -7680,8 +7789,8 @@ function setupStepInst7Sequence() {       // inst copy  start
         }
     }
     // console.warn(inst7SequenceArray.toString());
-}																					// inst copy
-				
+} // inst copy
+
 function setupStepHatSequence() {
     hatSequenceArray = [];
     hatStarted = true;
@@ -7997,13 +8106,12 @@ function repeatOnFrame() {
         startRhythmTimer();
         startKickTimer();
         startClapTimer(); // inst copy
-		
+
         startInst5Timer();
         startInst6Timer();
-		
+
         startInst7Timer();
-		
-		
+
         startHatTimer();
         startSnareTimer();
         if (sequenceArray.length == 0) {
@@ -8354,10 +8462,10 @@ function repeatOnFrame() {
         if (kickTimeBeats >= .5) {
             document.getElementById('kickstepone').classList.remove("lititup");
             document.getElementById('snarestepone').classList.remove("lititup");
-            document.getElementById('clapstepone').classList.remove("lititup");  //inst copy
-            document.getElementById('inst5stepone').classList.remove("lititup");  //inst copy
-            document.getElementById('inst6stepone').classList.remove("lititup");  //inst copy
-            document.getElementById('inst7stepone').classList.remove("lititup");  //inst copy
+            document.getElementById('clapstepone').classList.remove("lititup"); //inst copy
+            document.getElementById('inst5stepone').classList.remove("lititup"); //inst copy
+            document.getElementById('inst6stepone').classList.remove("lititup"); //inst copy
+            document.getElementById('inst7stepone').classList.remove("lititup"); //inst copy
             document.getElementById('hatstepone').classList.remove("lititup");
             // console.warn(kickTimeBeats+" "+currentkickBeats);
             // document.getElementById('kickstepone').classList.add('lititup');
@@ -8366,10 +8474,10 @@ function repeatOnFrame() {
         } else {
             document.getElementById('kickstepone').classList.add("lititup");
             document.getElementById('snarestepone').classList.add("lititup");
-            document.getElementById('clapstepone').classList.add("lititup");  //inst copy
-            document.getElementById('inst5stepone').classList.add("lititup");  //inst copy
-            document.getElementById('inst6stepone').classList.add("lititup");  //inst copy
-            document.getElementById('inst7stepone').classList.add("lititup");  //inst copy
+            document.getElementById('clapstepone').classList.add("lititup"); //inst copy
+            document.getElementById('inst5stepone').classList.add("lititup"); //inst copy
+            document.getElementById('inst6stepone').classList.add("lititup"); //inst copy
+            document.getElementById('inst7stepone').classList.add("lititup"); //inst copy
             document.getElementById('hatstepone').classList.add("lititup");
             // console.warn(kickTimeBeats+" "+currentkickBeats);
             // document.getElementById('kickstepone').classList.add('lititup');
@@ -8419,11 +8527,11 @@ function repeatOnFrame() {
 
             }
         }
-        if ((clapTimeBeats >= currentclapBeats) && (rhythmPlay)) {//inst copy start
+        if ((clapTimeBeats >= currentclapBeats) && (rhythmPlay)) { //inst copy start
 
             clapSequenceStarted = false; //proceed to the next note. //inst copy
 
-        }//inst copy
+        } //inst copy
         if ((!clapSequenceStarted) && (clapSequenceArray.length > 0) && (clapStarted)) {
             // console.log(arpeggioSequenceArray.length+" "+arpeggioSequenceArray.toString());
 
@@ -8461,15 +8569,13 @@ function repeatOnFrame() {
 
             }
         } //inst copy end
-		
-		
-		
-		
-        if ((inst5TimeBeats >= currentinst5Beats) && (rhythmPlay)) {//inst copy start
+
+
+        if ((inst5TimeBeats >= currentinst5Beats) && (rhythmPlay)) { //inst copy start
 
             inst5SequenceStarted = false; //proceed to the next note. //inst copy
 
-        }//inst copy
+        } //inst copy
         if ((!inst5SequenceStarted) && (inst5SequenceArray.length > 0) && (inst5Started)) {
             // console.log(arpeggioSequenceArray.length+" "+arpeggioSequenceArray.toString());
 
@@ -8507,21 +8613,18 @@ function repeatOnFrame() {
 
             }
         } //inst copy end
-		
-		
-		
-		
-		
-        if ((inst6TimeBeats >= currentinst6Beats) && (rhythmPlay)) {//inst copy start
-			// console.warn("inst6");
-			// console.warn(currentinst6Beats+" "+inst6TimeBeats);
-			// console.warn(inst6SequenceArray.length);
+
+
+        if ((inst6TimeBeats >= currentinst6Beats) && (rhythmPlay)) { //inst copy start
+            // console.warn("inst6");
+            // console.warn(currentinst6Beats+" "+inst6TimeBeats);
+            // console.warn(inst6SequenceArray.length);
             inst6SequenceStarted = false; //proceed to the next note. //inst copy
 
-        }//inst copy
+        } //inst copy
         if ((!inst6SequenceStarted) && (inst6SequenceArray.length > 0) && (inst6Started)) {
             // console.log(arpeggioSequenceArray.length+" "+arpeggioSequenceArray.toString());
-			console.warn(inst6SequenceArray.length);
+            console.warn(inst6SequenceArray.length);
             let currentNoteInfo = inst6SequenceArray.shift();
             // console.log(currentNoteInfo.toString()+" "+arpeggioSequenceStarted);
             currentinst6Beats = currentinst6Beats + currentNoteInfo[1] + 0;
@@ -8556,16 +8659,13 @@ function repeatOnFrame() {
 
             }
         } //inst copy end
-		
-		
-		
-		
-		
-        if ((inst7TimeBeats >= currentinst7Beats) && (rhythmPlay)) {//inst copy start
+
+
+        if ((inst7TimeBeats >= currentinst7Beats) && (rhythmPlay)) { //inst copy start
 
             inst7SequenceStarted = false; //proceed to the next note. //inst copy
 
-        }//inst copy
+        } //inst copy
         if ((!inst7SequenceStarted) && (inst7SequenceArray.length > 0) && (inst7Started)) {
             // console.log(arpeggioSequenceArray.length+" "+arpeggioSequenceArray.toString());
 
@@ -8603,7 +8703,7 @@ function repeatOnFrame() {
 
             }
         } //inst copy end
-		
+
         if ((hatTimeBeats >= currenthatBeats) && (rhythmPlay)) {
 
             hatSequenceStarted = false; //proceed to the next note.
@@ -8838,7 +8938,7 @@ function repeatOnFrame() {
     }
 
     if (newQuestionTime == true) {
-		noMorePoints=false;
+        noMorePoints = false;
         numOfThisNoteInSequence = 0;
         // alert ("a new questions!");
         chordSequenceStarted = false;
@@ -9379,7 +9479,7 @@ function repeatOnFrame() {
                     alert("Congratulations! You have completed this level. Select a new level from the 'select level' menu");
                     addLevelCompleted(whoItIsUsingThis, theirEmail, scoreLevel);
                     if (ourLevelNumber < scoreLevel) {
-                        ourLevelNumber = scoreLevel+0;;
+                        ourLevelNumber = scoreLevel + 0; ;
                         updateTheLevel(ourLevelNumber);
                     }
                     setupTheLevel(scoreLevel + 1);
@@ -11990,7 +12090,7 @@ $('#level-three').click(function () {
     setupLevelThree();
 });
 $('#rhythm-sense').click(function () {
-	
+    makeAClassInvisible('questionbuttonrow');
     setupMakeYourOwnMode();
 });
 $('#play-your-own').click(function () {
@@ -12018,7 +12118,6 @@ $('#level-ten').click(function () {
     setupLevelTen();
 });
 
-
 $('#autocheckbutton').click(function () {
     if (rhythmSpeedMode) {
         rhythmSpeedMode = false;
@@ -12030,12 +12129,11 @@ $('#autocheckbutton').click(function () {
         document.getElementById('autocheckbutton').innerHTML = "Turn Auto-Check Off";
         document.getElementById('submitDrums').hidden = true;
         document.getElementById('nextRhythmButton').hidden = true;
-		checkMyRhythmAnswer();
+        checkMyRhythmAnswer();
 
     }
 
 });
-
 
 $('#metronomeButton').click(function () {
     if (metronome) {
@@ -12046,144 +12144,221 @@ $('#metronomeButton').click(function () {
         document.getElementById('metronomeButton').innerHTML = "Turn Metronome Off";
 
     }
-	setupMetronome();
+    setupMetronome();
 
 });
 $('#submitDrums').click(function () {
     checkMyRhythmAnswer();
 });
 $('#nextRhythmButton').click(function () {
-	checkForUpdatedDifficulty();
+    checkForUpdatedDifficulty();
     newQuestionTime = true;
     resetStepElements();
-	setupSteps();
+    setupSteps();
 });
 $('#rhythm-level-one').click(function () {
-	scoreLevel=1;
-rhythmVolume = 50;
-clearRhythms();
-simplifiedDenominator=4;
-randomizeKicks=true;
-backbeat=true;
-availableSteps="quarters";
+    scoreLevel = 1;
+    rhythmVolume = 50;
+    clearRhythms();
+    simplifiedDenominator = 4;
+    randomizeKicks = true;
+    backbeat = true;
+    availableSteps = "quarters";
 
-document.getElementById('kick-row').hidden=false;
-document.getElementById('snare-row').hidden=false;
-document.getElementById('hat-row').hidden=false;
-currentLevelScore=0;
-setupSteps();
-document.getElementById('level-progress').style.display = 'block';
-setProgressGoals("2 random steps", "3 random steps", "3 random steps, no snares", "2 random steps, no snares");
-	   updateProgress();
-	   checkForUpdatedDifficulty();
+    makeAClassVisible('questionbuttonrow');
+    document.getElementById('kick-row').hidden = false;
+    currentLevelScore = 0;
+    setupSteps();
+    document.getElementById('level-progress').style.display = 'block';
+    setProgressGoals("2 random steps", "3 random steps", "3 random steps, no snares", "2 random steps, no snares");
+    updateProgress();
+    checkForUpdatedDifficulty();
 });
 $('#rhythm-level-two').click(function () {
-	scoreLevel=2;
-rhythmVolume = 50;
-clearRhythms();
-simplifiedDenominator=4;
-randomizeKicks=true;
-randomizeHats=true;
-backbeat=true;
-availableSteps="quarters";
-currentLevelScore=0;
-setupSteps();
+    scoreLevel = 2;
+    rhythmVolume = 50;
+    clearRhythms();
+    simplifiedDenominator = 4;
+    randomizeKicks = true;
+    randomizeHats = true;
+    backbeat = true;
+    availableSteps = "quarters";
+    currentLevelScore = 0;
+    setupSteps();
 
-document.getElementById('kick-row').hidden=false;
-document.getElementById('snare-row').hidden=false;
-document.getElementById('hat-row').hidden=false;
-document.getElementById('level-progress').style.display = 'block';
-setProgressGoals("2 random steps", "3 random steps", "3 random steps, no snares", "2 random steps, no snares");
-	   updateProgress();
-	   checkForUpdatedDifficulty();
+    makeAClassVisible('questionbuttonrow');
+	document.getElementById('kick-row').hidden=false;
+	document.getElementById('hat-row').hidden=false;	
+    // document.getElementById('snare-row').hidden=false;
+    document.getElementById('level-progress').style.display = 'block';
+    setProgressGoals("2 random steps", "3 random steps", "3 random steps, no snares", "2 random steps, no snares");
+    updateProgress();
+    checkForUpdatedDifficulty();
 });
 $('#rhythm-level-three').click(function () {
-	scoreLevel=3;
-rhythmVolume = 50;
-clearRhythms();
-randomizeKicks=true;
-simplifiedDenominator=2;
-backbeat=true;
-availableSteps="eighths";
+    scoreLevel = 3;
+    rhythmVolume = 50;
+    clearRhythms();
+    randomizeKicks = true;
+    simplifiedDenominator = 2;
+    backbeat = true;
+    availableSteps = "eighths";
 
-
-currentLevelScore=0;
-setupSteps();
+    currentLevelScore = 0;
+    setupSteps();
+    makeAClassVisible('questionbuttonrow');
 document.getElementById('kick-row').hidden=false;
-document.getElementById('snare-row').hidden=false;
 document.getElementById('hat-row').hidden=false;
-document.getElementById('level-progress').style.display = 'block';
-setProgressGoals("2 random steps", "4 random steps", "6 random steps", "4 random steps, no snares");
-	   updateProgress();
-	   checkForUpdatedDifficulty();
+document.getElementById('snare-row').hidden=false;
+    document.getElementById('level-progress').style.display = 'block';
+    setProgressGoals("2 random steps", "4 random steps", "6 random steps", "4 random steps, no snares");
+    updateProgress();
+    checkForUpdatedDifficulty();
 });
 $('#rhythm-level-four').click(function () {
-	scoreLevel=4;
-rhythmVolume = 50;
-simplifiedDenominator=2;
-clearRhythms();
-randomizeKicks=true;
-randomizeHats=true;
-backbeat=true;
-availableSteps="eighths";
-currentLevelScore=0;
-setupSteps();
+    scoreLevel = 4;
+    rhythmVolume = 50;
+    simplifiedDenominator = 2;
+    clearRhythms();
+    randomizeKicks = true;
+    randomizeHats = true;
+    backbeat = true;
+    availableSteps = "eighths";
+    currentLevelScore = 0;
+    setupSteps();
+    makeAClassVisible('questionbuttonrow');
 document.getElementById('kick-row').hidden=false;
-document.getElementById('snare-row').hidden=false;
 document.getElementById('hat-row').hidden=false;
-document.getElementById('level-progress').style.display = 'block';
-setProgressGoals("2 random steps", "4 random steps", "6 random steps", "4 random steps, no snares");
-	   updateProgress();
-	   checkForUpdatedDifficulty();
+document.getElementById('snare-row').hidden=false;
+    document.getElementById('level-progress').style.display = 'block';
+    setProgressGoals("2 random steps", "4 random steps", "6 random steps", "4 random steps, no snares");
+    updateProgress();
+    checkForUpdatedDifficulty();
 });
 $('#rhythm-level-five').click(function () {
-	scoreLevel=5;
-rhythmVolume = 50;
-clearRhythms();
-randomizeKicks=true;
-backbeat=true;
+    scoreLevel = 5;
+    rhythmVolume = 50;
+    clearRhythms();
+    randomizeKicks = true;
+    backbeat = true;
 
-availableSteps="sixteenths";
-simplifiedDenominator=1;
+    availableSteps = "sixteenths";
+    simplifiedDenominator = 1;
 
-currentLevelScore=0;
-setupSteps();
+    currentLevelScore = 0;
+    setupSteps();
+    makeAClassVisible('questionbuttonrow');
 document.getElementById('kick-row').hidden=false;
-document.getElementById('snare-row').hidden=false;
 document.getElementById('hat-row').hidden=false;
-document.getElementById('level-progress').style.display = 'block';
-setProgressGoals("3 random steps", "4 random steps", "6 random steps", "6 random steps, no snares");
-	   updateProgress();
-	   checkForUpdatedDifficulty();
+document.getElementById('snare-row').hidden=false;
+    document.getElementById('level-progress').style.display = 'block';
+    setProgressGoals("3 random steps", "4 random steps", "6 random steps", "6 random steps, no snares");
+    updateProgress();
+    checkForUpdatedDifficulty();
 });
 $('#rhythm-level-six').click(function () {
-	scoreLevel=6;
-rhythmVolume = 50;
-simplifiedDenominator=1;
-clearRhythms();
-randomizeKicks=true;
-randomizeHats=true;
-backbeat=true;
-availableSteps="sixteenths";
-currentLevelScore=0;
-setupSteps();
+    scoreLevel = 6;
+    rhythmVolume = 50;
+    simplifiedDenominator = 1;
+    clearRhythms();
+    randomizeKicks = true;
+    randomizeHats = true;
+    backbeat = true;
+    availableSteps = "sixteenths";
+    currentLevelScore = 0;
+    setupSteps();
+    makeAClassVisible('questionbuttonrow');
 document.getElementById('kick-row').hidden=false;
-document.getElementById('snare-row').hidden=false;
 document.getElementById('hat-row').hidden=false;
-document.getElementById('level-progress').style.display = 'block';
-setProgressGoals("3 random steps", "4 random steps", "6 random steps", "6 random steps, no snares");
-	   updateProgress();
-	   checkForUpdatedDifficulty();
+document.getElementById('snare-row').hidden=false;
+    document.getElementById('level-progress').style.display = 'block';
+    setProgressGoals("3 random steps", "4 random steps", "6 random steps", "6 random steps, no snares");
+    updateProgress();
+    checkForUpdatedDifficulty();
+});
+
+$('#rhythm-level-seven').click(function () {
+    scoreLevel = 6;
+    rhythmVolume = 50;
+    simplifiedDenominator = 1;
+    clearRhythms();
+    randomizeKicks = true;
+    randomizeHats = true;
+    randomizeClaps = true;
+    backbeat = true;
+    availableSteps = "sixteenths";
+    currentLevelScore = 0;
+    setupSteps();
+    makeAClassVisible('questionbuttonrow');
+document.getElementById('kick-row').hidden=false;
+document.getElementById('hat-row').hidden=false;
+document.getElementById('snare-row').hidden=false;
+document.getElementById('clap-row').hidden=false;
+    document.getElementById('level-progress').style.display = 'block';
+    setProgressGoals("3 random steps", "4 random steps", "6 random steps", "6 random steps, no snares");
+    updateProgress();
+    checkForUpdatedDifficulty();
+});
+
+$('#rhythm-level-eight').click(function () {
+    scoreLevel = 6;
+    rhythmVolume = 50;
+    simplifiedDenominator = 1;
+    clearRhythms();
+    randomizeKicks = true;
+    randomizeHats = true;
+    randomizeClaps = true;
+    randomizeInst5 = true;
+    backbeat = true;
+    availableSteps = "sixteenths";
+    currentLevelScore = 0;
+    setupSteps();
+
+document.getElementById('kick-row').hidden=false;
+document.getElementById('hat-row').hidden=false;
+document.getElementById('snare-row').hidden=false;
+document.getElementById('clap-row').hidden=false;
+document.getElementById('inst5-row').hidden=false;
+    makeAClassVisible('questionbuttonrow');
+    // document.getElementById('kick-row').hidden=false;
+    // document.getElementById('snare-row').hidden=false;
+    // document.getElementById('hat-row').hidden=false;
+    document.getElementById('level-progress').style.display = 'block';
+    setProgressGoals("3 random steps", "4 random steps", "6 random steps", "6 random steps, no snares");
+    updateProgress();
+    checkForUpdatedDifficulty();
+});
+
+$('#rhythm-level-nine').click(function () {
+    // scoreLevel=6;
+    // rhythmVolume = 50;
+    // simplifiedDenominator=1;
+    // clearRhythms();
+    // randomizeKicks=true;
+    // randomizeHats=true;
+    // backbeat=true;
+    // availableSteps="sixteenths";
+    // currentLevelScore=0;
+    // setupSteps();
+    // makeAClassVisible('questionbuttonrow');
+
+    // document.getElementById('kick-row').hidden=false;
+    // document.getElementById('snare-row').hidden=false;
+    // document.getElementById('hat-row').hidden=false;
+    // document.getElementById('level-progress').style.display = 'block';
+    // setProgressGoals("3 random steps", "4 random steps", "6 random steps", "6 random steps, no snares");
+    // updateProgress();
+    // checkForUpdatedDifficulty();
 });
 $('#rhythmFreestyleButton').click(function () {
-	scoreLevel="freestyle";
-rhythmVolume = 50;
+    scoreLevel = "freestyle";
+    rhythmVolume = 50;
     if (rhythmFreestyle) {
         rhythmFreestyle = false;
-        document.getElementById('rhythmFreestyleButton').innerHTML = "Turn Freestyle Mode On";
+        document.getElementById('rhythmFreestyleButton').innerHTML = "Play What I have Showing";
     } else {
         rhythmFreestyle = true;
-        document.getElementById('rhythmFreestyleButton').innerHTML = "Turn Freestyle Mode Off";
+        document.getElementById('rhythmFreestyleButton').innerHTML = "Don't Play What Is Showing (Ex: In levels, play the prompt)";
     }
     sequenceStarted = false;
     newQuestionTime = true;
@@ -12492,28 +12667,28 @@ $('#octave2').click(function () {
 });
 
 function addLevelCompleted(nameis, emailis, levelcomplete) {
-	alert (levelcomplete);
+    // alert (levelcomplete);
     // let levelcompletenumber = 0;
     // if (levelcomplete === "levelOne") {
-        // levelcompletenumber = 1;
+    // levelcompletenumber = 1;
     // } else if (levelcomplete === "levelTwo") {
-        // levelcompletenumber = 2;
+    // levelcompletenumber = 2;
     // } else if (levelcomplete === "levelThree") {
-        // levelcompletenumber = 3;
+    // levelcompletenumber = 3;
     // } else if (levelcomplete === "levelFour") {
-        // levelcompletenumber = 4;
+    // levelcompletenumber = 4;
     // } else if (levelcomplete === "levelFive") {
-        // levelcompletenumber = 5;
+    // levelcompletenumber = 5;
     // } else if (levelcomplete === "levelSix") {
-        // levelcompletenumber = 6;
+    // levelcompletenumber = 6;
     // } else if (levelcomplete === "levelSeven") {
-        // levelcompletenumber = 7;
+    // levelcompletenumber = 7;
     // } else if (levelcomplete === "levelEight") {
-        // levelcompletenumber = 8;
+    // levelcompletenumber = 8;
     // } else if (levelcomplete === "levelNine") {
-        // levelcompletenumber = 9;
+    // levelcompletenumber = 9;
     // } else if (levelcomplete === "levelTen") {
-        // levelcompletenumber = 10;
+    // levelcompletenumber = 10;
     // }
     var data = {
         email: emailis,
@@ -12583,15 +12758,15 @@ function addLevelCompleted(nameis, emailis, levelcomplete) {
 var updateUnlockedLevelsByUser = function (nameis, emailis) {
     whoItIsUsingThis = nameis + "";
     theirEmail = emailis + "";
-	document.getElementById('login-button').innerHTML=whoItIsUsingThis+ " (Logged in), (Click to login as someone else)"
-	// document.getElementById('welcomefam').hidden=false;
-	// document.getElementById('welcomefamprelogin').hidden=true;
-	
-    // var emailis= prompt ('what you sent fool?');
-    // var nameis= prompt ('what you called fool?');
-    document.getElementById('welcomefam').innerHTML = 'Welcome to Harmony Sense, ' + nameis + '!<br><br>Select your level from above, or select freestyle to open up all of the options and settings (how it used to look before).';
+    document.getElementById('login-button').innerHTML = whoItIsUsingThis + " (Logged in), (Click to login as someone else)"
+        // document.getElementById('welcomefam').hidden=false;
+        // document.getElementById('welcomefamprelogin').hidden=true;
+
+        // var emailis= prompt ('what you sent fool?');
+        // var nameis= prompt ('what you called fool?');
+        document.getElementById('welcomefam').innerHTML = 'Welcome to Harmony Sense, ' + nameis + '!<br><br>Select your level from above, or select freestyle to open up all of the options and settings (how it used to look before).';
     let levelNumber = 0;
-	// alert (loadDatabase.length);
+    // alert (loadDatabase.length);
     for (var loadlistplace = 0; loadlistplace < loadDatabase.length; loadlistplace++) {
         db.collection("rhythmsenselogins").doc(loadDatabase[loadlistplace]).get().then(function (doc) {
             if (doc.exists) {
@@ -12600,30 +12775,28 @@ var updateUnlockedLevelsByUser = function (nameis, emailis) {
                 console.warn(data.email);
                 console.warn(data.name);
                 if ((JSON.stringify(emailis) === JSON.stringify(data.email)) && (JSON.stringify(whoItIsUsingThis) === JSON.stringify(data.name))) {
-                    let blob=Number(data.levelcomplete)+0;
-					console.log("you have the score " + blob+ " "+levelNumber);
-					try{
-						if (blob > levelNumber) {
+                    let blob = Number(data.levelcomplete) + 0;
+                    console.log("you have the score " + blob + " " + levelNumber);
+                    try {
+                        if (blob > levelNumber) {
 
-							levelNumber = blob + 0;
-							// alert (levelNumber);
-					 
+                            levelNumber = blob + 0;
+                            // alert (levelNumber);
 
-						}
 
-					}
-					catch (e)
-					{}
-					
+                        }
+
+                    } catch (e) {}
+
                 }
-				
-				ourLevelNumber = levelNumber + 0;
-				updateTheLevel(levelNumber);
+
+                ourLevelNumber = levelNumber + 0;
+                updateTheLevel(levelNumber);
             } else {
-				  console.error("No such record");
+                console.error("No such record");
             }
         }).catch(function (error) {
-			console.error(error);
+            console.error(error);
             console.error("failed to read contact");
         });
 
@@ -12695,8 +12868,8 @@ $('#octave5').click(function () {
 
 $('#playAgainButton').click(playItAgain);
 
-
 $('#login-button').click(logintothisapp);
+
 function playItAgain() {
     r = randomNoteNum;
 
@@ -12897,5 +13070,8 @@ document.getElementById('card-section').style.display = 'none';
 
 setupRhythmSense();
 hideAllLevels();
+// makeARowPulldownVisible("clave-choice"); // for testing purposes
+// makeARowPulldownVisible("kick-choice"); // for testing purposes
+makeARowPulldownInvisible("steprowpulldown"); // for testing purposes
 initTuner();
 window.tuner_rand = 1111111;
