@@ -907,7 +907,7 @@ function updateTheLevel(levelNumber) {
         if (!loginMessageShown) {
             loginMessageShown = true;
 
-            alertify("We see you haven't completed a level here before, " + whoItIsUsingThis + ". We've set up a new account for you. If you have logged in before and completed a level, chances are you typed something wrong. If that is the case, click login and try again. (Note: logins are case-sensitive)")
+            alertify("We see you haven't completed a level here before, " + whoItIsUsingThis + ". <br><br>We've set up a new account for you. <br>If you have logged in before and completed a level, chances are you typed something wrong. <br>If that is the case, click login and try again. <br>(Note: logins are case-sensitive)<br><br>To get started, select the first level from the dropdown menu at the top of the screen.")
         }
     } else {
         if (!loginMessageShown) {
