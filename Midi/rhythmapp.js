@@ -973,7 +973,7 @@ function updateTheLevel(levelNumber) {
         makeAClassVisible('steprowpulldown');
         makeAClassVisible('tom-choice');
         makeAClassVisible('inst7-row');
-        setRhythmInstrument("inst7", "tom", "kick"); //replace kick with tom
+        setRhythmInstrument("inst7", "tom", "tom"); //replace kick with tom
         if (!levelSixMessageShown) {
             levelSixMessageShown = true;
             alertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 6<br>-An additional instrument row, Toms!!!!<br>And...<br>-pull-down options to alter your step-sequencer/channel-rack layout!!!! <br>(Note: as you unlock more instruments, they will appear in these menus. All of the currently unlocked instruments are now available to you.)")
@@ -1302,7 +1302,7 @@ function setupMakeYourOwnMode() {
     // document.getElementById('inst7-row').hidden=false;
     setRhythmInstrument("inst5", "rim", "rim");
     setRhythmInstrument("inst6", "clave", "clave");
-    setRhythmInstrument("inst7", "tom", "kick");
+    setRhythmInstrument("inst7", "tom", "tom");
 
     setRhythmInstrument("hat", "closed hat", "hat");
     setupStepSequencerArray();
