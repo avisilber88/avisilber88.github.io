@@ -273,12 +273,17 @@ ul.languages li { margin: 7px 0px 12px 0px; display: list-item; margin-right: 0p
 div.undermenu {display:none}
 }
 
-
+.lesson-name{
+min-width: 60%;
+}
 .steprowtitle {
 min-width: 70px;
 min-height: 50px;
 margin-top: 5px;
 margin-bottom: 5px;
+margin-left: 0px;
+margin-right: 0px;
+padding: 0px;
 }
 .unselectable.selectedstep.beatonethree {
 	
@@ -319,7 +324,7 @@ border-color: #594747;
 border-width: 3px;
 border-style: solid;
 margin: 3px;
-/* padding: 3px; */
+padding: 0px;
 border-radius: 0px;
 }
 .selectedstep.beatonethree.lititup{
@@ -327,7 +332,7 @@ border-color: #a6b3bb;
 border-width: 3px;
 border-style: solid;
 margin: 3px;
-/* padding: 3px; */
+padding: 0px;
 border-radius: 0px;
 }
 
@@ -336,14 +341,34 @@ border-color: #a6b3bb;
 border-width: 3px;
 border-style: solid;
 margin: 3px;
-/* padding: 3px; */
+padding: 0px;
+border-radius: 0px;
+}
+
+
+.selectedstep.beattwofour.lititup{
+border-color: #a6b3bb;
+border-width: 3px;
+border-style: solid;
+margin: 3px;
+padding: 0px;
+border-radius: 0px;
+}
+
+.unselectedstep.beattwofour.lititup{
+border-color: #a6b3bb;
+border-width: 3px;
+border-style: solid;
+margin: 3px;
+padding: 0px;
 border-radius: 0px;
 }
 
 .selectedstep.beatonethree{
-	background: #a6b3bb;
+background: #a6b3bb;
 border-color: #5F5F5F;
 border-width: 1px;
+padding: 0px;
 border-style: solid;
 }
 
@@ -351,12 +376,14 @@ border-style: solid;
 background: #515559;
 border-color: #5F5F5F;
 border-width: 1px;
+padding: 0px;
 border-style: solid;
 }
 .selectedstep.beattwofour{
 	background: #d0a0a0;
 border-color: #5F5F5F;
 border-width: 1px;
+padding: 0px;
 border-style: solid;
 }
 
@@ -364,12 +391,19 @@ border-style: solid;
 background: #594747;
 border-color: #5F5F5F;
 border-width: 1px;
+padding: 0px;
 border-style: solid;
 }
 
 .rhythmstep  {
+justify-content: center;
+text-align: center; 
+vertical-align: sub;
+font-size: 20px; 
+color: white;
 min-height:50px;
 padding: 0px;
+padding-top: 20px;
 min-width: .1%;
 /* width: 15px; */
 margin: 5px;
@@ -377,11 +411,108 @@ margin-top: 5px;
 margin-bottom: 5px;
 border-radius: 7px;
 }
+
+.examplestep  {
+justify-content: center;
+text-align: center; 
+vertical-align: sub;
+font-size: 20px; 
+color: white;
+min-height:50px;
+padding: 0px;
+padding-top: 20px;
+min-width: .1%;
+/* width: 15px; */
+margin: 5px;
+margin-top: 5px;
+margin-bottom: 5px;
+border-radius: 7px;
+}
+
 .downbeat {
 min-height:50px;
+font-size: 20px; 
+vertical-align: baseline;
 padding: 0px;
 min-width: .1%;
 /* width: 15px; */
 margin-left: 5px;
 }
+
+.guidestep {
+min-height:10px;
+font-size: 10px; 
+vertical-align: baseline;
+padding: 0px;
+min-width: .1%;
+border-width: 1px;
+margin: 5px;
+/* width: 15px; */
+margin-left: 5px;
+}
+
+.guidestep.steprowtitle{
+
+min-width: 70px;
+margin-top: 5px;
+font-size: 14px; 
+margin-bottom: 5px;
+margin-left: 0px;
+margin-right: 5px;
+}
+.guidestep.selectedstep {
+min-height:10px;
+font-size: 10px; 
+background: white;
+vertical-align: baseline;
+padding: 0px;
+min-width: .1%;
+/* width: 15px; */
+margin-left: 5px;
+}
+
+.guidestep.selectedstep.beatonethree{
+	background: #a6b3bb;
+border-color: #5F5F5F;
+
+border-style: solid;
+}
+
+/* .unselectedstep.beatonethree{ */
+/* background: #515559; */
+/* border-color: #5F5F5F; */
+/* border-width: 1px; */
+/* border-style: solid; */
+/* } */
+.guidestep.selectedstep.beattwofour{
+	background: #d0a0a0;
+border-color: #5F5F5F;
+
+border-style: solid;
+}
+
+.guidestep.lititup{
+border-width: 3px;
+}
+
+.steprowlight{
+max-width:5px;
+padding:0px;
+margin:0px;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+
+.steprowlight.litup{
+background: green
+}
+
+.circleattribute{
+border-style:dashed !important;
+border-color:orange !important;
+border-width:5px !important;
+margin-left:1px !important;
+margin-right:1px !important;
+}
+
 @media all and (min-width:1100px) { div.content{padding-left:15px;} }

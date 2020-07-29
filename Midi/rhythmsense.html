@@ -96,7 +96,7 @@ border-radius: 6px
 <ul class="nav nav-tabs" style = "border-bottom-width: 0px; height:40px">
 <li class="nav-item">
 <!-- <span style = "font-size: 13px"> -->
-<span class = "nav-link">
+<span class = "nav-link" id = "welcome-title-thing">
 Welcome to Rhythm Sense
 </span><!-- </span> -->
 </li>
@@ -123,6 +123,8 @@ Welcome to Rhythm Sense
       <!-- <a class="dropdown-item" href="#">Another action</a> -->
       <!-- <a class="dropdown-item" href="#">Something else here</a> -->
 	  
+   <button class="dropdown-item" type ='button' id ="rhythm-tutorial">Tutorial</button>
+	<div class="dropdown-divider" style = "background-color: #E9EBEE"></div>
    <button class="dropdown-item" type ='button' id ="rhythm-level-one">1: Down Beats: Just for kicks</button>
    <button class="dropdown-item" type ='button' id ="rhythm-level-two">2: Down Beats: Kick & Hat Tricks</button>
    <button class="dropdown-item" type ='button' id ="rhythm-level-three">3: Down & Up Beats, Just for Kicks</button>
@@ -175,13 +177,58 @@ Welcome to Rhythm Sense
 <!-- </script> -->
 
 <div id = "opening-card" class = "card-body">
-<h3 id="welcomefam"> Welcome to Rhythm Sense!<br><br>Select your level from above, or select freestyle to open up all of the options and settings (how it used to look before). </h3>
+<h3 id="welcomefam" hidden> Welcome to Rhythm Sense!<br><br>Select your level from above, or select "Make Your Own" to open up all of the options and settings (how it used to look before). </h3>
+<h3 id="welcomefamprelogin"> Welcome to Rhythm Sense!<br><br>Please login with your name and e-mail address using the login button at the top right.</h3>
 </div>
 
 <div id = "card-section" class = "card-body">
 <h3 id = "opening-info"> Press "Turn on the Tuner" to Begin, there are adjustable settings both above and below the tuner on the page</h3>
-<h3 id = "lesson-name">sss</h3>
-<h2 id = "lesson-directions"></h2><br>
+<div class = "container">
+	<div class = "row">
+		<div class = "col lesson-name">
+		<div class = "row">
+		<h3 id = "lesson-name">sss</h3>
+		</div>
+		<div class = "row>
+		<h2 id = "lesson-directions"><strong>Directions: </strong>Click on the square boxes in the correct instrument row, and at the correct time spot (x-axis) to match what you are hearing.</h2>
+		</div>
+		
+		</div>
+		<div class = "col untargetablecolumn" id = "untargetablecolumn" >
+			<div class = "container blocklegend" id = "blocklegend1">
+				<div class = "row" style="justify-content: center">
+				<div class = "col examplestep beatonethree unselectable offbeat unselectedstep" style = "max-width: 50%; padding: 0px" id = "grayunselectableexample"></div>
+				</div>
+				<div class = "row" style="justify-content: center; text-align: center">
+				Untargetable (not in play)
+				</div>
+			</div>
+		</div>
+		<div class = "col"  style = "max-width: 20%; padding: 0px">
+			<div class = "container blocklegend" id = "blocklegend2">
+				<div class = "row" style="justify-content: center">
+				<div class = "col examplestep beatonethree offbeat unselectedstep" id = "grayunselectexample"></div>
+				<div class = "col examplestep beattwofour offbeat unselectedstep" id = "redunselectexample" style="justify: center;text-align: center; font-size: 30px; color: white"></div>
+				</div>
+				<div class = "row" style="justify-content: center; text-align: center">
+				Unselected
+				</div>
+			</div>
+		</div>
+		<div class = "col" style = ",ax-width: 20%; padding: 0px">
+			<div class = "container blocklegend" id = "blocklegend3">
+				<div class = "row" style="justify-content: center">
+				<div class = "col examplestep beatonethree selectedstep" id = "grayselectexample"></div>
+				<div class = "col examplestep beattwofour downbeat selectedstep" id = "redselectexample" style="justify: center;text-align: center; font-size: 30px; color: white"></div>
+
+				</div>
+				<div class = "row" style="justify-content: center; text-align: center">
+				Selected
+				</div>
+			</div>
+		</div>
+	</div>
+</div><br>
 <div id = "level-progress">
 <div class="progress">
 <!-- level 1 progress -->
@@ -288,6 +335,32 @@ Time = </span><span class = "questionbuttonrow" id="countdown">01:00</span><span
 
 <div class = "card" id = "rhythmBox" hidden style = "margin-top: 5px; border-width:0px; background-color: "white">
 <div class = "container">
+<div class = "row guide-row" id = "guide-row">
+<div class = "col steprowpulldown" id = "guide-row-pulldown">
+	<button class="btn btn-secondary dropdown-toggle" hidden type="button" id="guidedropdownMenuButton" style="margin-top: 5px; margin-bottom: 5px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+		<div class="dropdown-menu" aria-labelledby="dropdownMenu2" style = "background-color: white">
+		</div>
+
+</div>
+<div class = "col guidestep steprowtitle" id = "guide-row-title">Time</div>
+<div class = "col guidestep rhythmstep beatonethree downbeat unselectedstep" id = "guidestepone" style="justify: center;text-align: center;  color: white">1</div>
+<div class = "col guidestep rhythmstep beatonethree offbeat unselectedstep" id = "guidesteptwo">e</div>
+<div class = "col guidestep rhythmstep beatonethree upbeat unselectedstep" id = "guidestepthree">and</div>
+<div class = "col guidestep rhythmstep beatonethree offbeat unselectedstep" id = "guidestepfour">a</div>
+<div class = "col guidestep rhythmstep beattwofour downbeat unselectedstep" id = "guidestepfive" style="justify: center;text-align: center; color: white">2</div>
+<div class = "col guidestep rhythmstep beattwofour offbeat unselectedstep" id = "guidestepsix">e</div>
+<div class = "col guidestep rhythmstep beattwofour upbeat unselectedstep" id = "guidestepseven">and</div>
+<div class = "col guidestep rhythmstep beattwofour offbeat unselectedstep" id = "guidestepeight">a</div>
+<div class = "col guidestep rhythmstep beatonethree downbeat unselectedstep" id = "guidestepnine" style="justify: center;text-align: center; color: white">3</div>
+<div class = "col guidestep rhythmstep beatonethree offbeat unselectedstep" id = "guidestepten">e</div>
+<div class = "col guidestep rhythmstep beatonethree upbeat unselectedstep" id = "guidestepeleven">and</div>
+<div class = "col guidestep rhythmstep beatonethree offbeat unselectedstep" id = "guidesteptwelve">a</div>
+<div class = "col guidestep rhythmstep beattwofour downbeat unselectedstep" id = "guidestepthirteen" style="justify: center;text-align: center; color: white">4</div>
+<div class = "col guidestep rhythmstep beattwofour offbeat unselectedstep" id = "guidestepfourteen">e</div>
+<div class = "col guidestep rhythmstep beattwofour upbeat unselectedstep" id = "guidestepfifteen">and</div>
+<div class = "col guidestep rhythmstep beattwofour offbeat unselectedstep" id = "guidestepsixteen">a</div>
+</div>
+
 <div class = "row kick-row" id = "kick-row">
 <div class = "col steprowpulldown" id = "kick-row-pulldown">
 	<button class="btn btn-secondary dropdown-toggle" type="button" id="kickdropdownMenuButton" style="margin-top: 5px; margin-bottom: 5px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
@@ -302,24 +375,26 @@ Time = </span><span class = "questionbuttonrow" id="countdown">01:00</span><span
 			<button class="dropdown-item kick-row-choices perc-choice" hidden type ='button' onclick="setupThisRow('kick','Perc', 'perc')">Perc</button>
 			<button class="dropdown-item kick-row-choices snare-choice" hidden type ='button' onclick="setupThisRow('kick','Snare', 'snare')">Snare</button>
 		</div>
+
 </div>
-<div class = "col steprowtitle" id = "kick-row-title"> kick </div>
-<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "kickstepone"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "kicksteptwo"></div>
-<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "kickstepthree"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "kickstepfour"></div>
-<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "kickstepfive"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "kickstepsix"></div>
-<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "kickstepseven"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "kickstepeight"></div>
-<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "kickstepnine"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "kickstepten"></div>
-<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "kickstepeleven"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "kicksteptwelve"></div>
-<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "kickstepthirteen"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "kickstepfourteen"></div>
-<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "kickstepfifteen"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "kickstepsixteen"></div>
+<div class = "col steprowtitle" id = "kick-row-title" onclick = "makeA; playANote('kick0')"> Kick </div>
+<div class = "col steprowlight" id = "kick-steprowlight"></div>
+<div class = "col kickstep rhythmstep beatonethree downbeat unselectedstep" id = "kickstepone" style="justify: center;text-align: center; font-size: 30px; color: white">1</div>
+<div class = "col kickstep rhythmstep beatonethree offbeat unselectedstep" id = "kicksteptwo" >e</div>
+<div class = "col kickstep rhythmstep beatonethree upbeat unselectedstep" id = "kickstepthree">and</div>
+<div class = "col kickstep rhythmstep beatonethree offbeat unselectedstep" id = "kickstepfour">a</div>
+<div class = "col kickstep rhythmstep beattwofour downbeat unselectedstep" id = "kickstepfive" style="justify: center;text-align: center; font-size: 30px; color: white">2</div>
+<div class = "col kickstep rhythmstep beattwofour offbeat unselectedstep" id = "kickstepsix">e</div>
+<div class = "col kickstep rhythmstep beattwofour upbeat unselectedstep" id = "kickstepseven">and</div>
+<div class = "col kickstep rhythmstep beattwofour offbeat unselectedstep" id = "kickstepeight">a</div>
+<div class = "col kickstep rhythmstep beatonethree downbeat unselectedstep" id = "kickstepnine" style="justify: center;text-align: center; font-size: 30px; color: white">3</div>
+<div class = "col kickstep rhythmstep beatonethree offbeat unselectedstep" id = "kickstepten">e</div>
+<div class = "col kickstep rhythmstep beatonethree upbeat unselectedstep" id = "kickstepeleven">and</div>
+<div class = "col kickstep rhythmstep beatonethree offbeat unselectedstep" id = "kicksteptwelve">a</div>
+<div class = "col kickstep rhythmstep beattwofour downbeat unselectedstep" id = "kickstepthirteen" style="justify: center;text-align: center; font-size: 30px; color: white">4</div>
+<div class = "col kickstep rhythmstep beattwofour offbeat unselectedstep" id = "kickstepfourteen">e</div>
+<div class = "col kickstep rhythmstep beattwofour upbeat unselectedstep" id = "kickstepfifteen">and</div>
+<div class = "col kickstep rhythmstep beattwofour offbeat unselectedstep" id = "kickstepsixteen">a</div>
 </div>
 
 
@@ -338,23 +413,24 @@ Time = </span><span class = "questionbuttonrow" id="countdown">01:00</span><span
 			<button class="dropdown-item clap-row-choices snare-choice" hidden type ='button' onclick="setupThisRow('clap','Snare', 'snare')">Snare</button>
 		</div>
 </div>
-<div class = "col steprowtitle" id = "clap-row-title"> open-hat </div>
-<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "clapstepone"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "clapsteptwo"></div>
-<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "clapstepthree"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "clapstepfour"></div>
-<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "clapstepfive"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "clapstepsix"></div>
-<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "clapstepseven"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "clapstepeight"></div>
-<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "clapstepnine"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "clapstepten"></div>
-<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "clapstepeleven"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "clapsteptwelve"></div>
-<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "clapstepthirteen"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "clapstepfourteen"></div>
-<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "clapstepfifteen"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "clapstepsixteen"></div>
+<div class = "col steprowtitle" id = "clap-row-title"> Open-hat </div>
+<div class = "col steprowlight" id = "clap-steprowlight"></div>
+<div class = "col clapstep rhythmstep beatonethree downbeat unselectedstep" id = "clapstepone"></div>
+<div class = "col clapstep rhythmstep beatonethree offbeat unselectedstep" id = "clapsteptwo"></div>
+<div class = "col clapstep rhythmstep beatonethree upbeat unselectedstep" id = "clapstepthree"></div>
+<div class = "col clapstep rhythmstep beatonethree offbeat unselectedstep" id = "clapstepfour"></div>
+<div class = "col clapstep rhythmstep beattwofour downbeat unselectedstep" id = "clapstepfive"></div>
+<div class = "col clapstep rhythmstep beattwofour offbeat unselectedstep" id = "clapstepsix"></div>
+<div class = "col clapstep rhythmstep beattwofour upbeat unselectedstep" id = "clapstepseven"></div>
+<div class = "col clapstep rhythmstep beattwofour offbeat unselectedstep" id = "clapstepeight"></div>
+<div class = "col clapstep rhythmstep beatonethree downbeat unselectedstep" id = "clapstepnine"></div>
+<div class = "col clapstep rhythmstep beatonethree offbeat unselectedstep" id = "clapstepten"></div>
+<div class = "col clapstep rhythmstep beatonethree upbeat unselectedstep" id = "clapstepeleven"></div>
+<div class = "col clapstep rhythmstep beatonethree offbeat unselectedstep" id = "clapsteptwelve"></div>
+<div class = "col clapstep rhythmstep beattwofour downbeat unselectedstep" id = "clapstepthirteen"></div>
+<div class = "col clapstep rhythmstep beattwofour offbeat unselectedstep" id = "clapstepfourteen"></div>
+<div class = "col clapstep rhythmstep beattwofour upbeat unselectedstep" id = "clapstepfifteen"></div>
+<div class = "col clapstep rhythmstep beattwofour offbeat unselectedstep" id = "clapstepsixteen"></div>
 </div>
 
 
@@ -374,22 +450,23 @@ Time = </span><span class = "questionbuttonrow" id="countdown">01:00</span><span
 		</div>
 </div>
 <div class = "col steprowtitle" id = "inst5-row-title"> inst 5 </div>
-<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "inst5stepone"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "inst5steptwo"></div>
-<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "inst5stepthree"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "inst5stepfour"></div>
-<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "inst5stepfive"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "inst5stepsix"></div>
-<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "inst5stepseven"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "inst5stepeight"></div>
-<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "inst5stepnine"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "inst5stepten"></div>
-<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "inst5stepeleven"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "inst5steptwelve"></div>
-<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "inst5stepthirteen"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "inst5stepfourteen"></div>
-<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "inst5stepfifteen"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "inst5stepsixteen"></div>
+<div class = "col steprowlight" id = "inst5-steprowlight"></div>
+<div class = "col inst5step rhythmstep beatonethree downbeat unselectedstep" id = "inst5stepone"></div>
+<div class = "col inst5step rhythmstep beatonethree offbeat unselectedstep" id = "inst5steptwo"></div>
+<div class = "col inst5step rhythmstep beatonethree upbeat unselectedstep" id = "inst5stepthree"></div>
+<div class = "col inst5step rhythmstep beatonethree offbeat unselectedstep" id = "inst5stepfour"></div>
+<div class = "col inst5step rhythmstep beattwofour downbeat unselectedstep" id = "inst5stepfive"></div>
+<div class = "col inst5step rhythmstep beattwofour offbeat unselectedstep" id = "inst5stepsix"></div>
+<div class = "col inst5step rhythmstep beattwofour upbeat unselectedstep" id = "inst5stepseven"></div>
+<div class = "col inst5step rhythmstep beattwofour offbeat unselectedstep" id = "inst5stepeight"></div>
+<div class = "col inst5step rhythmstep beatonethree downbeat unselectedstep" id = "inst5stepnine"></div>
+<div class = "col inst5step rhythmstep beatonethree offbeat unselectedstep" id = "inst5stepten"></div>
+<div class = "col inst5step rhythmstep beatonethree upbeat unselectedstep" id = "inst5stepeleven"></div>
+<div class = "col inst5step rhythmstep beatonethree offbeat unselectedstep" id = "inst5steptwelve"></div>
+<div class = "col inst5step rhythmstep beattwofour downbeat unselectedstep" id = "inst5stepthirteen"></div>
+<div class = "col inst5step rhythmstep beattwofour offbeat unselectedstep" id = "inst5stepfourteen"></div>
+<div class = "col inst5step rhythmstep beattwofour upbeat unselectedstep" id = "inst5stepfifteen"></div>
+<div class = "col inst5step rhythmstep beattwofour offbeat unselectedstep" id = "inst5stepsixteen"></div>
 </div>
 
 
@@ -409,22 +486,23 @@ Time = </span><span class = "questionbuttonrow" id="countdown">01:00</span><span
 		</div>
 </div>
 <div class = "col steprowtitle" id = "inst6-row-title"> inst 6 </div>
-<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "inst6stepone"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "inst6steptwo"></div>
-<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "inst6stepthree"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "inst6stepfour"></div>
-<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "inst6stepfive"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "inst6stepsix"></div>
-<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "inst6stepseven"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "inst6stepeight"></div>
-<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "inst6stepnine"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "inst6stepten"></div>
-<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "inst6stepeleven"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "inst6steptwelve"></div>
-<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "inst6stepthirteen"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "inst6stepfourteen"></div>
-<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "inst6stepfifteen"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "inst6stepsixteen"></div>
+<div class = "col steprowlight" id = "inst6-steprowlight"></div>
+<div class = "col inst6step rhythmstep beatonethree downbeat unselectedstep" id = "inst6stepone"></div>
+<div class = "col inst6step rhythmstep beatonethree offbeat unselectedstep" id = "inst6steptwo"></div>
+<div class = "col inst6step rhythmstep beatonethree upbeat unselectedstep" id = "inst6stepthree"></div>
+<div class = "col inst6step rhythmstep beatonethree offbeat unselectedstep" id = "inst6stepfour"></div>
+<div class = "col inst6step rhythmstep beattwofour downbeat unselectedstep" id = "inst6stepfive"></div>
+<div class = "col inst6step rhythmstep beattwofour offbeat unselectedstep" id = "inst6stepsix"></div>
+<div class = "col inst6step rhythmstep beattwofour upbeat unselectedstep" id = "inst6stepseven"></div>
+<div class = "col inst6step rhythmstep beattwofour offbeat unselectedstep" id = "inst6stepeight"></div>
+<div class = "col inst6step rhythmstep beatonethree downbeat unselectedstep" id = "inst6stepnine"></div>
+<div class = "col inst6step rhythmstep beatonethree offbeat unselectedstep" id = "inst6stepten"></div>
+<div class = "col inst6step rhythmstep beatonethree upbeat unselectedstep" id = "inst6stepeleven"></div>
+<div class = "col inst6step rhythmstep beatonethree offbeat unselectedstep" id = "inst6steptwelve"></div>
+<div class = "col inst6step rhythmstep beattwofour downbeat unselectedstep" id = "inst6stepthirteen"></div>
+<div class = "col inst6step rhythmstep beattwofour offbeat unselectedstep" id = "inst6stepfourteen"></div>
+<div class = "col inst6step rhythmstep beattwofour upbeat unselectedstep" id = "inst6stepfifteen"></div>
+<div class = "col inst6step rhythmstep beattwofour offbeat unselectedstep" id = "inst6stepsixteen"></div>
 </div>
 
 
@@ -444,22 +522,23 @@ Time = </span><span class = "questionbuttonrow" id="countdown">01:00</span><span
 		</div>
 </div>
 <div class = "col steprowtitle" id = "inst7-row-title"> inst 7 </div>
-<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "inst7stepone"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "inst7steptwo"></div>
-<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "inst7stepthree"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "inst7stepfour"></div>
-<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "inst7stepfive"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "inst7stepsix"></div>
-<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "inst7stepseven"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "inst7stepeight"></div>
-<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "inst7stepnine"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "inst7stepten"></div>
-<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "inst7stepeleven"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "inst7steptwelve"></div>
-<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "inst7stepthirteen"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "inst7stepfourteen"></div>
-<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "inst7stepfifteen"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "inst7stepsixteen"></div>
+<div class = "col steprowlight" id = "inst7-steprowlight"></div>
+<div class = "col inst7step rhythmstep beatonethree downbeat unselectedstep" id = "inst7stepone"></div>
+<div class = "col inst7step rhythmstep beatonethree offbeat unselectedstep" id = "inst7steptwo"></div>
+<div class = "col inst7step rhythmstep beatonethree upbeat unselectedstep" id = "inst7stepthree"></div>
+<div class = "col inst7step rhythmstep beatonethree offbeat unselectedstep" id = "inst7stepfour"></div>
+<div class = "col inst7step rhythmstep beattwofour downbeat unselectedstep" id = "inst7stepfive"></div>
+<div class = "col inst7step rhythmstep beattwofour offbeat unselectedstep" id = "inst7stepsix"></div>
+<div class = "col inst7step rhythmstep beattwofour upbeat unselectedstep" id = "inst7stepseven"></div>
+<div class = "col inst7step rhythmstep beattwofour offbeat unselectedstep" id = "inst7stepeight"></div>
+<div class = "col inst7step rhythmstep beatonethree downbeat unselectedstep" id = "inst7stepnine"></div>
+<div class = "col inst7step rhythmstep beatonethree offbeat unselectedstep" id = "inst7stepten"></div>
+<div class = "col inst7step rhythmstep beatonethree upbeat unselectedstep" id = "inst7stepeleven"></div>
+<div class = "col inst7step rhythmstep beatonethree offbeat unselectedstep" id = "inst7steptwelve"></div>
+<div class = "col inst7step rhythmstep beattwofour downbeat unselectedstep" id = "inst7stepthirteen"></div>
+<div class = "col inst7step rhythmstep beattwofour offbeat unselectedstep" id = "inst7stepfourteen"></div>
+<div class = "col inst7step rhythmstep beattwofour upbeat unselectedstep" id = "inst7stepfifteen"></div>
+<div class = "col inst7step rhythmstep beattwofour offbeat unselectedstep" id = "inst7stepsixteen"></div>
 </div>
 
 <div class = "row hat-row" id = "hat-row">
@@ -478,22 +557,23 @@ Time = </span><span class = "questionbuttonrow" id="countdown">01:00</span><span
 		</div>
 </div>
 <div class = "col steprowtitle" id = "hat-row-title"> hat </div>
-<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "hatstepone"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "hatsteptwo"></div>
-<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "hatstepthree"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "hatstepfour"></div>
-<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "hatstepfive"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "hatstepsix"></div>
-<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "hatstepseven"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "hatstepeight"></div>
-<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "hatstepnine"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "hatstepten"></div>
-<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "hatstepeleven"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "hatsteptwelve"></div>
-<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "hatstepthirteen"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "hatstepfourteen"></div>
-<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "hatstepfifteen"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "hatstepsixteen"></div>
+<div class = "col steprowlight" id = "hat-steprowlight"></div>
+<div class = "col hatstep rhythmstep beatonethree downbeat unselectedstep" id = "hatstepone"></div>
+<div class = "col hatstep rhythmstep beatonethree offbeat unselectedstep" id = "hatsteptwo"></div>
+<div class = "col hatstep rhythmstep beatonethree upbeat unselectedstep" id = "hatstepthree"></div>
+<div class = "col hatstep rhythmstep beatonethree offbeat unselectedstep" id = "hatstepfour"></div>
+<div class = "col hatstep rhythmstep beattwofour downbeat unselectedstep" id = "hatstepfive"></div>
+<div class = "col hatstep rhythmstep beattwofour offbeat unselectedstep" id = "hatstepsix"></div>
+<div class = "col hatstep rhythmstep beattwofour upbeat unselectedstep" id = "hatstepseven"></div>
+<div class = "col hatstep rhythmstep beattwofour offbeat unselectedstep" id = "hatstepeight"></div>
+<div class = "col hatstep rhythmstep beatonethree downbeat unselectedstep" id = "hatstepnine"></div>
+<div class = "col hatstep rhythmstep beatonethree offbeat unselectedstep" id = "hatstepten"></div>
+<div class = "col hatstep rhythmstep beatonethree upbeat unselectedstep" id = "hatstepeleven"></div>
+<div class = "col hatstep rhythmstep beatonethree offbeat unselectedstep" id = "hatsteptwelve"></div>
+<div class = "col hatstep rhythmstep beattwofour downbeat unselectedstep" id = "hatstepthirteen"></div>
+<div class = "col hatstep rhythmstep beattwofour offbeat unselectedstep" id = "hatstepfourteen"></div>
+<div class = "col hatstep rhythmstep beattwofour upbeat unselectedstep" id = "hatstepfifteen"></div>
+<div class = "col hatstep rhythmstep beattwofour offbeat unselectedstep" id = "hatstepsixteen"></div>
 </div>
 
 
@@ -513,22 +593,23 @@ Time = </span><span class = "questionbuttonrow" id="countdown">01:00</span><span
 		</div>
 </div>
 <div class = "col steprowtitle" id = "snare-row-title"> snare </div>
-<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "snarestepone"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "snaresteptwo"></div>
-<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "snarestepthree"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "snarestepfour"></div>
-<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "snarestepfive"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "snarestepsix"></div>
-<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "snarestepseven"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "snarestepeight"></div>
-<div class = "col rhythmstep beatonethree downbeat unselectedstep" id = "snarestepnine"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "snarestepten"></div>
-<div class = "col rhythmstep beatonethree upbeat unselectedstep" id = "snarestepeleven"></div>
-<div class = "col rhythmstep beatonethree unselectedstep" id = "snaresteptwelve"></div>
-<div class = "col rhythmstep beattwofour downbeat unselectedstep" id = "snarestepthirteen"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "snarestepfourteen"></div>
-<div class = "col rhythmstep beattwofour upbeat unselectedstep" id = "snarestepfifteen"></div>
-<div class = "col rhythmstep beattwofour unselectedstep" id = "snarestepsixteen"></div>
+<div class = "col steprowlight" id = "snare-steprowlight"></div>
+<div class = "col snarestep rhythmstep beatonethree downbeat unselectedstep" id = "snarestepone"></div>
+<div class = "col snarestep rhythmstep beatonethree offbeat unselectedstep" id = "snaresteptwo"></div>
+<div class = "col snarestep rhythmstep beatonethree upbeat unselectedstep" id = "snarestepthree"></div>
+<div class = "col snarestep rhythmstep beatonethree offbeat unselectedstep" id = "snarestepfour"></div>
+<div class = "col snarestep rhythmstep beattwofour downbeat unselectedstep" id = "snarestepfive"></div>
+<div class = "col snarestep rhythmstep beattwofour offbeat unselectedstep" id = "snarestepsix"></div>
+<div class = "col snarestep rhythmstep beattwofour upbeat unselectedstep" id = "snarestepseven"></div>
+<div class = "col snarestep rhythmstep beattwofour offbeat unselectedstep" id = "snarestepeight"></div>
+<div class = "col snarestep rhythmstep beatonethree downbeat unselectedstep" id = "snarestepnine"></div>
+<div class = "col snarestep rhythmstep beatonethree offbeat unselectedstep" id = "snarestepten"></div>
+<div class = "col snarestep rhythmstep beatonethree upbeat unselectedstep" id = "snarestepeleven"></div>
+<div class = "col snarestep rhythmstep beatonethree offbeat unselectedstep" id = "snaresteptwelve"></div>
+<div class = "col snarestep rhythmstep beattwofour downbeat unselectedstep" id = "snarestepthirteen"></div>
+<div class = "col snarestep rhythmstep beattwofour offbeat unselectedstep" id = "snarestepfourteen"></div>
+<div class = "col snarestep rhythmstep beattwofour upbeat unselectedstep" id = "snarestepfifteen"></div>
+<div class = "col snarestep rhythmstep beattwofour offbeat unselectedstep" id = "snarestepsixteen"></div>
 </div>
 <!-- <div class = "col"> -->
 <!-- <div class = "row"> -->
@@ -634,7 +715,10 @@ Time = </span><span class = "questionbuttonrow" id="countdown">01:00</span><span
 	<div class="justify-content-start" style="margint-right:50vw">
 	
 <div id="staff-box"></div>
-<div id="my-dialog" style="display:none" title="Harmony Sense Message"><span id="alertMessage"></span></div>
+<div id="my-dialog" style="display:none" title="Rhythm Sense Message"><span id="alertMessage"></span></div>
+<div id="my-dialog-timed" style="display:none" title="Rhythm Sense Message"><span id="alertMessage2"></span></div>
+<div id="my-dialog-prev-next-timed" style="display:none" title="Rhythm Sense Message"><span id="alertMessage3"></span></div>
+
 <div class="justify-content-start">
 	
 	<!-- <div id="controls"> -->
@@ -927,6 +1011,8 @@ Time = </span><span class = "questionbuttonrow" id="countdown">01:00</span><span
 	<audio id = "sound-rim0" data-src = "samplestwo/rim.mp3"></audio>
 	<audio id = "sound-clave0" data-src = "samplestwo/clave.mp3"></audio>
 	<audio id = "sound-tom0" data-src = "samplestwo/tom.mp3"></audio>
+	<audio id = "sound-mclave0" data-src = "samplestwo/mclave.mp3"></audio>
+	<audio id = "sound-mtriangle0" data-src = "samplestwo/mtriangle.mp3"></audio>
 
 <div style="clear:both;"></div>
 </div>
