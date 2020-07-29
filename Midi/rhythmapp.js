@@ -416,7 +416,7 @@ var randomizeKicks = false;
 var randomizeHats = false;
 var noMorePoints = false;
 var numOfRandomSteps = 2;
-var backbeat = true;
+var backbeat = false;
 noteOnListener(0, 0);
 var loadDatabase = [];
 var db;
@@ -1282,9 +1282,20 @@ function setVisualMode(visualModeLocal) {
 function clearRhythms() {
 	if (tutorialMode){
 		stepLightMode=true;
+		
 	}
 	else{
-		stepLightMode=false;
+tutorialMode = false;
+pressOneKickTutorial = false;
+
+pressTwoKickTutorial = false;
+pressOneKickTutorialPost = false;
+pressTwoKickTutorialPost = false;
+pressOneKickTutorialPostPartTwo = false;
+pressTwoKickTutorialPostPartTwo = false;
+clickTheAutoCheckTutorial = false;
+postAutoCheckTutorial = false;
+stepLightMode=false;
 	}
     document.getElementById('level-progress').style.display = 'none';
     totalScore = 0;
@@ -1310,6 +1321,8 @@ function clearRhythms() {
     clearAllNotes();
     newQuestionTime = true;
     resetStepElements();
+	
+uncircleAClass('circleattribute');
 }
 
 function clearButtons() {
@@ -7127,6 +7140,10 @@ function setupStepRhythmSequence() { //called at the beginning of each measure. 
         if (metronome) {
             setupStepMetronomeSequence(); // inst copy
         }
+		else{
+		metronomeSequenceArray.push(["rest", 4, 0]);
+		metronomeSequenceCopy.push(["rest", 4, 0]);
+		}
         setupStepInst6Sequence(); // inst copy
         setupStepInst7Sequence(); // inst copy
         setupStepHatSequence();
@@ -7181,10 +7198,12 @@ function setupBackbeat() {
     snareStepArray[4].classList.remove("unselectedstep");
     snareStepArray[12].classList.add("selectedstep");
     snareStepArray[12].classList.remove("unselectedstep");
+	
     snareSequenceArray.push(["rest", 1, 0]);
     snareSequenceArray.push(["snare", 2, 0]);
     snareSequenceArray.push(["snare", 1, 0]);
     tempSnareSequenceArray = [];
+	snareSequenceCopy=snareSequenceArray.slice();
     tempSnareSequenceArray.push(["rest", 1, 0]);
     tempSnareSequenceArray.push(["snare", 2, 0]);
     tempSnareSequenceArray.push(["snare", 1, 0]);
@@ -7228,6 +7247,8 @@ function setupMetronome() {
     } else {
         metronomeSequenceCopy = [];
         metronomeSequenceArray = [];
+		metronomeSequenceCopy.push(["rest", 4, 0]);
+		metronomeSequenceArray.push(["rest", 4, 0]);
         // inst6StepArray[0].classList.add("unselectedstep");
         // inst6StepArray[0].classList.remove("selectedstep");
         // inst6StepArray[4].classList.add("unselectedstep");
@@ -7838,7 +7859,6 @@ function checkMyRhythmAnswer() {
     console.warn("temp inst6 sequence " + tempInst6SequenceArray.toString() + " inst6 sequence " + inst6SequenceCopy.toString());
     console.warn("temp inst7 sequence " + tempInst7SequenceArray.toString() + " inst7 sequence " + inst7SequenceCopy.toString());
     if (didYouKickIt) {
-
         if (pressOneKickTutorialPost) {
             pressOneKickTutorialPost = false;
             pressOneKickTutorialPostPartTwo = true;
@@ -7851,6 +7871,11 @@ function checkMyRhythmAnswer() {
 			tempKickSequenceArray=[];
 		}else if(postTwoKickTutorial) {
 			postTwoKickTutorial=false;
+			kickStepArray[0].classList.remove('selectedstep');
+			kickStepArray[0].classList.add('unselectedstep');
+			kickStepArray[7].classList.remove('selectedstep');
+			kickStepArray[7].classList.add('unselectedstep');
+			tempKickSequenceArray=[];
 			nowPostTwoKickTutorial(); //CHANGE THIS 7-29
         } else {
             if (!noMorePoints) {
@@ -9039,6 +9064,7 @@ function repeatOnFrame() {
             // console.warn(currentRandommetronomeNum.toString());
             if (currentRandommetronomeNum != "rest0") {
                 playANote(currentRandommetronomeNum);
+			};
                 // if (stepLightMode) {
                     document.getElementById('guide' + getStepNum(kickTimeBeats)).classList.add('lititup');
                     metronomeTimeBeatCount = kickTimeBeats + .25;
@@ -9046,7 +9072,11 @@ function repeatOnFrame() {
                         metronomeTimeBeatCount = .25
                     }
                 // }
-            }; //Thoughts: I may need to put all of this into a new method specifically for arpeggiation.
+            
+			
+
+
+			//Thoughts: I may need to put all of this into a new method specifically for arpeggiation.
             instrument = currentInstrument;
             // if (sequencePlay) {
             // randomNoteNum = currentRandomNoteNum + 0;
@@ -11897,7 +11927,7 @@ function prevTimedDialog(messageThis, secondsForAlert, prevAction) { //not setup
                     // $("#alertMessage2").html(messageThis);
                 }
             }, {
-                text: "prev:",
+                text: "previous:",
                 click: function () {
                     $(this).dialog("close");
                     window.setTimeout(prevAction, 200);
@@ -11916,7 +11946,7 @@ function prevOkayDialog(messageThis, secondsForAlert, prevAction) { //not setup 
         modal: true,
         autoOpen: false,
         buttons: [{
-                text: "prev:",
+                text: "previous:",
                 click: function () {
                     $(this).dialog("close");
                     window.setTimeout(prevAction, 200);
@@ -11974,7 +12004,7 @@ function prevNextTimedDialog(messageThis, secondsForAlert, prevAction, nextActio
                     // $("#alertMessage2").html(messageThis);
                 }
             }, {
-                text: "prev:",
+                text: "previous:",
                 click: function () {
                     $(this).dialog("close");
                     // alert("hi");
@@ -12864,6 +12894,18 @@ $('#metronomeButton').click(function () {
         metronomePostTutorialAction();
     }
 });
+
+$('#backbeatButton').click(function () {
+    if (backbeat) {
+        backbeat = false;
+        document.getElementById('backbeatButton').innerHTML = "Turn Backbeat On";
+    } else {
+        backbeat = true;
+        document.getElementById('backbeatButton').innerHTML = "Turn Backbeat Off";
+
+    }
+    setupBackbeat();
+});
 $('#submitDrums').click(function () {
     checkMyRhythmAnswer();
 });
@@ -12885,8 +12927,12 @@ $('#rhythm-tutorial').click(function () {
     // scoreLevel = "freestyle";
     // justcheckingit=true;
     // }
+	if (backbeat){
+	backbeatButton.click();
+	}
     randomizeKicks = false;
-    // clearRhythms();
+    
+    resetStepElements();
     availableSteps = "quarters";
     metronome = true;
     metronomeButton.click()
@@ -12899,7 +12945,10 @@ $('#rhythm-tutorial').click(function () {
     setProgressGoals("2 random steps", "3 random steps", "3 random steps, no snares", "2 random steps, no snares");
     updateProgress();
     checkForUpdatedDifficulty();
+	    resetStepElements();
+	setupSteps();
     tutorialSequence();
+	
 
 });
 
@@ -12910,9 +12959,10 @@ $('#rhythm-level-one').click(function () {
     clearRhythms();
     simplifiedDenominator = 4;
     randomizeKicks = true;
-    backbeat = false;
+	if (!backbeat){
+	backbeatButton.click();
+	}
     availableSteps = "quarters";
-
     makeAClassVisible('questionbuttonrow');
     document.getElementById('kick-row').hidden = false;
     currentLevelScore = 0;
@@ -12921,6 +12971,7 @@ $('#rhythm-level-one').click(function () {
     setProgressGoals("2 random steps", "3 random steps", "3 random steps, no snares", "2 random steps, no snares");
     updateProgress();
     checkForUpdatedDifficulty();
+	alertify("<strong>Important Information:</strong>On this level, there is a snare playing on beats '2' and '4' in the background.<br><br>This pattern is known as the 'Backbeat'. It is very common in popular music.<br><br>If you would like to turn it off, click the 'turn off backbeat' button.");
 });
 $('#rhythm-level-two').click(function () {
     tutorialMode = false;
@@ -12930,7 +12981,9 @@ $('#rhythm-level-two').click(function () {
     simplifiedDenominator = 4;
     randomizeKicks = true;
     randomizeHats = true;
-    backbeat = true;
+ 	if (!backbeat){
+	backbeatButton.click();
+	}
     availableSteps = "quarters";
     currentLevelScore = 0;
     setupSteps();
@@ -12951,7 +13004,9 @@ $('#rhythm-level-three').click(function () {
     clearRhythms();
     randomizeKicks = true;
     simplifiedDenominator = 2;
-    backbeat = true;
+    	if (!backbeat){
+	backbeatButton.click();
+	}
     availableSteps = "eighths";
 
     currentLevelScore = 0;
@@ -12973,7 +13028,9 @@ $('#rhythm-level-four').click(function () {
     clearRhythms();
     randomizeKicks = true;
     randomizeHats = true;
-    backbeat = true;
+    	if (!backbeat){
+	backbeatButton.click();
+	}
     availableSteps = "eighths";
     currentLevelScore = 0;
     setupSteps();
@@ -12992,7 +13049,9 @@ $('#rhythm-level-five').click(function () {
     rhythmVolume = 50;
     clearRhythms();
     randomizeKicks = true;
-    backbeat = true;
+    	if (!backbeat){
+	backbeatButton.click();
+	}
 
     availableSteps = "sixteenths";
     simplifiedDenominator = 1;
@@ -13016,7 +13075,9 @@ $('#rhythm-level-six').click(function () {
     clearRhythms();
     randomizeKicks = true;
     randomizeHats = true;
-    backbeat = true;
+    	if (!backbeat){
+	backbeatButton.click();
+	}
     availableSteps = "sixteenths";
     currentLevelScore = 0;
     setupSteps();
@@ -13039,7 +13100,9 @@ $('#rhythm-level-seven').click(function () {
     randomizeKicks = true;
     randomizeHats = true;
     randomizeClaps = true;
-    backbeat = true;
+    	if (!backbeat){
+	backbeatButton.click();
+	}
     availableSteps = "sixteenths";
     currentLevelScore = 0;
     setupSteps();
@@ -13064,7 +13127,9 @@ $('#rhythm-level-eight').click(function () {
     randomizeHats = true;
     randomizeClaps = true;
     randomizeInst5 = true;
-    backbeat = true;
+    	if (!backbeat){
+	backbeatButton.click();
+	}
     availableSteps = "sixteenths";
     currentLevelScore = 0;
     setupSteps();
@@ -13086,13 +13151,15 @@ $('#rhythm-level-eight').click(function () {
 
 $('#rhythm-level-nine').click(function () {
     tutorialMode = false;
+	    	// if (!backbeat){
+	// backbeatButton.click();
+	// }
     // scoreLevel=6;
     // rhythmVolume = 50;
     // simplifiedDenominator=1;
     // clearRhythms();
     // randomizeKicks=true;
     // randomizeHats=true;
-    // backbeat=true;
     // availableSteps="sixteenths";
     // currentLevelScore=0;
     // setupSteps();
@@ -13864,6 +13931,7 @@ $('#playTargetButton').click(function () {
 });
 
 function tutorialSequence() {
+	
     uncircleAClass('blocklegend');
     circleAClass('kickstep');
     nextTimedAlertify("These are your kicks.<br><br>Notice 2 things: <br>-kicks on beats 1 and 3 are gray boxes, and the ones within beats 2 and 4 are red boxes.<br>-All of the upbeats and off beats are empty circles.", 3, theseAreYourLegends);
@@ -13962,6 +14030,9 @@ function pressTheOneKick() {
     uncircleAnId('submitDrums');
     // kickStepArray[0].addEventListener('click', addrhythmsteplisteners, false);
     pressOneKickTutorial = true;
+	kickStepArray[0].classList.remove('selectedstep');
+    kickStepArray[0].classList.add('unselectedstep');
+    tempKickSequenceArray = [];
     prevOkayAlertify("Now click on the circled box to select the '1' beat in the kick row", 5, beginKickPressTutorial);
 }
 
@@ -13969,10 +14040,10 @@ function postKickPressOne() {
     uncircleAnId('kickstepone');
     uncircleAnId('nextRhythmButton');
     if (rhythmSpeedMode) {
-        rhythmSpeedMode.click();
+        autocheckbutton.click();
     }
     circleAnId('submitDrums');
-
+	
     prevOkayAlertify("Perfect! See how it is lit up now to show that you selected it?<br><br>Now click on the circled box to submit your answer!", 5, pressTheOneKick);
 
 }
@@ -13981,12 +14052,12 @@ function pressOneKickTutorialPostPartTwoMethod() {
     uncircleAnId('submitDrums');
     uncircleAnId('autocheckbutton');
     if (rhythmSpeedMode) {
-        rhythmSpeedMode.click();
+        autocheckbutton.click();
     }
     clickTheAutoCheckTutorial = false;
     circleAnId('nextRhythmButton');
 
-    prevOkayAlertify("Well done.<br><br>To move onto the next question, click the circled 'Give me another!' button.", 5, postKickPressOne);
+    prevOkayAlertify("Well done.<br><br>To move onto the next question, click the circled 'Give me another!' button.", 5, pressTheOneKick);
 
 }
 
@@ -13994,7 +14065,7 @@ function autoCheckButtonTutorial() {
     uncircleAnId('nextRhythmButton');
     uncircleAnId('kickstepone');
     if (rhythmSpeedMode) {
-        rhythmSpeedMode.click();
+        autocheckbutton.click();
     }
     circleAnId('autocheckbutton');
     kickStepArray[0].classList.remove('selectedstep');
@@ -14052,7 +14123,7 @@ function beginKickPressTwoTutorial() {
     // kickSequenceCopy=kickSequenceArray.slice();
     kickSequenceCopy.push([kickinstrument, 2, 0])
     kickSequenceCopy.push([kickinstrument, 2, 0])
-    prevNextTimedAlertify("Very good! <br><br>Now, notice how the kick drum is being played on the '1' beat AND the '3' beat as shown on the timeline. We've circled the '1' beat on the timeline. <br><br> <strong>Click next for us to circle both the '1' beat and the '3' beat for the kick drum.</strong>", 5, preKickPressTwoTutorial, pressTheTwoKick);
+    prevNextTimedAlertify("Now, notice how the kick drum is being played on the '1' beat AND the '3' beat as shown on the timeline. We've circled the '1' beat on the timeline. <br><br> <strong>Click next for us to circle both the '1' beat and the '3' beat for the kick drum.</strong>", 5, preKickPressTwoTutorial, pressTheTwoKick);
 		pressTwoKickTutorial = false;
     // kickSequenceCopy.push([kickinstrument, 3, 0])
 
@@ -14096,7 +14167,10 @@ function beginTryingTutorial() {
 	metronomeButton.click();
     simplifiedDenominator = 4;
     randomizeKicks = true;
-    backbeat = false;
+	if (backbeat){
+	backbeatButton.click();
+	}
+    // backbeat = false;
     availableSteps = "quarters";
     // metronome = false;
     scoreLevel = 1;
