@@ -1,8 +1,10 @@
 //the following things were changed to bypass stuff that existed in harmonysense but I am not yet using rhythmesnes
 //arpeggioPlay was turned into arpeggioPlayInRhythm
 arpeggioPlayInRhythm = false;
-// ALSO WE TURNED OFF THE CHORDTIMEBEATS BLOCK IN UPDATETIMER
+// ALSO WE TURNED OFF THE CHORDTIMEBEATS BLOCK IN UPDATETIMER$
+
 var clockTester=0;
+var snaresAllowed=true;
 var randomNoteNum
 var tutorialMode = false;
 var pressOneKickTutorial = false;
@@ -485,10 +487,38 @@ var init = function () {
 
     // $('#testthisish').click();
 };
+logintothisapp = function () {
 
-var logintothisapp = function () {
-    tempname = prompt("what is your name?");
-    tempemail = prompt("what is your e-mail? \n\nDon't worry, we won't send you any e-mails. This is just for logging in.");
+ $("#log-in-form").dialog({
+        modal: true,
+        autoOpen: false,
+        buttons: [{
+                text: "Submit",
+                click: function () {
+                    $(this).dialog("close");
+                    logintothisappparttwo(document.getElementById('name').value, document.getElementById('email').value);
+					
+                }
+            }
+		
+        ]
+    });
+
+
+	$('#log-in-form').dialog("open");
+
+	$('.ui-dialog-buttonpane').find('button:contains("Submit")').focus();
+	// $( "#loginform" ).on('submit', function (e) {
+	// logintothisappparttwo(document.getElementById('name').value, document.getElementById('email').value)
+	// })
+	// ("#loginform").submit(function(e) {
+    // e.preventDefault();
+// });
+}
+
+var logintothisappparttwo = function (tempname, tempemail) {
+    // tempname = prompt("what is your name?");
+    // tempemail = prompt("what is your e-mail? \n\nDon't worry, we won't send you any e-mails. This is just for logging in.");
     if ((tempname.length > 0) && (tempemail.length > 0)) {
         loginMessageShown = false;
         levelOneMessageShown = false;
@@ -1069,7 +1099,8 @@ function checkForUpdatedDifficulty() {
         }
     } else if (currentLevelScore < 15) {
         if (availableSteps == "quarters") {
-            backbeat = false;
+            snaresAllowed = false;
+			backbeatButton.click();
             numOfRandomSteps = 2;
         } else if (availableSteps == "eighths") {
             numOfRandomSteps = 5;
@@ -1077,7 +1108,8 @@ function checkForUpdatedDifficulty() {
             numOfRandomSteps = 5;
         }
     } else if (currentLevelScore < 20) {
-        backbeat = false;
+        snaresAllowed = false;
+			backbeatButton.click();
         if (availableSteps == "quarters") {
             numOfRandomSteps = 1;
         } else if (availableSteps == "eighths") {
@@ -1108,7 +1140,7 @@ function updateTheLevel(levelNumber) {
         if (!loginMessageShown) {
             loginMessageShown = true;
 
-            alertify("We see you haven't completed a level here before, " + whoItIsUsingThis + ". <br><br>We've set up a new account for you. <br>If you have logged in before and completed a level, chances are you typed something wrong. <br>If that is the case, click login and try again. <br>(Note: logins are case-sensitive)<br><br>To get started, select the first level from the dropdown menu at the top of the screen.")
+            alertifyTutorial("We see you haven't completed a level here before, " + whoItIsUsingThis + ". <br><br>We've set up a new account for you. <br>If you have logged in before and completed a level, chances are you typed something wrong. <br>If that is the case, click login and try again. <br>(Note: logins are case-sensitive)<br><br>To get started, select the first level from the dropdown menu at the top of the screen.")
 
         }
     } else {
@@ -1521,7 +1553,9 @@ function setupRhythmSense() {
     document.getElementById('octaves').style.display = 'none';
     document.getElementById('scale-buttons').style.display = 'none';
     document.getElementById('tunerAndSettings').style.display = 'none';
-
+	if (metronome){
+		metronomeButton.click();
+	}
     // document.getElementById('kick-row').hidden=false;
     // document.getElementById('snare-row').hidden=false;
     // document.getElementById('hat-row').hidden=false;
@@ -1537,8 +1571,9 @@ function setupRhythmSense() {
     document.getElementById("rhythmBox").hidden = false;
 
     setupStepSequencerArray();
-    alertify("Welcome to Rhythm Sense! Login and then select your level from the pull-down menu");
+    // alertify("Welcome to Rhythm Sense! Login and then select your level from the pull-down menu");
 
+doSomethingAlertify("Welcome to Rhythm Sense! Login and then select your level from the pull-down menu.", logintothisapp, "Login here");
     // timedAlertify('Do you really want it?', 5, );
     // .then(() => alert("hi"))
     // .catch(() => alert("yo"));
@@ -1548,7 +1583,7 @@ function setupRhythmSense() {
     accompanimentVolume = 0;
     referenceVolume = 0;
     // paused=true;
-    rhythmVolume = 50;
+    rhythmVolume = 0;
     // restartTimer();
     // repeatOnFrame();
 
@@ -7298,6 +7333,7 @@ function setupStepRhythmSequence() { //called at the beginning of each measure. 
 function setupBackbeat() {
     snareSequenceArray = [];
     snareStarted = true;
+	if ((backbeat)&&(snaresAllowed)){
     snareStepArray[4].classList.add("selectedstep");
     snareStepArray[4].classList.remove("unselectedstep");
     snareStepArray[12].classList.add("selectedstep");
@@ -7311,7 +7347,16 @@ function setupBackbeat() {
     tempSnareSequenceArray.push(["rest", 1, 0]);
     tempSnareSequenceArray.push(["snare", 2, 0]);
     tempSnareSequenceArray.push(["snare", 1, 0]);
+	}else{
+	    tempSnareSequenceArray = [];
+    snareStepArray[4].classList.remove("selectedstep");
+    snareStepArray[4].classList.add("unselectedstep");
+    snareStepArray[12].classList.remove("selectedstep");
+    snareStepArray[12].classList.add("unselectedstep");
 
+    snareSequenceCopy = snareSequenceArray.slice();
+
+}
 }
 function setupMetronome() {
     // alert ("setit")
@@ -12172,7 +12217,7 @@ var updateScaleAdapter = function (selected) {
 
 function timedDialog(messageThis, secondsForAlert, nextAction) { //not setup yet
     $("#my-dialog-timed").dialog({
-        modal: true,
+        modal: false,
         autoOpen: false,
         buttons: {
             Ok: function () {
@@ -12189,7 +12234,7 @@ function timedDialog(messageThis, secondsForAlert, nextAction) { //not setup yet
 }
 function prevTimedDialog(messageThis, secondsForAlert, prevAction) { //not setup yet
     $("#my-dialog-prev-next-timed").dialog({
-        modal: true,
+        modal: false,
         autoOpen: false,
         buttons: [{
                 text: "take: A look",
@@ -12215,7 +12260,7 @@ function prevTimedDialog(messageThis, secondsForAlert, prevAction) { //not setup
 }
 function prevOkayDialog(messageThis, secondsForAlert, prevAction) { //not setup yet
     $("#my-dialog-prev-next-timed").dialog({
-        modal: true,
+        modal: false,
         autoOpen: false,
         buttons: [{
                 text: "previous:",
@@ -12235,12 +12280,13 @@ function prevOkayDialog(messageThis, secondsForAlert, prevAction) { //not setup 
     });
     $("#my-dialog-prev-next-timed").dialog("open")
 
-    // window.setTimeout($("#my-dialog-timed").dialog("open"), 5000);
+	$('.ui-dialog-buttonpane').find('button:contains("Ok:")').focus();
+    // window.setTimeout($("#my-dialog-timed").dialog("Ok:"), 5000);
 
 }
 function nextTimedDialog(messageThis, secondsForAlert, nextAction) { //not setup yet
     $("#my-dialog-prev-next-timed").dialog({
-        modal: true,
+        modal: false,
         autoOpen: false,
         buttons: [{
                 text: "take: A look",
@@ -12259,6 +12305,9 @@ function nextTimedDialog(messageThis, secondsForAlert, nextAction) { //not setup
             }
         ]
     });
+	$('.ui-dialog-buttonpane').find('button:contains("next")').focus();
+
+	console.log($("#my-dialog-prev-next-timed").dialog.childElementCount);
     $("#my-dialog-prev-next-timed").dialog("open")
 
     // window.setTimeout($("#my-dialog-timed").dialog("open"), 5000);
@@ -12266,7 +12315,7 @@ function nextTimedDialog(messageThis, secondsForAlert, nextAction) { //not setup
 }
 function prevNextTimedDialog(messageThis, secondsForAlert, prevAction, nextAction) { //not setup yet
     $("#my-dialog-prev-next-timed").dialog({
-        modal: true,
+        modal: false,
         autoOpen: false,
         buttons: [{
                 text: "take: A look",
@@ -12293,11 +12342,54 @@ function prevNextTimedDialog(messageThis, secondsForAlert, prevAction, nextActio
             }
         ]
     });
+	
+	$('.ui-dialog-buttonpane').find('button:contains("next")').focus();
     $("#my-dialog-prev-next-timed").dialog("open")
+	
+	$('.ui-dialog-buttonpane').find('button:contains("next")').focus();
 
     // window.setTimeout($("#my-dialog-timed").dialog("open"), 5000);
 
 }
+
+// function loginButton(messageThis, secondsForAlert, prevAction, nextAction) { //not setup yet
+    // $("#my-dialog-login").dialog({
+        // modal: true,
+        // autoOpen: false,
+        // buttons: [{
+                // text: "login",
+                // click: function () {
+                    // $(this).dialog("close");
+                    // logintothisapp();
+                // }
+            // }
+        // ]
+    // });
+    // $("#my-dialog-login").dialog("open")
+
+    // // window.setTimeout($("#my-dialog-timed").dialog("open"), 5000);
+
+// }
+
+function doSomethingDialog(somethingToDo, whatToCallTheButton){
+        $("#my-dialog").dialog({
+        modal: false,
+        autoOpen: false,
+        buttons: [{
+                text: whatToCallTheButton,
+                click: function () {
+                    $(this).dialog("close");
+                    window.setTimeout(somethingToDo, 200);
+                }
+            }
+        ],
+		// position: { my: 'top', at: 'right', of: '#welcomefamprelogin', collision:'fit' }
+    
+    });
+    $("#my-dialog").dialog("open");
+}
+
+
 function reopenDialog() {
     $("#my-dialog-prev-next-timed").dialog("open")
 }
@@ -12305,11 +12397,13 @@ function reopenDialog() {
 $("#my-dialog").dialog({
     modal: true,
     autoOpen: false,
-    buttons: {
-        Ok: function () {
+    buttons: [{
+		text: "Ok:",
+        click: function () {
             $(this).dialog("close");
-        }
-    }
+		}
+        }]
+    
 });
 // var counter = 0;
 
@@ -13168,7 +13262,7 @@ $('#metronomeButton').click(function () {
 });
 
 $('#backbeatButton').click(function () {
-    if (backbeat) {
+    if ((backbeat)&&(snaresAllowed)) {
         backbeat = false;
         document.getElementById('backbeatButton').innerHTML = "Turn Backbeat On";
     } else {
@@ -13193,8 +13287,9 @@ $('#nextRhythmButton').click(function () {
     }
 });
 
-$('#rhythm-tutorial').click(function () {
-    tutorialMode = true;
+$('#rhythm-tutorial').click(startARhythmTutorial);
+function startARhythmTutorial(){
+	  tutorialMode = true;
     // if (!justcheckingit){
     // scoreLevel = "freestyle";
     // justcheckingit=true;
@@ -13220,8 +13315,7 @@ $('#rhythm-tutorial').click(function () {
     resetStepElements();
     setupSteps();
     tutorialSequence();
-
-});
+}
 
 $('#rhythm-level-one').click(function () {
     tutorialMode = false;
@@ -13581,7 +13675,56 @@ $('#chord-progression-roman').click(function () {
 function alertify(messageThis) {
     $("#alertMessage").html(messageThis);
     // // Show dialog
+	$("#my-dialog").dialog({
+    modal: true,
+    autoOpen: false,
+    buttons: [{
+		text: "Ok:",
+        click: function () {
+            $(this).dialog("close");
+		}
+        }]
+    
+});
     $("#my-dialog").dialog("open");
+}
+
+
+function alertifyTutorial(messageThis) {
+    $("#alertMessage").html(messageThis);
+    // // Show dialog
+	$("#my-dialog").dialog({
+    modal: true,
+    autoOpen: false,
+    buttons: [{
+		text: "Begin Tutorial.",
+        click: function () {
+            $(this).dialog("close");
+			window.setTimeout(startARhythmTutorial, 200);
+	}
+	},{
+		text: "I'll pass.",
+        click: function () {
+            $(this).dialog("close");
+			
+			window.setTimeout(directYouToTheTutorial, 200);
+			
+		}
+	}]
+    
+	});
+    $("#my-dialog").dialog("open");
+}
+
+
+
+function directYouToTheTutorial(){
+circleAnId('dropdownMenuButton')
+doSomethingAlertify("If you'd ever like to do the tutorial or any levels in the future, you can find them in the <span style='border-width:3px;border-color:orange;border-style:dashed'> outlined menu </span>", uncirclemenu, "Got it!");
+}
+
+function uncirclemenu(){
+uncircleAnId('dropdownMenuButton')
 }
 
 function finalAlertify(messageThis) {
@@ -13595,6 +13738,14 @@ function timedAlertify(messageThis, secondsForAlert, nextAction) {
     timedDialog(messageThis, secondsForAlert, nextAction);
 
 }
+function doSomethingAlertify(messageThis, whatToDo, whatToCallTheButton) {
+    $("#alertMessage").html(messageThis);
+    // // Show dialog
+    // prevAction();
+    doSomethingDialog(whatToDo, whatToCallTheButton);
+
+}
+
 function prevNextTimedAlertify(messageThis, secondsForAlert, prevAction, nextAction) {
     $("#alertMessage3").html(messageThis);
     // // Show dialog
@@ -14205,26 +14356,40 @@ function tutorialSequence() {
 
     uncircleAClass('blocklegend');
     circleAClass('kickstep');
-    nextTimedAlertify("These are your kicks.<br><br>Notice 2 things: <br>-kicks on beats 1 and 3 are gray boxes, and the ones within beats 2 and 4 are red boxes.<br>-All of the upbeats and off beats are empty circles.", 3, theseAreYourLegends);
+		$("#my-dialog-prev-next-timed").dialog({
+  		position: { my: 'top', at: 'bottom', of: '#kickstepeight', collision:'fit' }
+    
+    });
+    nextTimedAlertify("<span style='border-width:3px;border-color:orange;border-style:dashed'>The outlined spots on the page are your kicks.</span><br><br>Notice 2 things: <br>-kicks on beats 1 and 3 are gray boxes, and the ones within beats 2 and 4 are red boxes.<br>-All of the upbeats and off beats are empty circles.", 3, theseAreYourLegends);
     //
 }
 
 function theseAreYourLegends() {
+	
+    $("#my-dialog-prev-next-timed").dialog("close");
     uncircleAClass('kickstep')
     uncircleAClass('guide-row')
     circleAClass('blocklegend');
-
-    prevNextTimedAlertify("This area of your screen is the legend.<br><br>It serves to remind you that empty circles are untargetable (inactive on this level). And lit up boxes are boxes you have selected because you think an instrument is used on that beat.", 5, tutorialSequence, thisIsYourTimer);
+	        $("#my-dialog-prev-next-timed").dialog({
+  		position: { my: 'top', at: 'bottom', of: '.blocklegend', collision:'fit' }
+    
+    });
+    prevNextTimedAlertify("<span style='border-width:3px;border-color:orange;border-style:dashed'>These areas of your screen are the legends.</span><br><br>It serves to remind you that empty circles are untargetable (inactive on this level). And lit up boxes are boxes you have selected because you think an instrument is used on that beat.", 5, tutorialSequence, thisIsYourTimer);
 
 }
 
 function thisIsYourTimer() {
+    $("#my-dialog-prev-next-timed").dialog("close");
     uncircleAClass('blocklegend')
     uncircleAnId('metronomeButton');
     circleAClass('guide-row');
 
     metronomeTutorial = false;
-    prevNextTimedAlertify("This row is your timeline. It will help you keep track of the beat/time naming. The boxes for each of the instruments below correspond to the timings written in the timeline.", 5, theseAreYourLegends, showMetronomeButton);
+	        $("#my-dialog-prev-next-timed").dialog({
+  		position: { my: 'top', at: 'bottom', of: '.guide-row', collision:'fit' }
+    
+    });
+    prevNextTimedAlertify("<span style='border-width:3px;border-color:orange;border-style:dashed'>This row is your timeline.</span> It will help you keep track of the beat/time naming. The boxes for each of the instruments below correspond to the timings written in the timeline.", 5, theseAreYourLegends, showMetronomeButton);
     // alertify("");
     if (metronome) {
         metronomeButton.click();
@@ -14238,10 +14403,15 @@ function thisIsYourTimer() {
 }
 
 function showMetronomeButton() {
+    $("#my-dialog-prev-next-timed").dialog("close");
     uncircleAClass('guide-row')
     circleAnId('metronomeButton');
     metronomeTutorial = true;
-    prevOkayAlertify("Currently the metronome is off.<br><br><strong>Please turn it on by pressing this button.</strong><br><br>If you ever want to turn it off, you can press this button again.", 5, thisIsYourTimer);
+	$("#my-dialog-prev-next-timed").dialog({
+  		position: { my: 'right', at: 'left', of: '#metronomeButton', collision:'fit' }
+    
+    });
+    prevOkayAlertify("Currently the metronome is off.<br><br><strong>Please turn it on by pressing the </strong><span style='border-width:3px;border-color:orange;border-style:dashed'><strong>outlined button.</strong></span><br><br>If you ever want to turn it off, you can press this button again.", 5, thisIsYourTimer);
     // alertify("");
     // rhythmVolume = 50;
     // clearRhythms();
@@ -14251,6 +14421,7 @@ function showMetronomeButton() {
 }
 
 function metronomePostTutorialAction() {
+    $("#my-dialog-prev-next-timed").dialog("close");
     circleAClass('guide-row')
     uncircleAnId('metronomeButton');
 
@@ -14260,7 +14431,11 @@ function metronomePostTutorialAction() {
     kickSequenceCopy = [];
     randomizeKicks = false;
     kickStarted = false;
-    prevNextTimedAlertify("As you can see, now the timeline lights up on specific beats.<br><br>In addition, you can now hear the metronome making a sound on each of those beats.<br><br>A good strategy for you to use is try to say the beat number on each beat as the metronome makes the sound<br>'1, 2, 3, 4'", 5, showMetronomeButton, beginKickPressTutorial);
+		        $("#my-dialog-prev-next-timed").dialog({
+  		position: { my: 'top', at: 'bottom', of: '.guide-row', collision:'fit' }
+    
+    });
+    prevNextTimedAlertify("As you can see, now <span style='border-width:3px;border-color:orange;border-style:dashed'>the timeline</span> lights up on specific beats.<br><br>In addition, you can now hear the metronome making a sound on each of those beats.<br><br>A good strategy for you to use is try to say the beat number on each beat as the metronome makes the sound<br>'1, 2, 3, 4'", 5, showMetronomeButton, beginKickPressTutorial);
     // alertify("");
     // rhythmVolume = 50;
     // clearRhythms();
@@ -14269,6 +14444,7 @@ function metronomePostTutorialAction() {
     // backbeat = false;
 }
 function beginKickPressTutorial() {
+    $("#my-dialog-prev-next-timed").dialog("close");
     uncircleAnId('guide-row');
     circleAnId('guidestepone');
     uncircleAnId('kickstepone');
@@ -14286,7 +14462,11 @@ function beginKickPressTutorial() {
 
     // kickSequenceCopy=kickSequenceArray.slice();
     kickSequenceCopy.push([kickinstrument, 4, 0])
-    prevNextTimedAlertify("Notice how the kick drum is being played on the '1' beat as shown on the timeline. We've circled the '1' beat on the timeline. <br><br> <strong>Click next for us to circle the '1 beat for the kick drum.</strong>", 5, metronomePostTutorialAction, pressTheOneKick);
+	$("#my-dialog-prev-next-timed").dialog({
+  		position: { my: 'top', at: 'bottom', of: '#guidestepone', collision:'fit' }
+    
+    });
+    prevNextTimedAlertify("Notice how the kick drum is being played on the '1' beat as shown on the timeline. <span style='border-width:3px;border-color:orange;border-style:dashed'>We've circled the '1' beat on the timeline.</span><br><br> <strong>Click next for us to circle the '1 beat for the kick drum.</strong>", 5, metronomePostTutorialAction, pressTheOneKick);
 
     // kickSequenceCopy.push([kickinstrument, 3, 0])
 
@@ -14295,6 +14475,7 @@ function beginKickPressTutorial() {
 }
 
 function pressTheOneKick() {
+    $("#my-dialog-prev-next-timed").dialog("close");
     uncircleAnId('guidestepone');
     circleAnId('kickstepone');
 
@@ -14304,22 +14485,31 @@ function pressTheOneKick() {
     kickStepArray[0].classList.remove('selectedstep');
     kickStepArray[0].classList.add('unselectedstep');
     tempKickSequenceArray = [];
-    prevOkayAlertify("Now click on the circled box to select the '1' beat in the kick row", 5, beginKickPressTutorial);
+		$("#my-dialog-prev-next-timed").dialog({
+  		position: { my: 'top', at: 'bottom', of: '#kickstepone', collision:'fit' }
+    
+    });
+    prevOkayAlertify("Now click on the <span style='border-width:3px;border-color:orange;border-style:dashed'>circled box</span> to select the '1' beat in the kick row", 5, beginKickPressTutorial);
 }
 
 function postKickPressOne() {
+    $("#my-dialog-prev-next-timed").dialog("close");
     uncircleAnId('kickstepone');
     uncircleAnId('nextRhythmButton');
     if (rhythmSpeedMode) {
         autocheckbutton.click();
     }
     circleAnId('submitDrums');
-
-    prevOkayAlertify("Perfect! See how it is lit up now to show that you selected it?<br><br>Now click on the circled box to submit your answer!", 5, pressTheOneKick);
+	$("#my-dialog-prev-next-timed").dialog({
+  		position: { my: 'right', at: 'left bottom+135%', of: '#submitDrums', offset: "50 50", collision:'fit' }
+    
+    });
+    prevOkayAlertify("Perfect! See how <strong>the first kick is lighter colored now</strong> to show that you selected it?<br><br>Now click on the circled circled <span style='border-width:3px;border-color:orange;border-style:dashed'>'check your answer'</span> box to submit your answer!", 5, pressTheOneKick);
 
 }
 
 function pressOneKickTutorialPostPartTwoMethod() {
+    $("#my-dialog-prev-next-timed").dialog("close");
     uncircleAnId('submitDrums');
     uncircleAnId('autocheckbutton');
     if (rhythmSpeedMode) {
@@ -14328,11 +14518,12 @@ function pressOneKickTutorialPostPartTwoMethod() {
     clickTheAutoCheckTutorial = false;
     circleAnId('nextRhythmButton');
 
-    prevOkayAlertify("Well done.<br><br>To move onto the next question, click the circled 'Give me another!' button.", 5, pressTheOneKick);
+    prevOkayAlertify("Well done.<br><br>To move onto the next question, click the circled <span style='border-width:3px;border-color:orange;border-style:dashed'>'Give me another!'</span> button.", 5, pressTheOneKick);
 
 }
 
 function autoCheckButtonTutorial() {
+    $("#my-dialog-prev-next-timed").dialog("close");
     uncircleAnId('nextRhythmButton');
     uncircleAnId('kickstepone');
     if (rhythmSpeedMode) {
@@ -14342,21 +14533,31 @@ function autoCheckButtonTutorial() {
     kickStepArray[0].classList.remove('selectedstep');
     kickStepArray[0].classList.add('unselectedstep');
     tempKickSequenceArray = [];
-    clickTheAutoCheckTutorial = true;
-    prevOkayAlertify("<strong>Let's look at another way to submit.</strong><br><br>Now we have reset the problem for you. If you want to be checked immediately, and never have to press a button to submit your answer, you can select the circled 'Turn Auto-Check On' button.<br><br><strong>Do that now.<strong>", 5, pressOneKickTutorialPostPartTwoMethod);
+    clickTheAutoCheckTutorial = true;	
+	$("#my-dialog-prev-next-timed").dialog({
+  		position: { my: 'left', at: 'right', of: '#autocheckbutton', collision:'fit' }
+    
+    });
+    prevOkayAlertify("<strong>Let's look at another way to submit.</strong><br><br>Now we have reset the problem for you. If you want to be checked immediately, and never have to press a button to submit your answer, you can select the circled <span style='border-width:3px;border-color:orange;border-style:dashed'>'Turn Auto-Check On'</span> button.<br><br><strong>Do that now.<strong>", 5, pressOneKickTutorialPostPartTwoMethod);
 }
 function autoCheckPostTutorial() {
+    $("#my-dialog-prev-next-timed").dialog("close");
     uncircleAnId('autocheckbutton');
     // // if (rhythmSpeedMode) {
     // // rhythmSpeedMode.click();
     // // }
     circleAnId('kickstepone');
+		$("#my-dialog-prev-next-timed").dialog({
+  		position: { my: 'left', at: 'right', of: '#kickstepone', collision:'fit' }
+    
+    });
     postAutoCheckTutorial = true;
-    prevOkayAlertify("Well done! Now go ahead and click on the 1st kick again.", 5, autoCheckButtonTutorial);
+    prevOkayAlertify("Well done! Now go ahead and click on the <span style='border-width:3px;border-color:orange;border-style:dashed'>1st kick again.</span>", 5, autoCheckButtonTutorial);
 
 }
 
 function preKickPressTwoTutorial() {
+    $("#my-dialog-prev-next-timed").dialog("close");
     uncircleAnId('kickstepone');
     uncircleAnId('guidestepone');
     uncircleAnId('guidestepnine');
@@ -14369,10 +14570,12 @@ function preKickPressTwoTutorial() {
     kickSequenceCopy = [];
     randomizeKicks = false;
     kickStarted = false;
+	pressTwoKickTutorial = false;
     prevNextTimedAlertify("Well done! Now we're going to do a problem that has TWO kicks.", 5, autoCheckPostTutorial, beginKickPressTwoTutorial);
 
 }
 function beginKickPressTwoTutorial() {
+    $("#my-dialog-prev-next-timed").dialog("close");
     uncircleAnId('kickstepone');
     circleAnId('guidestepone');
     circleAnId('guidestepnine');
@@ -14392,15 +14595,21 @@ function beginKickPressTwoTutorial() {
 
     // kickSequenceCopy=kickSequenceArray.slice();
     kickSequenceCopy.push([kickinstrument, 2, 0])
-    kickSequenceCopy.push([kickinstrument, 2, 0])
-    prevNextTimedAlertify("Now, notice how the kick drum is being played on the '1' beat AND the '3' beat as shown on the timeline. We've circled the '1' beat and the '3' beat on the timeline. <br><br> <strong>Click next for us to circle both the '1' beat and the '3' beat for the kick drum.</strong>", 5, preKickPressTwoTutorial, pressTheTwoKick);
-    pressTwoKickTutorial = false;
+    kickSequenceCopy.push([kickinstrument, 2, 0])	
+	$("#my-dialog-prev-next-timed").dialog({
+  		position: { my: 'top', at: 'bottom', of: '.guide-row', collision:'fit' }
+    
+    });
+    prevNextTimedAlertify("Now, notice how the kick drum is being played on the '1' beat AND the '3' beat as shown on the timeline. We've circled the <span style='border-width:3px;border-color:orange;border-style:dashed'>'1' beat and the '3' beat</span> on the timeline. <br><br> <strong>Click next for us to circle both the '1' beat and the '3' beat for the kick drum.</strong>", 5, preKickPressTwoTutorial, pressTheTwoKick);
+    
+	    pressTwoKickTutorial = true;
     // kickSequenceCopy.push([kickinstrument, 3, 0])
 
     // availableSteps = "quarters";
     simplifiedDenominator = 4;
 }
 function pressTheTwoKick() {
+    $("#my-dialog-prev-next-timed").dialog("close");
     uncircleAnId('guidestepone');
     uncircleAnId('guidestepnine');
     circleAnId('kickstepone');
@@ -14409,19 +14618,30 @@ function pressTheTwoKick() {
 
     // kickStepArray[0].addEventListener('click', addrhythmsteplisteners, false);
     pressTwoKickTutorial = true;
-    prevOkayAlertify("Now click on the circled boxes to select the '1' beat and the '3' beat in the kick row.<br><br>If you have auto-check on, that's all you will need to do. If not, don't forget to submit and go to the next problem.", 5, beginKickPressTwoTutorial);
+		$("#my-dialog-prev-next-timed").dialog({
+  		position: { my: 'top', at: 'bottom', of: '.kick-row', collision:'fit' }
+    
+    });
+    prevOkayAlertify("Now click on the <span style='border-width:3px;border-color:orange;border-style:dashed'>circled boxes</span> to select the '1' beat and the '3' beat in the kick row.<br><br>If you have auto-check on, that's all you will need to do. If not, don't forget to submit and go to the next problem.", 5, beginKickPressTwoTutorial);
 
 }
 function nowPostTwoKickTutorial() {
+    $("#my-dialog-prev-next-timed").dialog("close");
     uncircleAnId('kickstepone');
     uncircleAnId('kickstepnine');
+	    uncircleAnId('guidestepone');
+    uncircleAnId('guidestepnine');
     circleAnId('level-progress')
-
-    prevNextTimedAlertify("Great job! At the top we have now circled the progress bar. This will keep track of your progress on each level. <br><br> It also shows information about what you will have to do in each part of the level.", 5, pressTheTwoKick, preTryingOnYourOwn);
+	$("#my-dialog-prev-next-timed").dialog({
+  		position: { my: 'top', at: 'bottom', of: '#level-progress', collision:'fit' }
+    
+    });
+    prevNextTimedAlertify("Great job! At the top we have now circled the <span style='border-width:3px;border-color:orange;border-style:dashed'>progress bar</span>. This will keep track of your progress on each level. <br><br> It also shows information about what you will have to do in each part of the level.", 5, pressTheTwoKick, preTryingOnYourOwn);
 
 }
 
 function preTryingOnYourOwn() {
+    $("#my-dialog-prev-next-timed").dialog("close");
     uncircleAnId('level-progress')
     prevNextTimedAlertify("Alright. We're going to let you try this on your own for a bit. If you ever need to see the tutorial again you can always select the tutorial from the level pulldown menu at the top of your screen. <br><br><strong>Press 'next:' to continue.", 5, nowPostTwoKickTutorial, beginTryingTutorial);
 }

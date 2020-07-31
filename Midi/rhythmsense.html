@@ -100,9 +100,9 @@ border-radius: 6px
 Welcome to Rhythm Sense
 </span><!-- </span> -->
 </li>
-  <li class="nav-item">
-  <button type ='button' class="nav-link" id ="directions" onclick="alert('Single Notes \nLevel 1: One note repeated. Interval changes every 10 reps.\nLevel 2: #1 but the note changes each rep\nLevel 3: One note repeatedly. Intervals shuffle each rep\n\nSequences\nLevel 4: Sequence of 2 notes, interval changes every 10 reps\nLevel 5: Sequence of notes, new interval each rep, every 10 reps the length of the sequence lengthens\nLevel 6: Sequence of notes, the interval changes each note. Sequence lengthens every 10 reps\nLevel 7: #6 but with music\nLevel 8: Sequence of notes with varying lengths, same intervals. Every 10 reps the sequence lengthens\nLevel 9: #8 but the intervals change every note\nLevel 10: #9 with music\n\nDo more\nPlan-Your-Own: Import or play in your own sequence.\nFreestyle: Decide your own harmonic excercise routine')">Instructions Guide</button>
-  </li>
+  <!-- <li class="nav-item"> -->
+  <!-- <button type ='button' class="nav-link" id ="directions" onclick="alert('Single Notes \nLevel 1: One note repeated. Interval changes every 10 reps.\nLevel 2: #1 but the note changes each rep\nLevel 3: One note repeatedly. Intervals shuffle each rep\n\nSequences\nLevel 4: Sequence of 2 notes, interval changes every 10 reps\nLevel 5: Sequence of notes, new interval each rep, every 10 reps the length of the sequence lengthens\nLevel 6: Sequence of notes, the interval changes each note. Sequence lengthens every 10 reps\nLevel 7: #6 but with music\nLevel 8: Sequence of notes with varying lengths, same intervals. Every 10 reps the sequence lengthens\nLevel 9: #8 but the intervals change every note\nLevel 10: #9 with music\n\nDo more\nPlan-Your-Own: Import or play in your own sequence.\nFreestyle: Decide your own harmonic excercise routine')">Instructions Guide</button> -->
+  <!-- </li> -->
   
   <li class="navbar-nav nav-item dropdown">    
 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -726,7 +726,22 @@ Time = </span><span class = "timeandscore" id="countdown">01:00</span><span clas
 <div id="my-dialog" style="display:none" title="Rhythm Sense Message"><span id="alertMessage"></span></div>
 <div id="my-dialog-timed" style="display:none" title="Rhythm Sense Message"><span id="alertMessage2"></span></div>
 <div id="my-dialog-prev-next-timed" style="display:none" title="Rhythm Sense Message"><span id="alertMessage3"></span></div>
+<div id="log-in-form" style="display:none" title="Rhythm Sense Login">
+  <p class="validateTips">Please Login using the below fields. <br>Note: We will not use your e-mail for anything. It functions as your password.</p>
+<form id = "loginform">
+    
+      <label for="name">Name: </label>
+      <input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all">
+      <br><label for="email">Email:</label>
+      <input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all">
+     
+      <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <!-- <input type="submit" tabindex="-1" style="position:absolute; top:-1000px" script="logintothisapp('avi', 'avisilber88@gmail.com')"> -->
+      
+    
+  </form>
 
+</div>
 <div class="justify-content-start">
 	
 	<!-- <div id="controls"> -->
@@ -1020,7 +1035,22 @@ Time = </span><span class = "timeandscore" id="countdown">01:00</span><span clas
 	<audio id = "sound-clave0" data-src = "samplestwo/clave.mp3"></audio>
 	<audio id = "sound-tom0" data-src = "samplestwo/tom.mp3"></audio>
 	<audio id = "sound-mclave0" data-src = "samplestwo/mclave.mp3"></audio>
-	<audio id = "sound-mtriangle0" data-src = "samplestwo/mtriangle.mp3"></audio>
+	<audio id = "sound-clap_010" data-src = "samplestwo/clap_01.mp3"></audio>
+	<audio id = "sound-clap_020" data-src = "samplestwo/clap_02.mp3"></audio>
+	<audio id = "sound-clap_030" data-src = "samplestwo/clap_03.mp3"></audio>
+	<audio id = "sound-clap_040" data-src = "samplestwo/clap_04.mp3"></audio>
+	<audio id = "sound-clap_050" data-src = "samplestwo/clap_05.mp3"></audio>
+	<audio id = "sound-clap_060" data-src = "samplestwo/clap_06.mp3"></audio>
+	<audio id = "sound-clap_070" data-src = "samplestwo/clap_07.mp3"></audio>
+	<audio id = "sound-clap_080" data-src = "samplestwo/clap_08.mp3"></audio>
+	<audio id = "sound-snare_010" data-src = "samplestwo/snare_01.mp3"></audio>
+	<audio id = "sound-snare_020" data-src = "samplestwo/snare_02.mp3"></audio>
+	<audio id = "sound-snare_030" data-src = "samplestwo/snare_03.mp3"></audio>
+	<audio id = "sound-snare_040" data-src = "samplestwo/snare_04.mp3"></audio>
+	<audio id = "sound-snare_050" data-src = "samplestwo/snare_05.mp3"></audio>
+	<audio id = "sound-snare_060" data-src = "samplestwo/snare_06.mp3"></audio>
+	<audio id = "sound-snare_070" data-src = "samplestwo/snare_07.mp3"></audio>
+	<audio id = "sound-snare_080" data-src = "samplestwo/snare_08.mp3"></audio>
 
 <div style="clear:both;"></div>
 </div>
