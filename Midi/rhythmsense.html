@@ -104,7 +104,7 @@ Welcome to Rhythm Sense
   <button type ='button' class="nav-link" id ="directions" onclick="alert('Single Notes \nLevel 1: One note repeated. Interval changes every 10 reps.\nLevel 2: #1 but the note changes each rep\nLevel 3: One note repeatedly. Intervals shuffle each rep\n\nSequences\nLevel 4: Sequence of 2 notes, interval changes every 10 reps\nLevel 5: Sequence of notes, new interval each rep, every 10 reps the length of the sequence lengthens\nLevel 6: Sequence of notes, the interval changes each note. Sequence lengthens every 10 reps\nLevel 7: #6 but with music\nLevel 8: Sequence of notes with varying lengths, same intervals. Every 10 reps the sequence lengthens\nLevel 9: #8 but the intervals change every note\nLevel 10: #9 with music\n\nDo more\nPlan-Your-Own: Import or play in your own sequence.\nFreestyle: Decide your own harmonic excercise routine')">Instructions Guide</button>
   </li>
   
-  <li class="navbar-nav nav-item dropdown">
+  <li class="navbar-nav nav-item dropdown">    
 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     Select Level
   </button>
@@ -319,10 +319,10 @@ Welcome to Rhythm Sense
 <div class = "row">
 <div class = "col">
 <button type ='button' id ="pauseButton">Pause Timer and Sound</button>  
-<span class = "questionbuttonrow">
-Time = </span><span class = "questionbuttonrow" id="countdown">01:00</span><span class = "questionbuttonrow">
-|  </span><span class = "questionbuttonrow" id="totalscore"># Correct = 0</span><span class = "questionbuttonrow">
-| Avg Time = </span><span class = "questionbuttonrow" id="averagetime"></span><span class = "questionbuttonrow"> seconds </span>
+<span class = "timeandscore">
+Time = </span><span class = "timeandscore" id="countdown">01:00</span><span class = "timeandscore">
+|  </span><span class = "timeandscore" id="totalscore"># Correct = 0</span><span class = "timeandscore">
+| Avg Time = </span><span class = "timeandscore" id="averagetime"></span><span class = "timeandscore"> seconds </span>
 <button type ='button' id ="hide-button">Hide Advanced Options</button>  
 </div>
 <div class="col temposlider" hidden>
@@ -377,7 +377,7 @@ Time = </span><span class = "questionbuttonrow" id="countdown">01:00</span><span
 		</div>
 
 </div>
-<div class = "col steprowtitle" id = "kick-row-title" onclick = "makeA; playANote('kick0')"> Kick </div>
+<div class = "col steprowtitle" id = "kick-row-title" onclick = "playANote('kick0')"> Kick </div>
 <div class = "col steprowlight" id = "kick-steprowlight"></div>
 <div class = "col kickstep rhythmstep beatonethree downbeat unselectedstep" id = "kickstepone" style="justify: center;text-align: center; font-size: 30px; color: white">1</div>
 <div class = "col kickstep rhythmstep beatonethree offbeat unselectedstep" id = "kicksteptwo" >e</div>

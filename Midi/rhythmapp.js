@@ -1,3 +1,8 @@
+//the following things were changed to bypass stuff that existed in harmonysense but I am not yet using rhythmesnes
+//arpeggioPlay was turned into arpeggioPlayInRhythm
+arpeggioPlayInRhythm = false;
+// ALSO WE TURNED OFF THE CHORDTIMEBEATS BLOCK IN UPDATETIMER
+var clockTester=0;
 var randomNoteNum
 var tutorialMode = false;
 var pressOneKickTutorial = false;
@@ -7,7 +12,7 @@ var pressTwoKickTutorialPost = false;
 var pressOneKickTutorialPostPartTwo = false;
 var pressTwoKickTutorialPostPartTwo = false;
 var clickTheAutoCheckTutorial = false;
-var postTwoKickTutorial =false;
+var postTwoKickTutorial = false;
 var postAutoCheckTutorial = false;
 var buttonPlay = false;
 var cMajorArray = [0, [0, 2, 4, 5, 7, 9, 11]];
@@ -28,7 +33,7 @@ var startTime;
 var kickTimeBeatCount = 0;
 var rhythmSense = false;
 var messageOn = "on"
-    var rowLightMode = true;
+    var rowLightMode = false;
 var stepLightMode = false;
 var guideLightMode = false;
 var clearKickRow = true;
@@ -71,7 +76,7 @@ var levelSevenMessageShown = false;
 var levelEightMessageShown = false;
 var levelNineMessageShown = false;
 var levelTenMessageShown = false;
-
+var intervalSetting;
 var theirEmail;
 
 // if tunerWidth > 600 && (tunerWidth = 600)
@@ -421,7 +426,24 @@ noteOnListener(0, 0);
 var loadDatabase = [];
 var db;
 var loginMessageShown = true;
-
+var sixteenStepArray;
+var sixteenStep1=[];
+var sixteenStep2=[];
+var sixteenStep3=[];
+var sixteenStep4=[];
+var sixteenStep5=[];
+var sixteenStep6=[];
+var sixteenStep7=[];
+var sixteenStep8=[];
+var sixteenStep9=[];
+var sixteenStep10=[];
+var sixteenStep11=[];
+var sixteenStep12=[];
+var sixteenStep13=[];
+var sixteenStep14=[];
+var sixteenStep15=[];
+var sixteenStep16=[];
+var arrayOfInstruments;
 // init on doc ready
 $(document).ready(init);
 
@@ -440,7 +462,7 @@ var auth = function () {
                 // clone template row and append to table body
                 // var tr = tempTr.clone();
                 // tr.data('id', doc.id);
-                console.warn(doc.id + "");
+                // console.warn(doc.id + "");
                 loadDatabase.push(doc.id + "");
                 // var data = doc.data();
                 // // set cell values from Contact data
@@ -540,6 +562,72 @@ function setRhythmInstrument(instvariablename, instrumentname, instrumentfilenam
     }
 
 }
+
+function parseAndConstructArrays () {
+
+sixteenStepArray=[]
+
+if (rhythmFreestyle){
+arrayOfInstruments=[];
+arrayOfInstruments.push([kickinstrument, kickStepArray]);
+arrayOfInstruments.push([snareinstrument, snareStepArray]);
+arrayOfInstruments.push([clapinstrument, clapStepArray]);
+arrayOfInstruments.push([inst5instrument, inst5StepArray]);
+arrayOfInstruments.push([inst6instrument, inst6StepArray]);
+arrayOfInstruments.push([inst7instrument, inst7StepArray]);
+arrayOfInstruments.push([metronomeinstrument, guideStepArray]);
+arrayOfInstruments.push([hatinstrument, hatStepArray]);
+
+for (var i = 0; i < 16; i++){
+	sixteenStepArray[i]=[];
+}
+for (var i = 0; i < 16; i++){//on each of the 16 beats
+for (var j = 0; j < arrayOfInstruments.length; j++){ //cycle through all of the instruments
+// for (var k = k; k < arrayOfInstruments[j].length; k++){ //cycle through al
+if (arrayOfInstruments[j][1][i].classList.contains('selectedstep')){
+	sixteenStepArray[i].push(arrayOfInstruments[j][0]);
+}// }
+}
+}
+}
+else{
+arrayOfInstruments=[];
+arrayOfInstruments.push([kickinstrument, kickSequenceCopy]);
+arrayOfInstruments.push([snareinstrument, snareSequenceCopy]);
+arrayOfInstruments.push([clapinstrument, clapSequenceCopy]);
+arrayOfInstruments.push([inst5instrument, inst5SequenceCopy]);
+arrayOfInstruments.push([inst6instrument, inst6SequenceCopy]);
+arrayOfInstruments.push([inst7instrument, inst7SequenceCopy]);
+arrayOfInstruments.push([metronomeinstrument, metronomeSequenceCopy]);
+arrayOfInstruments.push([hatinstrument, hatSequenceCopy]);
+for (var i = 0; i < 16; i++){
+	sixteenStepArray[i]=[];
+}
+// for (var i = 0; i < 16; i++){//on each of the 16 beats
+for (var j = 0; j < arrayOfInstruments.length; j++){	//cycle through all of the instruments
+let localBeatNumber=0;
+for (var k = 0; k < arrayOfInstruments[j][1].length; k++){ //cycle through all the notes played by those instruments.
+sixteenStepArray[localBeatNumber].push(arrayOfInstruments[j][1][k][0]);
+localBeatNumber=localBeatNumber+arrayOfInstruments[j][1][k][1]*4;
+}
+}
+	
+setupStepRhythmSequence();
+// }
+}
+}
+
+
+
+
+
+
+
+
+// let sixteenStep1=[];
+
+
+
 
 function setupStepSequencerArray() {
     kickStepArray = []
@@ -693,70 +781,70 @@ function setupStepSequencerArray() {
 var stepelements = document.getElementsByClassName("rhythmstep");
 var rowpulldownelements = document.getElementsByClassName("kick-row-choices");
 
-var makeARowPulldownVisible = function (rowclassname) {
+var makeARowPulldownVisible = async function (rowclassname) {
     let targetrollpulldownelements = document.getElementsByClassName(rowclassname);
     for (var i = 0; i < targetrollpulldownelements.length; i++) {
         targetrollpulldownelements[i].hidden = false;
     }
 }
 
-var makeAClassVisible = function (rowclassname) {
+async function makeAClassVisible(rowclassname) {
     let targetrollpulldownelements = document.getElementsByClassName(rowclassname);
     for (var i = 0; i < targetrollpulldownelements.length; i++) {
         targetrollpulldownelements[i].hidden = false;
     }
 }
 
-var makeAClassInvisible = function (rowclassname) {
+async function makeAClassInvisible(rowclassname) {
     let targetrollpulldownelements = document.getElementsByClassName(rowclassname);
     for (var i = 0; i < targetrollpulldownelements.length; i++) {
         targetrollpulldownelements[i].hidden = true;
     }
 }
 
-var makeAClassUnlit = function (rowclassname) {
+async function makeAClassUnlit(rowclassname) {
     let targetrollpulldownelements = document.getElementsByClassName(rowclassname);
     for (var i = 0; i < targetrollpulldownelements.length; i++) {
         targetrollpulldownelements[i].classList.remove('lititup');
     }
 }
 
-var makeARowPulldownInvisible = function (rowclassname) {
+var makeARowPulldownInvisible = async function (rowclassname) {
     let targetrollpulldownelements = document.getElementsByClassName(rowclassname);
     for (var i = 0; i < targetrollpulldownelements.length; i++) {
         targetrollpulldownelements[i].hidden = true;
     }
 }
 
-var makeAClassRemoveInnerHTML = function (rowclassname) {
+var makeAClassRemoveInnerHTML = async function (rowclassname) {
     let targetrollpulldownelements = document.getElementsByClassName(rowclassname);
     for (var i = 0; i < targetrollpulldownelements.length; i++) {
         targetrollpulldownelements[i].innerHTML = "";
     }
 }
 
-var circleAClass = function (rowclassname) {
+var circleAClass = async function (rowclassname) {
     let targetrollpulldownelements = document.getElementsByClassName(rowclassname);
     for (var i = 0; i < targetrollpulldownelements.length; i++) {
         targetrollpulldownelements[i].classList.add('circleattribute');
     }
 }
 
-var circleAnId = function (rowclassname) {
+var circleAnId = async function (rowclassname) {
     let targetrollpulldownelements = document.getElementById(rowclassname);
 
     targetrollpulldownelements.classList.add('circleattribute');
 
 }
 
-var uncircleAClass = function (rowclassname) {
+var uncircleAClass = async function (rowclassname) {
     let targetrollpulldownelements = document.getElementsByClassName(rowclassname);
     for (var i = 0; i < targetrollpulldownelements.length; i++) {
         targetrollpulldownelements[i].classList.remove('circleattribute');
     }
 }
 
-var uncircleAnId = function (rowclassname) {
+var uncircleAnId = async function (rowclassname) {
     let targetrollpulldownelements = document.getElementById(rowclassname);
 
     targetrollpulldownelements.classList.remove('circleattribute');
@@ -788,6 +876,7 @@ var addrhythmsteplisteners = function () {
     if (rhythmFreestyle) {
         sequenceStarted = false;
         stopAllNotes();
+		parseAndConstructArrays();
         // stopAllVoices();
     } //7-24-20
     else {
@@ -1280,23 +1369,22 @@ function setVisualMode(visualModeLocal) {
 }
 
 function clearRhythms() {
-	if (tutorialMode){
-		stepLightMode=true;
-		
-	}
-	else{
-tutorialMode = false;
-pressOneKickTutorial = false;
+    if (tutorialMode) {
+        stepLightMode = true;
 
-pressTwoKickTutorial = false;
-pressOneKickTutorialPost = false;
-pressTwoKickTutorialPost = false;
-pressOneKickTutorialPostPartTwo = false;
-pressTwoKickTutorialPostPartTwo = false;
-clickTheAutoCheckTutorial = false;
-postAutoCheckTutorial = false;
-stepLightMode=false;
-	}
+    } else {
+        tutorialMode = false;
+        pressOneKickTutorial = false;
+
+        pressTwoKickTutorial = false;
+        pressOneKickTutorialPost = false;
+        pressTwoKickTutorialPost = false;
+        pressOneKickTutorialPostPartTwo = false;
+        pressTwoKickTutorialPostPartTwo = false;
+        clickTheAutoCheckTutorial = false;
+        postAutoCheckTutorial = false;
+        stepLightMode = false;
+    }
     document.getElementById('level-progress').style.display = 'none';
     totalScore = 0;
     currentLevelScore = 0;
@@ -1321,8 +1409,8 @@ stepLightMode=false;
     clearAllNotes();
     newQuestionTime = true;
     resetStepElements();
-	
-uncircleAClass('circleattribute');
+
+    uncircleAClass('circleattribute');
 }
 
 function clearButtons() {
@@ -1460,11 +1548,13 @@ function setupRhythmSense() {
     accompanimentVolume = 0;
     referenceVolume = 0;
     // paused=true;
-    rhythmVolume = 0;
+    rhythmVolume = 50;
     // restartTimer();
-    repeatOnFrame();
+    // repeatOnFrame();
 
     setupMakeYourOwnMode();
+	
+intervalSetting = setInterval(repeatEverySixteenth, 60000/(4*currentBPM));
 
 }
 
@@ -1526,7 +1616,7 @@ function setupLevelTwo() { //the note changes under you. And interval changes.
         document.getElementById("lesson-directions").innerHTML = "Directions: The note changes each time. And interval changes.";
 
     globalTimeRequirement = 1;
-    repeatOnFrame();
+    // repeatOnFrame();
 }
 function setupLevelThree() { //one note over and over again. (different intervals, 3rd, 4th, 5th)
     accompaniment = false;
@@ -2170,6 +2260,7 @@ function drawKeySignature(keyName) {
 }
 
 function showANote() {
+    alert("show a note");
     var lastImageNote = currentImageNote;
     var currentImageNote = notes.shift();
     if (!currentImageNote)
@@ -2201,6 +2292,7 @@ function showANote() {
 }
 
 async function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
+    alert("YO");
     // console.log("The Note Message has " + noteArrayNum + " " + voiceType + " " + theNoteLength);
     if (notationMode == "movingNotesMode") {
         // if (Math.round(theNoteLength) == 3) {
@@ -3729,69 +3821,69 @@ function startWrongTimer() {
 function updateTimer() { //what to do when time zone
     var now = new Date();
     if (noteTimerStarted) {
-        noteTimeStart = new Date(now.getTime());
+        noteTimeStart = clockTester+0;
         noteTimerStarted = false;
     }
     if (arpeggioTimerStarted) {
-        arpeggioTimeStart = new Date(now.getTime());
+        arpeggioTimeStart = clockTester+0;
         arpeggioTimerStarted = false;
     }
     if (kickTimerStarted) {
-        kickTimeStart = new Date(now.getTime());
+        kickTimeStart = clockTester+0;
         kickTimerStarted = false;
     }
     if (clapTimerStarted) { // inst copy  start
-        clapTimeStart = new Date(now.getTime());
+        clapTimeStart = clockTester+0;
         clapTimerStarted = false;
     } // inst copy end
     if (metronomeTimerStarted) { // inst copy  start
-        metronomeTimeStart = new Date(now.getTime());
+        metronomeTimeStart = clockTester+0;
         metronomeTimerStarted = false;
     }
     if (inst5TimerStarted) { // inst copy  start
-        inst5TimeStart = new Date(now.getTime());
+        inst5TimeStart = clockTester+0;
         inst5TimerStarted = false;
     }
     if (inst6TimerStarted) { // inst copy  start
-        inst6TimeStart = new Date(now.getTime());
+        inst6TimeStart = clockTester+0;
         inst6TimerStarted = false;
     }
     if (inst7TimerStarted) { // inst copy  start
-        inst7TimeStart = new Date(now.getTime());
+        inst7TimeStart = clockTester+0;
         inst7TimerStarted = false;
     }
     if (hatTimerStarted) {
-        hatTimeStart = new Date(now.getTime());
+        hatTimeStart = clockTester+0;
         hatTimerStarted = false;
     }
     if (snareTimerStarted) {
-        snareTimeStart = new Date(now.getTime());
+        snareTimeStart = clockTester+0;
         snareTimerStarted = false;
     }
     if (rhythmTimerStarted) {
-        rhythmTimeStart = new Date(now.getTime());
+        rhythmTimeStart = clockTester+0;
         rhythmTimerStarted = false;
     }
 
     if (chordTimerStarted) {
-        chordTimeStart = new Date(now.getTime());
+        chordTimeStart = clockTester+0;
         chordTimerStarted = false;
     }
     if (rootTimerStarted) {
-        rootTimeStart = new Date(now.getTime());
+        rootTimeStart = clockTester+0;
         // arpeggioTimerStarted=false;
         rootTimerStarted = false;
     }
     if (scoreTimerStarted) {
-        scoreTimeStart = new Date(now.getTime());
+        scoreTimeStart = clockTester+0;
         scoreTimerStarted = false;
     }
     if (pauseTimerStarted) {
-        pauseTimeStart = new Date(now.getTime());
+        pauseTimeStart = clockTester+0;
         pauseTimerStarted = false;
     }
     if (wrongNoteStarted) {
-        scorePauseTimeStart = new Date(now.getTime());
+        scorePauseTimeStart = clockTester+0;
         wrongNoteStarted = false;
     }
     try {
@@ -3820,64 +3912,74 @@ function updateTimer() { //what to do when time zone
     // // console.log("score pause time amount " + (((now.getTime() - scorePauseTimeStart) % (1000.001 * 60.001)) / 1000.001));
     // scorePauseTimeAmount = now.getTime() - scorePauseTimeStart; //previousScorePauseTimeAmount + (now.getTime() - scorePauseTimeStart);
     // }
-    noteTime = (now.getTime()) - noteTimeStart; //the Time of a note.
-    noteTimeSeconds = ((noteTime % (1000 * 60)) / 1000);
-    noteTimeBeats = noteTimeSeconds / (60 / currentBPM);
+    let tempTime = clockTester+0;
+
+    noteTimeBeats = (tempTime) - noteTimeStart; //the Time of a note.
+
     // try {
-    rootTime = (now.getTime()) - rootTimeStart; //the Time of a note.
-    rootTimeSeconds = ((rootTime % (1000 * 60)) / 1000);
-    rootTimeBeats = rootTimeSeconds / (60 / currentBPM);
-    // } catch (error) {}
 
-    arpeggioTime = (now.getTime()) - arpeggioTimeStart; //the Time of a note.
-    arpeggioTimeSeconds = ((arpeggioTime % (1000 * 60)) / 1000);
-    arpeggioTimeBeats = arpeggioTimeSeconds / (60 / currentBPM);
+    rootTimeBeats = (tempTime) - rootTimeStart;
+    arpeggioTimeBeats = (tempTime) - arpeggioTimeStart;
+    rhythmTimeBeats = (tempTime) - rhythmTimeStart;
+    kickTimeBeats = (tempTime) - kickTimeStart;
+    inst5TimeBeats = (tempTime) - inst5TimeStart;
+    inst6TimeBeats = (tempTime) - inst6TimeStart;
+    inst7TimeBeats = (tempTime) - inst7TimeStart;
+   
+    snareTimeBeats = (tempTime) - snareTimeStart;
+    hatTimeBeats = (tempTime) - hatTimeStart;
+    clapTimeBeats = (tempTime) - clapTimeStart;
+    metronomeTimeBeats = (tempTime) - metronomeTimeStart; // } catch (error) {}
 
-    rhythmTime = (now.getTime()) - rhythmTimeStart; //the Time of a note.
-    rhythmTimeSeconds = ((rhythmTime % (1000 * 60)) / 1000);
-    rhythmTimeBeats = rhythmTimeSeconds / (60 / currentBPM);
+    // arpeggioTime = (tempTime) - arpeggioTimeStart; //the Time of a note.
+    // arpeggioTimeSeconds = ((arpeggioTime % (1000 * 60)) / 1000);
+    // arpeggioTimeBeats = arpeggioTimeSeconds / (60 / currentBPM);
 
-    kickTime = (now.getTime()) - kickTimeStart; //the Time of a note.
-    kickTimeSeconds = ((kickTime % (1000 * 60)) / 1000);
-    kickTimeBeats = kickTimeSeconds / (60 / currentBPM);
+    // rhythmTime = (tempTime) - rhythmTimeStart; //the Time of a note.
+    // rhythmTimeSeconds = ((rhythmTime % (1000 * 60)) / 1000);
+    // rhythmTimeBeats = rhythmTimeSeconds / (60 / currentBPM);
 
-    clapTime = (now.getTime()) - clapTimeStart; //the Time of a note. // inst copy start
-    clapTimeSeconds = ((clapTime % (1000 * 60)) / 1000);
-    clapTimeBeats = clapTimeSeconds / (60 / currentBPM); // inst copy end
+    // kickTime = (tempTime) - kickTimeStart; //the Time of a note.
+    // kickTimeSeconds = ((kickTime % (1000 * 60)) / 1000);
+    // kickTimeBeats = kickTimeSeconds / (60 / currentBPM);
 
-    metronomeTime = (now.getTime()) - metronomeTimeStart; //the Time of a note. // inst copy start
-    metronomeTimeSeconds = ((metronomeTime % (1000 * 60)) / 1000);
-    metronomeTimeBeats = metronomeTimeSeconds / (60 / currentBPM); // inst copy end
+    // clapTime = (tempTime) - clapTimeStart; //the Time of a note. // inst copy start
+    // clapTimeSeconds = ((clapTime % (1000 * 60)) / 1000);
+    // clapTimeBeats = clapTimeSeconds / (60 / currentBPM); // inst copy end
 
-    inst5Time = (now.getTime()) - inst5TimeStart; //the Time of a note. // inst copy start
-    inst5TimeSeconds = ((inst5Time % (1000 * 60)) / 1000);
-    inst5TimeBeats = inst5TimeSeconds / (60 / currentBPM); // inst copy end
+    // metronomeTime = (tempTime) - metronomeTimeStart; //the Time of a note. // inst copy start
+    // metronomeTimeSeconds = ((metronomeTime % (1000 * 60)) / 1000);
+    // metronomeTimeBeats = metronomeTimeSeconds / (60 / currentBPM); // inst copy end
 
-    inst6Time = (now.getTime()) - inst6TimeStart; //the Time of a note. // inst copy start
-    inst6TimeSeconds = ((inst6Time % (1000 * 60)) / 1000);
-    inst6TimeBeats = inst6TimeSeconds / (60 / currentBPM); // inst copy end
+    // inst5Time = (tempTime) - inst5TimeStart; //the Time of a note. // inst copy start
+    // inst5TimeSeconds = ((inst5Time % (1000 * 60)) / 1000);
+    // inst5TimeBeats = inst5TimeSeconds / (60 / currentBPM); // inst copy end
 
-    inst7Time = (now.getTime()) - inst7TimeStart; //the Time of a note. // inst copy start
-    inst7TimeSeconds = ((inst7Time % (1000 * 60)) / 1000);
-    inst7TimeBeats = inst7TimeSeconds / (60 / currentBPM); // inst copy end
+    // inst6Time = (tempTime) - inst6TimeStart; //the Time of a note. // inst copy start
+    // inst6TimeSeconds = ((inst6Time % (1000 * 60)) / 1000);
+    // inst6TimeBeats = inst6TimeSeconds / (60 / currentBPM); // inst copy end
 
-    hatTime = (now.getTime()) - hatTimeStart; //the Time of a note.
-    hatTimeSeconds = ((hatTime % (1000 * 60)) / 1000);
-    hatTimeBeats = hatTimeSeconds / (60 / currentBPM);
+    // inst7Time = (tempTime) - inst7TimeStart; //the Time of a note. // inst copy start
+    // inst7TimeSeconds = ((inst7Time % (1000 * 60)) / 1000);
+    // inst7TimeBeats = inst7TimeSeconds / (60 / currentBPM); // inst copy end
 
-    snareTime = (now.getTime()) - snareTimeStart; //the Time of a note.
-    snareTimeSeconds = ((snareTime % (1000 * 60)) / 1000);
-    snareTimeBeats = snareTimeSeconds / (60 / currentBPM);
+    // hatTime = (tempTime) - hatTimeStart; //the Time of a note.
+    // hatTimeSeconds = ((hatTime % (1000 * 60)) / 1000);
+    // hatTimeBeats = hatTimeSeconds / (60 / currentBPM);
 
-    chordTime = (now.getTime()) - chordTimeStart; //the Time of a note.
-    chordTimeSeconds = ((chordTime % (1000 * 60)) / 1000);
-    chordTimeBeats = chordTimeSeconds / (60 / currentBPM);
+    // snareTime = (tempTime) - snareTimeStart; //the Time of a note.
+    // snareTimeSeconds = ((snareTime % (1000 * 60)) / 1000);
+    // snareTimeBeats = snareTimeSeconds / (60 / currentBPM);
+
+    // chordTime = (tempTime) - chordTimeStart; //the Time of a note.
+    // chordTimeSeconds = ((chordTime % (1000 * 60)) / 1000);
+    // chordTimeBeats = chordTimeSeconds / (60 / currentBPM);
     // console.log(arpeggioTimeBeats);
     // console.log(arpeggioTimeBeats+" and " +rootTimeBeats+ " and "+ noteTimeBeats);
     try {
 
         // console.log(deficitBoost +" d");
-        scoreTime = ((now.getTime() - scorePauseTime) - scoreTimeStart.getTime()); //-wrongPoints;///1000.01-deficitBoost/1000.01;
+        scoreTime = ((tempTime - scorePauseTime) - scoreTimeStart.getTime()); //-wrongPoints;///1000.01-deficitBoost/1000.01;
         if (scoreTime < 0) {
             // deficitBoost=scoreTime;
         } //scorePauseTimeAmount) - scoreTimeStart.getTime();
@@ -3896,7 +3998,7 @@ function updateTimer() { //what to do when time zone
         // console.log("scoreTime beats are " + scoreTimeBeats); //+ " and pausetime is "+scorePauseTimeAmount+ " and scoretimestart is "+scoreTimeStart.getTime());
     } catch (error) {}
     // console.log ("note time is " +noteTime + " seconds is "+noteTimeSeconds+" beats at 120bpm are "+noteTimeBeats);
-    var distance = (now.getTime() - pauseTimeAmount) - timeEnd.getTime();
+    var distance = (tempTime - pauseTimeAmount) - timeEnd.getTime();
     var minutes = Math.floor(distance / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
@@ -3909,7 +4011,7 @@ function updateTimer() { //what to do when time zone
     if (seconds < 10)
         seconds = "0" + seconds;
 
-    document.querySelector('#countdown').innerText = minutes + ":" + seconds + " ";
+    document.getElementById('countdown').innerText = minutes + ":" + seconds + " ";
     document.getElementById("averagetime").innerText = minutes2 + ":" + seconds2 + " ";
     // if (minutes > 0 || seconds > 0) {
     // window.setTimeout(function () {
@@ -4949,6 +5051,7 @@ function updateTimer() { //what to do when time zone
     }
     (),
     ue = n("requestAnimationFrame") || function (e) {
+        alert("4960");
         return setTimeout(function () {
             return e((new Date).getTime())
         }, 1e3 / 60)
@@ -6421,7 +6524,7 @@ function amplifyMedia(mediaElem, multiplier) {
 
 async function playANote(arrayPlace) { // where we Play Notes  //important chordIsDone means we are not playing the chord. !chordIsDone means we are playing the chord or arpeggios.
 
-
+	console.warn (arrayPlace);
     // console.log("Playing "+ noteArray[arrayPlace][1]);
     // console.log(arrayPlace + " " + noteArray[arrayPlace][1]);
     //beginning of section on playing the notes using time.
@@ -6510,7 +6613,7 @@ async function playANote(arrayPlace) { // where we Play Notes  //important chord
 
                     }
                 }
-                document.querySelector('.step2 .note:nth-child(' + (i + 1) + ')').classList.add('on');
+                // document.querySelector('.step2 .note:nth-child(' + (i + 1) + ')').classList.add('on');
             } catch (error) {}
             if (newNote == true) {
                 if (instrument != "rhythmInstruments") {
@@ -6575,18 +6678,20 @@ async function playANote(arrayPlace) { // where we Play Notes  //important chord
             chordIsDone = false;
             // alert (arpeggioPlay);
             // nonReferencePlay = false; //AVI you mmay
-            if (rhythmPlay) {
-                rhythmSequenceArray = [];
-                // alert ("hi");
-                if (!rhythmSense) {
-                    setupRhythmSequence();
-                } else {
-                    setupStepRhythmSequence();
-                }
+            // if (rhythmPlay) {   7-30-20 begin
+                // rhythmSequenceArray = [];
+                // // alert ("hi");
+                // if (!rhythmSense) {
+                    // setupRhythmSequence();
+                // } else {
+					// alertify (clockTester);
+                    // setupStepRhythmSequence();
+                // }
 
-                rhythmSequenceCopy = [];
-                rhythmSequenceCopy = rhythmSequenceArray.slice();
-            }
+                // rhythmSequenceCopy = [];
+                // rhythmSequenceCopy = rhythmSequenceArray.slice();
+            // } 7-30-20 end
+			// alert ("lol");
             // alert ("you should hear a chord");
             let currentInstrument = instrument + "";
             if (currentInstrument == "piano") {
@@ -7139,11 +7244,10 @@ function setupStepRhythmSequence() { //called at the beginning of each measure. 
         setupStepInst5Sequence(); // inst copy
         if (metronome) {
             setupStepMetronomeSequence(); // inst copy
+        } else {
+            metronomeSequenceArray.push(["rest", 4, 0]);
+            metronomeSequenceCopy.push(["rest", 4, 0]);
         }
-		else{
-		metronomeSequenceArray.push(["rest", 4, 0]);
-		metronomeSequenceCopy.push(["rest", 4, 0]);
-		}
         setupStepInst6Sequence(); // inst copy
         setupStepInst7Sequence(); // inst copy
         setupStepHatSequence();
@@ -7198,12 +7302,12 @@ function setupBackbeat() {
     snareStepArray[4].classList.remove("unselectedstep");
     snareStepArray[12].classList.add("selectedstep");
     snareStepArray[12].classList.remove("unselectedstep");
-	
+
     snareSequenceArray.push(["rest", 1, 0]);
     snareSequenceArray.push(["snare", 2, 0]);
     snareSequenceArray.push(["snare", 1, 0]);
     tempSnareSequenceArray = [];
-	snareSequenceCopy=snareSequenceArray.slice();
+    snareSequenceCopy = snareSequenceArray.slice();
     tempSnareSequenceArray.push(["rest", 1, 0]);
     tempSnareSequenceArray.push(["snare", 2, 0]);
     tempSnareSequenceArray.push(["snare", 1, 0]);
@@ -7247,8 +7351,8 @@ function setupMetronome() {
     } else {
         metronomeSequenceCopy = [];
         metronomeSequenceArray = [];
-		metronomeSequenceCopy.push(["rest", 4, 0]);
-		metronomeSequenceArray.push(["rest", 4, 0]);
+        metronomeSequenceCopy.push(["rest", 4, 0]);
+        metronomeSequenceArray.push(["rest", 4, 0]);
         // inst6StepArray[0].classList.add("unselectedstep");
         // inst6StepArray[0].classList.remove("selectedstep");
         // inst6StepArray[4].classList.add("unselectedstep");
@@ -7315,6 +7419,7 @@ function setupRandomKickSequence(amountOfRandomKicks) {
         if (metronome)
             metronomeSequenceArray = metronomeSequenceCopy.slice();
         kickSequenceArray = kickSequenceCopy.slice();
+        // console.error("copy 7320")
         // console.warn(hatSequenceCopy.toString());
     }
 }
@@ -7511,6 +7616,7 @@ function setupRandomSnareSequence(amountOfRandomSnares) {
     }
 }
 function generateStepKickSequence() {
+	// alert("hi");
     tempKickSequenceArray = [];
     var firstkicksounded = false;
     var kicksToAddToEnd = 0;
@@ -7841,7 +7947,7 @@ function generateStepSnareSequence() { //inst copy
 
     } else if (pressTwoKickTutorial) {
         pressTwoKickTutorial = false;
-        postTwoKickTutorial=true;
+        postTwoKickTutorial = true;
     }
     if (rhythmSpeedMode) {
         checkMyRhythmAnswer();
@@ -7863,20 +7969,20 @@ function checkMyRhythmAnswer() {
             pressOneKickTutorialPost = false;
             pressOneKickTutorialPostPartTwo = true;
             pressOneKickTutorialPostPartTwoMethod();
-        } else if (postAutoCheckTutorial){
-			postAutoCheckTutorial=false;
-			preKickPressTwoTutorial();
-			kickStepArray[0].classList.remove('selectedstep');
-			kickStepArray[0].classList.add('unselectedstep');
-			tempKickSequenceArray=[];
-		}else if(postTwoKickTutorial) {
-			postTwoKickTutorial=false;
-			kickStepArray[0].classList.remove('selectedstep');
-			kickStepArray[0].classList.add('unselectedstep');
-			kickStepArray[7].classList.remove('selectedstep');
-			kickStepArray[7].classList.add('unselectedstep');
-			tempKickSequenceArray=[];
-			nowPostTwoKickTutorial(); //CHANGE THIS 7-29
+        } else if (postAutoCheckTutorial) {
+            postAutoCheckTutorial = false;
+            preKickPressTwoTutorial();
+            kickStepArray[0].classList.remove('selectedstep');
+            kickStepArray[0].classList.add('unselectedstep');
+            tempKickSequenceArray = [];
+        } else if (postTwoKickTutorial) {
+            postTwoKickTutorial = false;
+            kickStepArray[0].classList.remove('selectedstep');
+            kickStepArray[0].classList.add('unselectedstep');
+            kickStepArray[7].classList.remove('selectedstep');
+            kickStepArray[7].classList.add('unselectedstep');
+            tempKickSequenceArray = [];
+            nowPostTwoKickTutorial(); //CHANGE THIS 7-29
         } else {
             if (!noMorePoints) {
                 currentLevelScore++;
@@ -7897,7 +8003,7 @@ function checkMyRhythmAnswer() {
     } else if (!rhythmSpeedMode) {
         alertify("Not quite. Try again!")
     }
-	
+
 }
 function setupStepKickSequence() {
     kickSequenceArray = [];
@@ -8277,14 +8383,109 @@ function setupRhythmSequence() {
     }
 
 }
+var firstTimeThrough=true;
+var thisBeatNum=0;
+
+function repeatEverySixteenth(){
+	
+	if (firstTimeThrough){
+		firstTimeThrough=false;
+	setupStepRhythmSequence();
+	}
+	clockTester=clockTester+1;
+	
+	// instrument="rhythmInstruments";
+	chordIsDone=true;
+	 updateTimer();
+	// alertify (clockTester%16);
+	thisBeatNum=clockTester%16+1;
+	// alertify(thisBeatNum);
+	if (thisBeatNum%4==0){ // if the beat i1 1, 2, 3, or 4 
+	instrument="rhythmInstruments";
+	// playANote("kick0");
+	parseAndConstructArrays();
+	let thisStep=(thisBeatNum/4);
+	if (thisStep==4)
+thisStep=0;	
+// alertify (thisStep);
+	guideStepArray[thisStep*4].classList.add('lititup');
+	if ((thisStep-1)<0){
+	thisStep=4;
+	}
+	guideStepArray[(thisStep-1)*4].classList.remove('lititup');
+	}
+	
+	for (var i=0; i<sixteenStepArray[thisBeatNum-1].length; i++){
+		playANote(sixteenStepArray[thisBeatNum-1][i]+"0");
+	}
+	if (newQuestionTime){
+		        noMorePoints = false;
+        numOfThisNoteInSequence = 0;
+        // alert ("a new questions!");
+        chordSequenceStarted = false;
+        if (!nonReferencePlay) {
+            sequenceStarted = false;
+        }
+        clearAllNotes();
+        currentScore = 0;
+        score = 0;
+        wrongPoints = 0;
+        wrongNote = false;
+        newWrong = false;
+        newScore = true;
+		            rhythmSequenceArray = [];
+            rhythmSequenceCopy = [];
+            kickSequenceArray = [];
+            kickSequenceCopy = [];
+            clapSequenceArray = []; //inst copy
+            clapSequenceCopy = []; //inst copy
+            metronomeSequenceArray = []; //inst copy
+            metronomeSequenceCopy = []; //inst copy
+            inst5SequenceArray = []; //inst copy
+            inst5SequenceCopy = []; //inst copy
+            inst6SequenceArray = []; //inst copy
+            inst6SequenceCopy = []; //inst copy
+            inst7SequenceArray = []; //inst copy
+            inst7SequenceCopy = []; //inst copy
+            hatSequenceArray = [];
+            hatSequenceCopy = [];
+            snareSequenceArray = [];
+            snareSequenceCopy = [];
+			newQuestionTime=false;
+	}
+	
+	var minutes = Math.floor(clockTester/4/currentBPM);
+	
+	var seconds = Math.floor(clockTester*60/4/currentBPM);
+	// alertify(seconds);
+    // var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    // var distance2 = distance / (totalScore + 1);
+    // var minutes2 = Math.floor(distance2 / (1000 * 60));
+    // var seconds2 = Math.floor((distance2 % (1000 * 60)) / 1000);
+
+    // if (minutes < 10)
+        // minutes = "0" + minutes;
+    // if (seconds < 10)
+        // seconds = "0" + seconds;
+
+    document.getElementById('countdown').innerText = minutes + ":" + seconds + " ";
+    // document.getElementById("averagetime").innerText = minutes2 + ":" + seconds2 + " ";
+}
 
 function repeatOnFrame() {
+	// alert ("hi");
+	clockTester=clockTester+.5;
+	// instrument="rhythmInstruments";
+	chordIsDone=true;
+	// playANote("kick0");
+	// alertify (Math.ceil(noteTimeBeats));
     updateTimer();
     if (beginning == true) {
         playMajorScale(noteAdapter + scaleAdapter);
 
     }
-    if ((noteTimeBeats > currentNoteBeats) && (sequencePlay) && (!nonReferencePlay)) {
+    if ((noteTimeBeats >= currentNoteBeats) && (sequencePlay) && (!nonReferencePlay)) {
         sequenceStarted = false; //proceed to the next note.
         // synth.triggerRelease();
         // stopAllNotes();
@@ -8312,7 +8513,7 @@ function repeatOnFrame() {
         if (firstNotationToCome) {
             // alert(sequenceArray[0][0]+" "+sequenceArray[0][1]);
             if (!rhythmSense) {
-                makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
+                // makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
             }
             numOfThisNoteInSequence++;
             // alert("checkpointTwo");
@@ -8323,11 +8524,11 @@ function repeatOnFrame() {
 
         if (sequenceArray.length > 0) {
 
-            makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
+            // makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
             numOfThisNoteInSequence++;
         } else {
             numOfThisNoteInSequence = 0;
-            makeAndShowANote(sequenceCopy[0][0], sequenceCopy[0][1], "referenceNote");
+            // makeAndShowANote(sequenceCopy[0][0], sequenceCopy[0][1], "referenceNote");
             numOfThisNoteInSequence++;
         }
         // let currentRandomScaleNum=
@@ -8378,6 +8579,20 @@ function repeatOnFrame() {
             // alertify("first "+intervalDirection);
         }
         // alertify("first "+intervalDirection);
+		// instrument="piano";
+		 if (rhythmPlay) {
+                rhythmSequenceArray = [];
+                // alert ("hi");
+                if (!rhythmSense) {
+                    setupRhythmSequence();
+                } else {
+					// alertify (clockTester);
+                    setupStepRhythmSequence();
+                }
+
+                rhythmSequenceCopy = [];
+                rhythmSequenceCopy = rhythmSequenceArray.slice();
+            }
         playANote(currentRandomNoteNum);
         if (sequencePlay) {
             randomNoteNum = currentRandomNoteNum + 0;
@@ -8411,11 +8626,11 @@ function repeatOnFrame() {
             document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
         }
         if (sequenceArray.length > 0) {
-            makeAndShowANote(currentRandomNoteNum + localMovement + 0, sequenceArray[0][1], "targetNote");
+            // makeAndShowANote(currentRandomNoteNum + localMovement + 0, sequenceArray[0][1], "targetNote");
             // numOfThisNoteInSequence++;
         } else {
             // numOfThisNoteInSequence=0;
-            makeAndShowANote(currentRandomNoteNum + localMovement + 0, sequenceCopy[0][1], "targetNote");
+            // makeAndShowANote(currentRandomNoteNum + localMovement + 0, sequenceCopy[0][1], "targetNote");
             // numOfThisNoteInSequence++;
         }
         //beginningtakenfromharmonizebecauseyougotitrright
@@ -8465,15 +8680,16 @@ function repeatOnFrame() {
         startHatTimer();
         startSnareTimer();
         if (sequenceArray.length == 0) {
-            console.error('6115'); //7-15-2020
+            // console.error('6115'); //7-15-2020
             sequenceArray = sequenceCopy.slice();
 
             // console.log("sup "+ sequenceArray.toString());
 
         }
     } else if (nonReferencePlay) {
+		// alert ("hi");
         if ((chordTimeBeats >= currentChordBeats)) {
-            // alert ("hi");
+            alert("hi");
             chordSequenceStarted = false; //proceed to the next note.
 
         }
@@ -8609,7 +8825,7 @@ function repeatOnFrame() {
 
     }
     if (nonReferencePlay) { //TRANSPLANT BEGIN
-
+        alert("YO");
         if ((noteTimeBeats >= currentNoteBeats)) {
             // alert (sequenceArray.length);
             sequenceStarted = false; //proceed to the next note.
@@ -8619,7 +8835,7 @@ function repeatOnFrame() {
         if ((!sequenceStarted) && (sequenceArray.length > 0)) {
             // console.log(arpeggioSequenceArray.length+" "+arpeggioSequenceArray.toString());
             if (firstNotationToCome) {
-                makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
+                // makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
                 numOfThisNoteInSequence++;
                 firstNotationToCome = false;
                 setupAFirstNote = true;
@@ -8627,13 +8843,13 @@ function repeatOnFrame() {
             let currentNoteInfo = sequenceArray.shift();
 
             if (sequenceArray.length > 0) {
-                console.error("length of sequence is " + sequenceArray.length + " num of notes is " + numOfThisNoteInSequence + " length of chords is " + chordSequenceArray.length);
-                makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
+                // console.error("length of sequence is " + sequenceArray.length + " num of notes is " + numOfThisNoteInSequence + " length of chords is " + chordSequenceArray.length);
+                // makeAndShowANote(sequenceArray[0][0], sequenceArray[0][1], "referenceNote");
                 numOfThisNoteInSequence++;
             } else {
                 console.error("restarted numnotes");
                 numOfThisNoteInSequence = 0;
-                makeAndShowANote(sequenceCopy[0][0], sequenceCopy[0][1], "referenceNote");
+                // makeAndShowANote(sequenceCopy[0][0], sequenceCopy[0][1], "referenceNote");
                 numOfThisNoteInSequence++;
             }
 
@@ -8731,11 +8947,11 @@ function repeatOnFrame() {
                     document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
                 }
                 if (sequenceArray.length > 0) {
-                    makeAndShowANote(currentRandomNoteNum + localMovement + 0, sequenceArray[0][1], "targetNote");
+                    // makeAndShowANote(currentRandomNoteNum + localMovement + 0, sequenceArray[0][1], "targetNote");
                     // numOfThisNoteInSequence++;
                 } else {
                     // numOfThisNoteInSequence=0;
-                    makeAndShowANote(currentRandomNoteNum + localMovement + 0, sequenceCopy[0][1], "targetNote");
+                    // makeAndShowANote(currentRandomNoteNum + localMovement + 0, sequenceCopy[0][1], "targetNote");
                     // numOfThisNoteInSequence++;
                 }
             }
@@ -8764,11 +8980,16 @@ function repeatOnFrame() {
         }
 
     }
-
+			// zalertify(Math.ceil(metronomeTimeBeats));
+			// if (clockTester%2==0){
+			// instrument = "rhythmInstruments";
+			// playANote("kick0")
+			// }
     if (rhythmPlay) { //TRANSPLANT BEGIN
 
         if ((rhythmTimeBeats >= currentRhythmBeats) && (rhythmPlay)) {
 
+			
             rhythmSequenceStarted = false; //proceed to the next note.
 
         }
@@ -8785,6 +9006,7 @@ function repeatOnFrame() {
             let currentInstrument = instrument + "";
             instrument = "rhythmInstruments"; //error spot 2
             // alert (currentRandomRhythmNum);
+			
             if (currentRandomRhythmNum != "rest0") {
                 playANote(currentRandomRhythmNum);
             } //Thoughts: I may need to put all of this into a new method specifically for arpeggiation.
@@ -8865,42 +9087,82 @@ function repeatOnFrame() {
             }
         }
         // alert (kickTimeBeats);
-        if (kickTimeBeats > kickTimeBeatCount) {
-
-            document.getElementById('kick-steprowlight').classList.remove('litup');
-            makeAClassUnlit('kickstep');
-        }
-        if (kickTimeBeats > clapTimeBeatCount) { //inst copy begin
-            document.getElementById('clap-steprowlight').classList.remove('litup');
-            makeAClassUnlit('clapstep');
-        } //inst copy end
-        if (kickTimeBeats > hatTimeBeatCount) {
-
-            document.getElementById('hat-steprowlight').classList.remove('litup');
-            makeAClassUnlit('hatstep');
-        }
-        if (kickTimeBeats > snareTimeBeatCount) {
-
-            document.getElementById('snare-steprowlight').classList.remove('litup');
-            makeAClassUnlit('snarestep');
-        }
         if (kickTimeBeats > metronomeTimeBeatCount) {
-            makeAClassUnlit('guidestep');
+            // makeAClassUnlit('guidestep');
+			
+                document.getElementById('guidestepone').classList.remove('lititup');
+                document.getElementById('guidestepfive').classList.remove('lititup');
+                document.getElementById('guidestepnine').classList.remove('lititup');
+                document.getElementById('guidestepthirteen').classList.remove('lititup');
         }
-        if (kickTimeBeats > inst5TimeBeatCount) {
+        if (stepLightMode) {
+            if (kickTimeBeats > kickTimeBeatCount) {
 
-            document.getElementById('inst5-steprowlight').classList.remove('litup');
-            makeAClassUnlit('inst5step');
+                document.getElementById('kick-steprowlight').classList.remove('litup');
+                makeAClassUnlit('kickstep');
+            }
+            if (kickTimeBeats > clapTimeBeatCount) { //inst copy begin
+                document.getElementById('clap-steprowlight').classList.remove('litup');
+                makeAClassUnlit('clapstep');
+            } //inst copy end
+            if (kickTimeBeats > hatTimeBeatCount) {
+
+                document.getElementById('hat-steprowlight').classList.remove('litup');
+                makeAClassUnlit('hatstep');
+            }
+            if (kickTimeBeats > snareTimeBeatCount) {
+
+                document.getElementById('snare-steprowlight').classList.remove('litup');
+                makeAClassUnlit('snarestep');
+            }
+            // if (kickTimeBeats > metronomeTimeBeatCount) {
+            // makeAClassUnlit('guidestep');
+            // }
+            if (kickTimeBeats > inst5TimeBeatCount) {
+
+                document.getElementById('inst5-steprowlight').classList.remove('litup');
+                makeAClassUnlit('inst5step');
+            }
+            if (kickTimeBeats > inst6TimeBeatCount) {
+
+                document.getElementById('inst6-steprowlight').classList.remove('litup');
+                makeAClassUnlit('inst6step');
+            }
+            if (kickTimeBeats > inst7TimeBeatCount) {
+
+                document.getElementById('inst7-steprowlight').classList.remove('litup');
+                makeAClassUnlit('inst7step');
+            }
         }
-        if (kickTimeBeats > inst6TimeBeatCount) {
+        if (rowLightMode) {
+            if (kickTimeBeats > kickTimeBeatCount) {
 
-            document.getElementById('inst6-steprowlight').classList.remove('litup');
-            makeAClassUnlit('inst6step');
-        }
-        if (kickTimeBeats > inst7TimeBeatCount) {
+                document.getElementById('kick-steprowlight').classList.remove('litup');
+            }
+            if (kickTimeBeats > clapTimeBeatCount) { //inst copy begin
+                document.getElementById('clap-steprowlight').classList.remove('litup');
+            } //inst copy end
+            if (kickTimeBeats > hatTimeBeatCount) {
 
-            document.getElementById('inst7-steprowlight').classList.remove('litup');
-            makeAClassUnlit('inst7step');
+                document.getElementById('hat-steprowlight').classList.remove('litup');
+            }
+            if (kickTimeBeats > snareTimeBeatCount) {
+
+                document.getElementById('snare-steprowlight').classList.remove('litup');
+            }
+            if (kickTimeBeats > metronomeTimeBeatCount) {}
+            if (kickTimeBeats > inst5TimeBeatCount) {
+
+                document.getElementById('inst5-steprowlight').classList.remove('litup');
+            }
+            if (kickTimeBeats > inst6TimeBeatCount) {
+
+                document.getElementById('inst6-steprowlight').classList.remove('litup');
+            }
+            if (kickTimeBeats > inst7TimeBeatCount) {
+
+                document.getElementById('inst7-steprowlight').classList.remove('litup');
+            }
         }
 
         // if (kickTimeBeats >= .5) {
@@ -8929,15 +9191,17 @@ function repeatOnFrame() {
         // // document.getElementById('kickstepone').classList.remove('unselectedstep');
         // // document.getElementById('kickstepone').classList.remove('selectedstep');
         // }
+		
         if ((kickTimeBeats >= currentkickBeats) && (rhythmPlay)) {
-
+			
             kickSequenceStarted = false; //proceed to the next note.
 
         }
 
         if ((!kickSequenceStarted) && (kickSequenceArray.length > 0) && (kickStarted)) {
+			
             // console.log(arpeggioSequenceArray.length+" "+arpeggioSequenceArray.toString());
-
+			
             let currentNoteInfo = kickSequenceArray.shift();
             // console.log(currentNoteInfo.toString()+" "+arpeggioSequenceStarted);
             currentkickBeats = currentkickBeats + currentNoteInfo[1] + 0;
@@ -8980,7 +9244,9 @@ function repeatOnFrame() {
                     // alert ("hiya");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
 
                     // rootSequenceArray = rootSequenceCopy.slice();
-                    kickSequenceArray = kickSequenceCopy.slice();
+
+                    // kickSequenceArray = kickSequenceCopy.slice();
+                    // console.error("copy 8987") 7/30/20
                     // rootSequenceStarted = false;
                 }
                 // console.log("sup "+ sequenceArray.toString());
@@ -9043,9 +9309,10 @@ function repeatOnFrame() {
 
             }
         } //inst copy end
-
+// alert (currentkickBeats);
         if ((metronomeTimeBeats >= currentmetronomeBeats) && (rhythmPlay)) { //inst copy start
             // alert("hi")
+
             metronomeSequenceStarted = false; //proceed to the next note. //inst copy
 
         } //inst copy
@@ -9064,19 +9331,17 @@ function repeatOnFrame() {
             // console.warn(currentRandommetronomeNum.toString());
             if (currentRandommetronomeNum != "rest0") {
                 playANote(currentRandommetronomeNum);
-			};
-                // if (stepLightMode) {
-                    document.getElementById('guide' + getStepNum(kickTimeBeats)).classList.add('lititup');
-                    metronomeTimeBeatCount = kickTimeBeats + .25;
-                    if (metronomeTimeBeatCount > 4.25) {
-                        metronomeTimeBeatCount = .25
-                    }
-                // }
-            
-			
+            };
+            // if (stepLightMode) {
+            document.getElementById('guide' + getStepNum(kickTimeBeats)).classList.add('lititup');
+            metronomeTimeBeatCount = kickTimeBeats + .25;
+            if (metronomeTimeBeatCount > 4.25) {
+                metronomeTimeBeatCount = .25
+            }
+            // }
 
 
-			//Thoughts: I may need to put all of this into a new method specifically for arpeggiation.
+            //Thoughts: I may need to put all of this into a new method specifically for arpeggiation.
             instrument = currentInstrument;
             // if (sequencePlay) {
             // randomNoteNum = currentRandomNoteNum + 0;
@@ -9085,19 +9350,20 @@ function repeatOnFrame() {
             // console.log("arpeggio");
             // startArpeggioTimer();
 
-            if ((metronomeSequenceArray.length == 0)) {
-                // console.log(synthTimePassed);
-                // alert ("hi");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
-                if (((sequencePlay) || ((synthTimePassed) > -9000)) && (accompaniment) && (!paused)) {
-                    // alert ("hiya");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
+            // if ((metronomeSequenceArray.length == 0)) {
+            // // console.log(synthTimePassed);
+            // // alert ("hi");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
+            // if (((sequencePlay) || ((synthTimePassed) > -9000)) && (accompaniment) && (!paused)) {
+            // // alert ("hiya");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
 
-                    // rootSequenceArray = rootSequenceCopy.slice();
-                    metronomeSequenceArray = metronomeSequenceCopy.slice();
-                    // rootSequenceStarted = false;
-                }
-                // console.log("sup "+ sequenceArray.toString());
+            // // rootSequenceArray = rootSequenceCopy.slice();
+            // // metronomeSequenceArray = metronomeSequenceCopy.slice(); 7-30-2020
+            // // console.error("metronome 9101");
+            // // rootSequenceStarted = false;
+            // }
+            // // console.log("sup "+ sequenceArray.toString());
 
-            }
+            // }
         } //inst copy end
 
         // console.warn("5:"+currentinst5Beats);
@@ -9143,19 +9409,19 @@ function repeatOnFrame() {
             // console.log("arpeggio");
             // startArpeggioTimer();
 
-            if ((inst5SequenceArray.length == 0)) {
-                // console.log(synthTimePassed);
-                // alert ("hi");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
-                if (((sequencePlay) || ((synthTimePassed) > -9000)) && (accompaniment) && (!paused)) {
-                    // alert ("hiya");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
+            // if ((inst5SequenceArray.length == 0)) {
+            // // console.log(synthTimePassed);
+            // // alert ("hi");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
+            // if (((sequencePlay) || ((synthTimePassed) > -9000)) && (accompaniment) && (!paused)) {
+            // // alert ("hiya");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
 
-                    // rootSequenceArray = rootSequenceCopy.slice();
-                    inst5SequenceArray = inst5SequenceCopy.slice();
-                    // rootSequenceStarted = false;
-                }
-                // console.log("sup "+ sequenceArray.toString());
+            // // rootSequenceArray = rootSequenceCopy.slice();
+            // inst5SequenceArray = inst5SequenceCopy.slice();
+            // // rootSequenceStarted = false;
+            // }
+            // // console.log("sup "+ sequenceArray.toString());
 
-            }
+            // }
         } //inst copy end
 
         // console.warn("6:"+currentinst6Beats);
@@ -9208,19 +9474,19 @@ function repeatOnFrame() {
             // console.log("arpeggio");
             // startArpeggioTimer();
 
-            if ((inst6SequenceArray.length == 0)) {
-                // console.log(synthTimePassed);
-                // alert ("hi");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
-                if (((sequencePlay) || ((synthTimePassed) > -9000)) && (accompaniment) && (!paused)) {
-                    // alert ("hiya");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
+            // if ((inst6SequenceArray.length == 0)) {
+            // // console.log(synthTimePassed);
+            // // alert ("hi");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
+            // if (((sequencePlay) || ((synthTimePassed) > -9000)) && (accompaniment) && (!paused)) {
+            // // alert ("hiya");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
 
-                    // rootSequenceArray = rootSequenceCopy.slice();
-                    inst6SequenceArray = inst6SequenceCopy.slice();
-                    // rootSequenceStarted = false;
-                }
-                // console.log("sup "+ sequenceArray.toString());
+            // // rootSequenceArray = rootSequenceCopy.slice();
+            // inst6SequenceArray = inst6SequenceCopy.slice();
+            // // rootSequenceStarted = false;
+            // }
+            // // console.log("sup "+ sequenceArray.toString());
 
-            }
+            // }
         } //inst copy end
 
 
@@ -9266,19 +9532,19 @@ function repeatOnFrame() {
             // console.log("arpeggio");
             // startArpeggioTimer();
 
-            if ((inst7SequenceArray.length == 0)) {
-                // console.log(synthTimePassed);
-                // alert ("hi");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
-                if (((sequencePlay) || ((synthTimePassed) > -9000)) && (accompaniment) && (!paused)) {
-                    // alert ("hiya");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
+            // if ((inst7SequenceArray.length == 0)) {
+            // // console.log(synthTimePassed);
+            // // alert ("hi");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
+            // if (((sequencePlay) || ((synthTimePassed) > -9000)) && (accompaniment) && (!paused)) {
+            // // alert ("hiya");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
 
-                    // rootSequenceArray = rootSequenceCopy.slice();
-                    inst7SequenceArray = inst7SequenceCopy.slice();
-                    // rootSequenceStarted = false;
-                }
-                // console.log("sup "+ sequenceArray.toString());
+            // // rootSequenceArray = rootSequenceCopy.slice();
+            // inst7SequenceArray = inst7SequenceCopy.slice();
+            // // rootSequenceStarted = false;
+            // }
+            // // console.log("sup "+ sequenceArray.toString());
 
-            }
+            // }
         } //inst copy end
 
         if ((hatTimeBeats >= currenthatBeats) && (rhythmPlay)) {
@@ -9327,19 +9593,19 @@ function repeatOnFrame() {
             // console.log("arpeggio");
             // startArpeggioTimer();
 
-            if ((hatSequenceArray.length == 0)) {
-                // console.log(synthTimePassed);
-                // alert ("hi");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
-                if (((sequencePlay) || ((synthTimePassed) > -9000)) && (accompaniment) && (!paused)) {
-                    // alert ("hiya");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
+            // if ((hatSequenceArray.length == 0)) {
+            // // console.log(synthTimePassed);
+            // // alert ("hi");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
+            // if (((sequencePlay) || ((synthTimePassed) > -9000)) && (accompaniment) && (!paused)) {
+            // // alert ("hiya");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
 
-                    // rootSequenceArray = rootSequenceCopy.slice();
-                    hatSequenceArray = hatSequenceCopy.slice();
-                    // rootSequenceStarted = false;
-                }
-                // console.log("sup "+ sequenceArray.toString());
+            // // rootSequenceArray = rootSequenceCopy.slice();
+            // hatSequenceArray = hatSequenceCopy.slice();
+            // // rootSequenceStarted = false;
+            // }
+            // // console.log("sup "+ sequenceArray.toString());
 
-            }
+            // }
         }
         if ((snareTimeBeats >= currentsnareBeats) && (rhythmPlay)) {
 
@@ -9383,24 +9649,25 @@ function repeatOnFrame() {
             // console.log("arpeggio");
             // startArpeggioTimer();
 
-            if ((snareSequenceArray.length == 0)) {
-                // console.log(synthTimePassed);
-                // alert ("hi");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
-                if (((sequencePlay) || ((synthTimePassed) > -9000)) && (accompaniment) && (!paused)) {
-                    // alert ("hiya");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
+            // if ((snareSequenceArray.length == 0)) {
+            // // console.log(synthTimePassed);
+            // // alert ("hi");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
+            // if (((sequencePlay) || ((synthTimePassed) > -9000)) && (accompaniment) && (!paused)) {
+            // // alert ("hiya");// THIS SPOT IS WHERE WE LOOP AT THE END OF EACH NOTE IN AN ARPEGGIO.
 
-                    // rootSequenceArray = rootSequenceCopy.slice();
-                    snareSequenceArray = snareSequenceCopy.slice();
-                    // rootSequenceStarted = false;
-                }
-                // console.log("sup "+ sequenceArray.toString());
+            // // rootSequenceArray = rootSequenceCopy.slice();
+            // snareSequenceArray = snareSequenceCopy.slice();
+            // // rootSequenceStarted = false;
+            // }
+            // // console.log("sup "+ sequenceArray.toString());
 
-            }
+            // }
         }
 
     }
 
-    if (arpeggioPlay) { //TRANSPLANT BEGIN
+    if (arpeggioPlayInRhythm) { //TRANSPLANT BEGIN
+
         // console.log (arpeggioSequenceArray.length);
         // console.log(arpeggioSequenceArray.length)
         if ((arpeggioTimeBeats >= currentArpeggioBeats) && (arpeggioPlay)) {
@@ -9445,14 +9712,14 @@ function repeatOnFrame() {
             // }
             rootSequenceStarted = true;
             // startRootTimer();
-            if ((rootSequenceArray.length == 0)) {
-                if (((sequencePlay) || ((synthTimePassed) > -9000)) && (!paused) && (!captureSinging) && (!captureButtons) && (accompaniment)) {
+            // if ((rootSequenceArray.length == 0)) {
+            // if (((sequencePlay) || ((synthTimePassed) > -9000)) && (!paused) && (!captureSinging) && (!captureButtons) && (accompaniment)) {
 
-                    rootSequenceArray = rootSequenceCopy.slice();
-                }
-                // console.log("sup "+ sequenceArray.toString());
+            // rootSequenceArray = rootSequenceCopy.slice();
+            // }
+            // // console.log("sup "+ sequenceArray.toString());
 
-            }
+            // }
         }
 
         if ((!arpeggioSequenceStarted) && (arpeggioSequenceArray.length > 0)) {
@@ -9976,544 +10243,545 @@ function repeatOnFrame() {
                 // console.log("beats" + thisNoteTime);
                 // console.log(beatsExpected + " is beats amount");
 
-                findKey(arrayOfSungNotesOnly);
+                // findKey(arrayOfSungNotesOnly);
                 // alert (beatsExpected); 7-19-20
                 // alert (Math.floor((beatsExpected - 2) / 4) + 1);
-                for (var i = 0; (Math.ceil((beatsExpected - 2) / 4) + 1) > i; i++) {
-                    if (i == 0) {
-                        randomScaleNum = Math.floor(Math.random() * 7);
-                        // console.log(i + " sequencefirst");
-                    } else {
-                        // console.log(i + " notfirst " + randomScaleNum);
-                        let intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
-                        if (intervalChange == 0) {
-                            while (intervalChange == 0) {
+                // for (var i = 0; (Math.ceil((beatsExpected - 2) / 4) + 1) > i; i++) {
+                // if (i == 0) {
+                // randomScaleNum = Math.floor(Math.random() * 7);
+                // // console.log(i + " sequencefirst");
+                // } else {
+                // // console.log(i + " notfirst " + randomScaleNum);
+                // let intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                // if (intervalChange == 0) {
+                // while (intervalChange == 0) {
 
-                                intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
-                            }
-                        }
-                        randomScaleNum = randomScaleNum + intervalChange;
-                        if (randomScaleNum > 6) {
-                            shiftAdapter = 12;
-                        } else if (randomScaleNum < 0) {
-                            shiftAdapter = -12;
-                        } else {
-                            shiftAdapter = 0;
-                        }
-                        // console.log(randomScaleNum + " is the scale change");
-                    }
-                    if (keyType == "major") {
-                        randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
-                        shiftAdapter = 0;
-                    } else {
-                        // alert ("hi");
-                        randomNoteNum = getNoteNumMinorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
-                        shiftAdapter = 0;
-                    }
-                    // console.log(i+" "+randomNoteNum);
-                    // let thisNoteTime = Math.floor(Math.random() * (noteLengthMax - noteLengthMin + 1)) + noteLengthMin; //length of random notes
-                    // referenceNoteArray.push(basicNote(randmonNoteNum));
-                    // alert ("that's one");
-                    chordSequenceArray.push([randomNoteNum + 0, 4, randomScaleNum + 0]);
-                    // alert ("added");
-                    // beatsExpected = beatsExpected + thisNoteTime;
-                    // console.log("beats" + thisNoteTime);
-                    // console.log(beatsExpected + " is beats amount");
-
-                }
-                chordSequenceLength = chordSequenceArray.length + 0;
-                chordSequenceCopy = [];
-                chordSequenceCopy = chordSequenceArray.slice();
-                // chordSequenceCopy.unshift([chordSequenceCopy[0][0], 4, chordSequenceCopy[0][2]]);
-
-                sequenceCopy = [];
-                sequenceCopy = sequenceArray.slice();
-                //nonreference section end
-            }
-        } else { // regular sequenceplay is on
-            // alert ("hi");
-            if (scoreLevel != "freestyle") {
-                if (intervalRotationType == "scoreBased") {
-                    setProgressGoals("3rd Up", "3rd Down", "4th Up", "4th Down");
-                    if (currentLevelScore == 0) {
-                        intervalDirection = "up";
-                    } else if (currentLevelScore == 10) {
-                        intervalDirection = "down";
-                        alert("now practice doing a 3rd down of this note");
-                    } else if (currentLevelScore == 20) {
-                        intervalDirection = "fourthUp";
-                        alert("now practice doing a 4th up of this note (Note: This is the same as a 5th down)");
-                    } else if (currentLevelScore == 30) {
-                        intervalDirection = "fourthDown";
-                        alert("now practice doing a 5th up of this note (Note: This is the same as a 4th down)");
-                    }
-                } else if (intervalRotationType == "randomIntervals") {
-                    intervalDirection = getRandomInterval();
-                }
-                if (lengthRotationType == "scoreBased") { //7-20-20
-
-                    setProgressGoals("2 notes", "3 Notes", "4 Notes", "5 Notes");
-
-                    if (currentLevelScore == 0) {
-                        sequenceLength = 2;
-                    } else if (currentLevelScore == 10) {
-                        sequenceLength = 3;
-                        // alert("now practice doing a 3rd down of this note");
-                    } else if (currentLevelScore == 20) {
-                        sequenceLength = 4;
-                        // alert("now practice doing a 4th up of this note (Note: This is the same as a 5th down)");
-                    } else if (currentLevelScore == 30) {
-                        sequenceLength = 5;
-                        // alert("now practice doing a 5th up of this note (Note: This is the same as a 4th down)");
-                    }
-                } else if (lengthRotationType == "scoreBasedByFour") {
-
-                    setProgressGoals("4 Notes", "8 Notes", "12 Notes", "16 Notes");
-                    if (currentLevelScore == 0) {
-                        sequenceLength = 4;
-                    } else if (currentLevelScore == 10) {
-                        sequenceLength = 8;
-                        // alert("now practice doing a 3rd down of this note");
-                    } else if (currentLevelScore == 20) {
-                        sequenceLength = 12;
-                        // alert("now practice doing a 4th up of this note (Note: This is the same as a 5th down)");
-                    } else if (currentLevelScore == 30) {
-                        sequenceLength = 16;
-                        // alert("now practice doing a 5th up of this note (Note: This is the same as a 4th down)");
-                    }
-                }
-                updateProgress();
-                if (currentLevelScore >= 20) {
-                    alert("Congratulations! You have completed this level. Select a new level from the 'select level' menu");
-                    addLevelCompleted(whoItIsUsingThis, theirEmail, scoreLevel);
-                    if (ourLevelNumber < scoreLevel) {
-                        ourLevelNumber = scoreLevel + 0; ;
-                        updateTheLevel(ourLevelNumber);
-                    }
-                    setupTheLevel(scoreLevel + 1);
-                }
+                // intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                // }
+                // }
+                // randomScaleNum = randomScaleNum + intervalChange;
+                // if (randomScaleNum > 6) {
+                // shiftAdapter = 12;
+                // } else if (randomScaleNum < 0) {
+                // shiftAdapter = -12;
+                // } else {
+                // shiftAdapter = 0;
+                // }
+                // // console.log(randomScaleNum + " is the scale change");
+                // }
+                // if (keyType == "major") {
+                // randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                // shiftAdapter = 0;
+                // } else {
+                // // alert ("hi");
+                // randomNoteNum = getNoteNumMinorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                // shiftAdapter = 0;
+                // }
+                // console.log(i+" "+randomNoteNum);
+                // let thisNoteTime = Math.floor(Math.random() * (noteLengthMax - noteLengthMin + 1)) + noteLengthMin; //length of random notes
+                // referenceNoteArray.push(basicNote(randmonNoteNum));
+                // alert ("that's one");
+                chordSequenceArray.push([randomNoteNum + 0, 4, randomScaleNum + 0]);
+                // alert ("added");
+                // beatsExpected = beatsExpected + thisNoteTime;
+                // console.log("beats" + thisNoteTime);
+                // console.log(beatsExpected + " is beats amount");
 
             }
-            sequenceIntervalArray = [];
-            chordSequenceArray = [];
-            sequenceChordCopy = [];
-            sequenceArray = [];
+            chordSequenceLength = chordSequenceArray.length + 0;
+            chordSequenceCopy = [];
+            chordSequenceCopy = chordSequenceArray.slice();
+            // chordSequenceCopy.unshift([chordSequenceCopy[0][0], 4, chordSequenceCopy[0][2]]);
+
             sequenceCopy = [];
-            beatsExpected = 0;
-            sequenceFirst = true;
-            if (!nonReferencePlay) {
-                for (var i = 0; sequenceLength > i; i++) {
-                    if (i == 0) {
-                        randomScaleNum = Math.floor(Math.random() * 7);
-                        console.log(i + " sequencefirst");
-                    } else {
-                        console.log(i + " notfirst " + randomScaleNum);
-                        let intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
-                        if (intervalChange == 0) {
-                            while (intervalChange == 0) {
+            sequenceCopy = sequenceArray.slice();
+            //nonreference section end
+        }
+    } else { // regular sequenceplay is on
+        // alert ("hi");
+        // if (scoreLevel != "freestyle") {
+        // if (intervalRotationType == "scoreBased") {
+        // setProgressGoals("3rd Up", "3rd Down", "4th Up", "4th Down");
+        // if (currentLevelScore == 0) {
+        // intervalDirection = "up";
+        // } else if (currentLevelScore == 10) {
+        // intervalDirection = "down";
+        // alert("now practice doing a 3rd down of this note");
+        // } else if (currentLevelScore == 20) {
+        // intervalDirection = "fourthUp";
+        // alert("now practice doing a 4th up of this note (Note: This is the same as a 5th down)");
+        // } else if (currentLevelScore == 30) {
+        // intervalDirection = "fourthDown";
+        // alert("now practice doing a 5th up of this note (Note: This is the same as a 4th down)");
+        // }
+        // } else if (intervalRotationType == "randomIntervals") {
+        // intervalDirection = getRandomInterval();
+        // }
+        // if (lengthRotationType == "scoreBased") { //7-20-20
 
-                                intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
-                            }
-                        }
-                        randomScaleNum = randomScaleNum + intervalChange;
-                        if (randomScaleNum > 6) {
-                            shiftAdapter = 12;
-                        } else if (randomScaleNum < 0) {
-                            shiftAdapter = -12;
-                        } else {
-                            shiftAdapter = 0;
-                        }
-                        // console.log(randomScaleNum + " is the scale change");
-                    }
-                    if (keyType == "major") {
-                        randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
-                        shiftAdapter = 0;
-                    } else {
-                        // alert ("hi");
-                        randomNoteNum = getNoteNumMinorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
-                        shiftAdapter = 0;
-                    }
-                    // console.log(i+" "+randomNoteNum);
-                    let thisNoteTime = Math.floor(Math.random() * (noteLengthMax - noteLengthMin + 1)) + noteLengthMin; //length of random notes
-                    sequenceArray.push([randomNoteNum + 0, thisNoteTime + 0, randomScaleNum + 0]);
-                    sequenceIntervalArray.push(getRandomInterval() + "");
-                    beatsExpected = beatsExpected + thisNoteTime;
-                    // console.log("beats" + thisNoteTime);
-                    // console.log(beatsExpected + " is beats amount");
+        // setProgressGoals("2 notes", "3 Notes", "4 Notes", "5 Notes");
 
+        // if (currentLevelScore == 0) {
+        // sequenceLength = 2;
+        // } else if (currentLevelScore == 10) {
+        // sequenceLength = 3;
+        // // alert("now practice doing a 3rd down of this note");
+        // } else if (currentLevelScore == 20) {
+        // sequenceLength = 4;
+        // // alert("now practice doing a 4th up of this note (Note: This is the same as a 5th down)");
+        // } else if (currentLevelScore == 30) {
+        // sequenceLength = 5;
+        // // alert("now practice doing a 5th up of this note (Note: This is the same as a 4th down)");
+        // }
+        // } else if (lengthRotationType == "scoreBasedByFour") {
+
+        // setProgressGoals("4 Notes", "8 Notes", "12 Notes", "16 Notes");
+        // if (currentLevelScore == 0) {
+        // sequenceLength = 4;
+        // } else if (currentLevelScore == 10) {
+        // sequenceLength = 8;
+        // // alert("now practice doing a 3rd down of this note");
+        // } else if (currentLevelScore == 20) {
+        // sequenceLength = 12;
+        // // alert("now practice doing a 4th up of this note (Note: This is the same as a 5th down)");
+        // } else if (currentLevelScore == 30) {
+        // sequenceLength = 16;
+        // // alert("now practice doing a 5th up of this note (Note: This is the same as a 4th down)");
+        // }
+        // }
+        // updateProgress();
+        // if (currentLevelScore >= 20) {
+        // alert("Congratulations! You have completed this level. Select a new level from the 'select level' menu");
+        // addLevelCompleted(whoItIsUsingThis, theirEmail, scoreLevel);
+        // if (ourLevelNumber < scoreLevel) {
+        // ourLevelNumber = scoreLevel + 0; ;
+        // updateTheLevel(ourLevelNumber);
+        // }
+        // setupTheLevel(scoreLevel + 1);
+        // }
+
+        // }
+        sequenceIntervalArray = [];
+        chordSequenceArray = [];
+        sequenceChordCopy = [];
+        sequenceArray = [];
+        sequenceCopy = [];
+        beatsExpected = 0;
+        sequenceFirst = true;
+        if (!nonReferencePlay) {
+            for (var i = 0; sequenceLength > i; i++) {
+                if (i == 0) {
+                    randomScaleNum = Math.floor(Math.random() * 7);
+                    // console.log(i + " sequencefirst");
+                } else {
+                    // console.log(i + " notfirst " + randomScaleNum);
+                    let intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                    if (intervalChange == 0) {
+                        while (intervalChange == 0) {
+
+                            intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                        }
+                    }
+                    randomScaleNum = randomScaleNum + intervalChange;
+                    if (randomScaleNum > 6) {
+                        shiftAdapter = 12;
+                    } else if (randomScaleNum < 0) {
+                        shiftAdapter = -12;
+                    } else {
+                        shiftAdapter = 0;
+                    }
+                    // console.log(randomScaleNum + " is the scale change");
                 }
-                sequenceCopy = [];
-                sequenceCopy = sequenceArray.slice();
-                // sequenceCopy.unshift([sequenceCopy[0][0], 2, sequenceCopy[0][2]]);
-
-            } else { //this is where I am making first the notes of reference and then the chords around them.
-                referenceNoteArray = [];
-                for (var i = 0; sequenceLength > i; i++) {
-                    if (i == 0) {
-                        randomScaleNum = Math.floor(Math.random() * 7);
-                        // console.log(i + " sequencefirst");
-                    } else {
-                        // console.log(i + " notfirst " + randomScaleNum);
-                        let intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
-                        if (intervalChange == 0) {
-                            while (intervalChange == 0) {
-
-                                intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
-                            }
-                        }
-                        randomScaleNum = randomScaleNum + intervalChange;
-                        if (randomScaleNum > 6) {
-                            shiftAdapter = 12;
-                        } else if (randomScaleNum < 0) {
-                            shiftAdapter = -12;
-                        } else {
-                            shiftAdapter = 0;
-                        }
-                        // console.log(randomScaleNum + " is the scale change");
-                    }
-                    if (keyType == "major") {
-                        randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
-                        shiftAdapter = 0;
-                        // alert (randomNoteNum);
-                    } else {
-
-                        randomNoteNum = getNoteNumMinorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
-                        shiftAdapter = 0;
-                    }
-                    // console.log(i+" "+randomNoteNum);
-                    let thisNoteTime = Math.floor(Math.random() * (noteLengthMax - noteLengthMin + 1)) + noteLengthMin; //length of random notes
-                    // alert (basicNote(randomNoteNum));
-                    referenceNoteArray.push(basicNote(randomNoteNum));
-                    sequenceArray.push([randomNoteNum + 0, thisNoteTime + 0, randomScaleNum + 0]);
-                    sequenceIntervalArray.push(getRandomInterval() + "");
-                    beatsExpected = beatsExpected + thisNoteTime;
-                    console.log("original beats expected " + beatsExpected);
-                    // console.log("beats" + thisNoteTime);
-                    // console.log(beatsExpected + " is beats amount");
-
+                if (keyType == "major") {
+                    randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                    shiftAdapter = 0;
+                } else {
+                    // alert ("hi");
+                    randomNoteNum = getNoteNumMinorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                    shiftAdapter = 0;
                 }
-                console.log("Final original beats expected " + beatsExpected);
-                findKey(referenceNoteArray);
-                for (var i = 0; (Math.floor((beatsExpected - 2) / 4) + 1) > i; i++) {
-                    if (i == 0) {
-                        randomScaleNum = Math.floor(Math.random() * 7);
-                        // console.log(i + " sequencefirst");
-                    } else {
-                        // console.log(i + " notfirst " + randomScaleNum);
-                        let intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
-                        if (intervalChange == 0) {
-                            while (intervalChange == 0) {
-
-                                intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
-                            }
-                        }
-                        randomScaleNum = randomScaleNum + intervalChange;
-                        if (randomScaleNum > 6) {
-                            shiftAdapter = 12;
-                        } else if (randomScaleNum < 0) {
-                            shiftAdapter = -12;
-                        } else {
-                            shiftAdapter = 0;
-                        }
-                        // console.log(randomScaleNum + " is the scale change");
-                    }
-                    if (keyType == "major") {
-                        randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
-                        shiftAdapter = 0;
-                    } else {
-                        // alert ("hi");
-                        randomNoteNum = getNoteNumMinorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
-                        shiftAdapter = 0;
-                    }
-                    // console.log(i+" "+randomNoteNum);
-                    // let thisNoteTime = Math.floor(Math.random() * (noteLengthMax - noteLengthMin + 1)) + noteLengthMin; //length of random notes
-                    // referenceNoteArray.push(basicNote(randmonNoteNum));
-                    // alert ("that's one");
-                    chordSequenceArray.push([randomNoteNum + 0, 4, randomScaleNum + 0]);
-                    // beatsExpected = beatsExpected + thisNoteTime;
-                    // console.log("beats" + thisNoteTime);
-                    // console.log(beatsExpected + " is beats amount");
-
-                }
-                chordSequenceLength = chordSequenceArray.length + 0;
-                beatsExpected = chordSequenceLength * 4;
-                console.log(beatsExpected + " after chordsequencelengh");
-                chordSequenceCopy = [];
-                chordSequenceCopy = chordSequenceArray.slice();
-                // chordSequenceCopy.unshift([chordSequenceCopy[0][0], 2, chordSequenceCopy[0][2]]); I undid this, and I don't know if I agree with it.
-
-                sequenceCopy = [];
-                sequenceCopy = sequenceArray.slice();
-
-                console.error("started with " + sequenceArray.toString()); //7-15-2020
-                // sequenceCopy.unshift([sequenceCopy[0][0], 2, sequenceCopy[0][2]]);
+                // console.log(i+" "+randomNoteNum);
+                let thisNoteTime = Math.floor(Math.random() * (noteLengthMax - noteLengthMin + 1)) + noteLengthMin; //length of random notes
+                sequenceArray.push([randomNoteNum + 0, thisNoteTime + 0, randomScaleNum + 0]);
+                sequenceIntervalArray.push(getRandomInterval() + "");
+                beatsExpected = beatsExpected + thisNoteTime;
+                // console.log("beats" + thisNoteTime);
+                // console.log(beatsExpected + " is beats amount");
 
             }
-        }
+            sequenceCopy = [];
+            sequenceCopy = sequenceArray.slice();
+            // sequenceCopy.unshift([sequenceCopy[0][0], 2, sequenceCopy[0][2]]);
 
-        //console.log(randomNoteNum);
-        //			console.log (randomNoteArray+" "+noteArray[findNote(randomNoteNum)][1]);
-        // console.log(randomScaleNum + " " + getNoteNumMajorScale(randomScaleNum) + " " + randomNoteNum + " " + noteArray[randomNoteNum][1] + "");
+        } else { //this is where I am making first the notes of reference and then the chords around them.
+            referenceNoteArray = [];
+            for (var i = 0; sequenceLength > i; i++) {
+                if (i == 0) {
+                    randomScaleNum = Math.floor(Math.random() * 7);
+                    // console.log(i + " sequencefirst");
+                } else {
+                    // console.log(i + " notfirst " + randomScaleNum);
+                    let intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                    if (intervalChange == 0) {
+                        while (intervalChange == 0) {
 
-        if (sequencePlay) { //I don't remember what this is for.
-            randomNoteNum = currentRandomNoteNum + 0;
-
-        } else {
-            if (intervalDirection == "up") {
-                // alert("hi");
-                majorCheck = true;
-                getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
-                document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one " + thirdType + " third above that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;  color: black;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
-                majorCheck = false;
-            } else if (intervalDirection == "down") {
-                majorCheck = true;
-                getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
-                document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one " + thirdType + " third below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
-                majorCheck = false;
-            } else if (intervalDirection == "unison") {
-                document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing that";
-            } else if (intervalDirection == "fourthUp") {
-                if (toSolFej(keyOf, randomScaleNum) == "Fa") {
-                    newQuestionTime = true;
+                            intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                        }
+                    }
+                    randomScaleNum = randomScaleNum + intervalChange;
+                    if (randomScaleNum > 6) {
+                        shiftAdapter = 12;
+                    } else if (randomScaleNum < 0) {
+                        shiftAdapter = -12;
+                    } else {
+                        shiftAdapter = 0;
+                    }
+                    // console.log(randomScaleNum + " is the scale change");
                 }
-                document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth above that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
-            } else if (intervalDirection == "fourthDown") {
-                if (toSolFej(keyOf, randomScaleNum) == "Fa") {
-                    newQuestionTime = true;
+                if (keyType == "major") {
+                    randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                    shiftAdapter = 0;
+                    // alert (randomNoteNum);
+                } else {
+
+                    randomNoteNum = getNoteNumMinorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                    shiftAdapter = 0;
                 }
-                document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
+                // console.log(i+" "+randomNoteNum);
+                let thisNoteTime = Math.floor(Math.random() * (noteLengthMax - noteLengthMin + 1)) + noteLengthMin; //length of random notes
+                // alert (basicNote(randomNoteNum));
+                referenceNoteArray.push(basicNote(randomNoteNum));
+                sequenceArray.push([randomNoteNum + 0, thisNoteTime + 0, randomScaleNum + 0]);
+                sequenceIntervalArray.push(getRandomInterval() + "");
+                beatsExpected = beatsExpected + thisNoteTime;
+                console.log("original beats expected " + beatsExpected);
+                // console.log("beats" + thisNoteTime);
+                // console.log(beatsExpected + " is beats amount");
+
             }
+            console.log("Final original beats expected " + beatsExpected);
+            findKey(referenceNoteArray);
+            for (var i = 0; (Math.floor((beatsExpected - 2) / 4) + 1) > i; i++) {
+                if (i == 0) {
+                    randomScaleNum = Math.floor(Math.random() * 7);
+                    // console.log(i + " sequencefirst");
+                } else {
+                    // console.log(i + " notfirst " + randomScaleNum);
+                    let intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                    if (intervalChange == 0) {
+                        while (intervalChange == 0) {
+
+                            intervalChange = (Math.floor(Math.random() * (2 * melodicRange)) - melodicRange);
+                        }
+                    }
+                    randomScaleNum = randomScaleNum + intervalChange;
+                    if (randomScaleNum > 6) {
+                        shiftAdapter = 12;
+                    } else if (randomScaleNum < 0) {
+                        shiftAdapter = -12;
+                    } else {
+                        shiftAdapter = 0;
+                    }
+                    // console.log(randomScaleNum + " is the scale change");
+                }
+                if (keyType == "major") {
+                    randomNoteNum = getNoteNumMajorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                    shiftAdapter = 0;
+                } else {
+                    // alert ("hi");
+                    randomNoteNum = getNoteNumMinorScale(randomScaleNum) + noteAdapter + scaleAdapter + shiftAdapter;
+                    shiftAdapter = 0;
+                }
+                // console.log(i+" "+randomNoteNum);
+                // let thisNoteTime = Math.floor(Math.random() * (noteLengthMax - noteLengthMin + 1)) + noteLengthMin; //length of random notes
+                // referenceNoteArray.push(basicNote(randmonNoteNum));
+                // alert ("that's one");
+                chordSequenceArray.push([randomNoteNum + 0, 4, randomScaleNum + 0]);
+                // beatsExpected = beatsExpected + thisNoteTime;
+                // console.log("beats" + thisNoteTime);
+                // console.log(beatsExpected + " is beats amount");
+
+            }
+            chordSequenceLength = chordSequenceArray.length + 0;
+            beatsExpected = chordSequenceLength * 4;
+            console.log(beatsExpected + " after chordsequencelengh");
+            chordSequenceCopy = [];
+            chordSequenceCopy = chordSequenceArray.slice();
+            // chordSequenceCopy.unshift([chordSequenceCopy[0][0], 2, chordSequenceCopy[0][2]]); I undid this, and I don't know if I agree with it.
+
+            sequenceCopy = [];
+            sequenceCopy = sequenceArray.slice();
+
+            console.error("started with " + sequenceArray.toString()); //7-15-2020
+            // sequenceCopy.unshift([sequenceCopy[0][0], 2, sequenceCopy[0][2]]);
+
         }
-        r = randomNoteNum;
-        if (!sequencePlay) {
-            makeAndShowANote(r, 2, "referenceNote");
-            numOfThisNoteInSequence++;
-        }
-        if (!paused) {
-            lastMostRecentPostingNum = mostRecentPostingNum + 0;
-
-            mostRecentPostingNum = r;
-            // gauge.update({
-            // majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
-            // units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
-            // });
-        } else {
-            // gauge.update({
-            // units: "Paused"
-            // }); //sets the 3 notes in there.
-        }
-        if ((!newQuestionTime) && (!sequencePlay)) {
-            r = randomNoteNum;
-            lastMostRecentPostingNum = mostRecentPostingNum + 0;
-            mostRecentPostingNum = r;
-            // gauge.update({
-            // majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
-            // units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
-
-            // });
-            playANote(randomNoteNum);
-        }
-        if ((!newQuestionTime) && (sequencePlay)) {
-            // sequenceArray.push([randomNoteNum, 1]);
-            // sequenceArray.push([randomNoteNum+1, 3]);
-            // sequenceArray.push([randomNoteNum+2, 2]);
-            // sequenceArray.push([randomNoteNum+3, 1]);
-
-            // console.log(sequenceArray);
-            // playASequence();
-
-        }
-
-        // var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));
-        // //	alert (""+soundId(getNoteName(note)));
-        // // if audio(const playPromise = audio.play();
-        // // if (playPromise !== null) {
-        // // playPromise.catch(() => {
-        // // audio.pause();
-        // // audio.volume = 1.0;
-        // // if (audio.readyState >= 2) {
-        // // audio.currentTime = 0;
-        // // // audio.play();
-        // // }
-        // // })
-        // // }
-        // // if (audio) {
-
-        // // }
-
-        // //press();
-        // //playNote(midiNoteToFrequency(note));
-        // //press(note);
-        // //if (velocity > 0) {
-        // if (audio) {
-        // audigo.pause();
-        // audio.volume = 1.0;
-        // if (audio.readyState >= 2) {
-        // audio.currentTime = 0;
-        // var promise = audio.play();
-
-        // if (promise !== undefined) {
-        // promise.then(_ => {
-        // // Autoplay started!
-        // }).catch(error => {
-        // //alert ("it worked");
-        // // Autoplay was prevented.
-        // // Show a "Play" button so that user can start playback.
-        // });
-        // }
-
-        // }
-        // }
-
-        //noteOnListener(note, velocity); //
-        //} else {
-        //		noteOffListener(note);
-
-
     }
-    //console.log("sup");
 
-    // frameCounter++,
-    // Date.now() - startTime >= 60 && (measureLength = frameCounter, minDrawMLength = frameCounter * minDrawRate, startTime = Date.now(), frameCounter = 0), // Avi Changed this from 450 to 250 on 5-23
-    // analyzer.getFloatTimeDomainData(timeDomainData);
-    // var e = bitCounter / findWaveLength(timeDomainData, window.globk * 24, window.globk * 1200, 10, 10, .016, Math.ceil(10 / window.globk)); //e is the value of the sound
-    // if (e > 0) {
-    // console.log("you're singing");
-    // console.log("you started singing "+noteArray[findNote(e)][1] + " "+noteArray[mostRecentPostingNum][1]);
-    // if (captureSinging) {
-    // if (findNote(e) != mostRecentPostingNum) { //I currently don't have any way of recognizing that notes were changed. this boolean is a placeholder.
-    // try {
-    // singingEndTime = new Date().getTime() + 0;
-    // let timeChange = singingEndTime - singingStartTime;
-    // // console.log("time change "+timeChange);
-    // if (timeChange > 20) {
-    // let singingTimeSeconds = (timeChange / 1000);
-    // let singingTimeBeats = singingTimeSeconds / (60 / currentBPM);
-    // console.log(noteArray[lastMostRecentPostingNum][1] + " was added from making noise");
-    // singingTimeArray.push([lastMostRecentPostingNum, singingTimeSeconds]);
-    // console.log("Yo" + singingTimeArray.toString());
-    // // if (singingTimeArray.length > 5) {
+    //console.log(randomNoteNum);
+    //			console.log (randomNoteArray+" "+noteArray[findNote(randomNoteNum)][1]);
+    // console.log(randomScaleNum + " " + getNoteNumMajorScale(randomScaleNum) + " " + randomNoteNum + " " + noteArray[randomNoteNum][1] + "");
 
-    // // }
-    // // console.log("time you sang was " + singingTimeSeconds + " " + noteArray[mostRecentPostingNum][1]);
-    // }
-    // youAreSinging = false;
-    // // singingStartTime = new Date().getTime() + 0;
+    if (sequencePlay) { //I don't remember what this is for.
+        randomNoteNum = currentRandomNoteNum + 0;
 
-    // } catch (error) {
-    // console.log(error);
-    // }
+    } else {
+        if (intervalDirection == "up") {
+            // alert("hi");
+            majorCheck = true;
+            getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
+            document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one " + thirdType + " third above that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + scaleInterval)) + "</b> <p style='font-size: 20px;  color: black;'>in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
+            majorCheck = false;
+        } else if (intervalDirection == "down") {
+            majorCheck = true;
+            getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
+            document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one " + thirdType + " third below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3)][1] + " aka " + toSolFej(keyOf, (randomScaleNum + (7 - scaleInterval))) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
+            majorCheck = false;
+        } else if (intervalDirection == "unison") {
+            document.getElementById("referenceText").innerHTML = "Your reference Note: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing that";
+        } else if (intervalDirection == "fourthUp") {
+            if (toSolFej(keyOf, randomScaleNum) == "Fa") {
+                newQuestionTime = true;
+            }
+            document.getElementById("referenceText").innerHTML = "Your reference Note: <b>" + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth above that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) + 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 3)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
+        } else if (intervalDirection == "fourthDown") {
+            if (toSolFej(keyOf, randomScaleNum) == "Fa") {
+                newQuestionTime = true;
+            }
+            document.getElementById("referenceText").innerHTML = "Your reference Note is: <b> " + noteArray[randomNoteNum][1] + " (" + toSolFej(keyOf, randomScaleNum) + ")</b><p style='font-size: 20px;  color: black;'>Sing one fourth below that:<p style='font-size: 20px;  color: red;'> <b>" + noteArray[(randomNoteNum) - 5][1] + " aka " + toSolFej(keyOf, (randomScaleNum + 4)) + "</b> <p style='font-size: 20px;  color: black;'> in the key of " + document.getElementById("referenceKeySelect").options[document.getElementById("referenceKeySelect").selectedIndex].innerHTML + " " + keyType + "<p style='font-size: 20px;  color: black;'>Your last note was " + previousNote;
+        }
+    }
+    r = randomNoteNum;
+    if (!sequencePlay) {
+        // makeAndShowANote(r, 2, "referenceNote");
+        numOfThisNoteInSequence++;
+    }
+    if (!paused) {
+        lastMostRecentPostingNum = mostRecentPostingNum + 0;
 
-    // } else {
-    // console.log("they were the same");
-    // }
-
-    // if (!youAreSinging) {
-    // try {
-    // singingStartTime = new Date().getTime() + 0;
-    // } catch (error) {}
-
-    // youAreSinging = true;
-    // }
-    // }
-    // console.log("you are singing " + noteArray[findNote(e)][1] + " " + r);
-    // measurements.push([e, findNote(e)]),
-    // measurements.length > measureLength && (measurements = measurements.slice(measurements.length - measureLength));
-    // for (var r = 0, t = 0, o = 0, n = measurements.length, a = 0; n > a; a++) {
-    // t = 0;
-    // for (var i = 0; n > i; i++)
-    // measurements[a][1] == measurements[i][1] && (t++, t >= r && (r = t, o = a))
-    // }
-    // for (var u = [], a = 0; n > a; a++)
-    // measurements[a][1] == measurements[o][1] && u.push(measurements[a][0]);
-    // u.length >= minDrawMLength && (e = u.reduce(function (e, r) {
-    // return e + r
-    // }) / u.length, drawGaugeNote(e))
-    // //this spot is Avi important
-    // } else { //WHAT TO DO WHEN NO SOUND
-
-    // if (captureSinging) {
-    // try {
-    // singingEndTime = new Date().getTime() + 0;
-    // let timeChange = singingEndTime - singingStartTime;
-    // if (timeChange > 20) {
-    // let singingTimeSeconds = ((timeChange % (1000 * 60)) / 1000);
-    // let singingTimeBeats = singingTimeSeconds / (60 / currentBPM);
-    // console.log(noteArray[mostRecentPostingNum][1] + " was added from being quiet");
-    // singingTimeArray.push([mostRecentPostingNum, singingTimeSeconds]);
-    // console.log("Yo" + singingTimeArray.toString());
-    // if (singingTimeArray.length > 5) {
-    // // alert("cool");
-
-    // }
-    // // console.log("time you sang was " + singingTimeSeconds + " " + noteArray[mostRecentPostingNum][1]);
-    // }
-
-    // singingStartTime = new Date().getTime() + 0;
-    // } catch (error) {
-    // console.log(error);
-    // }
-
-    // youAreSinging = false;
-    // }
-    // if (!sequencePlay) {
-    // startWrongTimer();
-    // //startScoreTimer();
-    // if (scoreTimeBeats < (1)) {
-    // wrongNote = false;
-    // wrongPoints = 0;
-    // // startScoreTimer();
-
-    // // console.log("s " + scoreTimeBeats);
-    // } else {
-    // wrongNote = true;
-
-    // // updateTimer();
-    // // console.log(wrongPoints);
-    // }
-    // } else {
-    // startWrongTimer();
-    // wrongNote = true;
-    // if (scoreTimeBeats < (1)) {
-    // wrongNote = false;
-    // wrongPoints = 0;
-    // // startScoreTimer();
-
-    // // console.log("s " + scoreTimeBeats);
-    // } else {
-    // wrongNote = true;
-    // // updateTimer();
-    // // console.log(wrongPoints);
-    // }
-
-    // pauseScore();
-    // }
-
-    // alert("yo");
-    // }
-    // currentScore = 50.00001 * (scoreTimeBeats + .000001) / (timeRequirement + .000001);
-    if (currentScore < 0) {
-
-        scorePauseTimeAmount = 0;
-        previousScorePauseTimeAmount = 0;
-        currentScore = 0;
-        score = 0;
-        scoreTimeBeats = 0;
-
-        // if (r){
+        mostRecentPostingNum = r;
         // gauge.update({
         // majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
         // units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
         // });
-        // }
+    } else {
+        // gauge.update({
+        // units: "Paused"
+        // }); //sets the 3 notes in there.
     }
-    // score=Math.floor(currentScore);
-    // console.log ("score is "+score);
-    requestAnimationFrame(repeatOnFrame)
+    if ((!newQuestionTime) && (!sequencePlay)) {
+        r = randomNoteNum;
+        lastMostRecentPostingNum = mostRecentPostingNum + 0;
+        mostRecentPostingNum = r;
+        // gauge.update({
+        // majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
+        // units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
+
+        // });
+        playANote(randomNoteNum);
+    }
+    if ((!newQuestionTime) && (sequencePlay)) {
+        // sequenceArray.push([randomNoteNum, 1]);
+        // sequenceArray.push([randomNoteNum+1, 3]);
+        // sequenceArray.push([randomNoteNum+2, 2]);
+        // sequenceArray.push([randomNoteNum+3, 1]);
+
+        // console.log(sequenceArray);
+        // playASequence();
+
+    }
+
+    // var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));
+    // //	alert (""+soundId(getNoteName(note)));
+    // // if audio(const playPromise = audio.play();
+    // // if (playPromise !== null) {
+    // // playPromise.catch(() => {
+    // // audio.pause();
+    // // audio.volume = 1.0;
+    // // if (audio.readyState >= 2) {
+    // // audio.currentTime = 0;
+    // // // audio.play();
+    // // }
+    // // })
+    // // }
+    // // if (audio) {
+
+    // // }
+
+    // //press();
+    // //playNote(midiNoteToFrequency(note));
+    // //press(note);
+    // //if (velocity > 0) {
+    // if (audio) {
+    // audigo.pause();
+    // audio.volume = 1.0;
+    // if (audio.readyState >= 2) {
+    // audio.currentTime = 0;
+    // var promise = audio.play();
+
+    // if (promise !== undefined) {
+    // promise.then(_ => {
+    // // Autoplay started!
+    // }).catch(error => {
+    // //alert ("it worked");
+    // // Autoplay was prevented.
+    // // Show a "Play" button so that user can start playback.
+    // });
+    // }
+
+    // }
+    // }
+
+    //noteOnListener(note, velocity); //
+    //} else {
+    //		noteOffListener(note);
+
+
+// }
+//console.log("sup");
+
+// frameCounter++,
+// Date.now() - startTime >= 60 && (measureLength = frameCounter, minDrawMLength = frameCounter * minDrawRate, startTime = Date.now(), frameCounter = 0), // Avi Changed this from 450 to 250 on 5-23
+// analyzer.getFloatTimeDomainData(timeDomainData);
+// var e = bitCounter / findWaveLength(timeDomainData, window.globk * 24, window.globk * 1200, 10, 10, .016, Math.ceil(10 / window.globk)); //e is the value of the sound
+// if (e > 0) {
+// console.log("you're singing");
+// console.log("you started singing "+noteArray[findNote(e)][1] + " "+noteArray[mostRecentPostingNum][1]);
+// if (captureSinging) {
+// if (findNote(e) != mostRecentPostingNum) { //I currently don't have any way of recognizing that notes were changed. this boolean is a placeholder.
+// try {
+// singingEndTime = new Date().getTime() + 0;
+// let timeChange = singingEndTime - singingStartTime;
+// // console.log("time change "+timeChange);
+// if (timeChange > 20) {
+// let singingTimeSeconds = (timeChange / 1000);
+// let singingTimeBeats = singingTimeSeconds / (60 / currentBPM);
+// console.log(noteArray[lastMostRecentPostingNum][1] + " was added from making noise");
+// singingTimeArray.push([lastMostRecentPostingNum, singingTimeSeconds]);
+// console.log("Yo" + singingTimeArray.toString());
+// // if (singingTimeArray.length > 5) {
+
+// // }
+// // console.log("time you sang was " + singingTimeSeconds + " " + noteArray[mostRecentPostingNum][1]);
+// }
+// youAreSinging = false;
+// // singingStartTime = new Date().getTime() + 0;
+
+// } catch (error) {
+// console.log(error);
+// }
+
+// } else {
+// console.log("they were the same");
+// }
+
+// if (!youAreSinging) {
+// try {
+// singingStartTime = new Date().getTime() + 0;
+// } catch (error) {}
+
+// youAreSinging = true;
+// }
+// }
+// console.log("you are singing " + noteArray[findNote(e)][1] + " " + r);
+// measurements.push([e, findNote(e)]),
+// measurements.length > measureLength && (measurements = measurements.slice(measurements.length - measureLength));
+// for (var r = 0, t = 0, o = 0, n = measurements.length, a = 0; n > a; a++) {
+// t = 0;
+// for (var i = 0; n > i; i++)
+// measurements[a][1] == measurements[i][1] && (t++, t >= r && (r = t, o = a))
+// }
+// for (var u = [], a = 0; n > a; a++)
+// measurements[a][1] == measurements[o][1] && u.push(measurements[a][0]);
+// u.length >= minDrawMLength && (e = u.reduce(function (e, r) {
+// return e + r
+// }) / u.length, drawGaugeNote(e))
+// //this spot is Avi important
+// } else { //WHAT TO DO WHEN NO SOUND
+
+// if (captureSinging) {
+// try {
+// singingEndTime = new Date().getTime() + 0;
+// let timeChange = singingEndTime - singingStartTime;
+// if (timeChange > 20) {
+// let singingTimeSeconds = ((timeChange % (1000 * 60)) / 1000);
+// let singingTimeBeats = singingTimeSeconds / (60 / currentBPM);
+// console.log(noteArray[mostRecentPostingNum][1] + " was added from being quiet");
+// singingTimeArray.push([mostRecentPostingNum, singingTimeSeconds]);
+// console.log("Yo" + singingTimeArray.toString());
+// if (singingTimeArray.length > 5) {
+// // alert("cool");
+
+// }
+// // console.log("time you sang was " + singingTimeSeconds + " " + noteArray[mostRecentPostingNum][1]);
+// }
+
+// singingStartTime = new Date().getTime() + 0;
+// } catch (error) {
+// console.log(error);
+// }
+
+// youAreSinging = false;
+// }
+// if (!sequencePlay) {
+// startWrongTimer();
+// //startScoreTimer();
+// if (scoreTimeBeats < (1)) {
+// wrongNote = false;
+// wrongPoints = 0;
+// // startScoreTimer();
+
+// // console.log("s " + scoreTimeBeats);
+// } else {
+// wrongNote = true;
+
+// // updateTimer();
+// // console.log(wrongPoints);
+// }
+// } else {
+// startWrongTimer();
+// wrongNote = true;
+// if (scoreTimeBeats < (1)) {
+// wrongNote = false;
+// wrongPoints = 0;
+// // startScoreTimer();
+
+// // console.log("s " + scoreTimeBeats);
+// } else {
+// wrongNote = true;
+// // updateTimer();
+// // console.log(wrongPoints);
+// }
+
+// pauseScore();
+// }
+
+// alert("yo");
+// }
+// currentScore = 50.00001 * (scoreTimeBeats + .000001) / (timeRequirement + .000001);
+if (currentScore < 0) {
+
+    scorePauseTimeAmount = 0;
+    previousScorePauseTimeAmount = 0;
+    currentScore = 0;
+    score = 0;
+    scoreTimeBeats = 0;
+
+    // if (r){
+    // gauge.update({
+    // majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
+    // units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
+    // });
+    // }
+}
+// score=Math.floor(currentScore);
+// console.log ("score is "+score);
 }
 window.requestAnimationFrame || (window.requestAnimationFrame = function () {
     return window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (e, r) {
+        alert("old school");
         window.setTimeout(e, 1e3 / 30)
+
     }
 }
     ());
@@ -11447,11 +11715,15 @@ $(function () {
             $("#BPMAmount").val(ui.value);
             currentBPM = Number(document.getElementById("BPMAmount").value) + 0;
             newQuestionTime = true;
+			// alert ("hi");
+	clearInterval(intervalSetting);
+	intervalSetting = setInterval(repeatEverySixteenth, 60000/(4*currentBPM));
+  
         }
     });
     $("#BPMAmount").val($("#slider-horizontal-BPMAmount").slider("value"));
     currentBPM = Number(document.getElementById("BPMAmount").value) + 0;
-    // console.log("it is " + sequenceLength);
+	  // console.log("it is " + sequenceLength);
     stopAllNotes();
     clearAllNotes();
     newQuestionTime = true;
@@ -12927,11 +13199,11 @@ $('#rhythm-tutorial').click(function () {
     // scoreLevel = "freestyle";
     // justcheckingit=true;
     // }
-	if (backbeat){
-	backbeatButton.click();
-	}
+    if (backbeat) {
+        backbeatButton.click();
+    }
     randomizeKicks = false;
-    
+
     resetStepElements();
     availableSteps = "quarters";
     metronome = true;
@@ -12945,10 +13217,9 @@ $('#rhythm-tutorial').click(function () {
     setProgressGoals("2 random steps", "3 random steps", "3 random steps, no snares", "2 random steps, no snares");
     updateProgress();
     checkForUpdatedDifficulty();
-	    resetStepElements();
-	setupSteps();
+    resetStepElements();
+    setupSteps();
     tutorialSequence();
-	
 
 });
 
@@ -12959,9 +13230,9 @@ $('#rhythm-level-one').click(function () {
     clearRhythms();
     simplifiedDenominator = 4;
     randomizeKicks = true;
-	if (!backbeat){
-	backbeatButton.click();
-	}
+    if (!backbeat) {
+        backbeatButton.click();
+    }
     availableSteps = "quarters";
     makeAClassVisible('questionbuttonrow');
     document.getElementById('kick-row').hidden = false;
@@ -12971,7 +13242,7 @@ $('#rhythm-level-one').click(function () {
     setProgressGoals("2 random steps", "3 random steps", "3 random steps, no snares", "2 random steps, no snares");
     updateProgress();
     checkForUpdatedDifficulty();
-	alertify("<strong>Important Information:</strong>On this level, there is a snare playing on beats '2' and '4' in the background.<br><br>This pattern is known as the 'Backbeat'. It is very common in popular music.<br><br>If you would like to turn it off, click the 'turn off backbeat' button.");
+    alertify("<strong>Important Information:</strong>On this level, there is a snare playing on beats '2' and '4' in the background.<br><br>This pattern is known as the 'Backbeat'. It is very common in popular music.<br><br>If you would like to turn it off, click the 'turn off backbeat' button.");
 });
 $('#rhythm-level-two').click(function () {
     tutorialMode = false;
@@ -12981,9 +13252,9 @@ $('#rhythm-level-two').click(function () {
     simplifiedDenominator = 4;
     randomizeKicks = true;
     randomizeHats = true;
- 	if (!backbeat){
-	backbeatButton.click();
-	}
+    if (!backbeat) {
+        backbeatButton.click();
+    }
     availableSteps = "quarters";
     currentLevelScore = 0;
     setupSteps();
@@ -13004,9 +13275,9 @@ $('#rhythm-level-three').click(function () {
     clearRhythms();
     randomizeKicks = true;
     simplifiedDenominator = 2;
-    	if (!backbeat){
-	backbeatButton.click();
-	}
+    if (!backbeat) {
+        backbeatButton.click();
+    }
     availableSteps = "eighths";
 
     currentLevelScore = 0;
@@ -13028,9 +13299,9 @@ $('#rhythm-level-four').click(function () {
     clearRhythms();
     randomizeKicks = true;
     randomizeHats = true;
-    	if (!backbeat){
-	backbeatButton.click();
-	}
+    if (!backbeat) {
+        backbeatButton.click();
+    }
     availableSteps = "eighths";
     currentLevelScore = 0;
     setupSteps();
@@ -13049,9 +13320,9 @@ $('#rhythm-level-five').click(function () {
     rhythmVolume = 50;
     clearRhythms();
     randomizeKicks = true;
-    	if (!backbeat){
-	backbeatButton.click();
-	}
+    if (!backbeat) {
+        backbeatButton.click();
+    }
 
     availableSteps = "sixteenths";
     simplifiedDenominator = 1;
@@ -13075,9 +13346,9 @@ $('#rhythm-level-six').click(function () {
     clearRhythms();
     randomizeKicks = true;
     randomizeHats = true;
-    	if (!backbeat){
-	backbeatButton.click();
-	}
+    if (!backbeat) {
+        backbeatButton.click();
+    }
     availableSteps = "sixteenths";
     currentLevelScore = 0;
     setupSteps();
@@ -13100,9 +13371,9 @@ $('#rhythm-level-seven').click(function () {
     randomizeKicks = true;
     randomizeHats = true;
     randomizeClaps = true;
-    	if (!backbeat){
-	backbeatButton.click();
-	}
+    if (!backbeat) {
+        backbeatButton.click();
+    }
     availableSteps = "sixteenths";
     currentLevelScore = 0;
     setupSteps();
@@ -13127,9 +13398,9 @@ $('#rhythm-level-eight').click(function () {
     randomizeHats = true;
     randomizeClaps = true;
     randomizeInst5 = true;
-    	if (!backbeat){
-	backbeatButton.click();
-	}
+    if (!backbeat) {
+        backbeatButton.click();
+    }
     availableSteps = "sixteenths";
     currentLevelScore = 0;
     setupSteps();
@@ -13151,9 +13422,9 @@ $('#rhythm-level-eight').click(function () {
 
 $('#rhythm-level-nine').click(function () {
     tutorialMode = false;
-	    	// if (!backbeat){
-	// backbeatButton.click();
-	// }
+    // if (!backbeat){
+    // backbeatButton.click();
+    // }
     // scoreLevel=6;
     // rhythmVolume = 50;
     // simplifiedDenominator=1;
@@ -13163,7 +13434,7 @@ $('#rhythm-level-nine').click(function () {
     // availableSteps="sixteenths";
     // currentLevelScore=0;
     // setupSteps();
-    // makeAClassVisible('questionbuttonrow');
+    makeAClassVisible('questionbuttonrow');
 
     // document.getElementById('kick-row').hidden=false;
     // document.getElementById('snare-row').hidden=false;
@@ -13638,8 +13909,8 @@ var updateUnlockedLevelsByUser = function (nameis, emailis) {
             if (doc.exists) {
                 // alert ("hi") we got in here
                 var data = doc.data();
-                console.warn(data.email);
-                console.warn(data.name);
+                // console.warn(data.email);
+                // console.warn(data.name);
                 if ((JSON.stringify(emailis) === JSON.stringify(data.email)) && (JSON.stringify(whoItIsUsingThis) === JSON.stringify(data.name))) {
                     let blob = Number(data.levelcomplete) + 0;
                     console.log("you have the score " + blob + " " + levelNumber);
@@ -13931,7 +14202,7 @@ $('#playTargetButton').click(function () {
 });
 
 function tutorialSequence() {
-	
+
     uncircleAClass('blocklegend');
     circleAClass('kickstep');
     nextTimedAlertify("These are your kicks.<br><br>Notice 2 things: <br>-kicks on beats 1 and 3 are gray boxes, and the ones within beats 2 and 4 are red boxes.<br>-All of the upbeats and off beats are empty circles.", 3, theseAreYourLegends);
@@ -13951,13 +14222,13 @@ function thisIsYourTimer() {
     uncircleAClass('blocklegend')
     uncircleAnId('metronomeButton');
     circleAClass('guide-row');
-	
-	metronomeTutorial=false;
+
+    metronomeTutorial = false;
     prevNextTimedAlertify("This row is your timeline. It will help you keep track of the beat/time naming. The boxes for each of the instruments below correspond to the timings written in the timeline.", 5, theseAreYourLegends, showMetronomeButton);
     // alertify("");
-	if (metronome){
-	metronomeButton.click();
-	}
+    if (metronome) {
+        metronomeButton.click();
+    }
     // rhythmVolume = 50;
     // clearRhythms();
     // simplifiedDenominator = 4;
@@ -13982,12 +14253,12 @@ function showMetronomeButton() {
 function metronomePostTutorialAction() {
     circleAClass('guide-row')
     uncircleAnId('metronomeButton');
-	
+
     uncircleAnId('guidestepone');
     // metronomeTutorial=true;
-	    kickSequenceArray = [];
+    kickSequenceArray = [];
     kickSequenceCopy = [];
-	    randomizeKicks = false;
+    randomizeKicks = false;
     kickStarted = false;
     prevNextTimedAlertify("As you can see, now the timeline lights up on specific beats.<br><br>In addition, you can now hear the metronome making a sound on each of those beats.<br><br>A good strategy for you to use is try to say the beat number on each beat as the metronome makes the sound<br>'1, 2, 3, 4'", 5, showMetronomeButton, beginKickPressTutorial);
     // alertify("");
@@ -14007,7 +14278,7 @@ function beginKickPressTutorial() {
     randomizeKicks = true;
     kickStarted = true;
     kickSequenceArray = [];
-	    pressOneKickTutorial = false;
+    pressOneKickTutorial = false;
     // kickSequenceCopy=[];
     // kickSequenceArray.push([kickinstrument, 1, 0])
 
@@ -14015,7 +14286,7 @@ function beginKickPressTutorial() {
 
     // kickSequenceCopy=kickSequenceArray.slice();
     kickSequenceCopy.push([kickinstrument, 4, 0])
-    prevNextTimedAlertify("Notice how the kick drum is being played on the '1' beat as shown on the timeline. We've circled the '1' beat on the timeline. <br><br> <strong>Click next for us to circle the '1 beat for the kick drum.</strong>", 5,metronomePostTutorialAction, pressTheOneKick);
+    prevNextTimedAlertify("Notice how the kick drum is being played on the '1' beat as shown on the timeline. We've circled the '1' beat on the timeline. <br><br> <strong>Click next for us to circle the '1 beat for the kick drum.</strong>", 5, metronomePostTutorialAction, pressTheOneKick);
 
     // kickSequenceCopy.push([kickinstrument, 3, 0])
 
@@ -14030,7 +14301,7 @@ function pressTheOneKick() {
     uncircleAnId('submitDrums');
     // kickStepArray[0].addEventListener('click', addrhythmsteplisteners, false);
     pressOneKickTutorial = true;
-	kickStepArray[0].classList.remove('selectedstep');
+    kickStepArray[0].classList.remove('selectedstep');
     kickStepArray[0].classList.add('unselectedstep');
     tempKickSequenceArray = [];
     prevOkayAlertify("Now click on the circled box to select the '1' beat in the kick row", 5, beginKickPressTutorial);
@@ -14043,7 +14314,7 @@ function postKickPressOne() {
         autocheckbutton.click();
     }
     circleAnId('submitDrums');
-	
+
     prevOkayAlertify("Perfect! See how it is lit up now to show that you selected it?<br><br>Now click on the circled box to submit your answer!", 5, pressTheOneKick);
 
 }
@@ -14075,31 +14346,30 @@ function autoCheckButtonTutorial() {
     prevOkayAlertify("<strong>Let's look at another way to submit.</strong><br><br>Now we have reset the problem for you. If you want to be checked immediately, and never have to press a button to submit your answer, you can select the circled 'Turn Auto-Check On' button.<br><br><strong>Do that now.<strong>", 5, pressOneKickTutorialPostPartTwoMethod);
 }
 function autoCheckPostTutorial() {
-	uncircleAnId('autocheckbutton');
+    uncircleAnId('autocheckbutton');
     // // if (rhythmSpeedMode) {
-        // // rhythmSpeedMode.click();
+    // // rhythmSpeedMode.click();
     // // }
     circleAnId('kickstepone');
-	postAutoCheckTutorial=true;
-	prevOkayAlertify("Well done! Now go ahead and click on the 1st kick again.", 5, autoCheckButtonTutorial);
+    postAutoCheckTutorial = true;
+    prevOkayAlertify("Well done! Now go ahead and click on the 1st kick again.", 5, autoCheckButtonTutorial);
 
 }
 
-
-function preKickPressTwoTutorial(){
-	uncircleAnId('kickstepone');
+function preKickPressTwoTutorial() {
+    uncircleAnId('kickstepone');
     uncircleAnId('guidestepone');
     uncircleAnId('guidestepnine');
     // // if (rhythmSpeedMode) {
-        // // rhythmSpeedMode.click();
+    // // rhythmSpeedMode.click();
     // // }
     // circleAnId('kickstepone');
-	// postAutoCheckTutorial=true;
-		    kickSequenceArray = [];
+    // postAutoCheckTutorial=true;
+    kickSequenceArray = [];
     kickSequenceCopy = [];
-	    randomizeKicks = false;
+    randomizeKicks = false;
     kickStarted = false;
-	prevNextTimedAlertify("Well done! Now we're going to do a problem that has TWO kicks.", 5, autoCheckPostTutorial, beginKickPressTwoTutorial);
+    prevNextTimedAlertify("Well done! Now we're going to do a problem that has TWO kicks.", 5, autoCheckPostTutorial, beginKickPressTwoTutorial);
 
 }
 function beginKickPressTwoTutorial() {
@@ -14123,8 +14393,8 @@ function beginKickPressTwoTutorial() {
     // kickSequenceCopy=kickSequenceArray.slice();
     kickSequenceCopy.push([kickinstrument, 2, 0])
     kickSequenceCopy.push([kickinstrument, 2, 0])
-    prevNextTimedAlertify("Now, notice how the kick drum is being played on the '1' beat AND the '3' beat as shown on the timeline. We've circled the '1' beat on the timeline. <br><br> <strong>Click next for us to circle both the '1' beat and the '3' beat for the kick drum.</strong>", 5, preKickPressTwoTutorial, pressTheTwoKick);
-		pressTwoKickTutorial = false;
+    prevNextTimedAlertify("Now, notice how the kick drum is being played on the '1' beat AND the '3' beat as shown on the timeline. We've circled the '1' beat and the '3' beat on the timeline. <br><br> <strong>Click next for us to circle both the '1' beat and the '3' beat for the kick drum.</strong>", 5, preKickPressTwoTutorial, pressTheTwoKick);
+    pressTwoKickTutorial = false;
     // kickSequenceCopy.push([kickinstrument, 3, 0])
 
     // availableSteps = "quarters";
@@ -14145,31 +14415,29 @@ function pressTheTwoKick() {
 function nowPostTwoKickTutorial() {
     uncircleAnId('kickstepone');
     uncircleAnId('kickstepnine');
-	circleAnId('level-progress')
+    circleAnId('level-progress')
 
     prevNextTimedAlertify("Great job! At the top we have now circled the progress bar. This will keep track of your progress on each level. <br><br> It also shows information about what you will have to do in each part of the level.", 5, pressTheTwoKick, preTryingOnYourOwn);
 
-	
-	
 }
 
-function preTryingOnYourOwn(){
-	uncircleAnId('level-progress')
-	prevNextTimedAlertify("Alright. We're going to let you try this on your own for a bit. If you ever need to see the tutorial again you can always select the tutorial from the level pulldown menu at the top of your screen. <br><br><strong>Press 'next:' to continue.", 5, nowPostTwoKickTutorial, beginTryingTutorial);
+function preTryingOnYourOwn() {
+    uncircleAnId('level-progress')
+    prevNextTimedAlertify("Alright. We're going to let you try this on your own for a bit. If you ever need to see the tutorial again you can always select the tutorial from the level pulldown menu at the top of your screen. <br><br><strong>Press 'next:' to continue.", 5, nowPostTwoKickTutorial, beginTryingTutorial);
 }
 function beginTryingTutorial() {
     // uncircleAClass('guide-row');
     rhythmVolume = 50;
     clearRhythms();
-	if (metronome){
-	metronomeButton.click();
-	}	
-	metronomeButton.click();
+    if (metronome) {
+        metronomeButton.click();
+    }
+    metronomeButton.click();
     simplifiedDenominator = 4;
     randomizeKicks = true;
-	if (backbeat){
-	backbeatButton.click();
-	}
+    if (backbeat) {
+        backbeatButton.click();
+    }
     // backbeat = false;
     availableSteps = "quarters";
     // metronome = false;
@@ -14200,5 +14468,5 @@ initTuner();
 if (clearKickRow) {
     makeAClassRemoveInnerHTML('kickstep');
 }
-
+makeARowPulldownInvisible('timeandscore');
 window.tuner_rand = 1111111;
