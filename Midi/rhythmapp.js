@@ -8623,7 +8623,7 @@ var firstTimeThrough = true;
 var thisBeatNum = 0;
 
 async function metronomeKeeper(thisStep){
-			if (thisStep == 4)
+		if (thisStep == 4)
             thisStep = 0;
         // alertify (thisStep);
         guideStepArray[thisStep * 4].classList.add('lititup');
@@ -8631,6 +8631,25 @@ async function metronomeKeeper(thisStep){
             thisStep = 4;
         }
         guideStepArray[(thisStep - 1) * 4].classList.remove('lititup');
+		if (thisStep==4){
+		kickStepArray[0].classList.add('lititup');
+		snareStepArray[0].classList.add('lititup');
+		hatStepArray[0].classList.add('lititup');
+		inst5StepArray[0].classList.add('lititup');
+		clapStepArray[0].classList.add('lititup');
+		inst6StepArray[0].classList.add('lititup');
+		inst7StepArray[0].classList.add('lititup');
+		
+		}
+		if (thisStep==1){
+				kickStepArray[0].classList.remove('lititup');
+		snareStepArray[0].classList.remove('lititup');
+		hatStepArray[0].classList.remove('lititup');
+		inst5StepArray[0].classList.remove('lititup');
+		clapStepArray[0].classList.remove('lititup');
+		inst6StepArray[0].classList.remove('lititup');
+		inst7StepArray[0].classList.remove('lititup');
+		}
 }
 
 function repeatEverySixteenth() {
