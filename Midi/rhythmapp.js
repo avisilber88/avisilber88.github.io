@@ -1279,7 +1279,7 @@ function updateTheLevelNew(levelNumber) {
 }
 
 function updateTheLevel(levelNumber) {
-	console.warn ("hi");
+	// console.warn ("hi");
     if (levelNumber == 0) {
         if (!loginMessageShown) {
             loginMessageShown = true;
@@ -1295,7 +1295,7 @@ function updateTheLevel(levelNumber) {
         }
     }
     hideAllLevels();
-    console.log(levelNumber);
+    // console.log(levelNumber);
     if (levelNumber >= 0) {
         document.getElementById('rhythm-level-one').hidden = false;
         makeAClassVisible("kick-choice");
@@ -8650,10 +8650,12 @@ function repeatEverySixteenth() {
         }
         guideStepArray[(thisStep - 1) * 4].classList.remove('lititup');
     }
-
+try{
     for (var i = 0; i < sixteenStepArray[thisBeatNum - 1].length; i++) {
         playANote(sixteenStepArray[thisBeatNum - 1][i] + "0");
     }
+}
+catch (error){}
     if (newQuestionTime) {
         noMorePoints = false;
         numOfThisNoteInSequence = 0;
@@ -13458,7 +13460,10 @@ $('#metronomeButton').click(function () {
         document.getElementById('metronomeButton').innerHTML = "Turn Metronome Off";
 
     }
+	try{
     setupMetronome();
+	}
+	catch(error){}
     if (metronomeTutorial) {
         metronomeTutorial = false;
         metronomePostTutorialAction();
@@ -14409,7 +14414,7 @@ nextLevel();
                     // console.warn(data.name);
                     if ((JSON.stringify(emailis) === JSON.stringify(data.email)) && (JSON.stringify(whoItIsUsingThis) === JSON.stringify(data.name))) {
                         let blob = Number(data.levelcomplete) + 0;
-                        console.log("you have the score " + blob + " " + levelNumber);
+                        // console.log("you have the score " + blob + " " + levelNumber);
                         try {
                             if (blob > levelNumber) {
 
@@ -14543,7 +14548,7 @@ nextLevel();
                 sequenceStarted = false;
                 sequenceArray = sequenceCopy.slice();
 
-                console.error(sequenceArray.toString());
+                // console.error(sequenceArray.toString());
             }
         } else {
             // alert ("not a sequence");
