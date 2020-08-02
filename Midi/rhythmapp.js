@@ -8622,6 +8622,17 @@ function setupRhythmSequence() {
 var firstTimeThrough = true;
 var thisBeatNum = 0;
 
+async function metronomeKeeper(thisStep){
+			if (thisStep == 4)
+            thisStep = 0;
+        // alertify (thisStep);
+        guideStepArray[thisStep * 4].classList.add('lititup');
+        if ((thisStep - 1) < 0) {
+            thisStep = 4;
+        }
+        guideStepArray[(thisStep - 1) * 4].classList.remove('lititup');
+}
+
 function repeatEverySixteenth() {
 
     if (firstTimeThrough) {
@@ -8641,14 +8652,8 @@ function repeatEverySixteenth() {
         // playANote("kick0");
         parseAndConstructArrays();
         let thisStep = (thisBeatNum / 4);
-        if (thisStep == 4)
-            thisStep = 0;
-        // alertify (thisStep);
-        guideStepArray[thisStep * 4].classList.add('lititup');
-        if ((thisStep - 1) < 0) {
-            thisStep = 4;
-        }
-        guideStepArray[(thisStep - 1) * 4].classList.remove('lititup');
+        metronomeKeeper(thisStep);
+
     }
 try{
     for (var i = 0; i < sixteenStepArray[thisBeatNum - 1].length; i++) {
