@@ -514,5 +514,8 @@ border-width:5px !important;
 margin-left:1px !important;
 margin-right:1px !important;
 }
-
+.row.circleattribute{
+margin-left:-20px !important;
+margin-right:-20px !important;
+}
 @media all and (min-width:1100px) { div.content{padding-left:15px;} }
