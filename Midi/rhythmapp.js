@@ -1,5 +1,6 @@
 //the following things were changed to bypass stuff that existed in harmonysense but I am not yet using rhythmesnes
 //arpeggioPlay was turned into arpeggioPlayInRhythm
+//build 8-3-2020
 arpeggioPlayInRhythm = false;
 // ALSO WE TURNED OFF THE CHORDTIMEBEATS BLOCK IN UPDATETIMER$
 	  $("#my-dialog-prev-next-timed").dialog({
