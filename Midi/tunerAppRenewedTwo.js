@@ -1,5 +1,6 @@
 var randomNoteNum
 var theirEmail;
+var noticedNote=0;
 var buttonPlay = false;
 var cMajorArray = [0, [0, 2, 4, 5, 7, 9, 11]];
 var cSharpMajorArray = [1, [1, 3, 5, 6, 8, 10, 0]];
@@ -8169,19 +8170,20 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
     if ((((basicNote(thanote)) == (basicNote((randomNoteNum) + legalInterval))) || ((intervalDirection == "allHarmonies") && ((((basicNote(thanote)) == (basicNote((randomNoteNum) + legalIntervalTwo)))) || (((basicNote(thanote)) == (basicNote((randomNoteNum) + legalIntervalThree)))) || (((basicNote(thanote)) == (basicNote((randomNoteNum) + legalIntervalFour))))))) && (!paused)) { //WHAT TO DO WHEN correct
         // unpauseScore();
         // console.log("awesome");
-
+		console.warn("2 4 6 8 whats that spell!");
         wrongPoints = 0;
         wrongNote = false;
         newWrong = true;
-        if (newScore) {
+        if ((newScore)||(thanote!=noticedNote)) {
+			noticedNote=thanote+0;
             colorTarget = correctTarget;
-
+			console.warn(noteArray[thanote][1] +"is what you singin");
             // makeAndShowANote(randomNoteNum + legalInterval, 1, "targetNote");
             makeAndShowANote(thanote, 1, "singingNote");
 
         }
         visibleSingingNoteGroups[0].style.backgroundColor = 'blue';
-        console.warn(visibleSingingNoteGroups[0].style.color); //7-20-20
+        // console.warn(visibleSingingNoteGroups[0].style.color); //7-20-20
         startScoreTimer();
         // updateTimer();
         if ((sequencePlay) && (!nonReferencePlay)) {
@@ -8223,12 +8225,14 @@ function drawGaugeNote(e) { //here it is drawing stuff based on the noteArray
 
         }
     } else { //WHAT TO DO WHEN WRONG
+		noticedNote=thanote+0;
         colorTarget = wrongTarget;
         if (!sequencePlay) {
             makeAndShowANote(randomNoteNum + legalInterval, 1, "targetNote");
         }
         makeAndShowANote(thanote, 1, "singingNote");
-
+		console.warn(noteArray[thanote][1] +"is what you singin wrong");
+		
         // console.log("not awesome");
         if ((sequencePlay) && (score > 0)) {
             startWrongTimer();
@@ -10494,7 +10498,7 @@ $('#octave2').click(function () {
     sequenceCopy.forEach(element => element[0] = element[0] + noteAdapter + 0);
     updateReferences();
     // updateUnlockedLevelsByUser("test3", 3);
-    currentLevelScore = scorePerLevel;
+    // currentLevelScore = scorePerLevel;
     playItAgain();
 });
 
