@@ -284,13 +284,75 @@ var init = function () {
 };
 
 
-var logintothisapp = function (){
-tempname=prompt("what is your name?");
-tempemail=prompt("what is your e-mail?");
-if ((tempname.length>0)&&(tempemail.length>0)){
-updateUnlockedLevelsByUser(tempname, tempemail);
+
+logintothisapp = function () {
+
+    $("#log-in-form").dialog({
+        modal: true,
+        autoOpen: false,
+        buttons: [{
+                text: "Submit",
+                click: function () {
+                    $(this).dialog("close");
+                    logintothisappparttwo(document.getElementById('name').value, document.getElementById('email').value);
+
+                }
+            }
+
+        ]
+    });
+
+    $('#log-in-form').dialog("open");
+		$("#name").keyup(function(event) {
+    if (event.keyCode === 13) {
+        $('#email').focus();
+    }
+});
+	$("#email").keyup(function(event) {
+    if (event.keyCode === 13) {
+        $('.ui-dialog-buttonpane').find('button:contains("Submit")').click();
+    }
+});
+    // $('.ui-dialog-buttonpane').find('button:contains("Submit")').focus();
+    // $( "#loginform" ).on('submit', function (e) {
+    // logintothisappparttwo(document.getElementById('name').value, document.getElementById('email').value)
+    // })
+    // ("#loginform").submit(function(e) {
+    // e.preventDefault();
+    // });
 }
+
+var logintothisappparttwo = function (tempname, tempemail) {
+    // tempname = prompt("what is your name?");
+    // tempemail = prompt("what is your e-mail? \n\nDon't worry, we won't send you any e-mails. This is just for logging in.");
+    if ((tempname.length > 0) && (tempemail.length > 0)) {
+		// loginMessageShown = false;
+        // levelOneMessageShown = false;
+        // levelTwoMessageShown = false;
+        // levelThreeMessageShown = false;
+        // levelFourMessageShown = false;
+        // levelFiveMessageShown = false;
+        // levelSixMessageShown = false;
+        // levelSevenMessageShown = false;
+        // levelEightMessageShown = false;
+        // levelNineMessageShown = false;
+        // levelTenMessageShown = false;
+        // makeAClassVisible('rhythmsettingbuttons');
+        // makeAClassVisible('scoreRow');
+        // //setup your level?
+
+        // document.getElementById('opening-card').style.display = 'none';
+        // document.getElementById('card-section').style.display = 'block';
+        updateUnlockedLevelsByUser(tempname, tempemail);
+    }
 }
+// var logintothisapp = function (){
+// tempname=prompt("what is your name?");
+// tempemail=prompt("what is your e-mail?");
+// if ((tempname.length>0)&&(tempemail.length>0)){
+// updateUnlockedLevelsByUser(tempname, tempemail);
+// }
+// }
 document.getElementById('level-progress').style.display = 'none';
 
 // document.getElementById('topButtons').style.display='none';
@@ -363,7 +425,21 @@ function updateProgress() {
     // alert (((currentLevelScore/40)*100)+'%');
 	// score per level
 	// 
-    if (currentLevelScore <= (.25*scorePerLevel)) {
+	    if (currentLevelScore == 0) {
+        document.getElementById('levelOneProgress').style.width = ((0) * 100) + '%';
+        document.getElementById('levelOneNotProgress').style.width = (25 - ((0) * 100)) + '%';
+        document.getElementById('levelOneProgress').innerHTML = (0) + "/5";
+        document.getElementById('levelTwoProgress').style.width = (((0) / 20) * 100) + '%';
+        document.getElementById('levelTwoNotProgress').style.width = (25 - (((0) / 20) * 100)) + '%';
+        document.getElementById('levelTwoProgress').innerHTML = ((0)) + "/5";
+        document.getElementById('levelThreeProgress').style.width = (((0) / 20) * 100) + '%';
+        document.getElementById('levelThreeNotProgress').style.width = (25 - (((0) / 20) * 100)) + '%';
+        document.getElementById('levelThreeProgress').innerHTML = ((0)) + "/5";
+        document.getElementById('levelFourProgress').style.width = (((0) / 20) * 100) + '%';
+        document.getElementById('levelFourNotProgress').style.width = (25 - (((0) / 20) * 100)) + '%';
+        document.getElementById('levelFourProgress').innerHTML = ((0)) + "/5";
+    }
+    else if (currentLevelScore <= (.25*scorePerLevel)) {
         document.getElementById('levelOneProgress').style.width = ((currentLevelScore / scorePerLevel) * 100) + '%';
         document.getElementById('levelOneNotProgress').style.width = (25 - ((currentLevelScore / scorePerLevel) * 100)) + '%';
         document.getElementById('levelOneProgress').innerHTML = (currentLevelScore) + "/"+(scorePerLevel/4);
@@ -7342,6 +7418,7 @@ function repeatOnFrame() {
                         alert("now practice doing a 5th up of this note (Note: This is the same as a 4th down)");
                     }
                 } else if (intervalRotationType == "randomIntervals") {
+					
                     intervalDirection = getRandomInterval();
                 }
                 if (lengthRotationType == "scoreBased") { //7-20-20
@@ -10318,9 +10395,48 @@ $('#chord-progression-roman').click(function () {
 function alertify(messageThis) {
     $("#alertMessage").html(messageThis);
     // // Show dialog
+	$("#my-dialog").dialog({
+    modal: true,
+    autoOpen: false,
+    buttons: [{
+            text: "Ok:",
+            click: function () {
+                $(this).dialog("close");
+            }
+        }
+    ]
+
+});
+$('.ui-dialog-buttonpane').find('button:contains("Ok")').click()
     $("#my-dialog").dialog("open");
 }
 
+    function doSomethingAlertify(messageThis, whatToDo, whatToCallTheButton) {
+        $("#alertMessage").html(messageThis);
+        // // Show dialog
+        // prevAction();
+        doSomethingDialog(whatToDo, whatToCallTheButton);
+
+    }
+	
+	function doSomethingDialog(somethingToDo, whatToCallTheButton) {
+    $("#my-dialog").dialog({
+        modal: false,
+        autoOpen: false,
+        buttons: [{
+                text: whatToCallTheButton,
+                click: function () {
+                    $(this).dialog("close");
+                    window.setTimeout(somethingToDo, 200);
+                }
+            }
+        ],
+		
+        // position: { my: 'top', at: 'right', of: '#welcomefamprelogin', collision:'fit' }
+
+    });
+    $("#my-dialog").dialog("open");
+}
 $('#chord-progression-names').click(function () {
     // if (!rhythmPlay) {
     // $(".rhythm-type-buttons").slideToggle();
@@ -10927,4 +11043,6 @@ $('#playTargetButton').click(function () {
 auth();
 document.getElementById('card-section').style.display = 'none';
 initTuner();
+ doSomethingAlertify("Welcome to Rhythm Sense! Login and then select your level from the pull-down menu.", logintothisapp, "Login here");
+
 window.tuner_rand = 1111111;

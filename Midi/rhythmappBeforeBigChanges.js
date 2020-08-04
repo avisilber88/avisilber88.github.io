@@ -1,33 +1,8 @@
 //the following things were changed to bypass stuff that existed in harmonysense but I am not yet using rhythmesnes
 //arpeggioPlay was turned into arpeggioPlayInRhythm
-//build 8-3-2020
 arpeggioPlayInRhythm = false;
-// ALSO WE TURNED OFF THE CHORDTIMEBEATS BLOCK IN UPDATETIMER$
-	  $("#my-dialog-prev-next-timed").dialog({
-        modal: false,
-        autoOpen: false,
-        buttons: [{
-                text: "take: A look",
-                click: function () {
-                    $(this).dialog("close");
-                    window.setTimeout(reopenDialog, secondsForAlert * 1000);
-                    // $("#alertMessage2").html(messageThis);
-                }
-            }, {
-                text: "previous:",
-                click: function () {
-                    $(this).dialog("close");
-                    window.setTimeout(prevAction, 200);
-                    // $("#alertMessage2").html(messageThis);
-                }
-            }
-        ]
-    });
-	$('#my-dialog-prev-next-timed').dialog("open");
-	
-	$('#my-dialog-prev-next-timed').dialog("close");
-var clockTester = 0;
-var snaresAllowed = true;
+// ALSO WE TURNED OFF THE CHORDTIMEBEATS BLOCK IN UPDATETIMER
+var clockTester=0;
 var randomNoteNum
 var tutorialMode = false;
 var pressOneKickTutorial = false;
@@ -101,7 +76,7 @@ var levelSevenMessageShown = false;
 var levelEightMessageShown = false;
 var levelNineMessageShown = false;
 var levelTenMessageShown = false;
-var intervalSetting;
+
 var theirEmail;
 
 // if tunerWidth > 600 && (tunerWidth = 600)
@@ -176,7 +151,7 @@ var previousPauseTimeAmount = 0;
 var previousScorePauseTimeAmount = 0;
 var noteTimeStart = 0;
 var noteTime = 0;
-var currentBPM = 100;
+var currentBPM = 120;
 var noteTimeBeats = 0;
 var noteTimeSeconds = 0;
 var rootTimeBeats = 0;
@@ -451,24 +426,7 @@ noteOnListener(0, 0);
 var loadDatabase = [];
 var db;
 var loginMessageShown = true;
-var sixteenStepArray;
-var sixteenStep1 = [];
-var sixteenStep2 = [];
-var sixteenStep3 = [];
-var sixteenStep4 = [];
-var sixteenStep5 = [];
-var sixteenStep6 = [];
-var sixteenStep7 = [];
-var sixteenStep8 = [];
-var sixteenStep9 = [];
-var sixteenStep10 = [];
-var sixteenStep11 = [];
-var sixteenStep12 = [];
-var sixteenStep13 = [];
-var sixteenStep14 = [];
-var sixteenStep15 = [];
-var sixteenStep16 = [];
-var arrayOfInstruments;
+
 // init on doc ready
 $(document).ready(init);
 
@@ -510,48 +468,12 @@ var init = function () {
 
     // $('#testthisish').click();
 };
-logintothisapp = function () {
 
-    $("#log-in-form").dialog({
-        modal: true,
-        autoOpen: false,
-        buttons: [{
-                text: "Submit",
-                click: function () {
-                    $(this).dialog("close");
-                    logintothisappparttwo(document.getElementById('name').value, document.getElementById('email').value);
-
-                }
-            }
-
-        ]
-    });
-
-    $('#log-in-form').dialog("open");
-		$("#name").keyup(function(event) {
-    if (event.keyCode === 13) {
-        $('#email').focus();
-    }
-});
-	$("#email").keyup(function(event) {
-    if (event.keyCode === 13) {
-        $('.ui-dialog-buttonpane').find('button:contains("Submit")').click();
-    }
-});
-    // $('.ui-dialog-buttonpane').find('button:contains("Submit")').focus();
-    // $( "#loginform" ).on('submit', function (e) {
-    // logintothisappparttwo(document.getElementById('name').value, document.getElementById('email').value)
-    // })
-    // ("#loginform").submit(function(e) {
-    // e.preventDefault();
-    // });
-}
-
-var logintothisappparttwo = function (tempname, tempemail) {
-    // tempname = prompt("what is your name?");
-    // tempemail = prompt("what is your e-mail? \n\nDon't worry, we won't send you any e-mails. This is just for logging in.");
+var logintothisapp = function () {
+    tempname = prompt("what is your name?");
+    tempemail = prompt("what is your e-mail? \n\nDon't worry, we won't send you any e-mails. This is just for logging in.");
     if ((tempname.length > 0) && (tempemail.length > 0)) {
-		loginMessageShown = false;
+        loginMessageShown = false;
         levelOneMessageShown = false;
         levelTwoMessageShown = false;
         levelThreeMessageShown = false;
@@ -624,60 +546,19 @@ function setRhythmInstrument(instvariablename, instrumentname, instrumentfilenam
 
 }
 
-function parseAndConstructArrays() {
-
-    sixteenStepArray = []
-
-    if (rhythmFreestyle) {
-        arrayOfInstruments = [];
-        arrayOfInstruments.push([kickinstrument, kickStepArray]);
-        arrayOfInstruments.push([snareinstrument, snareStepArray]);
-        arrayOfInstruments.push([clapinstrument, clapStepArray]);
-        arrayOfInstruments.push([inst5instrument, inst5StepArray]);
-        arrayOfInstruments.push([inst6instrument, inst6StepArray]);
-        arrayOfInstruments.push([inst7instrument, inst7StepArray]);
-        arrayOfInstruments.push([metronomeinstrument, guideStepArray]);
-        arrayOfInstruments.push([hatinstrument, hatStepArray]);
-
-        for (var i = 0; i < 16; i++) {
-            sixteenStepArray[i] = [];
-        }
-        for (var i = 0; i < 16; i++) { //on each of the 16 beats
-            for (var j = 0; j < arrayOfInstruments.length; j++) { //cycle through all of the instruments
-                // for (var k = k; k < arrayOfInstruments[j].length; k++){ //cycle through al
-                if (arrayOfInstruments[j][1][i].classList.contains('selectedstep')) {
-                    sixteenStepArray[i].push(arrayOfInstruments[j][0]);
-                } // }
-            }
-        }
-    } else {
-        arrayOfInstruments = [];
-        arrayOfInstruments.push([kickinstrument, kickSequenceCopy]);
-        arrayOfInstruments.push([snareinstrument, snareSequenceCopy]);
-        arrayOfInstruments.push([clapinstrument, clapSequenceCopy]);
-        arrayOfInstruments.push([inst5instrument, inst5SequenceCopy]);
-        arrayOfInstruments.push([inst6instrument, inst6SequenceCopy]);
-        arrayOfInstruments.push([inst7instrument, inst7SequenceCopy]);
-        arrayOfInstruments.push([metronomeinstrument, metronomeSequenceCopy]);
-        arrayOfInstruments.push([hatinstrument, hatSequenceCopy]);
-        for (var i = 0; i < 16; i++) {
-            sixteenStepArray[i] = [];
-        }
-        // for (var i = 0; i < 16; i++){//on each of the 16 beats
-        for (var j = 0; j < arrayOfInstruments.length; j++) { //cycle through all of the instruments
-            let localBeatNumber = 0;
-            for (var k = 0; k < arrayOfInstruments[j][1].length; k++) { //cycle through all the notes played by those instruments.
-                sixteenStepArray[localBeatNumber].push(arrayOfInstruments[j][1][k][0]);
-                localBeatNumber = localBeatNumber + arrayOfInstruments[j][1][k][1] * 4;
-            }
-        }
-
-        setupStepRhythmSequence();
-        // }
-    }
+function parseAndConstructArrays () {
+let sixteenStepArray=[]
+for (var i = 0; i < 16; i++){
+	sixteenStepArray[i]=[];
+}
+for (var i = 0; i < 16; i++){
+	sixteenStepArray[i].push(kick);
 }
 
-// let sixteenStep1=[];
+
+let sixteenStep1=[];
+
+}
 
 
 function setupStepSequencerArray() {
@@ -927,7 +808,6 @@ var addrhythmsteplisteners = function () {
     if (rhythmFreestyle) {
         sequenceStarted = false;
         stopAllNotes();
-        parseAndConstructArrays();
         // stopAllVoices();
     } //7-24-20
     else {
@@ -1089,17 +969,14 @@ function updateProgress() {
         document.getElementById('levelFourNotProgress').style.width = (25 - (((currentLevelScore - 15) / 20) * 100)) + '%';
         document.getElementById('levelFourProgress').innerHTML = ((currentLevelScore - 15)) + "/5";
     } else if (currentLevelScore >= 20) {
-        // 
+        alert("Congratulations! You have completed this level. Select a new level from the 'select level' menu");
         // alert (scoreLevel);
         addLevelCompleted(whoItIsUsingThis, theirEmail, scoreLevel);
         if (ourLevelNumber < scoreLevel) {
             ourLevelNumber = scoreLevel;
-            updateTheLevelNew(ourLevelNumber);
+            updateTheLevel(ourLevelNumber);
         }
-		else{
-		alertify("Congratulations! You have completed this level. Select a new level from the 'select level' menu");
-		}
-        
+        setupTheLevel(scoreLevel);
     }
 }
 function checkForUpdatedDifficulty() {
@@ -1123,8 +1000,7 @@ function checkForUpdatedDifficulty() {
         }
     } else if (currentLevelScore < 15) {
         if (availableSteps == "quarters") {
-            snaresAllowed = false;
-            backbeatButton.click();
+            backbeat = false;
             numOfRandomSteps = 2;
         } else if (availableSteps == "eighths") {
             numOfRandomSteps = 5;
@@ -1132,8 +1008,7 @@ function checkForUpdatedDifficulty() {
             numOfRandomSteps = 5;
         }
     } else if (currentLevelScore < 20) {
-        snaresAllowed = false;
-        backbeatButton.click();
+        backbeat = false;
         if (availableSteps == "quarters") {
             numOfRandomSteps = 1;
         } else if (availableSteps == "eighths") {
@@ -1158,17 +1033,13 @@ function hideAllLevels() {
     document.getElementById('rhythm-level-nine').hidden = true;
     // document.getElementById('rhythm-level-ten').hidden = true;
 }
-function nextLevel(){
-	scoreLevel++;
-setupTheLevel(scoreLevel);
-}
 
-function updateTheLevelNew(levelNumber) {
+function updateTheLevel(levelNumber) {
     if (levelNumber == 0) {
         if (!loginMessageShown) {
             loginMessageShown = true;
 
-            alertifyTutorial("We see you haven't completed a level here before, " + whoItIsUsingThis + ". <br><br>We've set up a new account for you. <br>If you have logged in before and completed a level, chances are you typed something wrong. <br>If that is the case, click login and try again. <br>(Note: logins are case-sensitive)<br><br>To get started, select the first level from the dropdown menu at the top of the screen.")
+            alertify("We see you haven't completed a level here before, " + whoItIsUsingThis + ". <br><br>We've set up a new account for you. <br>If you have logged in before and completed a level, chances are you typed something wrong. <br>If that is the case, click login and try again. <br>(Note: logins are case-sensitive)<br><br>To get started, select the first level from the dropdown menu at the top of the screen.")
 
         }
     } else {
@@ -1194,8 +1065,7 @@ function updateTheLevelNew(levelNumber) {
         setRhythmInstrument("hat", "closed hat", "hat");
         if (!levelTwoMessageShown) {
             levelTwoMessageShown = true;
-			circleAClass('hat-row');
-            nextTimedAlertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 2<br>-An additional instrument row, Closed Hats!!!!", 3, uncircleHatRowLevel)
+            alertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 2<br>-An additional instrument row, Closed Hats!!!!")
         }
     }
     if (levelNumber > 1) {
@@ -1205,8 +1075,7 @@ function updateTheLevelNew(levelNumber) {
         makeAClassVisible("snare-row");
         if (!levelThreeMessageShown) {
             levelThreeMessageShown = true;
-			circleAClass('snare-row');
-            nextTimedAlertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 3<br>-An additional instrument row, Snares!!!!<br>(You had heard them before as the backbeat snares)", 3, uncircleSnareRowLevel)
+            alertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 3<br>-An additional instrument row, Snares!!!!<br>(You had heard them before as the backbeat snares)")
         }
     }
     if (levelNumber > 2) {
@@ -1218,8 +1087,7 @@ function updateTheLevelNew(levelNumber) {
         setRhythmInstrument("inst6", "clave", "clave");
         if (!levelFourMessageShown) {
             levelFourMessageShown = true;
-			circleAClass('inst6-row');
-            nextTimedAlertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 4<br>-An additional instrument row, Claves!!!!<br>(You had heard them before as the metronome)", 3, uncircleClaveRowLevel)
+            alertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 4<br>-An additional instrument row, Claves!!!!<br>(You had heard them before as the metronome)")
         }
     }
     if (levelNumber > 3) {
@@ -1230,9 +1098,7 @@ function updateTheLevelNew(levelNumber) {
         setRhythmInstrument("clap", "open-hat", "openhat");
         if (!levelFiveMessageShown) {
             levelFiveMessageShown = true;
-			circleAClass('clap-row');
-			circleAClass('temposlider');
-            nextTimedAlertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 5<br>-An additional instrument row, Open Hats!!!!<br>And...<br>-A TEMPO SLIDER!!!!<br>(use this to change the tempo of your drum pattern)", 3, tempoSliderMoreInfo)
+            alertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 5<br>-An additional instrument row, Open Hats!!!!<br>And...<br>-A TEMPO SLIDER!!!!<br>(use this to change the tempo of your drum pattern)")
         }
     }
     if (levelNumber > 4) {
@@ -1243,9 +1109,7 @@ function updateTheLevelNew(levelNumber) {
         setRhythmInstrument("inst7", "tom", "tom"); //replace kick with tom
         if (!levelSixMessageShown) {
             levelSixMessageShown = true;
-			circleAClass('inst7-row');
-			circleAClass('steprowpulldownactual');
-            nextTimedAlertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 6<br>-An additional instrument row, Toms!!!!<br>And...<br>-pull-down options to alter your step-sequencer/channel-rack layout!!!! <br>(Note: as you unlock more instruments, they will appear in these menus. All of the currently unlocked instruments are now available to you.)", 3, steprowpulldownMoreInfo)
+            alertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 6<br>-An additional instrument row, Toms!!!!<br>And...<br>-pull-down options to alter your step-sequencer/channel-rack layout!!!! <br>(Note: as you unlock more instruments, they will appear in these menus. All of the currently unlocked instruments are now available to you.)")
         }
     }
     if (levelNumber > 5) {
@@ -1255,8 +1119,7 @@ function updateTheLevelNew(levelNumber) {
         setRhythmInstrument("inst5", "rim", "rim");
         if (!levelSevenMessageShown) {
             levelSevenMessageShown = true;
-			circleAClass('inst5-row');
-            nextTimedAlertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 7<br>-An additional instrument row, Rims!!!! <br>(Note: they have also been added to your instrument pulldowns!", 3, uncircleRimRowLevel)
+            alertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 7<br>-An additional instrument row, Rims!!!! <br>(Note: they have also been added to your instrument pulldowns!")
         }
     }
     if (levelNumber > 6) {
@@ -1264,7 +1127,7 @@ function updateTheLevelNew(levelNumber) {
         makeAClassVisible("triangle-choice");
         if (!levelEightMessageShown) {
             levelEightMessageShown = true;
-            nextTimedAlertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-An additional instrument, the Triangle has been added to your instrument pulldowns!!!!<br><br>(more levels and unlockables coming soon)", 3, nextLevel)
+            alertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-An additional instrument, the Triangle has been added to your instrument pulldowns!!!!<br><br>(more levels and unlockables coming soon)")
         }
     }
     if (levelNumber > 7) {
@@ -1276,159 +1139,6 @@ function updateTheLevelNew(levelNumber) {
     // if (levelNumber > 8) {
     // document.getElementById('rhythm-level-ten').hidden = false;
     // }
-
-}
-
-function updateTheLevel(levelNumber) {
-	// console.warn ("hi");
-    if (levelNumber == 0) {
-        if (!loginMessageShown) {
-            loginMessageShown = true;
-
-            alertifyTutorial("We see you haven't completed a level here before, " + whoItIsUsingThis + ". <br><br>We've set up a new account for you. <br>If you have logged in before and completed a level, chances are you typed something wrong. <br>If that is the case, click login and try again. <br>(Note: logins are case-sensitive)<br><br>To get started, select the first level from the dropdown menu at the top of the screen.")
-
-        }
-    } else {
-        if (!loginMessageShown) {
-            loginMessageShown = true;
-
-            alertify(whoItIsUsingThis + "! Welcome back! You have at least a couple of levels unlocked! Check them out in the pulldown menu!");
-        }
-    }
-    hideAllLevels();
-    // console.log(levelNumber);
-    if (levelNumber >= 0) {
-        document.getElementById('rhythm-level-one').hidden = false;
-        makeAClassVisible("kick-choice");
-        makeAClassVisible("kick-row");
-        //make the hat row become visible after this point!
-    }
-    if (levelNumber > 0) {
-        document.getElementById('rhythm-level-two').hidden = false;
-        //make the snare row become visible after this point!
-        makeAClassVisible("hat-choice");
-        makeAClassVisible("hat-row");
-        setRhythmInstrument("hat", "closed hat", "hat");
-        if (!levelTwoMessageShown) {
-            levelTwoMessageShown = true;
-			// circleAClass('hat-row');
-            // nextTimedAlertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 2<br>-An additional instrument row, Closed Hats!!!!", 3, uncircleHatRow)
-        }
-    }
-    if (levelNumber > 1) {
-        document.getElementById('rhythm-level-three').hidden = false;
-        //make the clave row become visible after this point!
-        makeAClassVisible("snare-choice");
-        makeAClassVisible("snare-row");
-        if (!levelThreeMessageShown) {
-            levelThreeMessageShown = true;
-			// circleAClass('snare-row');
-            // nextTimedAlertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 3<br>-An additional instrument row, Snares!!!!<br>(You had heard them before as the backbeat snares)", 3, uncircleSnareRow)
-        }
-    }
-    if (levelNumber > 2) {
-        document.getElementById('rhythm-level-four').hidden = false;
-        //make the open-hat row become visible after this point!
-        makeAClassVisible("clave-choice");
-        makeAClassVisible("inst6-row");
-
-        setRhythmInstrument("inst6", "clave", "clave");
-        if (!levelFourMessageShown) {
-            levelFourMessageShown = true;
-			// circleAClass('inst6-row');
-            // nextTimedAlertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 4<br>-An additional instrument row, Claves!!!!<br>(You had heard them before as the metronome)", 3, uncircleClaveRow)
-        }
-    }
-    if (levelNumber > 3) {
-        document.getElementById('rhythm-level-five').hidden = false;
-        makeAClassVisible('temposlider');
-        makeAClassVisible("openhat-choice");
-        makeAClassVisible("clap-row");
-        setRhythmInstrument("clap", "open-hat", "openhat");
-        if (!levelFiveMessageShown) {
-            levelFiveMessageShown = true;
-			// circleAClass('clap-row');
-			// circleAClass('temposlider');
-            // nextTimedAlertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 5<br>-An additional instrument row, Open Hats!!!!<br>And...<br>-A TEMPO SLIDER!!!!<br>(use this to change the tempo of your drum pattern)", 3, tempoSliderMoreInfo)
-        }
-    }
-    if (levelNumber > 4) {
-        document.getElementById('rhythm-level-six').hidden = false;
-        makeAClassVisible('steprowpulldown');
-        makeAClassVisible('tom-choice');
-        makeAClassVisible('inst7-row');
-        setRhythmInstrument("inst7", "tom", "tom"); //replace kick with tom
-        if (!levelSixMessageShown) {
-            levelSixMessageShown = true;
-			// circleAClass('inst7-row');
-			// circleAClass('steprowpulldown');
-            // nextTimedAlertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 6<br>-An additional instrument row, Toms!!!!<br>And...<br>-pull-down options to alter your step-sequencer/channel-rack layout!!!! <br>(Note: as you unlock more instruments, they will appear in these menus. All of the currently unlocked instruments are now available to you.)", 3, steprowpulldownMoreInfo)
-        }
-    }
-    if (levelNumber > 5) {
-        document.getElementById('rhythm-level-seven').hidden = false;
-        makeAClassVisible("rim-choice");
-        makeAClassVisible("inst5-row");
-        setRhythmInstrument("inst5", "rim", "rim");
-        if (!levelSevenMessageShown) {
-            levelSevenMessageShown = true;
-			// circleAClass('inst5-row');
-            // nextTimedAlertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-Level 7<br>-An additional instrument row, Rims!!!! <br>(Note: they have also been added to your instrument pulldowns!", 3, uncircleRimRow)
-        }
-    }
-    if (levelNumber > 6) {
-        document.getElementById('rhythm-level-eight').hidden = false;
-        makeAClassVisible("triangle-choice");
-        if (!levelEightMessageShown) {
-            levelEightMessageShown = true;
-            // alertify("Congratulations! Based on your progress up to this point, you have now unlocked the following:<br><br>-An additional instrument, the Triangle has been added to your instrument pulldowns!!!!<br><br>(more levels and unlockables coming soon)")
-        }
-    }
-    if (levelNumber > 7) {
-        if (!levelNineMessageShown) {
-            levelNineMessagShowne = true;
-            document.getElementById('rhythm-level-nine').hidden = false;
-        }
-    }
-    // if (levelNumber > 8) {
-    // document.getElementById('rhythm-level-ten').hidden = false;
-    // }
-
-}
-
-function tempoSliderMoreInfo(){
-uncircleAClass('clap-row');
-nextTimedAlertify ("With the Tempo Slider, you can change the tempo of the beat.<br>(Default setting: 100bpm)", 3, uncircleTempoSlider);
-}
-
-
-function steprowpulldownMoreInfo(){
-uncircleAClass('inst7-row');
-document.getElementById('kickdropdownMenuButton').click()
-nextTimedAlertify ("When in 'Make Your Own Beat' mode from the 'Select Level' menu, you can now open these pulldown menus and change the instrument being played on any given row.", 3, closeAndUncirclePullDowns);
-}
-function closeAndUncirclePullDowns(){
-document.getElementById('kickdropdownMenuButton').click()
-uncircleAClass ('steprowpulldownactual');
-nextLevel();
-}
-
-function uncircleTempoSlider(){
-
-uncircleAClass('temposlider');
-nextLevel();
-}
-function uncircleClaveRow(){
-
-uncircleAClass('clave-row');
-
-
-}
-
-function uncircleClaveRowLevel(){
-
-uncircleAClass('clave-row');
-nextLevel();
 
 }
 
@@ -1742,9 +1452,7 @@ function setupRhythmSense() {
     document.getElementById('octaves').style.display = 'none';
     document.getElementById('scale-buttons').style.display = 'none';
     document.getElementById('tunerAndSettings').style.display = 'none';
-    if (metronome) {
-        metronomeButton.click();
-    }
+
     // document.getElementById('kick-row').hidden=false;
     // document.getElementById('snare-row').hidden=false;
     // document.getElementById('hat-row').hidden=false;
@@ -1760,9 +1468,8 @@ function setupRhythmSense() {
     document.getElementById("rhythmBox").hidden = false;
 
     setupStepSequencerArray();
-    // alertify("Welcome to Rhythm Sense! Login and then select your level from the pull-down menu");
+    alertify("Welcome to Rhythm Sense! Login and then select your level from the pull-down menu");
 
-    doSomethingAlertify("Welcome to Rhythm Sense! Login and then select your level from the pull-down menu.", logintothisapp, "Login here");
     // timedAlertify('Do you really want it?', 5, );
     // .then(() => alert("hi"))
     // .catch(() => alert("yo"));
@@ -1772,13 +1479,13 @@ function setupRhythmSense() {
     accompanimentVolume = 0;
     referenceVolume = 0;
     // paused=true;
-    rhythmVolume = 0;
+    rhythmVolume = 50;
     // restartTimer();
     // repeatOnFrame();
 
     setupMakeYourOwnMode();
-
-    intervalSetting = setInterval(repeatEverySixteenth, 60000 / (4 * currentBPM));
+	
+setInterval(repeatOnFrame, 60000/(4*currentBPM));
 
 }
 
@@ -1840,7 +1547,7 @@ function setupLevelTwo() { //the note changes under you. And interval changes.
         document.getElementById("lesson-directions").innerHTML = "Directions: The note changes each time. And interval changes.";
 
     globalTimeRequirement = 1;
-    // repeatOnFrame();
+    repeatOnFrame();
 }
 function setupLevelThree() { //one note over and over again. (different intervals, 3rd, 4th, 5th)
     accompaniment = false;
@@ -4045,69 +3752,69 @@ function startWrongTimer() {
 function updateTimer() { //what to do when time zone
     var now = new Date();
     if (noteTimerStarted) {
-        noteTimeStart = clockTester + 0;
+        noteTimeStart = new Date(now.getTime());
         noteTimerStarted = false;
     }
     if (arpeggioTimerStarted) {
-        arpeggioTimeStart = clockTester + 0;
+        arpeggioTimeStart = new Date(now.getTime());
         arpeggioTimerStarted = false;
     }
     if (kickTimerStarted) {
-        kickTimeStart = clockTester + 0;
+        kickTimeStart = new Date(now.getTime());
         kickTimerStarted = false;
     }
     if (clapTimerStarted) { // inst copy  start
-        clapTimeStart = clockTester + 0;
+        clapTimeStart = new Date(now.getTime());
         clapTimerStarted = false;
     } // inst copy end
     if (metronomeTimerStarted) { // inst copy  start
-        metronomeTimeStart = clockTester + 0;
+        metronomeTimeStart = new Date(now.getTime());
         metronomeTimerStarted = false;
     }
     if (inst5TimerStarted) { // inst copy  start
-        inst5TimeStart = clockTester + 0;
+        inst5TimeStart = new Date(now.getTime());
         inst5TimerStarted = false;
     }
     if (inst6TimerStarted) { // inst copy  start
-        inst6TimeStart = clockTester + 0;
+        inst6TimeStart = new Date(now.getTime());
         inst6TimerStarted = false;
     }
     if (inst7TimerStarted) { // inst copy  start
-        inst7TimeStart = clockTester + 0;
+        inst7TimeStart = new Date(now.getTime());
         inst7TimerStarted = false;
     }
     if (hatTimerStarted) {
-        hatTimeStart = clockTester + 0;
+        hatTimeStart = new Date(now.getTime());
         hatTimerStarted = false;
     }
     if (snareTimerStarted) {
-        snareTimeStart = clockTester + 0;
+        snareTimeStart = new Date(now.getTime());
         snareTimerStarted = false;
     }
     if (rhythmTimerStarted) {
-        rhythmTimeStart = clockTester + 0;
+        rhythmTimeStart = new Date(now.getTime());
         rhythmTimerStarted = false;
     }
 
     if (chordTimerStarted) {
-        chordTimeStart = clockTester + 0;
+        chordTimeStart = new Date(now.getTime());
         chordTimerStarted = false;
     }
     if (rootTimerStarted) {
-        rootTimeStart = clockTester + 0;
+        rootTimeStart = new Date(now.getTime());
         // arpeggioTimerStarted=false;
         rootTimerStarted = false;
     }
     if (scoreTimerStarted) {
-        scoreTimeStart = clockTester + 0;
+        scoreTimeStart = new Date(now.getTime());
         scoreTimerStarted = false;
     }
     if (pauseTimerStarted) {
-        pauseTimeStart = clockTester + 0;
+        pauseTimeStart = new Date(now.getTime());
         pauseTimerStarted = false;
     }
     if (wrongNoteStarted) {
-        scorePauseTimeStart = clockTester + 0;
+        scorePauseTimeStart = new Date(now.getTime());
         wrongNoteStarted = false;
     }
     try {
@@ -4136,64 +3843,56 @@ function updateTimer() { //what to do when time zone
     // // console.log("score pause time amount " + (((now.getTime() - scorePauseTimeStart) % (1000.001 * 60.001)) / 1000.001));
     // scorePauseTimeAmount = now.getTime() - scorePauseTimeStart; //previousScorePauseTimeAmount + (now.getTime() - scorePauseTimeStart);
     // }
-    let tempTime = clockTester + 0;
+    let tempTime = now.getTime();
 
-    noteTimeBeats = (tempTime) - noteTimeStart; //the Time of a note.
-
+    noteTime = (tempTime) - noteTimeStart; //the Time of a note.
+    noteTimeSeconds = ((noteTime % (1000 * 60)) / 1000);
+    noteTimeBeats = noteTimeSeconds / (60 / currentBPM);
     // try {
+    rootTime = (tempTime) - rootTimeStart; //the Time of a note.
+    rootTimeSeconds = ((rootTime % (1000 * 60)) / 1000);
+    rootTimeBeats = rootTimeSeconds / (60 / currentBPM);
+    // } catch (error) {}
 
-    rootTimeBeats = (tempTime) - rootTimeStart;
-    arpeggioTimeBeats = (tempTime) - arpeggioTimeStart;
-    rhythmTimeBeats = (tempTime) - rhythmTimeStart;
-    kickTimeBeats = (tempTime) - kickTimeStart;
-    inst5TimeBeats = (tempTime) - inst5TimeStart;
-    inst6TimeBeats = (tempTime) - inst6TimeStart;
-    inst7TimeBeats = (tempTime) - inst7TimeStart;
+    arpeggioTime = (tempTime) - arpeggioTimeStart; //the Time of a note.
+    arpeggioTimeSeconds = ((arpeggioTime % (1000 * 60)) / 1000);
+    arpeggioTimeBeats = arpeggioTimeSeconds / (60 / currentBPM);
 
-    snareTimeBeats = (tempTime) - snareTimeStart;
-    hatTimeBeats = (tempTime) - hatTimeStart;
-    clapTimeBeats = (tempTime) - clapTimeStart;
-    metronomeTimeBeats = (tempTime) - metronomeTimeStart; // } catch (error) {}
+    rhythmTime = (tempTime) - rhythmTimeStart; //the Time of a note.
+    rhythmTimeSeconds = ((rhythmTime % (1000 * 60)) / 1000);
+    rhythmTimeBeats = rhythmTimeSeconds / (60 / currentBPM);
 
-    // arpeggioTime = (tempTime) - arpeggioTimeStart; //the Time of a note.
-    // arpeggioTimeSeconds = ((arpeggioTime % (1000 * 60)) / 1000);
-    // arpeggioTimeBeats = arpeggioTimeSeconds / (60 / currentBPM);
+    kickTime = (tempTime) - kickTimeStart; //the Time of a note.
+    kickTimeSeconds = ((kickTime % (1000 * 60)) / 1000);
+    kickTimeBeats = kickTimeSeconds / (60 / currentBPM);
 
-    // rhythmTime = (tempTime) - rhythmTimeStart; //the Time of a note.
-    // rhythmTimeSeconds = ((rhythmTime % (1000 * 60)) / 1000);
-    // rhythmTimeBeats = rhythmTimeSeconds / (60 / currentBPM);
+    clapTime = (tempTime) - clapTimeStart; //the Time of a note. // inst copy start
+    clapTimeSeconds = ((clapTime % (1000 * 60)) / 1000);
+    clapTimeBeats = clapTimeSeconds / (60 / currentBPM); // inst copy end
 
-    // kickTime = (tempTime) - kickTimeStart; //the Time of a note.
-    // kickTimeSeconds = ((kickTime % (1000 * 60)) / 1000);
-    // kickTimeBeats = kickTimeSeconds / (60 / currentBPM);
+    metronomeTime = (tempTime) - metronomeTimeStart; //the Time of a note. // inst copy start
+    metronomeTimeSeconds = ((metronomeTime % (1000 * 60)) / 1000);
+    metronomeTimeBeats = metronomeTimeSeconds / (60 / currentBPM); // inst copy end
 
-    // clapTime = (tempTime) - clapTimeStart; //the Time of a note. // inst copy start
-    // clapTimeSeconds = ((clapTime % (1000 * 60)) / 1000);
-    // clapTimeBeats = clapTimeSeconds / (60 / currentBPM); // inst copy end
+    inst5Time = (tempTime) - inst5TimeStart; //the Time of a note. // inst copy start
+    inst5TimeSeconds = ((inst5Time % (1000 * 60)) / 1000);
+    inst5TimeBeats = inst5TimeSeconds / (60 / currentBPM); // inst copy end
 
-    // metronomeTime = (tempTime) - metronomeTimeStart; //the Time of a note. // inst copy start
-    // metronomeTimeSeconds = ((metronomeTime % (1000 * 60)) / 1000);
-    // metronomeTimeBeats = metronomeTimeSeconds / (60 / currentBPM); // inst copy end
+    inst6Time = (tempTime) - inst6TimeStart; //the Time of a note. // inst copy start
+    inst6TimeSeconds = ((inst6Time % (1000 * 60)) / 1000);
+    inst6TimeBeats = inst6TimeSeconds / (60 / currentBPM); // inst copy end
 
-    // inst5Time = (tempTime) - inst5TimeStart; //the Time of a note. // inst copy start
-    // inst5TimeSeconds = ((inst5Time % (1000 * 60)) / 1000);
-    // inst5TimeBeats = inst5TimeSeconds / (60 / currentBPM); // inst copy end
+    inst7Time = (tempTime) - inst7TimeStart; //the Time of a note. // inst copy start
+    inst7TimeSeconds = ((inst7Time % (1000 * 60)) / 1000);
+    inst7TimeBeats = inst7TimeSeconds / (60 / currentBPM); // inst copy end
 
-    // inst6Time = (tempTime) - inst6TimeStart; //the Time of a note. // inst copy start
-    // inst6TimeSeconds = ((inst6Time % (1000 * 60)) / 1000);
-    // inst6TimeBeats = inst6TimeSeconds / (60 / currentBPM); // inst copy end
+    hatTime = (tempTime) - hatTimeStart; //the Time of a note.
+    hatTimeSeconds = ((hatTime % (1000 * 60)) / 1000);
+    hatTimeBeats = hatTimeSeconds / (60 / currentBPM);
 
-    // inst7Time = (tempTime) - inst7TimeStart; //the Time of a note. // inst copy start
-    // inst7TimeSeconds = ((inst7Time % (1000 * 60)) / 1000);
-    // inst7TimeBeats = inst7TimeSeconds / (60 / currentBPM); // inst copy end
-
-    // hatTime = (tempTime) - hatTimeStart; //the Time of a note.
-    // hatTimeSeconds = ((hatTime % (1000 * 60)) / 1000);
-    // hatTimeBeats = hatTimeSeconds / (60 / currentBPM);
-
-    // snareTime = (tempTime) - snareTimeStart; //the Time of a note.
-    // snareTimeSeconds = ((snareTime % (1000 * 60)) / 1000);
-    // snareTimeBeats = snareTimeSeconds / (60 / currentBPM);
+    snareTime = (tempTime) - snareTimeStart; //the Time of a note.
+    snareTimeSeconds = ((snareTime % (1000 * 60)) / 1000);
+    snareTimeBeats = snareTimeSeconds / (60 / currentBPM);
 
     // chordTime = (tempTime) - chordTimeStart; //the Time of a note.
     // chordTimeSeconds = ((chordTime % (1000 * 60)) / 1000);
@@ -6748,7 +6447,7 @@ function amplifyMedia(mediaElem, multiplier) {
 
 async function playANote(arrayPlace) { // where we Play Notes  //important chordIsDone means we are not playing the chord. !chordIsDone means we are playing the chord or arpeggios.
 
-    // console.warn(arrayPlace);
+console.warn (arrayPlace);
     // console.log("Playing "+ noteArray[arrayPlace][1]);
     // console.log(arrayPlace + " " + noteArray[arrayPlace][1]);
     //beginning of section on playing the notes using time.
@@ -6902,20 +6601,20 @@ async function playANote(arrayPlace) { // where we Play Notes  //important chord
             chordIsDone = false;
             // alert (arpeggioPlay);
             // nonReferencePlay = false; //AVI you mmay
-            // if (rhythmPlay) {   7-30-20 begin
-            // rhythmSequenceArray = [];
-            // // alert ("hi");
-            // if (!rhythmSense) {
-            // setupRhythmSequence();
-            // } else {
-            // alertify (clockTester);
-            // setupStepRhythmSequence();
-            // }
+            if (rhythmPlay) {
+                rhythmSequenceArray = [];
+                // alert ("hi");
+                if (!rhythmSense) {
+                    setupRhythmSequence();
+                } else {
+					// alert ("YO");
+                    setupStepRhythmSequence();
+                }
 
-            // rhythmSequenceCopy = [];
-            // rhythmSequenceCopy = rhythmSequenceArray.slice();
-            // } 7-30-20 end
-            // alert ("lol");
+                rhythmSequenceCopy = [];
+                rhythmSequenceCopy = rhythmSequenceArray.slice();
+            }
+			// alert ("lol");
             // alert ("you should hear a chord");
             let currentInstrument = instrument + "";
             if (currentInstrument == "piano") {
@@ -7522,30 +7221,20 @@ function setupStepRhythmSequence() { //called at the beginning of each measure. 
 function setupBackbeat() {
     snareSequenceArray = [];
     snareStarted = true;
-    if ((backbeat) && (snaresAllowed)) {
-        snareStepArray[4].classList.add("selectedstep");
-        snareStepArray[4].classList.remove("unselectedstep");
-        snareStepArray[12].classList.add("selectedstep");
-        snareStepArray[12].classList.remove("unselectedstep");
+    snareStepArray[4].classList.add("selectedstep");
+    snareStepArray[4].classList.remove("unselectedstep");
+    snareStepArray[12].classList.add("selectedstep");
+    snareStepArray[12].classList.remove("unselectedstep");
 
-        snareSequenceArray.push(["rest", 1, 0]);
-        snareSequenceArray.push(["snare", 2, 0]);
-        snareSequenceArray.push(["snare", 1, 0]);
-        tempSnareSequenceArray = [];
-        snareSequenceCopy = snareSequenceArray.slice();
-        tempSnareSequenceArray.push(["rest", 1, 0]);
-        tempSnareSequenceArray.push(["snare", 2, 0]);
-        tempSnareSequenceArray.push(["snare", 1, 0]);
-    } else {
-        tempSnareSequenceArray = [];
-        snareStepArray[4].classList.remove("selectedstep");
-        snareStepArray[4].classList.add("unselectedstep");
-        snareStepArray[12].classList.remove("selectedstep");
-        snareStepArray[12].classList.add("unselectedstep");
+    snareSequenceArray.push(["rest", 1, 0]);
+    snareSequenceArray.push(["snare", 2, 0]);
+    snareSequenceArray.push(["snare", 1, 0]);
+    tempSnareSequenceArray = [];
+    snareSequenceCopy = snareSequenceArray.slice();
+    tempSnareSequenceArray.push(["rest", 1, 0]);
+    tempSnareSequenceArray.push(["snare", 2, 0]);
+    tempSnareSequenceArray.push(["snare", 1, 0]);
 
-        snareSequenceCopy = snareSequenceArray.slice();
-
-    }
 }
 function setupMetronome() {
     // alert ("setit")
@@ -7653,7 +7342,7 @@ function setupRandomKickSequence(amountOfRandomKicks) {
         if (metronome)
             metronomeSequenceArray = metronomeSequenceCopy.slice();
         kickSequenceArray = kickSequenceCopy.slice();
-        // console.error("copy 7320")
+        console.error("copy 7320")
         // console.warn(hatSequenceCopy.toString());
     }
 }
@@ -7850,7 +7539,6 @@ function setupRandomSnareSequence(amountOfRandomSnares) {
     }
 }
 function generateStepKickSequence() {
-    // alert("hi");
     tempKickSequenceArray = [];
     var firstkicksounded = false;
     var kicksToAddToEnd = 0;
@@ -8225,13 +7913,10 @@ function checkMyRhythmAnswer() {
             }
             noMorePoints = true;
             document.getElementById("totalscore").innerHTML = "#Correct = " + totalScore;
-			if (currentLevelScore<20){
+
             alertify("Nice Job! You got that one! Hit 'Give me another!' to move on.")
-            }
-			if (rhythmSpeedMode) {
-				if (currentLevelScore<20){
+            if (rhythmSpeedMode) {
                 checkForUpdatedDifficulty();
-				}
                 newQuestionTime = true;
                 resetStepElements();
                 setupSteps();
@@ -8620,136 +8305,20 @@ function setupRhythmSequence() {
     }
 
 }
-var firstTimeThrough = true;
-var thisBeatNum = 0;
-
-async function metronomeKeeper(thisStep){
-		if (thisStep == 4)
-            thisStep = 0;
-        // alertify (thisStep);
-        guideStepArray[thisStep * 4].classList.add('lititup');
-        if ((thisStep - 1) < 0) {
-            thisStep = 4;
-        }
-        guideStepArray[(thisStep - 1) * 4].classList.remove('lititup');
-		if (thisStep==4){
-		kickStepArray[0].classList.add('lititup');
-		snareStepArray[0].classList.add('lititup');
-		hatStepArray[0].classList.add('lititup');
-		inst5StepArray[0].classList.add('lititup');
-		clapStepArray[0].classList.add('lititup');
-		inst6StepArray[0].classList.add('lititup');
-		inst7StepArray[0].classList.add('lititup');
-		
-		}
-		if (thisStep==1){
-				kickStepArray[0].classList.remove('lititup');
-		snareStepArray[0].classList.remove('lititup');
-		hatStepArray[0].classList.remove('lititup');
-		inst5StepArray[0].classList.remove('lititup');
-		clapStepArray[0].classList.remove('lititup');
-		inst6StepArray[0].classList.remove('lititup');
-		inst7StepArray[0].classList.remove('lititup');
-		}
-}
-
-function repeatEverySixteenth() {
-
-    if (firstTimeThrough) {
-        firstTimeThrough = false;
-        setupStepRhythmSequence();
-    }
-    clockTester = clockTester + 1;
-
-    // instrument="rhythmInstruments";
-    chordIsDone = true;
-    updateTimer();
-    // alertify (clockTester%16);
-    thisBeatNum = clockTester % 16 + 1;
-    // alertify(thisBeatNum);
-    if (thisBeatNum % 4 == 0) { // if the beat i1 1, 2, 3, or 4
-        instrument = "rhythmInstruments";
-        // playANote("kick0");
-        parseAndConstructArrays();
-        let thisStep = (thisBeatNum / 4);
-        metronomeKeeper(thisStep);
-
-    }
-try{
-	if (!paused){
-    for (var i = 0; i < sixteenStepArray[thisBeatNum - 1].length; i++) {
-        playANote(sixteenStepArray[thisBeatNum - 1][i] + "0");
-    }
-	}
-}
-catch (error){}
-    if (newQuestionTime) {
-        noMorePoints = false;
-        numOfThisNoteInSequence = 0;
-        // alert ("a new questions!");
-        chordSequenceStarted = false;
-        if (!nonReferencePlay) {
-            sequenceStarted = false;
-        }
-        clearAllNotes();
-        currentScore = 0;
-        score = 0;
-        wrongPoints = 0;
-        wrongNote = false;
-        newWrong = false;
-        newScore = true;
-        rhythmSequenceArray = [];
-        rhythmSequenceCopy = [];
-        kickSequenceArray = [];
-        kickSequenceCopy = [];
-        clapSequenceArray = []; //inst copy
-        clapSequenceCopy = []; //inst copy
-        metronomeSequenceArray = []; //inst copy
-        metronomeSequenceCopy = []; //inst copy
-        inst5SequenceArray = []; //inst copy
-        inst5SequenceCopy = []; //inst copy
-        inst6SequenceArray = []; //inst copy
-        inst6SequenceCopy = []; //inst copy
-        inst7SequenceArray = []; //inst copy
-        inst7SequenceCopy = []; //inst copy
-        hatSequenceArray = [];
-        hatSequenceCopy = [];
-        snareSequenceArray = [];
-        snareSequenceCopy = [];
-        newQuestionTime = false;
-    }
-
-    var minutes = Math.floor(clockTester / 4 / currentBPM);
-    var seconds = Math.floor(clockTester * 60 / 4 / currentBPM);
-    // alertify(seconds);
-    // var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    // var distance2 = distance / (totalScore + 1);
-    // var minutes2 = Math.floor(distance2 / (1000 * 60));
-    // var seconds2 = Math.floor((distance2 % (1000 * 60)) / 1000);
-
-    // if (minutes < 10)
-    // minutes = "0" + minutes;
-    // if (seconds < 10)
-    // seconds = "0" + seconds;
-
-    document.getElementById('countdown').innerText = minutes + ":" + seconds + " ";
-    // document.getElementById("averagetime").innerText = minutes2 + ":" + seconds2 + " ";
-}
 
 function repeatOnFrame() {
-    // alert ("hi");
-    clockTester = clockTester + .5;
-    // instrument="rhythmInstruments";
-    chordIsDone = true;
-    // playANote("kick0");
-    // alertify (Math.ceil(noteTimeBeats));
+	// alert ("hi");
+	clockTester=clockTester+.5/4
+	instrument="rhythmInstruments";
+	chordIsDone=true;
+	playANote("kick0");
+	// alertify (Math.ceil(clockTester));
     updateTimer();
     if (beginning == true) {
         playMajorScale(noteAdapter + scaleAdapter);
 
     }
-    if ((noteTimeBeats >= currentNoteBeats) && (sequencePlay) && (!nonReferencePlay)) {
+    if ((noteTimeBeats > currentNoteBeats) && (sequencePlay) && (!nonReferencePlay)) {
         sequenceStarted = false; //proceed to the next note.
         // synth.triggerRelease();
         // stopAllNotes();
@@ -8843,20 +8412,7 @@ function repeatOnFrame() {
             // alertify("first "+intervalDirection);
         }
         // alertify("first "+intervalDirection);
-        // instrument="piano";
-        if (rhythmPlay) {
-            rhythmSequenceArray = [];
-            // alert ("hi");
-            if (!rhythmSense) {
-                setupRhythmSequence();
-            } else {
-                // alertify (clockTester);
-                setupStepRhythmSequence();
-            }
-
-            rhythmSequenceCopy = [];
-            rhythmSequenceCopy = rhythmSequenceArray.slice();
-        }
+		// instrument="piano";
         playANote(currentRandomNoteNum);
         if (sequencePlay) {
             randomNoteNum = currentRandomNoteNum + 0;
@@ -8951,7 +8507,6 @@ function repeatOnFrame() {
 
         }
     } else if (nonReferencePlay) {
-        // alert ("hi");
         if ((chordTimeBeats >= currentChordBeats)) {
             alert("hi");
             chordSequenceStarted = false; //proceed to the next note.
@@ -9244,11 +8799,7 @@ function repeatOnFrame() {
         }
 
     }
-    // zalertify(Math.ceil(metronomeTimeBeats));
-    // if (clockTester%2==0){
-    // instrument = "rhythmInstruments";
-    // playANote("kick0")
-    // }
+
     if (rhythmPlay) { //TRANSPLANT BEGIN
 
         if ((rhythmTimeBeats >= currentRhythmBeats) && (rhythmPlay)) {
@@ -9269,7 +8820,6 @@ function repeatOnFrame() {
             let currentInstrument = instrument + "";
             instrument = "rhythmInstruments"; //error spot 2
             // alert (currentRandomRhythmNum);
-
             if (currentRandomRhythmNum != "rest0") {
                 playANote(currentRandomRhythmNum);
             } //Thoughts: I may need to put all of this into a new method specifically for arpeggiation.
@@ -9352,11 +8902,11 @@ function repeatOnFrame() {
         // alert (kickTimeBeats);
         if (kickTimeBeats > metronomeTimeBeatCount) {
             // makeAClassUnlit('guidestep');
-
-            document.getElementById('guidestepone').classList.remove('lititup');
-            document.getElementById('guidestepfive').classList.remove('lititup');
-            document.getElementById('guidestepnine').classList.remove('lititup');
-            document.getElementById('guidestepthirteen').classList.remove('lititup');
+			
+                document.getElementById('guidestepone').classList.remove('lititup');
+                document.getElementById('guidestepfive').classList.remove('lititup');
+                document.getElementById('guidestepnine').classList.remove('lititup');
+                document.getElementById('guidestepthirteen').classList.remove('lititup');
         }
         if (stepLightMode) {
             if (kickTimeBeats > kickTimeBeatCount) {
@@ -9454,7 +9004,6 @@ function repeatOnFrame() {
         // // document.getElementById('kickstepone').classList.remove('unselectedstep');
         // // document.getElementById('kickstepone').classList.remove('selectedstep');
         // }
-
         if ((kickTimeBeats >= currentkickBeats) && (rhythmPlay)) {
 
             kickSequenceStarted = false; //proceed to the next note.
@@ -9462,7 +9011,6 @@ function repeatOnFrame() {
         }
 
         if ((!kickSequenceStarted) && (kickSequenceArray.length > 0) && (kickStarted)) {
-
             // console.log(arpeggioSequenceArray.length+" "+arpeggioSequenceArray.toString());
 
             let currentNoteInfo = kickSequenceArray.shift();
@@ -9572,10 +9120,9 @@ function repeatOnFrame() {
 
             }
         } //inst copy end
-        // alert (currentkickBeats);
+
         if ((metronomeTimeBeats >= currentmetronomeBeats) && (rhythmPlay)) { //inst copy start
             // alert("hi")
-
             metronomeSequenceStarted = false; //proceed to the next note. //inst copy
 
         } //inst copy
@@ -10200,7 +9747,7 @@ function repeatOnFrame() {
                 }
                 updateProgress();
                 if (currentLevelScore >= 40) {
-                    alertify("Congratulations! You have completed this level. Select a new level from the 'select level' menu");
+                    alert("Congratulations! You have completed this level. Select a new level from the 'select level' menu");
                     addLevelCompleted(whoItIsUsingThis, theirEmail, scoreLevel);
 
                     if (ourLevelNumber < levelToNum(scoreLevel)) {
@@ -10900,145 +10447,145 @@ function repeatOnFrame() {
     //		noteOffListener(note);
 
 
+// }
+//console.log("sup");
+
+// frameCounter++,
+// Date.now() - startTime >= 60 && (measureLength = frameCounter, minDrawMLength = frameCounter * minDrawRate, startTime = Date.now(), frameCounter = 0), // Avi Changed this from 450 to 250 on 5-23
+// analyzer.getFloatTimeDomainData(timeDomainData);
+// var e = bitCounter / findWaveLength(timeDomainData, window.globk * 24, window.globk * 1200, 10, 10, .016, Math.ceil(10 / window.globk)); //e is the value of the sound
+// if (e > 0) {
+// console.log("you're singing");
+// console.log("you started singing "+noteArray[findNote(e)][1] + " "+noteArray[mostRecentPostingNum][1]);
+// if (captureSinging) {
+// if (findNote(e) != mostRecentPostingNum) { //I currently don't have any way of recognizing that notes were changed. this boolean is a placeholder.
+// try {
+// singingEndTime = new Date().getTime() + 0;
+// let timeChange = singingEndTime - singingStartTime;
+// // console.log("time change "+timeChange);
+// if (timeChange > 20) {
+// let singingTimeSeconds = (timeChange / 1000);
+// let singingTimeBeats = singingTimeSeconds / (60 / currentBPM);
+// console.log(noteArray[lastMostRecentPostingNum][1] + " was added from making noise");
+// singingTimeArray.push([lastMostRecentPostingNum, singingTimeSeconds]);
+// console.log("Yo" + singingTimeArray.toString());
+// // if (singingTimeArray.length > 5) {
+
+// // }
+// // console.log("time you sang was " + singingTimeSeconds + " " + noteArray[mostRecentPostingNum][1]);
+// }
+// youAreSinging = false;
+// // singingStartTime = new Date().getTime() + 0;
+
+// } catch (error) {
+// console.log(error);
+// }
+
+// } else {
+// console.log("they were the same");
+// }
+
+// if (!youAreSinging) {
+// try {
+// singingStartTime = new Date().getTime() + 0;
+// } catch (error) {}
+
+// youAreSinging = true;
+// }
+// }
+// console.log("you are singing " + noteArray[findNote(e)][1] + " " + r);
+// measurements.push([e, findNote(e)]),
+// measurements.length > measureLength && (measurements = measurements.slice(measurements.length - measureLength));
+// for (var r = 0, t = 0, o = 0, n = measurements.length, a = 0; n > a; a++) {
+// t = 0;
+// for (var i = 0; n > i; i++)
+// measurements[a][1] == measurements[i][1] && (t++, t >= r && (r = t, o = a))
+// }
+// for (var u = [], a = 0; n > a; a++)
+// measurements[a][1] == measurements[o][1] && u.push(measurements[a][0]);
+// u.length >= minDrawMLength && (e = u.reduce(function (e, r) {
+// return e + r
+// }) / u.length, drawGaugeNote(e))
+// //this spot is Avi important
+// } else { //WHAT TO DO WHEN NO SOUND
+
+// if (captureSinging) {
+// try {
+// singingEndTime = new Date().getTime() + 0;
+// let timeChange = singingEndTime - singingStartTime;
+// if (timeChange > 20) {
+// let singingTimeSeconds = ((timeChange % (1000 * 60)) / 1000);
+// let singingTimeBeats = singingTimeSeconds / (60 / currentBPM);
+// console.log(noteArray[mostRecentPostingNum][1] + " was added from being quiet");
+// singingTimeArray.push([mostRecentPostingNum, singingTimeSeconds]);
+// console.log("Yo" + singingTimeArray.toString());
+// if (singingTimeArray.length > 5) {
+// // alert("cool");
+
+// }
+// // console.log("time you sang was " + singingTimeSeconds + " " + noteArray[mostRecentPostingNum][1]);
+// }
+
+// singingStartTime = new Date().getTime() + 0;
+// } catch (error) {
+// console.log(error);
+// }
+
+// youAreSinging = false;
+// }
+// if (!sequencePlay) {
+// startWrongTimer();
+// //startScoreTimer();
+// if (scoreTimeBeats < (1)) {
+// wrongNote = false;
+// wrongPoints = 0;
+// // startScoreTimer();
+
+// // console.log("s " + scoreTimeBeats);
+// } else {
+// wrongNote = true;
+
+// // updateTimer();
+// // console.log(wrongPoints);
+// }
+// } else {
+// startWrongTimer();
+// wrongNote = true;
+// if (scoreTimeBeats < (1)) {
+// wrongNote = false;
+// wrongPoints = 0;
+// // startScoreTimer();
+
+// // console.log("s " + scoreTimeBeats);
+// } else {
+// wrongNote = true;
+// // updateTimer();
+// // console.log(wrongPoints);
+// }
+
+// pauseScore();
+// }
+
+// alert("yo");
+// }
+// currentScore = 50.00001 * (scoreTimeBeats + .000001) / (timeRequirement + .000001);
+if (currentScore < 0) {
+
+    scorePauseTimeAmount = 0;
+    previousScorePauseTimeAmount = 0;
+    currentScore = 0;
+    score = 0;
+    scoreTimeBeats = 0;
+
+    // if (r){
+    // gauge.update({
+    // majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
+    // units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
+    // });
     // }
-    //console.log("sup");
-
-    // frameCounter++,
-    // Date.now() - startTime >= 60 && (measureLength = frameCounter, minDrawMLength = frameCounter * minDrawRate, startTime = Date.now(), frameCounter = 0), // Avi Changed this from 450 to 250 on 5-23
-    // analyzer.getFloatTimeDomainData(timeDomainData);
-    // var e = bitCounter / findWaveLength(timeDomainData, window.globk * 24, window.globk * 1200, 10, 10, .016, Math.ceil(10 / window.globk)); //e is the value of the sound
-    // if (e > 0) {
-    // console.log("you're singing");
-    // console.log("you started singing "+noteArray[findNote(e)][1] + " "+noteArray[mostRecentPostingNum][1]);
-    // if (captureSinging) {
-    // if (findNote(e) != mostRecentPostingNum) { //I currently don't have any way of recognizing that notes were changed. this boolean is a placeholder.
-    // try {
-    // singingEndTime = new Date().getTime() + 0;
-    // let timeChange = singingEndTime - singingStartTime;
-    // // console.log("time change "+timeChange);
-    // if (timeChange > 20) {
-    // let singingTimeSeconds = (timeChange / 1000);
-    // let singingTimeBeats = singingTimeSeconds / (60 / currentBPM);
-    // console.log(noteArray[lastMostRecentPostingNum][1] + " was added from making noise");
-    // singingTimeArray.push([lastMostRecentPostingNum, singingTimeSeconds]);
-    // console.log("Yo" + singingTimeArray.toString());
-    // // if (singingTimeArray.length > 5) {
-
-    // // }
-    // // console.log("time you sang was " + singingTimeSeconds + " " + noteArray[mostRecentPostingNum][1]);
-    // }
-    // youAreSinging = false;
-    // // singingStartTime = new Date().getTime() + 0;
-
-    // } catch (error) {
-    // console.log(error);
-    // }
-
-    // } else {
-    // console.log("they were the same");
-    // }
-
-    // if (!youAreSinging) {
-    // try {
-    // singingStartTime = new Date().getTime() + 0;
-    // } catch (error) {}
-
-    // youAreSinging = true;
-    // }
-    // }
-    // console.log("you are singing " + noteArray[findNote(e)][1] + " " + r);
-    // measurements.push([e, findNote(e)]),
-    // measurements.length > measureLength && (measurements = measurements.slice(measurements.length - measureLength));
-    // for (var r = 0, t = 0, o = 0, n = measurements.length, a = 0; n > a; a++) {
-    // t = 0;
-    // for (var i = 0; n > i; i++)
-    // measurements[a][1] == measurements[i][1] && (t++, t >= r && (r = t, o = a))
-    // }
-    // for (var u = [], a = 0; n > a; a++)
-    // measurements[a][1] == measurements[o][1] && u.push(measurements[a][0]);
-    // u.length >= minDrawMLength && (e = u.reduce(function (e, r) {
-    // return e + r
-    // }) / u.length, drawGaugeNote(e))
-    // //this spot is Avi important
-    // } else { //WHAT TO DO WHEN NO SOUND
-
-    // if (captureSinging) {
-    // try {
-    // singingEndTime = new Date().getTime() + 0;
-    // let timeChange = singingEndTime - singingStartTime;
-    // if (timeChange > 20) {
-    // let singingTimeSeconds = ((timeChange % (1000 * 60)) / 1000);
-    // let singingTimeBeats = singingTimeSeconds / (60 / currentBPM);
-    // console.log(noteArray[mostRecentPostingNum][1] + " was added from being quiet");
-    // singingTimeArray.push([mostRecentPostingNum, singingTimeSeconds]);
-    // console.log("Yo" + singingTimeArray.toString());
-    // if (singingTimeArray.length > 5) {
-    // // alert("cool");
-
-    // }
-    // // console.log("time you sang was " + singingTimeSeconds + " " + noteArray[mostRecentPostingNum][1]);
-    // }
-
-    // singingStartTime = new Date().getTime() + 0;
-    // } catch (error) {
-    // console.log(error);
-    // }
-
-    // youAreSinging = false;
-    // }
-    // if (!sequencePlay) {
-    // startWrongTimer();
-    // //startScoreTimer();
-    // if (scoreTimeBeats < (1)) {
-    // wrongNote = false;
-    // wrongPoints = 0;
-    // // startScoreTimer();
-
-    // // console.log("s " + scoreTimeBeats);
-    // } else {
-    // wrongNote = true;
-
-    // // updateTimer();
-    // // console.log(wrongPoints);
-    // }
-    // } else {
-    // startWrongTimer();
-    // wrongNote = true;
-    // if (scoreTimeBeats < (1)) {
-    // wrongNote = false;
-    // wrongPoints = 0;
-    // // startScoreTimer();
-
-    // // console.log("s " + scoreTimeBeats);
-    // } else {
-    // wrongNote = true;
-    // // updateTimer();
-    // // console.log(wrongPoints);
-    // }
-
-    // pauseScore();
-    // }
-
-    // alert("yo");
-    // }
-    // currentScore = 50.00001 * (scoreTimeBeats + .000001) / (timeRequirement + .000001);
-    if (currentScore < 0) {
-
-        scorePauseTimeAmount = 0;
-        previousScorePauseTimeAmount = 0;
-        currentScore = 0;
-        score = 0;
-        scoreTimeBeats = 0;
-
-        // if (r){
-        // gauge.update({
-        // majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
-        // units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
-        // });
-        // }
-    }
-    // score=Math.floor(currentScore);
-    // console.log ("score is "+score);
+}
+// score=Math.floor(currentScore);
+// console.log ("score is "+score);
 }
 window.requestAnimationFrame || (window.requestAnimationFrame = function () {
     return window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (e, r) {
@@ -11051,14 +10598,6 @@ window.requestAnimationFrame || (window.requestAnimationFrame = function () {
 
 window.onresize = function (event) {
 
-// let localWidth=(window.innerWidth)/2;
-// if ($('#my-dialog-prev-next-timed').dialog('isOpen'))(
-// $("#my-dialog-prev-next-timed").dialog({
-
-		// width: localWidth
-
-    // })
-// )
     // tunerWidth = Math.floor($("#tunerframe").width() - 0);
     // tunerWidth > 600 && (tunerWidth = 600),
     // $("#tunerback").css({
@@ -11981,15 +11520,11 @@ $(function () {
         range: "min",
         min: 60,
         max: 200,
-        value: 100,
+        value: 120,
         stop: function (event, ui) {
             $("#BPMAmount").val(ui.value);
             currentBPM = Number(document.getElementById("BPMAmount").value) + 0;
             newQuestionTime = true;
-            // alert ("hi");
-            clearInterval(intervalSetting);
-            intervalSetting = setInterval(repeatEverySixteenth, 60000 / (4 * currentBPM));
-
         }
     });
     $("#BPMAmount").val($("#slider-horizontal-BPMAmount").slider("value"));
@@ -12443,7 +11978,7 @@ var updateScaleAdapter = function (selected) {
 
 function timedDialog(messageThis, secondsForAlert, nextAction) { //not setup yet
     $("#my-dialog-timed").dialog({
-        modal: false,
+        modal: true,
         autoOpen: false,
         buttons: {
             Ok: function () {
@@ -12460,7 +11995,7 @@ function timedDialog(messageThis, secondsForAlert, nextAction) { //not setup yet
 }
 function prevTimedDialog(messageThis, secondsForAlert, prevAction) { //not setup yet
     $("#my-dialog-prev-next-timed").dialog({
-        modal: false,
+        modal: true,
         autoOpen: false,
         buttons: [{
                 text: "take: A look",
@@ -12486,7 +12021,7 @@ function prevTimedDialog(messageThis, secondsForAlert, prevAction) { //not setup
 }
 function prevOkayDialog(messageThis, secondsForAlert, prevAction) { //not setup yet
     $("#my-dialog-prev-next-timed").dialog({
-        modal: false,
+        modal: true,
         autoOpen: false,
         buttons: [{
                 text: "previous:",
@@ -12506,14 +12041,12 @@ function prevOkayDialog(messageThis, secondsForAlert, prevAction) { //not setup 
     });
     $("#my-dialog-prev-next-timed").dialog("open")
 
-    $('.ui-dialog-buttonpane').find('button:contains("Ok:")').focus();
-    // window.setTimeout($("#my-dialog-timed").dialog("Ok:"), 5000);
+    // window.setTimeout($("#my-dialog-timed").dialog("open"), 5000);
 
 }
-
 function nextTimedDialog(messageThis, secondsForAlert, nextAction) { //not setup yet
     $("#my-dialog-prev-next-timed").dialog({
-        modal: false,
+        modal: true,
         autoOpen: false,
         buttons: [{
                 text: "take: A look",
@@ -12532,9 +12065,6 @@ function nextTimedDialog(messageThis, secondsForAlert, nextAction) { //not setup
             }
         ]
     });
-    $('.ui-dialog-buttonpane').find('button:contains("next")').focus();
-
-    console.log($("#my-dialog-prev-next-timed").dialog.childElementCount);
     $("#my-dialog-prev-next-timed").dialog("open")
 
     // window.setTimeout($("#my-dialog-timed").dialog("open"), 5000);
@@ -12542,7 +12072,7 @@ function nextTimedDialog(messageThis, secondsForAlert, nextAction) { //not setup
 }
 function prevNextTimedDialog(messageThis, secondsForAlert, prevAction, nextAction) { //not setup yet
     $("#my-dialog-prev-next-timed").dialog({
-        modal: false,
+        modal: true,
         autoOpen: false,
         buttons: [{
                 text: "take: A look",
@@ -12568,59 +12098,12 @@ function prevNextTimedDialog(messageThis, secondsForAlert, prevAction, nextActio
                 }
             }
         ]
-		
-		// maxWidth: window.innerWidth/2,
-		// maxHeight: window.innerHeight/4
-    }
-	);
-
-    $('.ui-dialog-buttonpane').find('button:contains("next")').focus();
+    });
     $("#my-dialog-prev-next-timed").dialog("open")
-document.getElementById('my-dialog-prev-next-timed').scrollIntoView({behavior: "smooth", block: "start"});
-    $('.ui-dialog-buttonpane').find('button:contains("next")').focus();
 
     // window.setTimeout($("#my-dialog-timed").dialog("open"), 5000);
 
 }
-
-// function loginButton(messageThis, secondsForAlert, prevAction, nextAction) { //not setup yet
-// $("#my-dialog-login").dialog({
-// modal: true,
-// autoOpen: false,
-// buttons: [{
-// text: "login",
-// click: function () {
-// $(this).dialog("close");
-// logintothisapp();
-// }
-// }
-// ]
-// });
-// $("#my-dialog-login").dialog("open")
-
-// // window.setTimeout($("#my-dialog-timed").dialog("open"), 5000);
-
-// }
-
-function doSomethingDialog(somethingToDo, whatToCallTheButton) {
-    $("#my-dialog").dialog({
-        modal: false,
-        autoOpen: false,
-        buttons: [{
-                text: whatToCallTheButton,
-                click: function () {
-                    $(this).dialog("close");
-                    window.setTimeout(somethingToDo, 200);
-                }
-            }
-        ],
-		
-        // position: { my: 'top', at: 'right', of: '#welcomefamprelogin', collision:'fit' }
-
-    });
-    $("#my-dialog").dialog("open");
-}
-
 function reopenDialog() {
     $("#my-dialog-prev-next-timed").dialog("open")
 }
@@ -12628,14 +12111,11 @@ function reopenDialog() {
 $("#my-dialog").dialog({
     modal: true,
     autoOpen: false,
-    buttons: [{
-            text: "Ok:",
-            click: function () {
-                $(this).dialog("close");
-            }
+    buttons: {
+        Ok: function () {
+            $(this).dialog("close");
         }
-    ]
-
+    }
 });
 // var counter = 0;
 
@@ -13486,10 +12966,7 @@ $('#metronomeButton').click(function () {
         document.getElementById('metronomeButton').innerHTML = "Turn Metronome Off";
 
     }
-	try{
     setupMetronome();
-	}
-	catch(error){}
     if (metronomeTutorial) {
         metronomeTutorial = false;
         metronomePostTutorialAction();
@@ -13497,7 +12974,7 @@ $('#metronomeButton').click(function () {
 });
 
 $('#backbeatButton').click(function () {
-    if ((backbeat) && (snaresAllowed)) {
+    if (backbeat) {
         backbeat = false;
         document.getElementById('backbeatButton').innerHTML = "Turn Backbeat On";
     } else {
@@ -13522,8 +12999,7 @@ $('#nextRhythmButton').click(function () {
     }
 });
 
-$('#rhythm-tutorial').click(startARhythmTutorial);
-function startARhythmTutorial() {
+$('#rhythm-tutorial').click(function () {
     tutorialMode = true;
     // if (!justcheckingit){
     // scoreLevel = "freestyle";
@@ -13550,7 +13026,8 @@ function startARhythmTutorial() {
     resetStepElements();
     setupSteps();
     tutorialSequence();
-}
+
+});
 
 $('#rhythm-level-one').click(function () {
     tutorialMode = false;
@@ -13571,17 +13048,6 @@ $('#rhythm-level-one').click(function () {
     setProgressGoals("2 random steps", "3 random steps", "3 random steps, no snares", "2 random steps, no snares");
     updateProgress();
     checkForUpdatedDifficulty();
-    $("#my-dialog").dialog({
-        position: {
-            my: 'top',
-            at: 'bottom',
-            of: '.guide-row',
-            // collision: 'fit'
-        }
-
-    });
-    // nextTimedDialog(messageThis, secondsForAlert, nextAction) { //not setup yet
-
     alertify("<strong>Important Information:</strong>On this level, there is a snare playing on beats '2' and '4' in the background.<br><br>This pattern is known as the 'Backbeat'. It is very common in popular music.<br><br>If you would like to turn it off, click the 'turn off backbeat' button.");
 });
 $('#rhythm-level-two').click(function () {
@@ -13607,1568 +13073,1206 @@ $('#rhythm-level-two').click(function () {
     setProgressGoals("2 random steps", "3 random steps", "3 random steps, no snares", "2 random steps, no snares");
     updateProgress();
     checkForUpdatedDifficulty();
+});
+$('#rhythm-level-three').click(function () {
+    tutorialMode = false;
+    scoreLevel = 3;
+    rhythmVolume = 50;
+    clearRhythms();
+    randomizeKicks = true;
+    simplifiedDenominator = 2;
+    if (!backbeat) {
+        backbeatButton.click();
+    }
+    availableSteps = "eighths";
 
-    $("#my-dialog-prev-next-timed").dialog({
-        position: {
-            my: 'top',
-            at: 'bottom',
-            of: '.hat-row',
-            // collision: 'fit'
-        }
-
-    });
-    circleAClass('hat-row');
-    // nextTimedDialog(messageThis, secondsForAlert, nextAction) { //not setup yet
-        nextTimedAlertify("We introduce closed hats! On this level, you will be identifying both kicks and closed hats being played", 3, uncircleHatRow);
-    });
-
-    function uncircleHatRow() {
-        uncircleAClass('hat-row');
+    currentLevelScore = 0;
+    setupSteps();
+    makeAClassVisible('questionbuttonrow');
+    document.getElementById('kick-row').hidden = false;
+    document.getElementById('hat-row').hidden = false;
+    document.getElementById('snare-row').hidden = false;
+    document.getElementById('level-progress').style.display = 'block';
+    setProgressGoals("2 random steps", "4 random steps", "6 random steps", "4 random steps, no snares");
+    updateProgress();
+    checkForUpdatedDifficulty();
+});
+$('#rhythm-level-four').click(function () {
+    tutorialMode = false;
+    scoreLevel = 4;
+    rhythmVolume = 50;
+    simplifiedDenominator = 2;
+    clearRhythms();
+    randomizeKicks = true;
+    randomizeHats = true;
+    if (!backbeat) {
+        backbeatButton.click();
+    }
+    availableSteps = "eighths";
+    currentLevelScore = 0;
+    setupSteps();
+    makeAClassVisible('questionbuttonrow');
+    document.getElementById('kick-row').hidden = false;
+    document.getElementById('hat-row').hidden = false;
+    document.getElementById('snare-row').hidden = false;
+    document.getElementById('level-progress').style.display = 'block';
+    setProgressGoals("2 random steps", "4 random steps", "6 random steps", "4 random steps, no snares");
+    updateProgress();
+    checkForUpdatedDifficulty();
+});
+$('#rhythm-level-five').click(function () {
+    tutorialMode = false;
+    scoreLevel = 5;
+    rhythmVolume = 50;
+    clearRhythms();
+    randomizeKicks = true;
+    if (!backbeat) {
+        backbeatButton.click();
     }
 
+    availableSteps = "sixteenths";
+    simplifiedDenominator = 1;
 
-    function uncircleHatRowLevel() {
-        uncircleAClass('hat-row');
-		nextLevel();
+    currentLevelScore = 0;
+    setupSteps();
+    makeAClassVisible('questionbuttonrow');
+    document.getElementById('kick-row').hidden = false;
+    document.getElementById('hat-row').hidden = false;
+    document.getElementById('snare-row').hidden = false;
+    document.getElementById('level-progress').style.display = 'block';
+    setProgressGoals("3 random steps", "4 random steps", "6 random steps", "4 random steps, no snares");
+    updateProgress();
+    checkForUpdatedDifficulty();
+});
+$('#rhythm-level-six').click(function () {
+    tutorialMode = false;
+    scoreLevel = 6;
+    rhythmVolume = 50;
+    simplifiedDenominator = 1;
+    clearRhythms();
+    randomizeKicks = true;
+    randomizeHats = true;
+    if (!backbeat) {
+        backbeatButton.click();
     }
-	
-    $('#rhythm-level-three').click(function () {
-        tutorialMode = false;
-        scoreLevel = 3;
-        rhythmVolume = 50;
-        clearRhythms();
-        randomizeKicks = true;
-        simplifiedDenominator = 2;
-        if (!backbeat) {
-            backbeatButton.click();
-        }
-        availableSteps = "eighths";
+    availableSteps = "sixteenths";
+    currentLevelScore = 0;
+    setupSteps();
+    makeAClassVisible('questionbuttonrow');
+    document.getElementById('kick-row').hidden = false;
+    document.getElementById('hat-row').hidden = false;
+    document.getElementById('snare-row').hidden = false;
+    document.getElementById('level-progress').style.display = 'block';
+    setProgressGoals("3 random steps", "4 random steps", "6 random steps", "4 random steps, no snares");
+    updateProgress();
+    checkForUpdatedDifficulty();
+});
 
-        currentLevelScore = 0;
-        setupSteps();
-        makeAClassVisible('questionbuttonrow');
-        document.getElementById('kick-row').hidden = false;
-        document.getElementById('hat-row').hidden = false;
-        document.getElementById('snare-row').hidden = false;
-        document.getElementById('level-progress').style.display = 'block';
-        setProgressGoals("2 random steps", "4 random steps", "6 random steps", "4 random steps, no snares");
-        updateProgress();
-        checkForUpdatedDifficulty();
-    $("#my-dialog-prev-next-timed").dialog({
-        position: {
-            my: 'bottom',
-            at: 'top',
-            of: '.guide-row',
-            // collision: 'fit'
-        },
-		// width: window.innerWidth
-
-    });
-		circleAClass('upbeat');
-		circleAClass('snare-row');
-    // nextTimedDialog(messageThis, secondsForAlert, nextAction) { //not setup yet
-        nextTimedAlertify("Level 3:<br>We have two things to introduce you to on this level:<br><br>-Upbeats<br>-A snare row.", 3, upbeatsinstruction);
-    });
-	
-	function upbeatsinstruction(){
-	uncircleAClass('snare-row');
-	circleAClass('upbeat');
-        nextTimedAlertify("On levels 1 and 2, you only were listening for beats '1', '2', '3', and '4'. <br><br>Now we are going to be listening to the 'and's between beats. These are eighth notes. <br><br>It is often helpful to sound out '1 and 2 and 3 and 4 and'. Try saying this out loud in time with the metronome counter below.", 3, explaintoignoresnares);
-	}
-	
-	function explaintoignoresnares (){
-		uncircleAClass('upbeat');
-		circleAClass('snare-row');
-		prevNextTimedAlertify("The snare row is here so you get used to seing it. <strong>You do not need to enter any additional snares. The program will handle that for you. You are only dealing with kicks on this level. </strong>", 3, upbeatsinstruction, uncircleSnareRow);
-	}
-	
-	   function uncircleSnareRow() {
-        uncircleAClass('snare-row');
+$('#rhythm-level-seven').click(function () {
+    tutorialMode = false;
+    scoreLevel = 7;
+    rhythmVolume = 50;
+    simplifiedDenominator = 1;
+    clearRhythms();
+    randomizeKicks = true;
+    randomizeHats = true;
+    randomizeClaps = true;
+    if (!backbeat) {
+        backbeatButton.click();
     }
-	
-		   function uncircleSnareRowLevel() {
-        uncircleAClass('snare-row');
-		nextLevel();
+    availableSteps = "sixteenths";
+    currentLevelScore = 0;
+    setupSteps();
+    makeAClassVisible('questionbuttonrow');
+    document.getElementById('kick-row').hidden = false;
+    document.getElementById('hat-row').hidden = false;
+    document.getElementById('snare-row').hidden = false;
+    document.getElementById('clap-row').hidden = false;
+    document.getElementById('level-progress').style.display = 'block';
+    setProgressGoals("3 random steps", "4 random steps", "6 random steps", "4 random steps, no snares");
+    updateProgress();
+    checkForUpdatedDifficulty();
+});
+
+$('#rhythm-level-eight').click(function () {
+    tutorialMode = false;
+    scoreLevel = 8;
+    rhythmVolume = 50;
+    simplifiedDenominator = 1;
+    clearRhythms();
+    randomizeKicks = true;
+    randomizeHats = true;
+    randomizeClaps = true;
+    randomizeInst5 = true;
+    if (!backbeat) {
+        backbeatButton.click();
     }
-    $('#rhythm-level-four').click(function () {
-        tutorialMode = false;
-        scoreLevel = 4;
-        rhythmVolume = 50;
-        simplifiedDenominator = 2;
-        clearRhythms();
-        randomizeKicks = true;
-        randomizeHats = true;
-        if (!backbeat) {
-            backbeatButton.click();
-        }
-        availableSteps = "eighths";
-        currentLevelScore = 0;
-        setupSteps();
-        makeAClassVisible('questionbuttonrow');
-        document.getElementById('kick-row').hidden = false;
-        document.getElementById('hat-row').hidden = false;
-        document.getElementById('snare-row').hidden = false;
-        document.getElementById('level-progress').style.display = 'block';
-        setProgressGoals("2 random steps", "4 random steps", "6 random steps", "4 random steps, no snares");
-        updateProgress();
-        checkForUpdatedDifficulty();
-		alertify("Level 4:<br>For this level, we'll be doing kicks and hats again");
-    });
-    $('#rhythm-level-five').click(function () {
-        tutorialMode = false;
-        scoreLevel = 5;
-        rhythmVolume = 50;
-        clearRhythms();
-        randomizeKicks = true;
-        if (!backbeat) {
-            backbeatButton.click();
-        }
+    availableSteps = "sixteenths";
+    currentLevelScore = 0;
+    setupSteps();
 
-        availableSteps = "sixteenths";
-        simplifiedDenominator = 1;
+    document.getElementById('kick-row').hidden = false;
+    document.getElementById('hat-row').hidden = false;
+    document.getElementById('snare-row').hidden = false;
+    document.getElementById('clap-row').hidden = false;
+    document.getElementById('inst5-row').hidden = false;
+    makeAClassVisible('questionbuttonrow');
+    // document.getElementById('kick-row').hidden=false;
+    // document.getElementById('snare-row').hidden=false;
+    // document.getElementById('hat-row').hidden=false;
+    document.getElementById('level-progress').style.display = 'block';
+    setProgressGoals("3 random steps", "4 random steps", "6 random steps", "4 random steps, no snares");
+    updateProgress();
+    checkForUpdatedDifficulty();
+});
 
-        currentLevelScore = 0;
-        setupSteps();
-        makeAClassVisible('questionbuttonrow');
-        document.getElementById('kick-row').hidden = false;
-        document.getElementById('hat-row').hidden = false;
-        document.getElementById('snare-row').hidden = false;
-        document.getElementById('level-progress').style.display = 'block';
-        setProgressGoals("3 random steps", "4 random steps", "6 random steps", "4 random steps, no snares");
-        updateProgress();
-        checkForUpdatedDifficulty();
-		 $("#my-dialog-prev-next-timed").dialog({
-        position: {
-            my: 'bottom',
-            at: 'top',
-            of: '.guide-row',
-            // collision: 'fit'
-        },
-		// width: window.innerWidth
+$('#rhythm-level-nine').click(function () {
+    tutorialMode = false;
+    // if (!backbeat){
+    // backbeatButton.click();
+    // }
+    // scoreLevel=6;
+    // rhythmVolume = 50;
+    // simplifiedDenominator=1;
+    // clearRhythms();
+    // randomizeKicks=true;
+    // randomizeHats=true;
+    // availableSteps="sixteenths";
+    // currentLevelScore=0;
+    // setupSteps();
+    // makeAClassVisible('questionbuttonrow');
 
-    });
-		// circleAClass('upbeat');
-		circleAClass('offbeat');
-    // nextTimedDialog(messageThis, secondsForAlert, nextAction) { //not setup yet
-        nextTimedAlertify("Level 5:<br>Starting on this level we will be adding in the offbeats. We are now including all 16th notes. <br><br>It is often helpful to sound out '1-e-and-a' '2-e-and-a' 3-e-and-a' '4-e-and-a'. Try saying this out loud in time with the metronome counter below.", 3, offbeatinstruction);
-    });
-	
-	function offbeatinstruction(){
-	uncircleAClass('offbeat')
-	alertify ("One more thing, on this level we will only be doing kicks while you get used to having all 16 steps to choose from");
-	}
-    $('#rhythm-level-six').click(function () {
-        tutorialMode = false;
-        scoreLevel = 6;
-        rhythmVolume = 50;
-        simplifiedDenominator = 1;
-        clearRhythms();
-        randomizeKicks = true;
-        randomizeHats = true;
-        if (!backbeat) {
-            backbeatButton.click();
-        }
-        availableSteps = "sixteenths";
-        currentLevelScore = 0;
-        setupSteps();
-        makeAClassVisible('questionbuttonrow');
-        document.getElementById('kick-row').hidden = false;
-        document.getElementById('hat-row').hidden = false;
-        document.getElementById('snare-row').hidden = false;
-        document.getElementById('level-progress').style.display = 'block';
-        setProgressGoals("3 random steps", "4 random steps", "6 random steps", "4 random steps, no snares");
-        updateProgress();
-        checkForUpdatedDifficulty();
-		
-	alertify ("Level 6:<br>In this level you will be doing all 16 steps for both kicks and hats.");
-    });
+    // document.getElementById('kick-row').hidden=false;
+    // document.getElementById('snare-row').hidden=false;
+    // document.getElementById('hat-row').hidden=false;
+    // document.getElementById('level-progress').style.display = 'block';
+    // setProgressGoals("3 random steps", "4 random steps", "6 random steps", "6 random steps, no snares");
+    // updateProgress();
+    // checkForUpdatedDifficulty();
+});
 
-    $('#rhythm-level-seven').click(function () {
-        tutorialMode = false;
-        scoreLevel = 7;
-        rhythmVolume = 50;
-        simplifiedDenominator = 1;
-        clearRhythms();
-        randomizeKicks = true;
-        randomizeHats = true;
-        randomizeClaps = true;
-        if (!backbeat) {
-            backbeatButton.click();
-        }
-        availableSteps = "sixteenths";
-        currentLevelScore = 0;
-        setupSteps();
-        makeAClassVisible('questionbuttonrow');
-        document.getElementById('kick-row').hidden = false;
-        document.getElementById('hat-row').hidden = false;
-        document.getElementById('snare-row').hidden = false;
-        document.getElementById('clap-row').hidden = false;
-        document.getElementById('level-progress').style.display = 'block';
-        setProgressGoals("3 random steps", "4 random steps", "6 random steps", "4 random steps, no snares");
-        updateProgress();
-        checkForUpdatedDifficulty();
-		$("#my-dialog-prev-next-timed").dialog({
-        position: {
-            my: 'top',
-            at: 'bottom',
-            of: '.clap-row',
-            // collision: 'fit'
-        }
-
-    });
-    circleAClass('clap-row');
-    // nextTimedDialog(messageThis, secondsForAlert, nextAction) { //not setup yet
-        nextTimedAlertify("Level 7:<br>We introduce open hats! On this level, you will be identifying:<br>-kicks,<br>-closed hats, and...<br>-OPEN HATS!", 3, uncircleOpenHatRow);
- 
-    });
-function uncircleOpenHatRow(){
-uncircleAClass('clap-row')
-}
-
-function uncircleOpenHatRowLevel(){
-uncircleAClass('clap-row')
-nextLevel();
-}
-    $('#rhythm-level-eight').click(function () {
-        tutorialMode = false;
-        scoreLevel = 8;
-        rhythmVolume = 50;
-        simplifiedDenominator = 1;
-        clearRhythms();
-        randomizeKicks = true;
-        randomizeHats = true;
-        randomizeClaps = true;
-        randomizeInst5 = true;
-        if (!backbeat) {
-            backbeatButton.click();
-        }
-        availableSteps = "sixteenths";
-        currentLevelScore = 0;
-        setupSteps();
-
-        document.getElementById('kick-row').hidden = false;
-        document.getElementById('hat-row').hidden = false;
-        document.getElementById('snare-row').hidden = false;
-        document.getElementById('clap-row').hidden = false;
-        document.getElementById('inst5-row').hidden = false;
-        makeAClassVisible('questionbuttonrow');
-        // document.getElementById('kick-row').hidden=false;
-        // document.getElementById('snare-row').hidden=false;
-        // document.getElementById('hat-row').hidden=false;
-        document.getElementById('level-progress').style.display = 'block';
-        setProgressGoals("3 random steps", "4 random steps", "6 random steps", "4 random steps, no snares");
-        updateProgress();
-        checkForUpdatedDifficulty();
-		$("#my-dialog-prev-next-timed").dialog({
-        position: {
-            my: 'top',
-            at: 'bottom',
-            of: '.inst5-row',
-            // collision: 'fit'
-        }
-
-    });
-	
-        setRhythmInstrument("inst5", "rim", "rim");
-    circleAClass('inst5-row');
-    // nextTimedDialog(messageThis, secondsForAlert, nextAction) { //not setup yet
-        nextTimedAlertify("Level 8:<br>We introduce rims! On this level, you will be identifying:<br>-kicks,<br>-closed hats,<br>open hats, and...<br>-RIMS!", 3, uncircleRimRow);
- 
-    });
-function uncircleRimRow(){
-uncircleAClass('inst5-row')
-}
-function uncircleRimRowLevel(){
-uncircleAClass('inst5-row')
-nextLevel();
-}
-
-    $('#rhythm-level-nine').click(function () {
-        tutorialMode = false;
-        // if (!backbeat){
-        // backbeatButton.click();
-        // }
-        // scoreLevel=6;
-        // rhythmVolume = 50;
-        // simplifiedDenominator=1;
-        // clearRhythms();
-        // randomizeKicks=true;
-        // randomizeHats=true;
-        // availableSteps="sixteenths";
-        // currentLevelScore=0;
-        // setupSteps();
-        makeAClassVisible('questionbuttonrow');
-
-        // document.getElementById('kick-row').hidden=false;
-        // document.getElementById('snare-row').hidden=false;
-        // document.getElementById('hat-row').hidden=false;
-        // document.getElementById('level-progress').style.display = 'block';
-        // setProgressGoals("3 random steps", "4 random steps", "6 random steps", "6 random steps, no snares");
-        // updateProgress();
-        // checkForUpdatedDifficulty();
-    });
-
-    $('#rhythmFreestyleButton').click(function () {
-        tutorialMode = false;
-        // if (!justcheckingit){
-        // scoreLevel = "freestyle";
-        // justcheckingit=true;
-        // }
-        rhythmVolume = 50;
-        if (rhythmFreestyle) {
-            rhythmFreestyle = false;
-            document.getElementById('rhythmFreestyleButton').innerHTML = "Play What I have Showing";
-        } else {
-            rhythmFreestyle = true;
-            document.getElementById('rhythmFreestyleButton').innerHTML = "Don't Play What Is Showing (Ex: In levels, play the prompt)";
-        }
-        sequenceStarted = false;
-        newQuestionTime = true;
-    });
-    $('#testing-button-test-case-zero').click(function () {
-        // $(".regular-mode").slideToggle();
-        // $(".sequence-mode").slideToggle();
-        // if (!captureButtons) {
-
-        // singingTimeArray = [];
-        // sequenceArray = [];
-        // sequenceCopy = [];
-        // if (buttonStartEndTimes.length > 1) {
-        // // alert("long");
-        // singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000, 0]);
-        // buttonStartEndTimes.shift();
-        // // console.log(singingTimeArray.toString());
-        // }
-        // singingTimeArray.push([0 + noteAdapter, 4, 0]);
-        // singingTimeArray.push([2 + noteAdapter, 4, 1]);
-        // captureButtons = false;
-        // buttonsCaptured = true;
-        // singingCaptured = true;
-        // sequencePlay = true;
-        // newQuestionTime = true;
-        // arpeggiosOff.click();
-        // rootOffButton.click();
-        // }
-
-        setupFreestyleMode();
-    });
-    $('#accompanimentOn').click(turnAccompanimentOn);
-    function turnAccompanimentOn() {
-        if (!accompaniment) {
-            $(".accompaniment-buttons").slideToggle();
-
-            if (!arpeggioPlay) {
-                $(".arpeggio-type-buttons").slideToggle();
-            }
-        }
-        document.getElementById("accompanimentOff").innerHTML = "Off";
-        document.getElementById("accompanimentOn").innerHTML = "On (selected)";
-        document.getElementById("accompanimentOn").style.background = buttonColor;
-        document.getElementById("accompanimentOff").style.background = buttonNormalColor;
-
-        accompaniment = true;
-        chordIsDone = true;
-        if (arpeggioPlay) {
-            if (rootPlay) {
-                startRootTimer();
-                startArpeggioTimer();
-            } else {
-                startArpeggioTimer();
-            }
-        }
-        if (rhythmPlay) {
-            startRhythmTimer();
-            startKickTimer();
-            startClapTimer();
-            startHatTimer();
-            startSnareTimer();
-        }
-        playItAgain();
+$('#rhythmFreestyleButton').click(function () {
+    tutorialMode = false;
+    // if (!justcheckingit){
+    // scoreLevel = "freestyle";
+    // justcheckingit=true;
+    // }
+    rhythmVolume = 50;
+    if (rhythmFreestyle) {
+        rhythmFreestyle = false;
+        document.getElementById('rhythmFreestyleButton').innerHTML = "Play What I have Showing";
+    } else {
+        rhythmFreestyle = true;
+        document.getElementById('rhythmFreestyleButton').innerHTML = "Don't Play What Is Showing (Ex: In levels, play the prompt)";
     }
+    sequenceStarted = false;
+    newQuestionTime = true;
+});
+$('#testing-button-test-case-zero').click(function () {
+    // $(".regular-mode").slideToggle();
+    // $(".sequence-mode").slideToggle();
+    // if (!captureButtons) {
 
-    $('#accompanimentOff').click(turnAccompanimentOff);
+    // singingTimeArray = [];
+    // sequenceArray = [];
+    // sequenceCopy = [];
+    // if (buttonStartEndTimes.length > 1) {
+    // // alert("long");
+    // singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000, 0]);
+    // buttonStartEndTimes.shift();
+    // // console.log(singingTimeArray.toString());
+    // }
+    // singingTimeArray.push([0 + noteAdapter, 4, 0]);
+    // singingTimeArray.push([2 + noteAdapter, 4, 1]);
+    // captureButtons = false;
+    // buttonsCaptured = true;
+    // singingCaptured = true;
+    // sequencePlay = true;
+    // newQuestionTime = true;
+    // arpeggiosOff.click();
+    // rootOffButton.click();
+    // }
 
-    function turnAccompanimentOff() {
-        if (accompaniment) {
-            $(".accompaniment-buttons").slideToggle();
-            if (!arpeggioPlay) {
-                $(".arpeggio-type-buttons").slideToggle();
-            }
+    setupFreestyleMode();
+});
+$('#accompanimentOn').click(turnAccompanimentOn);
+function turnAccompanimentOn() {
+    if (!accompaniment) {
+        $(".accompaniment-buttons").slideToggle();
 
-        }
-        document.getElementById("accompanimentOff").innerHTML = "Off (selected)";
-        document.getElementById("accompanimentOn").innerHTML = "On";
-        document.getElementById("accompanimentOn").style.background = buttonNormalColor;
-        document.getElementById("accompanimentOff").style.background = buttonColor;
-        accompaniment = false;
-        playItAgain();
-    }
-
-    $('#arpeggiosOn').click(function () {
         if (!arpeggioPlay) {
             $(".arpeggio-type-buttons").slideToggle();
         }
-        document.getElementById("arpeggiosOff").innerHTML = "Off";
-        document.getElementById("arpeggiosOn").innerHTML = "On (selected)";
-        document.getElementById("arpeggiosOn").style.background = buttonColor;
-        document.getElementById("arpeggiosOff").style.background = buttonNormalColor;
-        arpeggioPlay = true;
-        playItAgain();
-    });
-    $('#arpeggiosOff').click(function () {
-        if (arpeggioPlay) {
+    }
+    document.getElementById("accompanimentOff").innerHTML = "Off";
+    document.getElementById("accompanimentOn").innerHTML = "On (selected)";
+    document.getElementById("accompanimentOn").style.background = buttonColor;
+    document.getElementById("accompanimentOff").style.background = buttonNormalColor;
+
+    accompaniment = true;
+    chordIsDone = true;
+    if (arpeggioPlay) {
+        if (rootPlay) {
+            startRootTimer();
+            startArpeggioTimer();
+        } else {
+            startArpeggioTimer();
+        }
+    }
+    if (rhythmPlay) {
+        startRhythmTimer();
+        startKickTimer();
+        startClapTimer();
+        startHatTimer();
+        startSnareTimer();
+    }
+    playItAgain();
+}
+
+$('#accompanimentOff').click(turnAccompanimentOff);
+
+function turnAccompanimentOff() {
+    if (accompaniment) {
+        $(".accompaniment-buttons").slideToggle();
+        if (!arpeggioPlay) {
             $(".arpeggio-type-buttons").slideToggle();
         }
-        document.getElementById("arpeggiosOff").innerHTML = "Off (selected)";
-        document.getElementById("arpeggiosOn").innerHTML = "On";
-        document.getElementById("arpeggiosOn").style.background = buttonNormalColor;
-        document.getElementById("arpeggiosOff").style.background = buttonColor;
-        arpeggioPlay = false;
-    });
-    $('#chord-progression-roman').click(function () {
-        // if (!rhythmPlay) {
-        // $(".rhythm-type-buttons").slideToggle();
-        // }
-        let romanString = "Chord Progression";
-        if (chordSequenceCopy.length > 0) {
-            for (i = 0; i < chordSequenceCopy.length; i++) {
-                romanString = romanString + "-" + getRomanNumeral(chordSequenceCopy[i][2]);
-            }
-            $("#alertMessage").html(romanString);
-            // // Show dialog
-            $("#my-dialog").dialog("open");
-            // alert(romanString);
+
+    }
+    document.getElementById("accompanimentOff").innerHTML = "Off (selected)";
+    document.getElementById("accompanimentOn").innerHTML = "On";
+    document.getElementById("accompanimentOn").style.background = buttonNormalColor;
+    document.getElementById("accompanimentOff").style.background = buttonColor;
+    accompaniment = false;
+    playItAgain();
+}
+
+$('#arpeggiosOn').click(function () {
+    if (!arpeggioPlay) {
+        $(".arpeggio-type-buttons").slideToggle();
+    }
+    document.getElementById("arpeggiosOff").innerHTML = "Off";
+    document.getElementById("arpeggiosOn").innerHTML = "On (selected)";
+    document.getElementById("arpeggiosOn").style.background = buttonColor;
+    document.getElementById("arpeggiosOff").style.background = buttonNormalColor;
+    arpeggioPlay = true;
+    playItAgain();
+});
+$('#arpeggiosOff').click(function () {
+    if (arpeggioPlay) {
+        $(".arpeggio-type-buttons").slideToggle();
+    }
+    document.getElementById("arpeggiosOff").innerHTML = "Off (selected)";
+    document.getElementById("arpeggiosOn").innerHTML = "On";
+    document.getElementById("arpeggiosOn").style.background = buttonNormalColor;
+    document.getElementById("arpeggiosOff").style.background = buttonColor;
+    arpeggioPlay = false;
+});
+$('#chord-progression-roman').click(function () {
+    // if (!rhythmPlay) {
+    // $(".rhythm-type-buttons").slideToggle();
+    // }
+    let romanString = "Chord Progression";
+    if (chordSequenceCopy.length > 0) {
+        for (i = 0; i < chordSequenceCopy.length; i++) {
+            romanString = romanString + "-" + getRomanNumeral(chordSequenceCopy[i][2]);
         }
-    });
-
-    function alertify(messageThis) {
-        $("#alertMessage").html(messageThis);
+        $("#alertMessage").html(romanString);
         // // Show dialog
-        $("#my-dialog").dialog({
-            modal: true,
-            autoOpen: false,
-            buttons: [{
-                    text: "Ok:",
-                    click: function () {
-                        $(this).dialog("close");
-                    }
-                }
-            ]
+        $("#my-dialog").dialog("open");
+        // alert(romanString);
+    }
+});
 
-        });
+function alertify(messageThis) {
+    $("#alertMessage").html(messageThis);
+    // // Show dialog
+    $("#my-dialog").dialog("open");
+}
+
+function finalAlertify(messageThis) {
+    $("#alertMessage2").html(messageThis);
+    // // Show dialog
+    $("#my-dialog-timed").dialog("open");
+}
+function timedAlertify(messageThis, secondsForAlert, nextAction) {
+    $("#alertMessage2").html(messageThis);
+    // // Show dialog
+    timedDialog(messageThis, secondsForAlert, nextAction);
+
+}
+function prevNextTimedAlertify(messageThis, secondsForAlert, prevAction, nextAction) {
+    $("#alertMessage3").html(messageThis);
+    // // Show dialog
+    // prevAction();
+    prevNextTimedDialog(messageThis, secondsForAlert, prevAction, nextAction);
+
+}
+function prevTimedAlertify(messageThis, secondsForAlert, prevAction) {
+    $("#alertMessage3").html(messageThis);
+    // // Show dialog
+    // prevAction();
+    prevNextTimedDialog(messageThis, secondsForAlert, prevAction);
+
+}
+function prevOkayAlertify(messageThis, secondsForAlert, prevAction) {
+    $("#alertMessage3").html(messageThis);
+    // // Show dialog
+    // prevAction();
+    prevOkayDialog(messageThis, secondsForAlert, prevAction);
+}
+function nextTimedAlertify(messageThis, secondsForAlert, nextAction) {
+    $("#alertMessage3").html(messageThis);
+    // // Show dialog
+    // prevAction();
+    nextTimedDialog(messageThis, secondsForAlert, nextAction);
+
+}
+$('#chord-progression-names').click(function () {
+    // if (!rhythmPlay) {
+    // $(".rhythm-type-buttons").slideToggle();
+    // }
+    let romanString = "Chord Pressiong";
+    if (chordSequenceCopy.length > 0) {
+
+        for (i = 0; i < chordSequenceCopy.length; i++) {
+            romanString = romanString + "-" + getChordNameAltered(chordSequenceCopy[i][2], noteArray[chordSequenceCopy[i][0]][1]);
+        }
+        $("#alertMessage").html(romanString);
+        // // Show dialog
         $("#my-dialog").dialog("open");
     }
-
-    function alertifyTutorial(messageThis) {
-        $("#alertMessage").html(messageThis);
-        // // Show dialog
-        $("#my-dialog").dialog({
-            modal: true,
-            autoOpen: false,
-            buttons: [{
-                    text: "Begin Tutorial.",
-                    click: function () {
-                        $(this).dialog("close");
-                        window.setTimeout(startARhythmTutorial, 200);
-                    }
-                }, {
-                    text: "I'll pass.",
-                    click: function () {
-                        $(this).dialog("close");
-
-                        window.setTimeout(directYouToTheTutorial, 200);
-
-                    }
-                }
-            ]
-
-        });
-        $("#my-dialog").dialog("open");
-    }
-
-    function directYouToTheTutorial() {
-        circleAnId('dropdownMenuButton')
-        doSomethingAlertify("If you'd ever like to do the tutorial or any levels in the future, you can find them in the <span style='border-width:3px;border-color:orange;border-style:dashed'> outlined menu </span>", uncirclemenu, "Got it!");
-    }
-
-    function uncirclemenu() {
-        uncircleAnId('dropdownMenuButton')
-    }
-
-    function finalAlertify(messageThis) {
-        $("#alertMessage2").html(messageThis);
-        // // Show dialog
-        $("#my-dialog-timed").dialog("open");
-    }
-    function timedAlertify(messageThis, secondsForAlert, nextAction) {
-        $("#alertMessage2").html(messageThis);
-        // // Show dialog
-        timedDialog(messageThis, secondsForAlert, nextAction);
-
-    }
-    function doSomethingAlertify(messageThis, whatToDo, whatToCallTheButton) {
-        $("#alertMessage").html(messageThis);
-        // // Show dialog
-        // prevAction();
-        doSomethingDialog(whatToDo, whatToCallTheButton);
-
-    }
-
-    function prevNextTimedAlertify(messageThis, secondsForAlert, prevAction, nextAction) {
-        $("#alertMessage3").html(messageThis);
-        // // Show dialog
-        // prevAction();
-        prevNextTimedDialog(messageThis, secondsForAlert, prevAction, nextAction);
-
-    }
-    function prevTimedAlertify(messageThis, secondsForAlert, prevAction) {
-        $("#alertMessage3").html(messageThis);
-        // // Show dialog
-        // prevAction();
-        prevNextTimedDialog(messageThis, secondsForAlert, prevAction);
-
-    }
-    function prevOkayAlertify(messageThis, secondsForAlert, prevAction) {
-        $("#alertMessage3").html(messageThis);
-        // // Show dialog
-        // prevAction();
-        prevOkayDialog(messageThis, secondsForAlert, prevAction);
-    }
-
-    function nextOkayAlertify(messageThis, secondsForAlert, nextAction) {
-        $("#alertMessage3").html(messageThis);
-        // // Show dialog
-        // prevAction();
-        nextOkayDialog(messageThis, secondsForAlert, nextAction);
-    }
-
-    function nextTimedAlertify(messageThis, secondsForAlert, nextAction) {
-        $("#alertMessage3").html(messageThis);
-        // // Show dialog
-        // prevAction();
-        nextTimedDialog(messageThis, secondsForAlert, nextAction);
-
-    }
-    $('#chord-progression-names').click(function () {
-        // if (!rhythmPlay) {
-        // $(".rhythm-type-buttons").slideToggle();
-        // }
-        let romanString = "Chord Pressiong";
-        if (chordSequenceCopy.length > 0) {
-
-            for (i = 0; i < chordSequenceCopy.length; i++) {
-                romanString = romanString + "-" + getChordNameAltered(chordSequenceCopy[i][2], noteArray[chordSequenceCopy[i][0]][1]);
-            }
-            $("#alertMessage").html(romanString);
-            // // Show dialog
-            $("#my-dialog").dialog("open");
-        }
-    });
-    $('#chord-progression-next').click(function () {
-        // if (!rhythmPlay) {
-        // $(".rhythm-type-buttons").slideToggle();
-        // }
-        if (singingCaptured) {
-            // alert ("yeah");
-            newQuestionTime = true;
-        }
-    });
-    $('#rhythmOn').click(function () {
-        // if (!rhythmPlay) {
-        // $(".rhythm-type-buttons").slideToggle();
-        // }
-        document.getElementById("rhythmOff").innerHTML = "Off";
-        document.getElementById("rhythmOn").innerHTML = "On (selected)";
-        document.getElementById("rhythmOn").style.background = buttonColor;
-        document.getElementById("rhythmOff").style.background = buttonNormalColor;
-        rhythmPlay = true;
-        playItAgain();
-    });
-    $('#rhythmOff').click(function () {
-        // if (rhythmPlay) {
-        // $(".rhythm-type-buttons").slideToggle();
-        // }
-        document.getElementById("rhythmOff").innerHTML = "Off (selected)";
-        document.getElementById("rhythmOn").innerHTML = "On";
-        document.getElementById("rhythmOn").style.background = buttonNormalColor;
-        document.getElementById("rhythmOff").style.background = buttonColor;
-        rhythmPlay = false;
-    });
-    $('#inversionsOn').click(function () {
-        document.getElementById("inversionsOff").innerHTML = "Off";
-        document.getElementById("inversionsOn").innerHTML = "On (selected)";
-        document.getElementById("inversionsOn").style.background = buttonColor;
-        document.getElementById("inversionsOff").style.background = buttonNormalColor;
-        inversionsAreOn = true;
-    });
-    $('#inversionsOff').click(function () {
-        document.getElementById("inversionsOff").innerHTML = "Off (selected)";
-        document.getElementById("inversionsOn").innerHTML = "On";
-        document.getElementById("inversionsOn").style.background = buttonNormalColor;
-        document.getElementById("inversionsOff").style.background = buttonColor;
-        inversionsAreOn = false;
-    });
-    $('#arpeggio-zero').click(function () {
-        document.getElementById("arpeggio-two").innerHTML = "C";
-        document.getElementById("arpeggio-one").innerHTML = "B";
-        document.getElementById("arpeggio-zero").innerHTML = "A (selected)";
-        document.getElementById("arpeggio-zero").style.background = buttonColor;
-        document.getElementById("arpeggio-one").style.background = buttonNormalColor;
-        document.getElementById("arpeggio-two").style.background = buttonNormalColor;
-        arpeggioChoice = 0;
-        playItAgain();
-
-    });
-    $('#arpeggio-one').click(function () {
-        document.getElementById("arpeggio-two").innerHTML = "C";
-        document.getElementById("arpeggio-one").innerHTML = "B (selected)";
-        document.getElementById("arpeggio-zero").innerHTML = "A";
-        document.getElementById("arpeggio-zero").style.background = buttonNormalColor;
-        document.getElementById("arpeggio-one").style.background = buttonColor;
-        document.getElementById("arpeggio-two").style.background = buttonNormalColor;
-        arpeggioChoice = 1;
-
-        playItAgain();
-
-    });
-    $('#arpeggio-two').click(function () {
-        document.getElementById("arpeggio-two").innerHTML = "C (selected)";
-        document.getElementById("arpeggio-one").innerHTML = "B";
-        document.getElementById("arpeggio-zero").innerHTML = "A";
-        document.getElementById("arpeggio-zero").style.background = buttonNormalColor;
-        document.getElementById("arpeggio-one").style.background = buttonNormalColor;
-        document.getElementById("arpeggio-two").style.background = buttonColor;
-        arpeggioChoice = 2;
-
-        playItAgain();
-
-    });
-    $('#play-root-on').click(function () {
-        document.getElementById("play-root-off").innerHTML = "Off";
-        document.getElementById("play-root-on").innerHTML = "On (selected)";
-        document.getElementById("play-root-on").style.background = buttonColor;
-        document.getElementById("play-root-off").style.background = buttonNormalColor;
-        rootPlay = true;
-        playItAgain();
-    });
-    $('#play-root-off').click(function () {
-        document.getElementById("play-root-off").innerHTML = "Off (selected)";
-        document.getElementById("play-root-on").innerHTML = "On";
-        document.getElementById("play-root-on").style.background = buttonNormalColor;
-        document.getElementById("play-root-off").style.background = buttonColor;
-        rootPlay = false;
-        playItAgain();
-    });
-    $('#useSynth').click(function () {
-        document.getElementById("usePiano").innerHTML = "Use Piano";
-        document.getElementById("useHumanVoice").innerHTML = "Use Human Voice";
-        document.getElementById("useSynth").innerHTML = "Use Synth (selected)";
-        document.getElementById("useSynth").style.background = buttonColor;
-        document.getElementById("useHumanVoice").style.background = buttonNormalColor;
-        document.getElementById("usePiano").style.background = buttonNormalColor;
-        instrument = "synth";
-        try {
-            synth.triggerRelease();
-
-            stopAllNotes();
-        } catch (error) {}
-        playItAgain();
-
-    });
-
-    $('#useHumanVoice').click(function () {
-        document.getElementById("usePiano").innerHTML = "Use Piano";
-        document.getElementById("useHumanVoice").innerHTML = "Use Human Voice (selected)";
-        document.getElementById("useSynth").innerHTML = "Use Synth";
-        document.getElementById("useSynth").style.background = buttonNormalColor;
-        document.getElementById("useHumanVoice").style.background = buttonColor;
-        document.getElementById("usePiano").style.background = buttonNormalColor;
-        instrument = "humanVoice";
-        // alert ("human");
-        try {
-            synth.triggerRelease();
-        } catch (error) {}
-        try {
-            stopAllNotes();
-        } catch (error) {}
-        playItAgain();
-    });
-
-    $('#usePiano').click(function () {
-        document.getElementById("usePiano").innerHTML = "Use Piano (selected)";
-        document.getElementById("useSynth").innerHTML = "Use Synth";
-        document.getElementById("useHumanVoice").innerHTML = "Use Human Voice";
-        document.getElementById("usePiano").style.background = buttonColor;
-        document.getElementById("useHumanVoice").style.background = buttonNormalColor;
-        document.getElementById("useSynth").style.background = buttonNormalColor;
-        instrument = "piano";
-        try {
-            synth.triggerRelease();
-        } catch (error) {}
-        try {
-            stopAllNotes();
-        } catch (error) {}
-        playItAgain();
-    });
-
-    $('#octave2').click(function () {
-        document.getElementById("octave2").innerHTML = "Octave 2 (selected)";
-        document.getElementById("octave3").innerHTML = "Octave 3";
-        document.getElementById("octave4").innerHTML = "Octave 4";
-        document.getElementById("octave2").style.background = buttonColor;
-        document.getElementById("octave3").style.background = buttonNormalColor;
-        document.getElementById("octave4").style.background = buttonNormalColor;
-        document.getElementById("octave5").innerHTML = "Octave 5";
-        document.getElementById("octave5").style.background = buttonNormalColor;
-
-        sequenceCopy.forEach(element => element[0] = element[0] - noteAdapter + 0);
-        noteAdapter = 12;
-        sequenceCopy.forEach(element => element[0] = element[0] + noteAdapter + 0);
-        updateReferences();
-        // updateUnlockedLevelsByUser("test3", 3);
-        currentLevelScore = 40;
-        playItAgain();
-    });
-
-    function addLevelCompleted(nameis, emailis, levelcomplete) {
-        // alert (levelcomplete);
-        // let levelcompletenumber = 0;
-        // if (levelcomplete === "levelOne") {
-        // levelcompletenumber = 1;
-        // } else if (levelcomplete === "levelTwo") {
-        // levelcompletenumber = 2;
-        // } else if (levelcomplete === "levelThree") {
-        // levelcompletenumber = 3;
-        // } else if (levelcomplete === "levelFour") {
-        // levelcompletenumber = 4;
-        // } else if (levelcomplete === "levelFive") {
-        // levelcompletenumber = 5;
-        // } else if (levelcomplete === "levelSix") {
-        // levelcompletenumber = 6;
-        // } else if (levelcomplete === "levelSeven") {
-        // levelcompletenumber = 7;
-        // } else if (levelcomplete === "levelEight") {
-        // levelcompletenumber = 8;
-        // } else if (levelcomplete === "levelNine") {
-        // levelcompletenumber = 9;
-        // } else if (levelcomplete === "levelTen") {
-        // levelcompletenumber = 10;
-        // }
-        var data = {
-            email: emailis,
-            name: nameis,
-            levelcomplete: levelcomplete,
-        }
-        db.collection("rhythmsenselogins").add(data).then(function (result) {
-            // list();
-        })
-        .catch(function (error) {
-            console.warn("failed to save contact");
-        });
-    }
-    // function insertRowIntoTable(data){
-    // 	const table = document.querySelector('table tbody');
-    // 	const isTableData = table.querySelector('.no-data');
-    // 	let tableHtml = "<tr>";
-
-    // for (var key in data){
-    // 	if (data.hasOwnProperty(key)){
-    // 		if (key === 'dateAdded'){
-    // 			data[key] = new Date(data[key]).toLocaleString();
-
-    // 		}
-    // 		tableHtml += `<td>${data[key]}</td>`;
-    // 	}
+});
+$('#chord-progression-next').click(function () {
+    // if (!rhythmPlay) {
+    // $(".rhythm-type-buttons").slideToggle();
     // }
-    // function updateUnlockedLevelsByUser(nameToFetch, emailToFetch){ //7-26-2020  THIS CODE IS FROM THE OLD SERVER!
-    // // const searchValue = prompt ("type test3");
-    // whoItIsUsingThis=nameToFetch+"";
-    // theirEmail=emailToFetch+"";
-    // document.getElementById('welcomefam').innerHTML='Welcome to Harmony Sense, '+nameToFetch+'!<br><br>Select your level from above, or select freestyle to open up all of the options and settings (how it used to look before).';
-    // fetch('http://localhost:5000/search/' + nameToFetch+"")
-    // .then(response => response.json())
-    // .then(data => loadHTMLTable(data['data']));
-    // }
-
-
-    // function loadHTMLTable(data){
-
-    // if (data.length ===0){
-    // alertify("Welcome! Proceed to Level 1");
-    // // return;
-    // }
-    // // let tableHtml = "";
-    // let levelNumber=0;
-    // data.forEach(function ({id, name, date_added, levelcomplete}){
-    // // console.log(levelcomplete);
-    // if (levelcomplete>levelNumber){
-    // levelNumber=levelcomplete+0;
-    // }
-    // // console.log("now it is "+levelcomplete);
-    // // tableHtml += "<tr>";
-    // // tableHtml += `<td>${id}</td>`;
-    // // tableHtml += `<td>${name}</td>`;
-    // // tableHtml += `<td>${new Date(date_added).toLocaleString()}</td>`;
-    // // tableHtml += `<td><button class="delete-row-btn" data-id=${id}>Delete</td>`;
-    // // tableHtml += `<td><button class="edit-row-btn" data-id=${id}>Edit</td>`;
-    // // tableHtml += "</tr>";
-    // });
-    // // table.innerHTML = tableHtml;
-    // ourLevelNumber=levelNumber+0;
-    // updateTheLevel(levelNumber);
-    // }
-
-
-    var updateUnlockedLevelsByUser = function (nameis, emailis) {
-        whoItIsUsingThis = nameis + "";
-        theirEmail = emailis + "";
-        document.getElementById('login-button').innerHTML = whoItIsUsingThis + " (Logged in), (Click to login as someone else)"
-            // document.getElementById('welcomefam').hidden=false;
-            // document.getElementById('welcomefamprelogin').hidden=true;
-
-            // var emailis= prompt ('what you sent fool?');
-            // var nameis= prompt ('what you called fool?');
-            document.getElementById('welcomefam').innerHTML = 'Welcome to Harmony Sense, ' + nameis + '!<br><br>Select your level from above, or select freestyle to open up all of the options and settings (how it used to look before).';
-        let levelNumber = 0;
-        // alert (loadDatabase.length);
-        for (var loadlistplace = 0; loadlistplace < loadDatabase.length; loadlistplace++) {
-            db.collection("rhythmsenselogins").doc(loadDatabase[loadlistplace]).get().then(function (doc) {
-                if (doc.exists) {
-                    // alert ("hi") we got in here
-                    var data = doc.data();
-                    // console.warn(data.email);
-                    // console.warn(data.name);
-                    if ((JSON.stringify(emailis) === JSON.stringify(data.email)) && (JSON.stringify(whoItIsUsingThis) === JSON.stringify(data.name))) {
-                        let blob = Number(data.levelcomplete) + 0;
-                        // console.log("you have the score " + blob + " " + levelNumber);
-                        try {
-                            if (blob > levelNumber) {
-
-                                levelNumber = blob + 0;
-                                // alert (levelNumber);
-
-
-                            }
-
-                        } catch (e) {}
-
-                    }
-
-                    ourLevelNumber = levelNumber + 0;
-                    updateTheLevel(levelNumber);
-                } else {
-                    console.error("No such record");
-                }
-            }).catch(function (error) {
-                console.error(error);
-                console.error("failed to read contact");
-            });
-
-        }
+    if (singingCaptured) {
+        // alert ("yeah");
+        newQuestionTime = true;
     }
+});
+$('#rhythmOn').click(function () {
+    // if (!rhythmPlay) {
+    // $(".rhythm-type-buttons").slideToggle();
+    // }
+    document.getElementById("rhythmOff").innerHTML = "Off";
+    document.getElementById("rhythmOn").innerHTML = "On (selected)";
+    document.getElementById("rhythmOn").style.background = buttonColor;
+    document.getElementById("rhythmOff").style.background = buttonNormalColor;
+    rhythmPlay = true;
+    playItAgain();
+});
+$('#rhythmOff').click(function () {
+    // if (rhythmPlay) {
+    // $(".rhythm-type-buttons").slideToggle();
+    // }
+    document.getElementById("rhythmOff").innerHTML = "Off (selected)";
+    document.getElementById("rhythmOn").innerHTML = "On";
+    document.getElementById("rhythmOn").style.background = buttonNormalColor;
+    document.getElementById("rhythmOff").style.background = buttonColor;
+    rhythmPlay = false;
+});
+$('#inversionsOn').click(function () {
+    document.getElementById("inversionsOff").innerHTML = "Off";
+    document.getElementById("inversionsOn").innerHTML = "On (selected)";
+    document.getElementById("inversionsOn").style.background = buttonColor;
+    document.getElementById("inversionsOff").style.background = buttonNormalColor;
+    inversionsAreOn = true;
+});
+$('#inversionsOff').click(function () {
+    document.getElementById("inversionsOff").innerHTML = "Off (selected)";
+    document.getElementById("inversionsOn").innerHTML = "On";
+    document.getElementById("inversionsOn").style.background = buttonNormalColor;
+    document.getElementById("inversionsOff").style.background = buttonColor;
+    inversionsAreOn = false;
+});
+$('#arpeggio-zero').click(function () {
+    document.getElementById("arpeggio-two").innerHTML = "C";
+    document.getElementById("arpeggio-one").innerHTML = "B";
+    document.getElementById("arpeggio-zero").innerHTML = "A (selected)";
+    document.getElementById("arpeggio-zero").style.background = buttonColor;
+    document.getElementById("arpeggio-one").style.background = buttonNormalColor;
+    document.getElementById("arpeggio-two").style.background = buttonNormalColor;
+    arpeggioChoice = 0;
+    playItAgain();
 
-    $('#octave3').click(function () {
-        document.getElementById("octave2").style.background = buttonNormalColor;
-        document.getElementById("octave3").style.background = buttonColor;
-        document.getElementById("octave4").style.background = buttonNormalColor;
-        document.getElementById("octave2").innerHTML = "Octave 2";
-        document.getElementById("octave3").innerHTML = "Octave 3 (selected)";
-        document.getElementById("octave4").innerHTML = "Octave 4";
-        document.getElementById("octave5").innerHTML = "Octave 5";
-        document.getElementById("octave5").style.background = buttonNormalColor;
+});
+$('#arpeggio-one').click(function () {
+    document.getElementById("arpeggio-two").innerHTML = "C";
+    document.getElementById("arpeggio-one").innerHTML = "B (selected)";
+    document.getElementById("arpeggio-zero").innerHTML = "A";
+    document.getElementById("arpeggio-zero").style.background = buttonNormalColor;
+    document.getElementById("arpeggio-one").style.background = buttonColor;
+    document.getElementById("arpeggio-two").style.background = buttonNormalColor;
+    arpeggioChoice = 1;
 
-        sequenceCopy.forEach(element => element[0] = element[0] - noteAdapter + 0);
-        noteAdapter = 24;
-        sequenceCopy.forEach(element => element[0] = element[0] + noteAdapter + 0);
-        updateReferences();
+    playItAgain();
 
-        playItAgain();
-    });
-    $('#addAPerson').click(function () {
-        let personName = prompt("what is the name?");
+});
+$('#arpeggio-two').click(function () {
+    document.getElementById("arpeggio-two").innerHTML = "C (selected)";
+    document.getElementById("arpeggio-one").innerHTML = "B";
+    document.getElementById("arpeggio-zero").innerHTML = "A";
+    document.getElementById("arpeggio-zero").style.background = buttonNormalColor;
+    document.getElementById("arpeggio-one").style.background = buttonNormalColor;
+    document.getElementById("arpeggio-two").style.background = buttonColor;
+    arpeggioChoice = 2;
 
-        let levelCompleted = prompt("what is the max level completed");
+    playItAgain();
 
-        addLevelCompleted(personName, theirEmail, levelCompleted);
+});
+$('#play-root-on').click(function () {
+    document.getElementById("play-root-off").innerHTML = "Off";
+    document.getElementById("play-root-on").innerHTML = "On (selected)";
+    document.getElementById("play-root-on").style.background = buttonColor;
+    document.getElementById("play-root-off").style.background = buttonNormalColor;
+    rootPlay = true;
+    playItAgain();
+});
+$('#play-root-off').click(function () {
+    document.getElementById("play-root-off").innerHTML = "Off (selected)";
+    document.getElementById("play-root-on").innerHTML = "On";
+    document.getElementById("play-root-on").style.background = buttonNormalColor;
+    document.getElementById("play-root-off").style.background = buttonColor;
+    rootPlay = false;
+    playItAgain();
+});
+$('#useSynth').click(function () {
+    document.getElementById("usePiano").innerHTML = "Use Piano";
+    document.getElementById("useHumanVoice").innerHTML = "Use Human Voice";
+    document.getElementById("useSynth").innerHTML = "Use Synth (selected)";
+    document.getElementById("useSynth").style.background = buttonColor;
+    document.getElementById("useHumanVoice").style.background = buttonNormalColor;
+    document.getElementById("usePiano").style.background = buttonNormalColor;
+    instrument = "synth";
+    try {
+        synth.triggerRelease();
 
-        // updateUnlockedLevelsByUser(whoItIsUsingThis);
-    });
-
-    $('#octave4').click(function () {
-        document.getElementById("octave2").style.background = buttonNormalColor;
-        document.getElementById("octave4").style.background = buttonColor;
-        document.getElementById("octave3").style.background = buttonNormalColor;
-        document.getElementById("octave2").innerHTML = "Octave 2";
-        document.getElementById("octave3").innerHTML = "Octave 3";
-        document.getElementById("octave4").innerHTML = "Octave 4 (selected)";
-
-        document.getElementById("octave5").innerHTML = "Octave 5";
-        document.getElementById("octave5").style.background = buttonNormalColor;
-        sequenceCopy.forEach(element => element[0] = element[0] - noteAdapter + 0);
-        noteAdapter = 36;
-        sequenceCopy.forEach(element => element[0] = element[0] + noteAdapter + 0);
-        updateReferences();
-
-        playItAgain();
-    });
-
-    $('#octave5').click(function () {
-        document.getElementById("octave2").style.background = buttonNormalColor;
-        document.getElementById("octave4").style.background = buttonNormalColor;
-        document.getElementById("octave3").style.background = buttonNormalColor;
-        document.getElementById("octave2").innerHTML = "Octave 2";
-        document.getElementById("octave3").innerHTML = "Octave 3";
-        document.getElementById("octave4").innerHTML = "Octave 4";
-
-        document.getElementById("octave5").innerHTML = "Octave 5 (selected)";
-        document.getElementById("octave5").style.background = buttonColor;
-        sequenceCopy.forEach(element => element[0] = element[0] - noteAdapter + 0);
-        noteAdapter = 48;
-        sequenceCopy.forEach(element => element[0] = element[0] + noteAdapter + 0);
-        updateReferences();
-
-        playItAgain();
-    });
-
-    $('#playAgainButton').click(playItAgain);
-
-    $('#login-button').click(logintothisapp);
-
-    function playItAgain() {
-        r = randomNoteNum;
-
-        if (!paused) {
-            mostRecentPostingNum = r;
-            try {
-                // gauge.update({
-                // majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
-                // units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
-                // });
-            } catch (error) {}
-        } else {
-            // gauge.update({
-            // units: "Paused"
-            // }); //sets the 3 notes in there.
-        }
-        if (arpeggioPlay) {
-            arpeggioSequenceArray = [];
-            rootSequenceArray = [];
-            arpeggioSequenceCopy = [];
-            rootSequenceCopy = [];
-            arpeggioAdded = false;
-        }
         stopAllNotes();
-        clearAllNotes();
-        // alert (sequenceArray.length);
-        numOfThisNoteInSequence = 0;
-        firstNotationToCome = true;
-        // setupAFirstNote = false;
-        // alert (sequencePlay);
-        if ((sequencePlay)) {
-            if (nonReferencePlay) {
+    } catch (error) {}
+    playItAgain();
 
-                // sequenceArray= sequenceCopy.slice();
-                chordSequenceStarted = false;
-                chordSequenceArray = chordSequenceCopy.slice();
+});
+
+$('#useHumanVoice').click(function () {
+    document.getElementById("usePiano").innerHTML = "Use Piano";
+    document.getElementById("useHumanVoice").innerHTML = "Use Human Voice (selected)";
+    document.getElementById("useSynth").innerHTML = "Use Synth";
+    document.getElementById("useSynth").style.background = buttonNormalColor;
+    document.getElementById("useHumanVoice").style.background = buttonColor;
+    document.getElementById("usePiano").style.background = buttonNormalColor;
+    instrument = "humanVoice";
+    // alert ("human");
+    try {
+        synth.triggerRelease();
+    } catch (error) {}
+    try {
+        stopAllNotes();
+    } catch (error) {}
+    playItAgain();
+});
+
+$('#usePiano').click(function () {
+    document.getElementById("usePiano").innerHTML = "Use Piano (selected)";
+    document.getElementById("useSynth").innerHTML = "Use Synth";
+    document.getElementById("useHumanVoice").innerHTML = "Use Human Voice";
+    document.getElementById("usePiano").style.background = buttonColor;
+    document.getElementById("useHumanVoice").style.background = buttonNormalColor;
+    document.getElementById("useSynth").style.background = buttonNormalColor;
+    instrument = "piano";
+    try {
+        synth.triggerRelease();
+    } catch (error) {}
+    try {
+        stopAllNotes();
+    } catch (error) {}
+    playItAgain();
+});
+
+$('#octave2').click(function () {
+    document.getElementById("octave2").innerHTML = "Octave 2 (selected)";
+    document.getElementById("octave3").innerHTML = "Octave 3";
+    document.getElementById("octave4").innerHTML = "Octave 4";
+    document.getElementById("octave2").style.background = buttonColor;
+    document.getElementById("octave3").style.background = buttonNormalColor;
+    document.getElementById("octave4").style.background = buttonNormalColor;
+    document.getElementById("octave5").innerHTML = "Octave 5";
+    document.getElementById("octave5").style.background = buttonNormalColor;
+
+    sequenceCopy.forEach(element => element[0] = element[0] - noteAdapter + 0);
+    noteAdapter = 12;
+    sequenceCopy.forEach(element => element[0] = element[0] + noteAdapter + 0);
+    updateReferences();
+    // updateUnlockedLevelsByUser("test3", 3);
+    currentLevelScore = 40;
+    playItAgain();
+});
+
+function addLevelCompleted(nameis, emailis, levelcomplete) {
+    // alert (levelcomplete);
+    // let levelcompletenumber = 0;
+    // if (levelcomplete === "levelOne") {
+    // levelcompletenumber = 1;
+    // } else if (levelcomplete === "levelTwo") {
+    // levelcompletenumber = 2;
+    // } else if (levelcomplete === "levelThree") {
+    // levelcompletenumber = 3;
+    // } else if (levelcomplete === "levelFour") {
+    // levelcompletenumber = 4;
+    // } else if (levelcomplete === "levelFive") {
+    // levelcompletenumber = 5;
+    // } else if (levelcomplete === "levelSix") {
+    // levelcompletenumber = 6;
+    // } else if (levelcomplete === "levelSeven") {
+    // levelcompletenumber = 7;
+    // } else if (levelcomplete === "levelEight") {
+    // levelcompletenumber = 8;
+    // } else if (levelcomplete === "levelNine") {
+    // levelcompletenumber = 9;
+    // } else if (levelcomplete === "levelTen") {
+    // levelcompletenumber = 10;
+    // }
+    var data = {
+        email: emailis,
+        name: nameis,
+        levelcomplete: levelcomplete,
+    }
+    db.collection("rhythmsenselogins").add(data).then(function (result) {
+        // list();
+    })
+    .catch(function (error) {
+        console.warn("failed to save contact");
+    });
+}
+// function insertRowIntoTable(data){
+// 	const table = document.querySelector('table tbody');
+// 	const isTableData = table.querySelector('.no-data');
+// 	let tableHtml = "<tr>";
+
+// for (var key in data){
+// 	if (data.hasOwnProperty(key)){
+// 		if (key === 'dateAdded'){
+// 			data[key] = new Date(data[key]).toLocaleString();
+
+// 		}
+// 		tableHtml += `<td>${data[key]}</td>`;
+// 	}
+// }
+// function updateUnlockedLevelsByUser(nameToFetch, emailToFetch){ //7-26-2020  THIS CODE IS FROM THE OLD SERVER!
+// // const searchValue = prompt ("type test3");
+// whoItIsUsingThis=nameToFetch+"";
+// theirEmail=emailToFetch+"";
+// document.getElementById('welcomefam').innerHTML='Welcome to Harmony Sense, '+nameToFetch+'!<br><br>Select your level from above, or select freestyle to open up all of the options and settings (how it used to look before).';
+// fetch('http://localhost:5000/search/' + nameToFetch+"")
+// .then(response => response.json())
+// .then(data => loadHTMLTable(data['data']));
+// }
+
+
+// function loadHTMLTable(data){
+
+// if (data.length ===0){
+// alertify("Welcome! Proceed to Level 1");
+// // return;
+// }
+// // let tableHtml = "";
+// let levelNumber=0;
+// data.forEach(function ({id, name, date_added, levelcomplete}){
+// // console.log(levelcomplete);
+// if (levelcomplete>levelNumber){
+// levelNumber=levelcomplete+0;
+// }
+// // console.log("now it is "+levelcomplete);
+// // tableHtml += "<tr>";
+// // tableHtml += `<td>${id}</td>`;
+// // tableHtml += `<td>${name}</td>`;
+// // tableHtml += `<td>${new Date(date_added).toLocaleString()}</td>`;
+// // tableHtml += `<td><button class="delete-row-btn" data-id=${id}>Delete</td>`;
+// // tableHtml += `<td><button class="edit-row-btn" data-id=${id}>Edit</td>`;
+// // tableHtml += "</tr>";
+// });
+// // table.innerHTML = tableHtml;
+// ourLevelNumber=levelNumber+0;
+// updateTheLevel(levelNumber);
+// }
+
+
+var updateUnlockedLevelsByUser = function (nameis, emailis) {
+    whoItIsUsingThis = nameis + "";
+    theirEmail = emailis + "";
+    document.getElementById('login-button').innerHTML = whoItIsUsingThis + " (Logged in), (Click to login as someone else)"
+        // document.getElementById('welcomefam').hidden=false;
+        // document.getElementById('welcomefamprelogin').hidden=true;
+
+        // var emailis= prompt ('what you sent fool?');
+        // var nameis= prompt ('what you called fool?');
+        document.getElementById('welcomefam').innerHTML = 'Welcome to Harmony Sense, ' + nameis + '!<br><br>Select your level from above, or select freestyle to open up all of the options and settings (how it used to look before).';
+    let levelNumber = 0;
+    // alert (loadDatabase.length);
+    for (var loadlistplace = 0; loadlistplace < loadDatabase.length; loadlistplace++) {
+        db.collection("rhythmsenselogins").doc(loadDatabase[loadlistplace]).get().then(function (doc) {
+            if (doc.exists) {
+                // alert ("hi") we got in here
+                var data = doc.data();
+                // console.warn(data.email);
+                // console.warn(data.name);
+                if ((JSON.stringify(emailis) === JSON.stringify(data.email)) && (JSON.stringify(whoItIsUsingThis) === JSON.stringify(data.name))) {
+                    let blob = Number(data.levelcomplete) + 0;
+                    console.log("you have the score " + blob + " " + levelNumber);
+                    try {
+                        if (blob > levelNumber) {
+
+                            levelNumber = blob + 0;
+                            // alert (levelNumber);
+
+
+                        }
+
+                    } catch (e) {}
+
+                }
+
+                ourLevelNumber = levelNumber + 0;
+                updateTheLevel(levelNumber);
             } else {
-                sequenceStarted = false;
-                sequenceArray = sequenceCopy.slice();
-
-                // console.error(sequenceArray.toString());
+                console.error("No such record");
             }
-        } else {
-            // alert ("not a sequence");
-            makeAndShowANote(randomNoteNum, 2, "referenceNote");
-            numOfThisNoteInSequence++;
-            playANote(randomNoteNum);
-        }
-
-        // var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));
-        // //	alert (""+soundId(getNoteName(note)));
-        // // if audio(const playPromise = audio.play();
-        // // if (playPromise !== null) {
-        // // playPromise.catch(() => {
-        // // audio.pause();
-        // // audio.volume = 1.0;
-        // // if (audio.readyState >= 2) {
-        // // audio.currentTime = 0;
-        // // // audio.play();
-        // // }
-        // // })
-        // // }
-        // // if (audio) {
-
-        // // }
-
-        // //press();
-        // //playNote(midiNoteToFrequency(note));
-        // //press(note);
-        // //if (velocity > 0) {
-        // if (audio) {
-        // audio.pause();
-        // audio.volume = 1.0;
-        // if (audio.readyState >= 2) {
-        // audio.currentTime = 0;
-        // var promise = audio.play();
-
-        // if (promise !== undefined) {
-        // promise.then(_ => {
-        // // Autoplay started!
-        // }).catch(error => {
-        // //alert ("it worked");
-        // // Autoplay was prevented.
-        // // Show a "Play" button so that user can start playback.
-        // });
-        // }
-
-        // }
-        // }
+        }).catch(function (error) {
+            console.error(error);
+            console.error("failed to read contact");
+        });
 
     }
+}
 
-    $('#playTargetButton').click(function () {
-        answerRevealed = true;
-        if (intervalDirection == "up") {
-            var legalInterval = getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
-        } else if (intervalDirection == "down") {
-            var legalInterval = getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
-        } else if (intervalDirection == "unison") {
-            var legalInterval = 0; //getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 0);
-        } else if (intervalDirection == "fourthUp") {
-            var legalInterval = 5; //getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 0);
-        } else if (intervalDirection == "fourthDown") {
-            var legalInterval = 7; //getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 0);
-        } else if (intervalDirection == "allHarmonies") {
-            if (keyType == "major") {
-                // console.log("new is " + newLastRandomScaleNum);
-                randomScaleNum = getScaleNumMajorNote(randomNoteNum);
-            } else {
-                // alert ("hi");
-                // console.log("newMinor is " + newLastRandomScaleNum);
-                randomScaleNum = getScaleNumMinorNote(randomNoteNum);
-            }
-            var legalInterval = getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
-            var legalIntervalTwo = getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
-            if (toSolFej(keyOf, randomScaleNum) == "Fa") {
-                var legalIntervalThree = 7;
-            } else {
-                var legalIntervalThree = 5;
-            }
-            var legalIntervalFour = 7;
+$('#octave3').click(function () {
+    document.getElementById("octave2").style.background = buttonNormalColor;
+    document.getElementById("octave3").style.background = buttonColor;
+    document.getElementById("octave4").style.background = buttonNormalColor;
+    document.getElementById("octave2").innerHTML = "Octave 2";
+    document.getElementById("octave3").innerHTML = "Octave 3 (selected)";
+    document.getElementById("octave4").innerHTML = "Octave 4";
+    document.getElementById("octave5").innerHTML = "Octave 5";
+    document.getElementById("octave5").style.background = buttonNormalColor;
 
-        }
-        r = randomNoteNum + legalInterval;
-        // alert ('r');
-        if (!paused) {
-            mostRecentPostingNum = r;
+    sequenceCopy.forEach(element => element[0] = element[0] - noteAdapter + 0);
+    noteAdapter = 24;
+    sequenceCopy.forEach(element => element[0] = element[0] + noteAdapter + 0);
+    updateReferences();
+
+    playItAgain();
+});
+$('#addAPerson').click(function () {
+    let personName = prompt("what is the name?");
+
+    let levelCompleted = prompt("what is the max level completed");
+
+    addLevelCompleted(personName, theirEmail, levelCompleted);
+
+    // updateUnlockedLevelsByUser(whoItIsUsingThis);
+});
+
+$('#octave4').click(function () {
+    document.getElementById("octave2").style.background = buttonNormalColor;
+    document.getElementById("octave4").style.background = buttonColor;
+    document.getElementById("octave3").style.background = buttonNormalColor;
+    document.getElementById("octave2").innerHTML = "Octave 2";
+    document.getElementById("octave3").innerHTML = "Octave 3";
+    document.getElementById("octave4").innerHTML = "Octave 4 (selected)";
+
+    document.getElementById("octave5").innerHTML = "Octave 5";
+    document.getElementById("octave5").style.background = buttonNormalColor;
+    sequenceCopy.forEach(element => element[0] = element[0] - noteAdapter + 0);
+    noteAdapter = 36;
+    sequenceCopy.forEach(element => element[0] = element[0] + noteAdapter + 0);
+    updateReferences();
+
+    playItAgain();
+});
+
+$('#octave5').click(function () {
+    document.getElementById("octave2").style.background = buttonNormalColor;
+    document.getElementById("octave4").style.background = buttonNormalColor;
+    document.getElementById("octave3").style.background = buttonNormalColor;
+    document.getElementById("octave2").innerHTML = "Octave 2";
+    document.getElementById("octave3").innerHTML = "Octave 3";
+    document.getElementById("octave4").innerHTML = "Octave 4";
+
+    document.getElementById("octave5").innerHTML = "Octave 5 (selected)";
+    document.getElementById("octave5").style.background = buttonColor;
+    sequenceCopy.forEach(element => element[0] = element[0] - noteAdapter + 0);
+    noteAdapter = 48;
+    sequenceCopy.forEach(element => element[0] = element[0] + noteAdapter + 0);
+    updateReferences();
+
+    playItAgain();
+});
+
+$('#playAgainButton').click(playItAgain);
+
+$('#login-button').click(logintothisapp);
+
+function playItAgain() {
+    r = randomNoteNum;
+
+    if (!paused) {
+        mostRecentPostingNum = r;
+        try {
             // gauge.update({
             // majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
             // units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
             // });
+        } catch (error) {}
+    } else {
+        // gauge.update({
+        // units: "Paused"
+        // }); //sets the 3 notes in there.
+    }
+    if (arpeggioPlay) {
+        arpeggioSequenceArray = [];
+        rootSequenceArray = [];
+        arpeggioSequenceCopy = [];
+        rootSequenceCopy = [];
+        arpeggioAdded = false;
+    }
+    stopAllNotes();
+    clearAllNotes();
+    // alert (sequenceArray.length);
+    numOfThisNoteInSequence = 0;
+    firstNotationToCome = true;
+    // setupAFirstNote = false;
+    // alert (sequencePlay);
+    if ((sequencePlay)) {
+        if (nonReferencePlay) {
+
+            // sequenceArray= sequenceCopy.slice();
+            chordSequenceStarted = false;
+            chordSequenceArray = chordSequenceCopy.slice();
         } else {
-            // gauge.update({
-            // units: "Paused"
-            // }); //sets the 3 notes in there.
+            sequenceStarted = false;
+            sequenceArray = sequenceCopy.slice();
+
+            console.error(sequenceArray.toString());
         }
-        // if (arpeggioPlay) {
-        // arpeggioSequenceArray = [];
-        // rootSequenceArray = [];
-        // arpeggioSequenceCopy = [];
-        // rootSequenceCopy = [];
-        // arpeggioAdded = false;
-        // }
+    } else {
+        // alert ("not a sequence");
+        makeAndShowANote(randomNoteNum, 2, "referenceNote");
+        numOfThisNoteInSequence++;
+        playANote(randomNoteNum);
+    }
 
-        // makeAndShowANote(randomNoteNum, 2, "referenceNote");
-        let tempInstrument = instrument + "";
-        stopVoices();
-        instrument = "humanVoice"
-            playANote(r);
-        instrument = tempInstrument + "";
+    // var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));
+    // //	alert (""+soundId(getNoteName(note)));
+    // // if audio(const playPromise = audio.play();
+    // // if (playPromise !== null) {
+    // // playPromise.catch(() => {
+    // // audio.pause();
+    // // audio.volume = 1.0;
+    // // if (audio.readyState >= 2) {
+    // // audio.currentTime = 0;
+    // // // audio.play();
+    // // }
+    // // })
+    // // }
+    // // if (audio) {
 
-        // var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));
-        // //	alert (""+soundId(getNoteName(note)));
-        // // if audio(const playPromise = audio.play();
-        // // if (playPromise !== null) {
-        // // playPromise.catch(() => {
-        // // audio.pause();
-        // // audio.volume = 1.0;
-        // // if (audio.readyState >= 2) {
-        // // audio.currentTime = 0;
-        // // // audio.play();
-        // // }
-        // // })
-        // // }
-        // // if (audio) {
+    // // }
 
-        // // }
+    // //press();
+    // //playNote(midiNoteToFrequency(note));
+    // //press(note);
+    // //if (velocity > 0) {
+    // if (audio) {
+    // audio.pause();
+    // audio.volume = 1.0;
+    // if (audio.readyState >= 2) {
+    // audio.currentTime = 0;
+    // var promise = audio.play();
 
-        // //press();
-        // //playNote(midiNoteToFrequency(note));
-        // //press(note);
-        // //if (velocity > 0) {
-        // if (audio) {
-        // audio.pause();
-        // audio.volume = 1.0;
-        // if (audio.readyState >= 2) {
-        // audio.currentTime = 0;
-        // var promise = audio.play();
+    // if (promise !== undefined) {
+    // promise.then(_ => {
+    // // Autoplay started!
+    // }).catch(error => {
+    // //alert ("it worked");
+    // // Autoplay was prevented.
+    // // Show a "Play" button so that user can start playback.
+    // });
+    // }
 
-        // if (promise !== undefined) {
-        // promise.then(_ => {
-        // // Autoplay started!
-        // }).catch(error => {
-        // //alert ("it worked");
-        // // Autoplay was prevented.
-        // // Show a "Play" button so that user can start playback.
+    // }
+    // }
+
+}
+
+$('#playTargetButton').click(function () {
+    answerRevealed = true;
+    if (intervalDirection == "up") {
+        var legalInterval = getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
+    } else if (intervalDirection == "down") {
+        var legalInterval = getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
+    } else if (intervalDirection == "unison") {
+        var legalInterval = 0; //getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 0);
+    } else if (intervalDirection == "fourthUp") {
+        var legalInterval = 5; //getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 0);
+    } else if (intervalDirection == "fourthDown") {
+        var legalInterval = 7; //getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 0);
+    } else if (intervalDirection == "allHarmonies") {
+        if (keyType == "major") {
+            // console.log("new is " + newLastRandomScaleNum);
+            randomScaleNum = getScaleNumMajorNote(randomNoteNum);
+        } else {
+            // alert ("hi");
+            // console.log("newMinor is " + newLastRandomScaleNum);
+            randomScaleNum = getScaleNumMinorNote(randomNoteNum);
+        }
+        var legalInterval = getNoteUpInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
+        var legalIntervalTwo = getNoteDownInterval((randomNoteNum - (noteAdapter + scaleAdapter)), 3);
+        if (toSolFej(keyOf, randomScaleNum) == "Fa") {
+            var legalIntervalThree = 7;
+        } else {
+            var legalIntervalThree = 5;
+        }
+        var legalIntervalFour = 7;
+
+    }
+    r = randomNoteNum + legalInterval;
+    // alert ('r');
+    if (!paused) {
+        mostRecentPostingNum = r;
+        // gauge.update({
+        // majorTicks: [(noteArray[r - 1] || "")[1] || "", noteArray[r][1], (noteArray[r + 1] || "")[1] || ""],
+        // units: (noteArray[r][1] + " " + Math.floor(score)) //sets the 3 notes in there.
         // });
-        // }
+    } else {
+        // gauge.update({
+        // units: "Paused"
+        // }); //sets the 3 notes in there.
+    }
+    // if (arpeggioPlay) {
+    // arpeggioSequenceArray = [];
+    // rootSequenceArray = [];
+    // arpeggioSequenceCopy = [];
+    // rootSequenceCopy = [];
+    // arpeggioAdded = false;
+    // }
 
-        // }
-        // }
+    // makeAndShowANote(randomNoteNum, 2, "referenceNote");
+    let tempInstrument = instrument + "";
+    stopVoices();
+    instrument = "humanVoice"
+        playANote(r);
+    instrument = tempInstrument + "";
 
-    });
+    // var audio = document.getElementById(soundId(noteArray[randomNoteNum][1]));
+    // //	alert (""+soundId(getNoteName(note)));
+    // // if audio(const playPromise = audio.play();
+    // // if (playPromise !== null) {
+    // // playPromise.catch(() => {
+    // // audio.pause();
+    // // audio.volume = 1.0;
+    // // if (audio.readyState >= 2) {
+    // // audio.currentTime = 0;
+    // // // audio.play();
+    // // }
+    // // })
+    // // }
+    // // if (audio) {
 
-function scroll_up_to(div){
-	// alert (document.getElementbyId(div).offsetTop);
-	$('html, body').animate({
-		scrollTop: document.getElementById(div).offsetTop
-	},1000);
+    // // }
+
+    // //press();
+    // //playNote(midiNoteToFrequency(note));
+    // //press(note);
+    // //if (velocity > 0) {
+    // if (audio) {
+    // audio.pause();
+    // audio.volume = 1.0;
+    // if (audio.readyState >= 2) {
+    // audio.currentTime = 0;
+    // var promise = audio.play();
+
+    // if (promise !== undefined) {
+    // promise.then(_ => {
+    // // Autoplay started!
+    // }).catch(error => {
+    // //alert ("it worked");
+    // // Autoplay was prevented.
+    // // Show a "Play" button so that user can start playback.
+    // });
+    // }
+
+    // }
+    // }
+
+});
+
+function tutorialSequence() {
+
+    uncircleAClass('blocklegend');
+    circleAClass('kickstep');
+    nextTimedAlertify("These are your kicks.<br><br>Notice 2 things: <br>-kicks on beats 1 and 3 are gray boxes, and the ones within beats 2 and 4 are red boxes.<br>-All of the upbeats and off beats are empty circles.", 3, theseAreYourLegends);
+    //
 }
 
+function theseAreYourLegends() {
+    uncircleAClass('kickstep')
+    uncircleAClass('guide-row')
+    circleAClass('blocklegend');
 
-function scroll_down_to(div){
-	alert (document.getElementById(div).offsetBottom);
-	$('html, body').animate({
-		scrollBottom: $(div).offset().bottom
-	},1000);
+    prevNextTimedAlertify("This area of your screen is the legend.<br><br>It serves to remind you that empty circles are untargetable (inactive on this level). And lit up boxes are boxes you have selected because you think an instrument is used on that beat.", 5, tutorialSequence, thisIsYourTimer);
+
 }
 
+function thisIsYourTimer() {
+    uncircleAClass('blocklegend')
+    uncircleAnId('metronomeButton');
+    circleAClass('guide-row');
 
-    function tutorialSequence() {
-
-        uncircleAClass('blocklegend');
-        circleAClass('kickstep');
-        $("#my-dialog-prev-next-timed").dialog({
-            position: {
-                my: 'top',
-                at: 'bottom',
-                of: '#kickstepeight',
-                // collision: 'fit'
-            }
-
-        });
-		// scroll_up_to('kickstepone');
-		document.getElementById('kickstepone').scrollIntoView({behavior: "smooth", block: "end"});
-        nextTimedAlertify("<span style='border-width:3px;border-color:orange;border-style:dashed'>The outlined spots on the page are your kicks.</span><br><br>Notice 2 things: <br>-kicks on beats 1 and 3 are gray boxes, and the ones within beats 2 and 4 are red boxes.<br>-All of the upbeats and off beats are empty circles.", 3, theseAreYourLegends);
-        //
-    }
-
-    function theseAreYourLegends() {
-
-        $("#my-dialog-prev-next-timed").dialog("close");
-        uncircleAClass('kickstep')
-        uncircleAClass('guide-row')
-        circleAClass('blocklegend');
-        $("#my-dialog-prev-next-timed").dialog({
-            position: {
-                my: 'top',
-                at: 'bottom',
-                of: '#untargetablecolumn',
-                // collision: 'fit'
-            }
-
-        });
-        prevNextTimedAlertify("<span style='border-width:3px;border-color:orange;border-style:dashed'>These areas of your screen are the legends.</span><br><br>It serves to remind you that empty circles are untargetable (inactive on this level). And lit up boxes are boxes you have selected because you think an instrument is used on that beat.", 5, tutorialSequence, thisIsYourTimer);
-        $("#my-dialog-prev-next-timed").dialog({
-            position: {
-                collision: 'fit'
-            }
-
-        });    
-		$("#my-dialog-prev-next-timed").dialog({
-            position: {
-                collision: 'none'
-            }
-
-        });
-    }
-
-    function thisIsYourTimer() {
-        $("#my-dialog-prev-next-timed").dialog("close");
-        uncircleAClass('blocklegend')
-        uncircleAnId('metronomeButton');
-        circleAClass('guide-row');
-
-        metronomeTutorial = false;
-        $("#my-dialog-prev-next-timed").dialog({
-            position: {
-                my: 'top',
-                at: 'bottom',
-                of: '.guide-row',
-                // collision: 'fit'
-            }
-
-        });
-        prevNextTimedAlertify("<span style='border-width:3px;border-color:orange;border-style:dashed'>This row is your timeline.</span> It will help you keep track of the beat/time naming. The boxes for each of the instruments below correspond to the timings written in the timeline.", 5, theseAreYourLegends, showMetronomeButton);
-        // alertify("");
-        if (metronome) {
-            metronomeButton.click();
-        }
-        // rhythmVolume = 50;
-        // clearRhythms();
-        // simplifiedDenominator = 4;
-        // randomizeKicks = true;
-        // backbeat = false;
-
-    }
-
-    function showMetronomeButton() {
-        $("#my-dialog-prev-next-timed").dialog("close");
-        uncircleAClass('guide-row')
-        circleAnId('metronomeButton');
-        metronomeTutorial = true;
-        $("#my-dialog-prev-next-timed").dialog({
-            position: {
-                my: 'right',
-                at: 'left',
-                of: '#metronomeButton',
-                // collision: 'fit'
-            }
-
-        });
-        prevOkayAlertify("Currently the metronome is off.<br><br><strong>Please turn it on by pressing the </strong><span style='border-width:3px;border-color:orange;border-style:dashed'><strong>outlined button.</strong></span><br><br>If you ever want to turn it off, you can press this button again.", 5, thisIsYourTimer);
-        // alertify("");
-        // rhythmVolume = 50;
-        // clearRhythms();
-        // simplifiedDenominator = 4;
-        // randomizeKicks = true;
-        // backbeat = false;
-    }
-
-    function metronomePostTutorialAction() {
-        $("#my-dialog-prev-next-timed").dialog("close");
-        circleAClass('guide-row')
-        uncircleAnId('metronomeButton');
-
-        uncircleAnId('guidestepone');
-        // metronomeTutorial=true;
-        kickSequenceArray = [];
-        kickSequenceCopy = [];
-        randomizeKicks = false;
-        kickStarted = false;
-        $("#my-dialog-prev-next-timed").dialog({
-            position: {
-                my: 'top',
-                at: 'bottom',
-                of: '.guide-row',
-                // collision: 'fit'
-            }
-
-        });
-        prevNextTimedAlertify("As you can see, now <span style='border-width:3px;border-color:orange;border-style:dashed'>the timeline</span> lights up on specific beats.<br><br>In addition, you can now hear the metronome making a sound on each of those beats.<br><br>A good strategy for you to use is try to say the beat number on each beat as the metronome makes the sound<br>'1, 2, 3, 4'", 5, showMetronomeButton, beginKickPressTutorial);
-        // alertify("");
-        // rhythmVolume = 50;
-        // clearRhythms();
-        // simplifiedDenominator = 4;
-        // randomizeKicks = true;
-        // backbeat = false;
-    }
-    function beginKickPressTutorial() {
-        $("#my-dialog-prev-next-timed").dialog("close");
-        uncircleAnId('guide-row');
-        circleAnId('guidestepone');
-        uncircleAnId('kickstepone');
-        // circleAnId('kickstepone');
-        kickSequenceArray = [];
-        kickSequenceCopy = [];
-        randomizeKicks = true;
-        kickStarted = true;
-        kickSequenceArray = [];
-        pressOneKickTutorial = false;
-        // kickSequenceCopy=[];
-        // kickSequenceArray.push([kickinstrument, 1, 0])
-
-        // kickSequenceArray.push([kickinstrument, 3, 0])
-
-        // kickSequenceCopy=kickSequenceArray.slice();
-        kickSequenceCopy.push([kickinstrument, 4, 0])
-        $("#my-dialog-prev-next-timed").dialog({
-            position: {
-                my: 'top',
-                at: 'bottom',
-                of: '#guidestepfive',
-                // collision: 'fit'
-            }
-
-        });
-        prevNextTimedAlertify("Notice how the kick drum is being played on the '1' beat as shown on the timeline. <span style='border-width:3px;border-color:orange;border-style:dashed'>We've circled the '1' beat on the timeline.</span><br><br> <strong>Click next for us to circle the '1 beat for the kick drum.</strong>", 5, metronomePostTutorialAction, pressTheOneKick);
-
-        // kickSequenceCopy.push([kickinstrument, 3, 0])
-
-        // availableSteps = "quarters";
-        simplifiedDenominator = 4;
-    }
-
-    function pressTheOneKick() {
-        $("#my-dialog-prev-next-timed").dialog("close");
-        uncircleAnId('guidestepone');
-        circleAnId('kickstepone');
-
-        uncircleAnId('submitDrums');
-        // kickStepArray[0].addEventListener('click', addrhythmsteplisteners, false);
-        pressOneKickTutorial = true;
-        kickStepArray[0].classList.remove('selectedstep');
-        kickStepArray[0].classList.add('unselectedstep');
-        tempKickSequenceArray = [];
-        $("#my-dialog-prev-next-timed").dialog({
-            position: {
-                my: 'top',
-                at: 'bottom',
-                of: '#kickstepone',
-                // collision: 'fit'
-            }
-
-        });
-        prevOkayAlertify("Now click on the <span style='border-width:3px;border-color:orange;border-style:dashed'>circled box</span> to select the '1' beat in the kick row", 5, beginKickPressTutorial);
-    }
-
-    function postKickPressOne() {
-        $("#my-dialog-prev-next-timed").dialog("close");
-        uncircleAnId('kickstepone');
-        uncircleAnId('nextRhythmButton');
-        if (rhythmSpeedMode) {
-            autocheckbutton.click();
-        }
-        circleAnId('submitDrums');
-        $("#my-dialog-prev-next-timed").dialog({
-            position: {
-                my: 'right',
-                at: 'left bottom+135%',
-                of: '#submitDrums',
-                offset: "50 50",
-                // collision: 'fit'
-            }
-
-        });
-        prevOkayAlertify("Perfect! See how <strong>the first kick is lighter colored now</strong> to show that you selected it?<br><br>Now click on the circled circled <span style='border-width:3px;border-color:orange;border-style:dashed'>'check your answer'</span> box to submit your answer!", 5, pressTheOneKick);
-
-    }
-
-    function pressOneKickTutorialPostPartTwoMethod() {
-        $("#my-dialog-prev-next-timed").dialog("close");
-        uncircleAnId('submitDrums');
-        uncircleAnId('autocheckbutton');
-        if (rhythmSpeedMode) {
-            autocheckbutton.click();
-        }
-        clickTheAutoCheckTutorial = false;
-        circleAnId('nextRhythmButton');
-
-        prevOkayAlertify("Well done.<br><br>To move onto the next question, click the circled <span style='border-width:3px;border-color:orange;border-style:dashed'>'Give me another!'</span> button.", 5, pressTheOneKick);
-
-    }
-
-    function autoCheckButtonTutorial() {
-        $("#my-dialog-prev-next-timed").dialog("close");
-        uncircleAnId('nextRhythmButton');
-        uncircleAnId('kickstepone');
-        if (rhythmSpeedMode) {
-            autocheckbutton.click();
-        }
-        circleAnId('autocheckbutton');
-        kickStepArray[0].classList.remove('selectedstep');
-        kickStepArray[0].classList.add('unselectedstep');
-        tempKickSequenceArray = [];
-        clickTheAutoCheckTutorial = true;
-        $("#my-dialog-prev-next-timed").dialog({
-            position: {
-                my: 'left',
-                at: 'right',
-                of: '#autocheckbutton',
-                // collision: 'fit'
-            }
-
-        });
-        prevOkayAlertify("<strong>Let's look at another way to submit.</strong><br><br>Now we have reset the problem for you. If you want to be checked immediately, and never have to press a button to submit your answer, you can select the circled <span style='border-width:3px;border-color:orange;border-style:dashed'>'Turn Auto-Check On'</span> button.<br><br><strong>Do that now.<strong>", 5, pressOneKickTutorialPostPartTwoMethod);
-    }
-    function autoCheckPostTutorial() {
-        $("#my-dialog-prev-next-timed").dialog("close");
-        uncircleAnId('autocheckbutton');
-        // // if (rhythmSpeedMode) {
-        // // rhythmSpeedMode.click();
-        // // }
-        circleAnId('kickstepone');
-        $("#my-dialog-prev-next-timed").dialog({
-            position: {
-                my: 'left',
-                at: 'right',
-                of: '#kickstepone',
-                // collision: 'fit'
-            }
-
-        });
-        postAutoCheckTutorial = true;
-        prevOkayAlertify("Well done! Now go ahead and click on the <span style='border-width:3px;border-color:orange;border-style:dashed'>1st kick again.</span>", 5, autoCheckButtonTutorial);
-
-    }
-
-    function preKickPressTwoTutorial() {
-        $("#my-dialog-prev-next-timed").dialog("close");
-        uncircleAnId('kickstepone');
-        uncircleAnId('guidestepone');
-        uncircleAnId('guidestepnine');
-        // // if (rhythmSpeedMode) {
-        // // rhythmSpeedMode.click();
-        // // }
-        // circleAnId('kickstepone');
-        // postAutoCheckTutorial=true;
-        kickSequenceArray = [];
-        kickSequenceCopy = [];
-        randomizeKicks = false;
-        kickStarted = false;
-        pressTwoKickTutorial = false;
-        prevNextTimedAlertify("Well done! Now we're going to do a problem that has TWO kicks.", 5, autoCheckPostTutorial, beginKickPressTwoTutorial);
-
-    }
-    function beginKickPressTwoTutorial() {
-        $("#my-dialog-prev-next-timed").dialog("close");
-        uncircleAnId('kickstepone');
-        circleAnId('guidestepone');
-        circleAnId('guidestepnine');
-
-        uncircleAnId('kickstepone');
-        uncircleAnId('kickstepnine');
-        // circleAnId('kickstepone');
-        kickSequenceArray = [];
-        kickSequenceCopy = [];
-        randomizeKicks = true;
-        kickStarted = true;
-        kickSequenceArray = [];
-        // kickSequenceCopy=[];
-        // kickSequenceArray.push([kickinstrument, 1, 0])
-
-        // kickSequenceArray.push([kickinstrument, 3, 0])
-
-        // kickSequenceCopy=kickSequenceArray.slice();
-        kickSequenceCopy.push([kickinstrument, 2, 0])
-        kickSequenceCopy.push([kickinstrument, 2, 0])
-        $("#my-dialog-prev-next-timed").dialog({
-            position: {
-                my: 'top',
-                at: 'bottom',
-                of: '.guide-row',
-                // collision: 'fit'
-            }
-
-        });
-        prevNextTimedAlertify("Now, notice how the kick drum is being played on the '1' beat AND the '3' beat as shown on the timeline. We've circled the <span style='border-width:3px;border-color:orange;border-style:dashed'>'1' beat and the '3' beat</span> on the timeline. <br><br> <strong>Click next for us to circle both the '1' beat and the '3' beat for the kick drum.</strong>", 5, preKickPressTwoTutorial, pressTheTwoKick);
-
-        pressTwoKickTutorial = true;
-        // kickSequenceCopy.push([kickinstrument, 3, 0])
-
-        // availableSteps = "quarters";
-        simplifiedDenominator = 4;
-    }
-    function pressTheTwoKick() {
-        $("#my-dialog-prev-next-timed").dialog("close");
-        uncircleAnId('guidestepone');
-        uncircleAnId('guidestepnine');
-        circleAnId('kickstepone');
-        circleAnId('kickstepnine');
-        uncircleAnId('level-progress');
-
-        // kickStepArray[0].addEventListener('click', addrhythmsteplisteners, false);
-        pressTwoKickTutorial = true;
-        $("#my-dialog-prev-next-timed").dialog({
-            position: {
-                my: 'top',
-                at: 'bottom',
-                of: '.kick-row',
-                // collision: 'fit'
-            }
-
-        });
-        prevOkayAlertify("Now click on the <span style='border-width:3px;border-color:orange;border-style:dashed'>circled boxes</span> to select the '1' beat and the '3' beat in the kick row.<br><br>If you have auto-check on, that's all you will need to do. If not, don't forget to submit and go to the next problem.", 5, beginKickPressTwoTutorial);
-
-    }
-    function nowPostTwoKickTutorial() {
-        $("#my-dialog-prev-next-timed").dialog("close");
-        uncircleAnId('kickstepone');
-        uncircleAnId('kickstepnine');
-        uncircleAnId('guidestepone');
-        uncircleAnId('guidestepnine');
-        circleAnId('level-progress')
-        $("#my-dialog-prev-next-timed").dialog({
-            position: {
-                my: 'top',
-                at: 'bottom',
-                of: '#level-progress',
-                //collision: 'fit'
-            }
-
-        });
-        prevNextTimedAlertify("Great job! At the top we have now circled the <span style='border-width:3px;border-color:orange;border-style:dashed'>progress bar</span>. This will keep track of your progress on each level. <br><br> It also shows information about what you will have to do in each part of the level.", 5, pressTheTwoKick, preTryingOnYourOwn);
-        $("#my-dialog-prev-next-timed").dialog({
-            position: {
-                collision: 'fit'
-            }
-
-        });    
-		$("#my-dialog-prev-next-timed").dialog({
-            position: {
-                collision: 'none'
-            }
-
-        });
-    }
-
-    function preTryingOnYourOwn() {
-        $("#my-dialog-prev-next-timed").dialog("close");
-        uncircleAnId('level-progress')
-        prevNextTimedAlertify("Alright. We're going to let you try this on your own for a bit. If you ever need to see the tutorial again you can always select the tutorial from the level pulldown menu at the top of your screen. <br><br><strong>Press 'next:' to continue.", 5, nowPostTwoKickTutorial, beginTryingTutorial);
-    }
-    function beginTryingTutorial() {
-        // uncircleAClass('guide-row');
-        rhythmVolume = 50;
-        clearRhythms();
-        if (metronome) {
-            metronomeButton.click();
-        }
+    metronomeTutorial = false;
+    prevNextTimedAlertify("This row is your timeline. It will help you keep track of the beat/time naming. The boxes for each of the instruments below correspond to the timings written in the timeline.", 5, theseAreYourLegends, showMetronomeButton);
+    // alertify("");
+    if (metronome) {
         metronomeButton.click();
-        simplifiedDenominator = 4;
-        randomizeKicks = true;
-        if (backbeat) {
-            backbeatButton.click();
-        }
-        // backbeat = false;
-        availableSteps = "quarters";
-        // metronome = false;
-        scoreLevel = 1;
-        makeAClassVisible('questionbuttonrow');
-        document.getElementById('kick-row').hidden = false;
-        currentLevelScore = 0;
-        setupSteps();
-        document.getElementById('level-progress').style.display = 'block';
-        setProgressGoals("2 random steps", "3 random steps", "3 random steps, no snares", "2 random steps, no snares");
-        updateProgress();
-        checkForUpdatedDifficulty();
-
-        // document.getElementById('kick-row').hidden = false;
-
-        // songWritingWorkshop();
     }
-    auth();
-    document.getElementById('card-section').style.display = 'none';
-    // updateUnlockedLevelsByUser(prompt ("what is your name?"));
+    // rhythmVolume = 50;
+    // clearRhythms();
+    // simplifiedDenominator = 4;
+    // randomizeKicks = true;
+    // backbeat = false;
 
-    setupRhythmSense();
-    hideAllLevels();
-    // makeARowPulldownVisible("clave-choice"); // for testing purposes
-    // makeARowPulldownVisible("kick-choice"); // for testing purposes
-    makeARowPulldownInvisible("steprowpulldown"); // for testing purposes
-    initTuner();
-    if (clearKickRow) {
-        makeAClassRemoveInnerHTML('kickstep');
+}
+
+function showMetronomeButton() {
+    uncircleAClass('guide-row')
+    circleAnId('metronomeButton');
+    metronomeTutorial = true;
+    prevOkayAlertify("Currently the metronome is off.<br><br><strong>Please turn it on by pressing this button.</strong><br><br>If you ever want to turn it off, you can press this button again.", 5, thisIsYourTimer);
+    // alertify("");
+    // rhythmVolume = 50;
+    // clearRhythms();
+    // simplifiedDenominator = 4;
+    // randomizeKicks = true;
+    // backbeat = false;
+}
+
+function metronomePostTutorialAction() {
+    circleAClass('guide-row')
+    uncircleAnId('metronomeButton');
+
+    uncircleAnId('guidestepone');
+    // metronomeTutorial=true;
+    kickSequenceArray = [];
+    kickSequenceCopy = [];
+    randomizeKicks = false;
+    kickStarted = false;
+    prevNextTimedAlertify("As you can see, now the timeline lights up on specific beats.<br><br>In addition, you can now hear the metronome making a sound on each of those beats.<br><br>A good strategy for you to use is try to say the beat number on each beat as the metronome makes the sound<br>'1, 2, 3, 4'", 5, showMetronomeButton, beginKickPressTutorial);
+    // alertify("");
+    // rhythmVolume = 50;
+    // clearRhythms();
+    // simplifiedDenominator = 4;
+    // randomizeKicks = true;
+    // backbeat = false;
+}
+function beginKickPressTutorial() {
+    uncircleAnId('guide-row');
+    circleAnId('guidestepone');
+    uncircleAnId('kickstepone');
+    // circleAnId('kickstepone');
+    kickSequenceArray = [];
+    kickSequenceCopy = [];
+    randomizeKicks = true;
+    kickStarted = true;
+    kickSequenceArray = [];
+    pressOneKickTutorial = false;
+    // kickSequenceCopy=[];
+    // kickSequenceArray.push([kickinstrument, 1, 0])
+
+    // kickSequenceArray.push([kickinstrument, 3, 0])
+
+    // kickSequenceCopy=kickSequenceArray.slice();
+    kickSequenceCopy.push([kickinstrument, 4, 0])
+    prevNextTimedAlertify("Notice how the kick drum is being played on the '1' beat as shown on the timeline. We've circled the '1' beat on the timeline. <br><br> <strong>Click next for us to circle the '1 beat for the kick drum.</strong>", 5, metronomePostTutorialAction, pressTheOneKick);
+
+    // kickSequenceCopy.push([kickinstrument, 3, 0])
+
+    // availableSteps = "quarters";
+    simplifiedDenominator = 4;
+}
+
+function pressTheOneKick() {
+    uncircleAnId('guidestepone');
+    circleAnId('kickstepone');
+
+    uncircleAnId('submitDrums');
+    // kickStepArray[0].addEventListener('click', addrhythmsteplisteners, false);
+    pressOneKickTutorial = true;
+    kickStepArray[0].classList.remove('selectedstep');
+    kickStepArray[0].classList.add('unselectedstep');
+    tempKickSequenceArray = [];
+    prevOkayAlertify("Now click on the circled box to select the '1' beat in the kick row", 5, beginKickPressTutorial);
+}
+
+function postKickPressOne() {
+    uncircleAnId('kickstepone');
+    uncircleAnId('nextRhythmButton');
+    if (rhythmSpeedMode) {
+        autocheckbutton.click();
     }
-    makeARowPulldownInvisible('timeandscore');
-    window.tuner_rand = 1111111;
+    circleAnId('submitDrums');
+
+    prevOkayAlertify("Perfect! See how it is lit up now to show that you selected it?<br><br>Now click on the circled box to submit your answer!", 5, pressTheOneKick);
+
+}
+
+function pressOneKickTutorialPostPartTwoMethod() {
+    uncircleAnId('submitDrums');
+    uncircleAnId('autocheckbutton');
+    if (rhythmSpeedMode) {
+        autocheckbutton.click();
+    }
+    clickTheAutoCheckTutorial = false;
+    circleAnId('nextRhythmButton');
+
+    prevOkayAlertify("Well done.<br><br>To move onto the next question, click the circled 'Give me another!' button.", 5, pressTheOneKick);
+
+}
+
+function autoCheckButtonTutorial() {
+    uncircleAnId('nextRhythmButton');
+    uncircleAnId('kickstepone');
+    if (rhythmSpeedMode) {
+        autocheckbutton.click();
+    }
+    circleAnId('autocheckbutton');
+    kickStepArray[0].classList.remove('selectedstep');
+    kickStepArray[0].classList.add('unselectedstep');
+    tempKickSequenceArray = [];
+    clickTheAutoCheckTutorial = true;
+    prevOkayAlertify("<strong>Let's look at another way to submit.</strong><br><br>Now we have reset the problem for you. If you want to be checked immediately, and never have to press a button to submit your answer, you can select the circled 'Turn Auto-Check On' button.<br><br><strong>Do that now.<strong>", 5, pressOneKickTutorialPostPartTwoMethod);
+}
+function autoCheckPostTutorial() {
+    uncircleAnId('autocheckbutton');
+    // // if (rhythmSpeedMode) {
+    // // rhythmSpeedMode.click();
+    // // }
+    circleAnId('kickstepone');
+    postAutoCheckTutorial = true;
+    prevOkayAlertify("Well done! Now go ahead and click on the 1st kick again.", 5, autoCheckButtonTutorial);
+
+}
+
+function preKickPressTwoTutorial() {
+    uncircleAnId('kickstepone');
+    uncircleAnId('guidestepone');
+    uncircleAnId('guidestepnine');
+    // // if (rhythmSpeedMode) {
+    // // rhythmSpeedMode.click();
+    // // }
+    // circleAnId('kickstepone');
+    // postAutoCheckTutorial=true;
+    kickSequenceArray = [];
+    kickSequenceCopy = [];
+    randomizeKicks = false;
+    kickStarted = false;
+    prevNextTimedAlertify("Well done! Now we're going to do a problem that has TWO kicks.", 5, autoCheckPostTutorial, beginKickPressTwoTutorial);
+
+}
+function beginKickPressTwoTutorial() {
+    uncircleAnId('kickstepone');
+    circleAnId('guidestepone');
+    circleAnId('guidestepnine');
+
+    uncircleAnId('kickstepone');
+    uncircleAnId('kickstepnine');
+    // circleAnId('kickstepone');
+    kickSequenceArray = [];
+    kickSequenceCopy = [];
+    randomizeKicks = true;
+    kickStarted = true;
+    kickSequenceArray = [];
+    // kickSequenceCopy=[];
+    // kickSequenceArray.push([kickinstrument, 1, 0])
+
+    // kickSequenceArray.push([kickinstrument, 3, 0])
+
+    // kickSequenceCopy=kickSequenceArray.slice();
+    kickSequenceCopy.push([kickinstrument, 2, 0])
+    kickSequenceCopy.push([kickinstrument, 2, 0])
+    prevNextTimedAlertify("Now, notice how the kick drum is being played on the '1' beat AND the '3' beat as shown on the timeline. We've circled the '1' beat and the '3' beat on the timeline. <br><br> <strong>Click next for us to circle both the '1' beat and the '3' beat for the kick drum.</strong>", 5, preKickPressTwoTutorial, pressTheTwoKick);
+    pressTwoKickTutorial = false;
+    // kickSequenceCopy.push([kickinstrument, 3, 0])
+
+    // availableSteps = "quarters";
+    simplifiedDenominator = 4;
+}
+function pressTheTwoKick() {
+    uncircleAnId('guidestepone');
+    uncircleAnId('guidestepnine');
+    circleAnId('kickstepone');
+    circleAnId('kickstepnine');
+    uncircleAnId('level-progress');
+
+    // kickStepArray[0].addEventListener('click', addrhythmsteplisteners, false);
+    pressTwoKickTutorial = true;
+    prevOkayAlertify("Now click on the circled boxes to select the '1' beat and the '3' beat in the kick row.<br><br>If you have auto-check on, that's all you will need to do. If not, don't forget to submit and go to the next problem.", 5, beginKickPressTwoTutorial);
+
+}
+function nowPostTwoKickTutorial() {
+    uncircleAnId('kickstepone');
+    uncircleAnId('kickstepnine');
+    circleAnId('level-progress')
+
+    prevNextTimedAlertify("Great job! At the top we have now circled the progress bar. This will keep track of your progress on each level. <br><br> It also shows information about what you will have to do in each part of the level.", 5, pressTheTwoKick, preTryingOnYourOwn);
+
+}
+
+function preTryingOnYourOwn() {
+    uncircleAnId('level-progress')
+    prevNextTimedAlertify("Alright. We're going to let you try this on your own for a bit. If you ever need to see the tutorial again you can always select the tutorial from the level pulldown menu at the top of your screen. <br><br><strong>Press 'next:' to continue.", 5, nowPostTwoKickTutorial, beginTryingTutorial);
+}
+function beginTryingTutorial() {
+    // uncircleAClass('guide-row');
+    rhythmVolume = 50;
+    clearRhythms();
+    if (metronome) {
+        metronomeButton.click();
+    }
+    metronomeButton.click();
+    simplifiedDenominator = 4;
+    randomizeKicks = true;
+    if (backbeat) {
+        backbeatButton.click();
+    }
+    // backbeat = false;
+    availableSteps = "quarters";
+    // metronome = false;
+    scoreLevel = 1;
+    makeAClassVisible('questionbuttonrow');
+    document.getElementById('kick-row').hidden = false;
+    currentLevelScore = 0;
+    setupSteps();
+    document.getElementById('level-progress').style.display = 'block';
+    setProgressGoals("2 random steps", "3 random steps", "3 random steps, no snares", "2 random steps, no snares");
+    updateProgress();
+    checkForUpdatedDifficulty();
+
+    // document.getElementById('kick-row').hidden = false;
+
+    // songWritingWorkshop();
+}
+auth();
+document.getElementById('card-section').style.display = 'none';
+// updateUnlockedLevelsByUser(prompt ("what is your name?"));
+
+setupRhythmSense();
+hideAllLevels();
+// makeARowPulldownVisible("clave-choice"); // for testing purposes
+// makeARowPulldownVisible("kick-choice"); // for testing purposes
+makeARowPulldownInvisible("steprowpulldown"); // for testing purposes
+initTuner();
+if (clearKickRow) {
+    makeAClassRemoveInnerHTML('kickstep');
+}
+
+window.tuner_rand = 1111111;
