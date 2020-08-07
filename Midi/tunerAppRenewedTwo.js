@@ -2386,33 +2386,33 @@ async function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
 
                 try {
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group)].classList.add('nextNotestationary');
-                } catch (error) {}
+                } catch (error) {console.error(error)}
                 try {
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 1].classList.remove('prescrollstationary');
-                } catch (error) {}
+                } catch (error) {console.error(error)}
                 try {
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 1].classList.remove('nextNotestationary');
-                } catch (error) {}
+                } catch (error) {console.error(error)}
                 try {
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 1].classList.add('currentnotestationary');
-                } catch (error) {}
+                } catch (error) {console.error(error)}
                 try {
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.remove('currentnotestationary');
-                } catch (error) {}
+                } catch (error) {console.error(error)}
                 try {
                     // visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.add('scroll');
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.remove('partscrollstationary');
-                } catch (error) {}
+                } catch (error) {console.error(error)}
                 try {
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.remove('partscrollingstationary');
-                } catch (error) {}
+                } catch (error) {console.error(error)}
                 try {
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.add('nextnotestationary');
-                } catch (error) {}
+                } catch (error) {console.error(error)}
                 try {
                     visibleReferenceNoteGroups[visibleReferenceNoteGroups.indexOf(group) - 2].classList.add('scrollingstationary');
 
-                } catch (error) {}
+                } catch (error) {console.error(error)}
             }
             // console.error(referenceGroups.toString());
         }
@@ -2497,21 +2497,21 @@ async function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
                 const index = visibleSingingNoteGroups.indexOf(group);
                 if (index === -1)
                     return;
-                group.classList.add('too-slow');
+                group.classList.add('correct');
                 visibleSingingNoteGroups.shift();
 
-            } else if (voiceType == "targetNote") {
+            } else if (voiceType == "correct") {
                 const index = visibleTargetNoteGroups.indexOf(group);
                 if (index === -1)
                     return;
-                group.classList.add('too-slow');
+                group.classList.add('correct');
                 visibleTargetNoteGroups.shift();
 
             } else if (voiceType == "referenceNote") {
                 const index = visibleReferenceNoteGroups.indexOf(group);
                 if (index === -1)
                     return;
-                group.classList.add('too-slow');
+                group.classList.add('correct');
                 // visibleReferenceNoteGroups.shift();
                 // if (referenceGroups.includes(index + 0)) {
                 // referenceGroups.splice(referenceGroups.indexOf(index + 0), 1);
