@@ -137,7 +137,7 @@ var currentScore = 0;
 var scoreTimeStart = 0;
 var scoreTimeBeats = 0;
 var scoreTimeSeconds = 0;
-var melodicRange = 3;
+var melodicRange = 2;
 var noteLengthMax = 4;
 var noteLengthMin = 3;
 var scoreTimeStart;
@@ -2830,45 +2830,45 @@ async function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
         tieOn = false;
         dotTheSecondNote = false;
         // If a user doesn't answer in time make the note fall below the staff
-        window.setTimeout(() => {
-            if (voiceType == "singingNote") {
+        // window.setTimeout(() => {
+            // if (voiceType == "singingNote") {
 
-                const index = visibleSingingNoteGroups.indexOf(group);
-                if (index === -1)
-                    return;
-                group.classList.add('correct');
-                visibleSingingNoteGroups.shift();
+                // const index = visibleSingingNoteGroups.indexOf(group);
+                // if (index === -1)
+                    // return;
+                // group.classList.add('correct');
+                // visibleSingingNoteGroups.shift();
 
-            } else if (voiceType == "correct") {
-                const index = visibleTargetNoteGroups.indexOf(group);
-                if (index === -1)
-                    return;
-                group.classList.add('correct');
-                visibleTargetNoteGroups.shift();
+            // } else if (voiceType == "correct") {
+                // const index = visibleTargetNoteGroups.indexOf(group);
+                // if (index === -1)
+                    // return;
+                // group.classList.add('correct');
+                // visibleTargetNoteGroups.shift();
 
-            } else if (voiceType == "referenceNote") {
-                const index = visibleReferenceNoteGroups.indexOf(group);
-                if (index === -1)
-                    return;
-                group.classList.add('correct');
-                // visibleReferenceNoteGroups.shift();
-                // if (referenceGroups.includes(index + 0)) {
-                // referenceGroups.splice(referenceGroups.indexOf(index + 0), 1);
-                // makeAndShowANote(randomNoteNum, 2, "referenceNote");
-                // }
-                // referenceGroups = referenceGroups.map(function (value) {
-                // return value - 1;
-                // });
-                // if (referenceGroups.includes(index + 0)) {
-                // referenceGroups.splice(referenceGroups.indexOf(index + 0), 1);
-                // makeAndShowANote(randomNoteNum, 2, "referenceNote");
-                // }
+            // } else if (voiceType == "referenceNote") {
+                // const index = visibleReferenceNoteGroups.indexOf(group);
+                // if (index === -1)
+                    // return;
+                // group.classList.add('correct');
+                // // visibleReferenceNoteGroups.shift();
+                // // if (referenceGroups.includes(index + 0)) {
+                // // referenceGroups.splice(referenceGroups.indexOf(index + 0), 1);
+                // // makeAndShowANote(randomNoteNum, 2, "referenceNote");
+                // // }
+                // // referenceGroups = referenceGroups.map(function (value) {
+                // // return value - 1;
+                // // });
+                // // if (referenceGroups.includes(index + 0)) {
+                // // referenceGroups.splice(referenceGroups.indexOf(index + 0), 1);
+                // // makeAndShowANote(randomNoteNum, 2, "referenceNote");
+                // // }
 
-            }
-            // const index = visibleNoteGroups.indexOf(group);
+            // }
+            // // const index = visibleNoteGroups.indexOf(group);
 
 
-        }, 10000);
+        // }, 10000);
     }
 }
 function clearAllNotes() {
@@ -9331,7 +9331,7 @@ $(function () {
         range: "min",
         min: 1,
         max: 7,
-        value: 3,
+        value: 2,
         slide: function (event, ui) {
             $("#melodicRangeAmount").val(ui.value);
             melodicRange = Number(document.getElementById("melodicRangeAmount").value) + 0;
