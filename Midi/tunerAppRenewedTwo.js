@@ -238,6 +238,17 @@ var scorePerLevel=20;
 noteOnListener(0, 0);
 var loadDatabase = [];
 var db;
+var averageTimeStorage= [];
+var distanceCheckpointOne = 0;
+var distanceCheckpointTwo = 0;
+var distanceCheckpointThree = 0;
+var distanceCheckpointFour = 0;
+var dontCloseYet=false;
+var suggestedOne="major/minor";
+var suggestedTwo="major/minor";
+var suggestedThree="aka fifth downs";
+var suggestedFour="aka fifth ups";
+var recentScoreLevelNum=1;
 
 
 
@@ -412,6 +423,112 @@ function alertIntervalMessage(interval) {
         alert("For this next note, sing a 4th below the reference in the key of " + numToKeyName(keyOf) + " major");
     }
 }
+
+function getIntervalTitle(interval) {
+    if (interval == "up") {
+        return "Third Ups";
+    } else if (interval == "down") {
+        return "Third Downs";
+    } else if (interval == "fourthUp") {
+        return "Fourth Ups";
+    } else if (interval == "fourthDown") {
+        return "Fourth Downs";
+    }
+}
+
+
+function addUpPartOneResults(){
+	let yo = new Date();
+	distanceCheckpointOne = (yo.getTime() - pauseTimeAmount) - timeEnd.getTime()+0;
+    // var minutes = Math.floor(distance / (1000 * 60));
+    // var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    // var distance2 = distance / (totalScore + 1);
+    // var minutes2 = Math.floor(distance2 / (1000 * 60));
+    // var seconds2 = Math.floor((distance2 % (1000 * 60)) / 1000);
+
+    // if (minutes < 10)
+        // minutes = "0" + minutes;
+    // if (seconds < 10)
+        // seconds = "0" + seconds;
+
+    // document.querySelector('#countdown').innerText = minutes + ":" + seconds + " ";
+    // document.getElementById("averagetime").innerText = minutes2 + ":" + seconds2 + " ";
+	// distance = (now.getTime() - pauseTimeAmount) - timeEnd.getTime();
+	averageTimeStorage[0]=[getIntervalTitle(intervalDirection), (distanceCheckpointOne/(.25*scorePerLevel))/1000];
+	console.warn("Your Average Time to complete "+averageTimeStorage[0][0]+" was "+averageTimeStorage[0][1]+" seconds.");
+}
+
+
+function addUpPartTwoResults(){	
+let yo = new Date();
+	distanceCheckpointTwo = (yo.getTime() - pauseTimeAmount) - timeEnd.getTime()+0;
+    // var minutes = Math.floor(distance / (1000 * 60));
+    // var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    // var distance2 = distance / (totalScore + 1);
+    // var minutes2 = Math.floor(distance2 / (1000 * 60));
+    // var seconds2 = Math.floor((distance2 % (1000 * 60)) / 1000);
+
+    // if (minutes < 10)
+        // minutes = "0" + minutes;
+    // if (seconds < 10)
+        // seconds = "0" + seconds;
+
+    // document.querySelector('#countdown').innerText = minutes + ":" + seconds + " ";
+    // document.getElementById("averagetime").innerText = minutes2 + ":" + seconds2 + " ";
+	// distance = (now.getTime() - pauseTimeAmount) - timeEnd.getTime();
+	averageTimeStorage[1]=[getIntervalTitle(intervalDirection), ((distanceCheckpointTwo-distanceCheckpointOne)/(.25*scorePerLevel))/1000];
+	console.warn("Your Average Time to complete "+averageTimeStorage[1][0]+" was "+averageTimeStorage[1][1]+" seconds.");
+}
+
+
+function addUpPartThreeResults(){
+	let yo = new Date();
+		distanceCheckpointThree = (yo.getTime() - pauseTimeAmount) - timeEnd.getTime()+0;
+    // var minutes = Math.floor(distance / (1000 * 60));
+    // var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    // var distance2 = distance / (totalScore + 1);
+    // var minutes2 = Math.floor(distance2 / (1000 * 60));
+    // var seconds2 = Math.floor((distance2 % (1000 * 60)) / 1000);
+
+    // if (minutes < 10)
+        // minutes = "0" + minutes;
+    // if (seconds < 10)
+        // seconds = "0" + seconds;
+
+    // document.querySelector('#countdown').innerText = minutes + ":" + seconds + " ";
+    // document.getElementById("averagetime").innerText = minutes2 + ":" + seconds2 + " ";
+	// distance = (now.getTime() - pauseTimeAmount) - timeEnd.getTime();
+	averageTimeStorage[2]=[getIntervalTitle(intervalDirection), (((distanceCheckpointThree-distanceCheckpointTwo))/(.25*scorePerLevel))/1000];
+	console.warn("Your Average Time to complete "+averageTimeStorage[2][0]+" was "+averageTimeStorage[2][1]+" seconds.");
+}
+
+
+function addUpPartFourResults(){
+	let yo = new Date();
+			distanceCheckpointFour = (yo.getTime() - pauseTimeAmount) - timeEnd.getTime()+0;
+    // var minutes = Math.floor(distance / (1000 * 60));
+    // var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    // var distance2 = distance / (totalScore + 1);
+    // var minutes2 = Math.floor(distance2 / (1000 * 60));
+    // var seconds2 = Math.floor((distance2 % (1000 * 60)) / 1000);
+
+    // if (minutes < 10)
+        // minutes = "0" + minutes;
+    // if (seconds < 10)
+        // seconds = "0" + seconds;
+
+    // document.querySelector('#countdown').innerText = minutes + ":" + seconds + " ";
+    // document.getElementById("averagetime").innerText = minutes2 + ":" + seconds2 + " ";
+	// distance = (now.getTime() - pauseTimeAmount) - timeEnd.getTime();
+	averageTimeStorage[3]=[getIntervalTitle(intervalDirection), ((distanceCheckpointFour-distanceCheckpointThree)/(.25*scorePerLevel))/1000];
+	console.warn("Your Average Time to complete "+averageTimeStorage[3][0]+" was "+averageTimeStorage[3][1]+" seconds.");
+	pickAPracticeAlertify ("Your Average Time to complete each section were:<br>"+averageTimeStorage[0][0]+": "+averageTimeStorage[0][1]+" seconds."+"<br>"+averageTimeStorage[1][0]+":"+averageTimeStorage[1][1]+" seconds."+"<br>"+averageTimeStorage[2][0]+":"+averageTimeStorage[2][1]+" seconds."+"<br>"+averageTimeStorage[3][0]+":"+averageTimeStorage[3][1]+" seconds."+"<br>");
+}
+
 function setProgressGoals(goal1, goal2, goal3, goal4) {
     document.getElementById('levelOneNotProgress').innerHTML = goal1;
     document.getElementById('levelTwoNotProgress').innerHTML = goal2;
@@ -729,10 +846,203 @@ function playYourOwn() {
     setVisualMode("sheetMusic");
     // turnAccompanimentOff();
 }
+var circleAClass = async function (rowclassname) {
+    let targetrollpulldownelements = document.getElementsByClassName(rowclassname);
+    for (var i = 0; i < targetrollpulldownelements.length; i++) {
+        targetrollpulldownelements[i].classList.add('circleattribute');
+    }
+}
+
+var circleAnId = async function (rowclassname) {
+    let targetrollpulldownelements = document.getElementById(rowclassname);
+
+    targetrollpulldownelements.classList.add('circleattribute');
+
+}
+
+var uncircleAClass = async function (rowclassname) {
+    let targetrollpulldownelements = document.getElementsByClassName(rowclassname);
+    for (var i = 0; i < targetrollpulldownelements.length; i++) {
+        targetrollpulldownelements[i].classList.remove('circleattribute');
+    }
+}
+
+var uncircleAnId = async function (rowclassname) {
+    let targetrollpulldownelements = document.getElementById(rowclassname);
+
+    targetrollpulldownelements.classList.remove('circleattribute');
+
+}
+
+function uncolortimeboard(){
+	uncircleAnId('scoreRow');
+}
+
+function setupPracticeThirdUps() { //the note changes under you. And interval changes.
+	let lastScoreMessage="";
+	try {
+	lastScoreMessage="In your last level, you scored: "+averageTimeStorage[0][1]+" seconds<br><br>Now try";	
+	}
+	catch (error){
+	lastScoreMessage="Try";
+	}
+	circleAnId('scoreRow');
+	
+	doSomethingAlertify(lastScoreMessage+" to practice for 10 minutes, or until your 'Avg Time' improves significantly.<br>(A solid score is under 5 seconds average)", uncolortimeboard , "Let's do it");
+
+	scorePerLevel=20;
+    accompaniment = false;
+    intervalRotationType = "freestyle";
+    lengthRotationType = "normal";
+
+    scoreLevel = "freestyle";
+    notesChangeable = true;
+    allButtonsOn();
+    clearButtons();
+    turnAccompanimentOff();
+    setVisualMode("sheetMusic");
+    document.getElementById("lesson-name").innerHTML = "Third Up Practice"
+    document.getElementById("lesson-directions").innerHTML = "Directions: You are practicing major and minor thirds above the reference note.";
+	intervalDirection="up";
+    globalTimeRequirement = 1;
+		$("#my-dialog").dialog({
+        position: {
+                my: 'top',
+                at: 'bottom',
+                of: '#scoreRow',
+                // collision: 'fit'
+            }
+		// width: window.innerWidth
+
+    });
+	dontCloseYet=false;
+}
+
+function setupPracticeThirdDowns() { //the note changes under you. And interval changes.
+let lastScoreMessage="";
+	try {
+	lastScoreMessage="In your last level, you scored: "+averageTimeStorage[1][1]+" seconds<br><br>Now try";	
+	}
+	catch (error){
+	lastScoreMessage="Try";
+	}
+	circleAnId('scoreRow');
+	
+	doSomethingAlertify(lastScoreMessage+" to practice for 10 minutes, or until your 'Avg Time' improves significantly.<br>(A solid score is under 5 seconds average)", uncolortimeboard , "Let's do it");
+
+	scorePerLevel=20;
+    accompaniment = false;
+    intervalRotationType = "freestyle";
+    lengthRotationType = "normal";
+
+    scoreLevel = "freestyle";
+    notesChangeable = true;
+    allButtonsOn();
+    clearButtons();
+    turnAccompanimentOff();
+    setVisualMode("sheetMusic");
+    document.getElementById("lesson-name").innerHTML = "Third Up Practice"
+    document.getElementById("lesson-directions").innerHTML = "Directions: You are practicing major and minor thirds above the reference note.";
+	intervalDirection="down";
+    globalTimeRequirement = 1;
+			$("#my-dialog").dialog({
+        position: {
+                my: 'top',
+                at: 'bottom',
+                of: '#scoreRow',
+                // collision: 'fit'
+            }
+		// width: window.innerWidth
+
+    });
+	dontCloseYet=false;
+}
+
+function setupPracticeFourthUps() { //the note changes under you. And interval changes.
+let lastScoreMessage="";
+	try {
+	lastScoreMessage="In your last level, you scored: "+averageTimeStorage[2][1]+" seconds<br><br>Now try";	
+	}
+	catch (error){
+	lastScoreMessage="Try";
+	}
+	circleAnId('scoreRow');
+	
+	doSomethingAlertify(lastScoreMessage+" to practice for 10 minutes, or until your 'Avg Time' improves significantly.<br>(A solid score is under 5 seconds average)", uncolortimeboard , "Let's do it");
+
+	scorePerLevel=20;
+    accompaniment = false;
+    intervalRotationType = "freestyle";
+    lengthRotationType = "normal";
+
+    scoreLevel = "freestyle";
+    notesChangeable = true;
+    allButtonsOn();
+    clearButtons();
+    turnAccompanimentOff();
+    setVisualMode("sheetMusic");
+    document.getElementById("lesson-name").innerHTML = "Fourth Up Practice"
+    document.getElementById("lesson-directions").innerHTML = "Directions: You are practicing perfect fourths above the reference note.";
+	intervalDirection="fourthUp";
+    globalTimeRequirement = 1;
+			$("#my-dialog").dialog({
+        position: {
+                my: 'top',
+                at: 'bottom',
+                of: '#scoreRow',
+                // collision: 'fit'
+            }
+		// width: window.innerWidth
+
+    });
+	dontCloseYet=false;
+}
+
+function setupPracticeFourthDowns() { //the note changes under you. And interval changes.
+let lastScoreMessage="";
+	try {
+	lastScoreMessage="In your last level, you scored: "+averageTimeStorage[3][1]+" seconds<br><br>Now try";	
+	}
+	catch (error){
+	lastScoreMessage="Try";
+	}
+	circleAnId('scoreRow');
+	
+	doSomethingAlertify(lastScoreMessage+" to practice for 10 minutes, or until your 'Avg Time' improves significantly.<br>(A solid score is under 5 seconds average)", uncolortimeboard , "Let's do it");
+
+	scorePerLevel=20;
+    accompaniment = false;
+    intervalRotationType = "freestyle";
+    lengthRotationType = "normal";
+
+    scoreLevel = "freestyle";
+    notesChangeable = true;
+    allButtonsOn();
+    clearButtons();
+    turnAccompanimentOff();
+    setVisualMode("sheetMusic");
+    document.getElementById("lesson-name").innerHTML = "Fourth Down Practice"
+    document.getElementById("lesson-directions").innerHTML = "Directions: You are practicing perfect fourths below the reference note.";
+	intervalDirection="fourthDown";
+    globalTimeRequirement = 1;
+			$("#my-dialog").dialog({
+        position: {
+                my: 'top',
+                at: 'bottom',
+                of: '#scoreRow',
+                // collision: 'fit'
+            }
+		// width: window.innerWidth
+
+    });
+	dontCloseYet=false;
+}
 function setupLevelOne() { //one note over and over again. sameintervals, 3rd, 4th, 5th)
     // accompaniment = false;
 
+	dontCloseYet=false;
 
+scorePerLevel=20;
     document.getElementById('level-progress').style.display = 'block';
     intervalRotationType = "scoreBased";
     lengthRotationType = "normal";
@@ -748,10 +1058,14 @@ function setupLevelOne() { //one note over and over again. sameintervals, 3rd, 4
     turnAccompanimentOff();
     setVisualMode("sheetMusic");
     globalTimeRequirement = 1;
+	
     // document.getElementById('tunerframe').style.display = 'none';
 }
 
 function setupLevelTwo() { //the note changes under you. And interval changes.
+
+	dontCloseYet=false;
+scorePerLevel=20;
     accompaniment = false;
     intervalRotationType = "scoreBased";
     lengthRotationType = "normal";
@@ -762,13 +1076,15 @@ function setupLevelTwo() { //the note changes under you. And interval changes.
     clearButtons();
     turnAccompanimentOff();
     setVisualMode("sheetMusic");
-
     document.getElementById("lesson-name").innerHTML = "Level 2:"
         document.getElementById("lesson-directions").innerHTML = "Directions: The note changes each time. And interval changes.";
 
     globalTimeRequirement = 1;
 }
 function setupLevelThree() { //one note over and over again. (different intervals, 3rd, 4th, 5th)
+
+	dontCloseYet=false;
+scorePerLevel=20;
     accompaniment = false;
     intervalRotationType = "randomIntervals";
     scoreLevel = "levelThree";
@@ -784,6 +1100,8 @@ function setupLevelThree() { //one note over and over again. (different interval
 }
 function setupLevelFour() { //Sequence of 2 notes, same interval for each (The interval changes every 10 reps)\n\n
 
+	dontCloseYet=false;
+scorePerLevel=20;
     accompaniment = false;
     intervalRotationType = "scoreBased";
     scoreLevel = "levelFour";
@@ -798,6 +1116,9 @@ function setupLevelFour() { //Sequence of 2 notes, same interval for each (The i
     turnAccompanimentOff();
 }
 function setupLevelFive() { //Sequence of notes 2 (The interval changes each rep, every 10 reps the length of the sequence lengthens)\n\n
+
+	dontCloseYet=false;
+scorePerLevel=20;
     accompaniment = false;
     intervalRotationType = "randomIntervals";
     scoreLevel = "levelFive";
@@ -812,6 +1133,9 @@ function setupLevelFive() { //Sequence of notes 2 (The interval changes each rep
     turnAccompanimentOff();
 }
 function setupLevelSix() { //Sequence of notes (The interval changes each note, every 10 reps the length of the sequence lengthens)\n\n
+
+	dontCloseYet=false;
+scorePerLevel=20;
     // clearAllNotes();
     accompaniment = true;
     intervalRotationType = "randomIntervalsEachNote"; //THIS MUST BE CHANGED
@@ -828,6 +1152,9 @@ function setupLevelSix() { //Sequence of notes (The interval changes each note, 
     turnAccompanimentOff();
 }
 function setupLevelSeven() { //Sequence of notes with background music (rules just like level 6)\n\n
+
+	dontCloseYet=false;
+scorePerLevel=20;
     intervalRotationType = "randomIntervalsEachNote"; //THIS MUST BE CHANGED
 
     accompaniment = true;
@@ -844,7 +1171,10 @@ function setupLevelSeven() { //Sequence of notes with background music (rules ju
     turnAccompanimentOn();
 }
 function setupLevelEight() { //Sequence of notes with varying lengths without background music (The interval changes each rep, every 10 reps the length of the sequence lengthens by 4)\n\n
-    // clearAllNotes();
+ 
+	dontCloseYet=false;
+scorePerLevel=20;
+   // clearAllNotes();
     intervalRotationType = "randomIntervals";
     accompaniment = true;
     // sequence-mode=
@@ -862,7 +1192,10 @@ function setupLevelEight() { //Sequence of notes with varying lengths without ba
 }
 
 function setupLevelNine() { //Sequence of notes with varying lengths without background music (The interval changes each note, every 10 reps the length of the sequence lengthens by 4)\n\n
-    // clearAllNotes();
+ 
+	dontCloseYet=false;
+scorePerLevel=20;
+   // clearAllNotes();
     accompaniment = true;
     // sequence-mode=
     scoreLevel = "levelNine";
@@ -880,7 +1213,10 @@ function setupLevelNine() { //Sequence of notes with varying lengths without bac
     sequenceLength = 4;
 }
 function setupLevelTen() { //Sequence of notes with varying lengths with background music (rules just like level 9)\n\n
-    intervalRotationType = "randomIntervalsEachNote"; //THIS MUST BE CHANGED
+   
+	dontCloseYet=false;
+scorePerLevel=20;
+ intervalRotationType = "randomIntervalsEachNote"; //THIS MUST BE CHANGED
     // clearAllNotes();
     accompaniment = true;
     // sequence-mode=
@@ -898,7 +1234,8 @@ function setupLevelTen() { //Sequence of notes with varying lengths with backgro
 }
 
 function songWritingWorkshop() {
-    accompaniment = true;
+   
+ accompaniment = true;
     // sequence-mode=
     scoreLevel = "writingWorkshop";
     turnAccompanimentOn();
@@ -909,7 +1246,9 @@ function songWritingWorkshop() {
 }
 
 function getRandomInterval() {
-    let theInterval = "up";
+  
+
+  let theInterval = "up";
     let randomSpot = Math.floor(Math.random() * 4);
     if (randomSpot == 1) {
         theInterval = "down";
@@ -6991,12 +7330,16 @@ function repeatOnFrame() {
                     if (currentLevelScore == 0) {
                         intervalDirection = "up";
                     } else if (currentLevelScore == Math.floor(.25*scorePerLevel)) {
+						addUpPartOneResults();
+						
                         intervalDirection = "down";
                         alert("now practice doing a 3rd down of this note");
                     } else if (currentLevelScore == Math.floor(.5*scorePerLevel)) {
+						addUpPartTwoResults();
                         intervalDirection = "fourthUp";
                         alert("now practice doing a 4th up of this note (Note: This is the same as a 5th down)");
                     } else if (currentLevelScore == Math.floor(.75*scorePerLevel)) {
+						addUpPartThreeResults();
                         intervalDirection = "fourthDown";
                         alert("now practice doing a 5th up of this note (Note: This is the same as a 4th down)");
                     }
@@ -7040,6 +7383,9 @@ function repeatOnFrame() {
                 }
                 updateProgress();
                 if (currentLevelScore >= scorePerLevel) {
+					if (intervalRotationType=="scoreBased"){
+					addUpPartFourResults();
+					}
                     alert("Congratulations! You have completed this level. Select a new level from the 'select level' menu");
                     addLevelCompleted(whoItIsUsingThis, theirEmail, scoreLevel);
 
@@ -7047,7 +7393,12 @@ function repeatOnFrame() {
                         ourLevelNumber = levelToNum(scoreLevel);
                         updateTheLevel(ourLevelNumber);
                     }
+					
+						recentScoreLevelNum=levelToNum(scoreLevel) + 1;
+					if (!dontCloseYet){
                     setupTheLevel(levelToNum(scoreLevel) + 1);
+					}
+					dontCloseYet=false;
                     // updateUnlockedLevelsByUser(whoItIsUsingThis);
                 }
 
@@ -9463,7 +9814,8 @@ $("#my-dialog").dialog({
         Ok: function () {
             $(this).dialog("close");
         }
-    }
+    },
+	
 });
 // var counter = 0;
 
@@ -10192,6 +10544,38 @@ $('#capture-by-buttons-button').click(function () {
         console.log(singingTimeArray.toString()); //singbybuttons
     }
 });
+
+$('#practice-button').click(function () {
+    // $(".regular-mode").slideToggle();
+    // $(".sequence-mode").slideToggle();
+    // // if (!captureButtons) {
+
+    // singingTimeArray = [];
+    // sequenceArray = [];
+    // sequenceCopy = [];
+    // arpeggioArray = [];
+    // chordSequenceArray = [];
+    // // if (buttonStartEndTimes.length > 1) {
+    // // // alert("long");
+    // // singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1])/1000.01]);
+    // // buttonStartEndTimes.shift();
+    // // console.log(singingTimeArray.toString());
+    // // }
+    // singingTimeArray.push([0 + noteAdapter, 4, 0]);
+    // singingTimeArray.push([2 + noteAdapter, 4, 1]);
+    // rootNoteLength = 2;
+    // captureButtons = false;
+    // buttonsCaptured = true;
+    // singingCaptured = true;
+    // sequencePlay = true;
+    // newQuestionTime = true;
+    // arpeggiosOn.click();
+    // rootOnButton.click();
+    // arpeggioTwoButton.click();
+    // }
+
+    pickAPracticeAlertify("What type of interval would you like to practice?")
+});
 $('#testing-button-base-case').click(function () {
     // $(".regular-mode").slideToggle();
     // $(".sequence-mode").slideToggle();
@@ -10409,6 +10793,127 @@ function alertify(messageThis) {
 });
 $('.ui-dialog-buttonpane').find('button:contains("Ok")').click()
     $("#my-dialog").dialog("open");
+}
+
+function blankfunction(){
+	setupTheLevel(recentScoreLevelNum);
+}
+function setupSuggesteds(){
+if (averageTimeStorage[0][1]>10){
+suggestedOne="Extremely suggested";
+}
+else if (averageTimeStorage[0][1]>8){
+suggestedOne="Highly suggested";
+}
+else if (averageTimeStorage[0][1]>5){
+suggestedOne="Suggested";
+}
+else {
+suggestedOne="Unnecessary";
+}
+
+if (averageTimeStorage[1][1]>10){
+suggestedTwo="Extremely suggested";
+}
+else if (averageTimeStorage[1][1]>8){
+suggestedTwo="Highly suggested";
+}
+else if (averageTimeStorage[1][1]>5){
+suggestedTwo="Suggested";
+}
+else {
+suggestedTwo="Unnecessary";
+}
+
+if (averageTimeStorage[2][1]>10){
+suggestedThree="Extremely suggested";
+}
+else if (averageTimeStorage[2][1]>8){
+suggestedThree="Highly suggested";
+}
+else if (averageTimeStorage[2][1]>5){
+suggestedThree="Suggested";
+}
+else {
+suggestedThree="Unnecessary";
+}
+
+if (averageTimeStorage[3][1]>10){
+suggestedFour="Extremely suggested";
+}
+else if (averageTimeStorage[3][1]>8){
+suggestedFour="Highly suggested";
+}
+else if (averageTimeStorage[3][1]>5){
+suggestedFour="Suggested";
+}
+else {
+suggestedFour="Unnecessary";
+}
+}
+ function pickAPracticeAlertify(messageThis) {
+	 try{
+	 setupSuggesteds()
+	 dontCloseYet=true;
+	 }
+	catch (error){
+	averageTimeStorage[0]=["Third Ups", 0]
+	averageTimeStorage[1]=["Third Downs", 0]
+	averageTimeStorage[2]=["Fourth Ups", 0]
+	averageTimeStorage[3]=["Fourth Downs", 0]
+	}
+ 
+        $("#alertMessagePractice").html(messageThis);
+        // // Show dialog
+        // prevAction();
+
+    $("#my-dialog-practice").dialog({
+        modal: false,
+        autoOpen: false,
+        buttons: [{
+                text: "Practice "+averageTimeStorage[0][0]+"\n("+suggestedOne+")",
+                click: function () {
+                    $(this).dialog("close");
+                    window.setTimeout(setupPracticeThirdUps, 200);
+                }
+            },
+			{
+                text: "Practice "+averageTimeStorage[1][0]+"\n("+suggestedTwo+")",
+                click: function () {
+                    $(this).dialog("close");
+                    window.setTimeout(setupPracticeThirdDowns, 200);
+                }
+            },
+			{
+                text: "Practice "+averageTimeStorage[2][0]+"\n("+suggestedThree+")",
+                click: function () {
+                    $(this).dialog("close");
+                    window.setTimeout(setupPracticeFourthUps, 200);
+                }
+            },
+			{
+                text: "Practice "+averageTimeStorage[3][0]+"\n("+suggestedFour+")",
+                click: function () {
+                    $(this).dialog("close");
+                    window.setTimeout(setupPracticeFourthDowns, 200);
+                }
+            },
+			{
+                text: "Move On To Next Level",
+                click: function () {
+					dontCloseYet=false;
+                    $(this).dialog("close");
+                    window.setTimeout(blankfunction, 200);
+                }
+            }
+			
+			
+        ],
+		
+        // position: { my: 'top', at: 'right', of: '#welcomefamprelogin', collision:'fit' }
+
+    });
+    $("#my-dialog-practice").dialog("open");
 }
 
     function doSomethingAlertify(messageThis, whatToDo, whatToCallTheButton) {
