@@ -127,7 +127,7 @@ var noteArray = [
 // const VF = Vex.Flow;
 // sheetButton.click();
 // sheetButton.click();
-checkThisAnswer=function (anotherLocalArray){
+checkThisAnswer=function (specificOtherArray, anotherLocalArray){
 if (anotherLocalArray.length == correctChord.length) {
             var match = true;
             for (var index = 0; index < anotherLocalArray.length; index++) {
@@ -137,10 +137,10 @@ if (anotherLocalArray.length == correctChord.length) {
                 }
             }
 			// IF WE EVER WANT INVERSIONS WE SHOULD REINTRODUCE THIS BELOW AREA OF CODE
-            // if ((inversions) & (arrangeNote(specificActiveChord[0]) != correctChord[pickedInversion])) {
-                // match = false;
-                // document.getElementById("warning").innerHTML = "<style='fontSize:15px;'>Remember, Your root note should be " + getNoteNameGeneral(correctChord[pickedInversion]); //(arrangeNote(specificActiveChord[0]));
-            // }
+            if ((inversions) & (arrangeNote(specificOtherArray[0]) != correctChord[pickedInversion])) {
+                match = false;
+                document.getElementById("warning").innerHTML = "<style='fontSize:15px;'>Remember, Your root note should be " + getNoteNameGeneral(correctChord[pickedInversion]); //(arrangeNote(specificActiveChord[0]));
+            }
             document.getElementById("score").innerHTML = "Current Difficulty = " + score.toFixed(2);
             if (match) {
                 rightAnswer();
@@ -3866,8 +3866,10 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
             while(e){
                 if(e.t>=t1 && e.t<t2 && e.n>=n1 && e.n <= n2)
                     e.f=1;
-                else
-                    e.f=0;
+                else{
+					
+                    // e.f=0;
+				}
                 e=this.sequence[++i];
             }
         };
@@ -3914,7 +3916,7 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
             for(let i=l-1;i>=0;--i){
                 const ev=this.sequence[i];
 				console.warn(ev.f);
-                if(ev.f){
+                if(true){
 					if (selectedNotesArray.includes(ev.n)){
 						selectedNotesArray.splice(selectedNotesArray.indexOf(ev.n), 1)
 						console.warn(selectedNotesArray.toString());
@@ -3938,7 +3940,7 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
             for(let i=l-1;i>=0;--i){
                 const ev=this.sequence[i];
 				// console.warn(ev.f);
-                if(ev.f){
+                if(true){
 					// if (ev.n==mouselastpos){
                     this.sequence.splice(i,1);
 						accessibleNotesList=[]
@@ -3950,6 +3952,7 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
 					// }
 				// }
             }
+			resetpianoroll=false;
 			// redraw();
         };
 		
@@ -3986,6 +3989,7 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
         };
         this.editDragDown=function(pos){
             const ht=this.hitTest(pos);
+			
             let ev;
             if(ht.m=="N"){
                 ev=this.sequence[ht.i];
@@ -3999,21 +4003,26 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
             }
             else if(ht.m=="n"){
                 ev=this.sequence[ht.i];
-                // this.clearSel();
+                this.clearSel();
+				// alert("yo");
                 ev.f=1;
                 this.redraw();
             }
             else if(ht.m=="E"){
                 const ev = this.sequence[ht.i];
+				
                 this.dragging={o:"D", m:"E", i:ht.i, t:ev.t, g:ev.g, ev:this.selectedNotes()};
-            }
+          
+		   }
             else if(ht.m=="B"){
                 const ev = this.sequence[ht.i];
+				
                 this.dragging={o:"D", m:"B", i:ht.i, t:ev.t, g:ev.g, ev:this.selectedNotes()};
+
             }
             else if(ht.m=="s"&&ht.t>=0){
 				// alert ("yo3");
-                // this.clearSel();
+                this.clearSel();
                 var t=((ht.t/this.snap)|0)*this.snap;
                 this.sequence.push({t:t, n:ht.n|0, g:1, f:1});
                 this.dragging={o:"D",m:"E",i:this.sequence.length-1, t:t, g:1, ev:[{t:t,g:1,ev:this.sequence[this.sequence.length-1]}]};
@@ -4028,6 +4037,8 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
         };
         this.editDragMove=function(pos){
             const ht=this.hitTest(pos);
+			// console.error(ht.m);
+			// console.error(this.dragging.o);
             let ev,t;
             if(this.dragging.o=="D"){
                 switch(this.dragging.m){
@@ -4085,8 +4096,12 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
                     this.moveSelectedNote((ht.t-this.dragging.t)|0, (ht.n|0)-this.dragging.n);
                     this.redraw();
                     break;
-                }
+				 }
             }
+				// console.error(this.sequence[this.dragging.i].n1);
+					// ev=this.sequence[this.dragging.i];
+					// ev.f=1;
+					// this.redraw();
 			accessibleNotesList=[]
 					    for (var coun=0; coun<this.sequence.length; coun++){
 				// console.warn(this.sequence[coun].n);
@@ -4227,7 +4242,7 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
             }
         };
         this.pointerdown=function(ev) {// when you click!!
-
+			
             let e;
             if(!this.enable)
                 return;
@@ -4347,10 +4362,11 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
         };
         this.mousemove=function(e){
 			// alert("hi");
-			if (resetpianoroll){			
+			if (resetpianoroll){		
+				
                 this.delAllNotes();
 				this.redraw();
-			resetpianoroll=false;
+				resetpianoroll=false;
 			}
             if(this.dragging.o==null){
 				
@@ -4371,9 +4387,10 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
 		
         };
         this.pointermove=function(ev) {
-						if (resetpianoroll){			
+			if (resetpianoroll){			
                 this.delAllNotes();
-			resetpianoroll=false;
+				resetpianoroll=false;
+				
 			}
 			// console.warn("hi");
             let e;
@@ -4410,6 +4427,26 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
                 this.dragging.t2=ht.t;
                 this.dragging.n2=ht.n;
 				console.log(this.dragging.n2);
+				 const l=this.sequence.length;
+				for(let i=l-1;i>=0;--i){
+                const ev=this.sequence[i];
+				console.warn(ev.f);
+                if(true){
+					if (selectedNotesArray.includes(ev.n)){
+						selectedNotesArray.splice(selectedNotesArray.indexOf(ev.n), 1)
+						console.warn(selectedNotesArray.toString());
+					}
+					if (ev.n==Math.floor(this.dragging.n2)){
+                    ev.f=1;
+						accessibleNotesList=[]
+					    for (var coun=0; coun<this.sequence.length; coun++){
+						console.warn(this.sequence[coun].n);
+							accessibleNotesList.push(this.sequence[coun].n);
+				
+							}
+					}
+				}
+            }
                 this.redraw();
                 break;
             case "E":
@@ -4451,10 +4488,18 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
             if(this.longtaptimer)
                 clearInterval(this.longtaptimer);
             const pos=this.getPos(e);
+		
+			
+			console.warn(e.button);
+			if(e.button==2){
+			this.delSelectedNote()
+			this.redraw();
+			}
             if(this.dragging.o=="m"){
+				
                 // this.menu.style.display="none";
                 // this.rcMenu={x:0,y:0,width:0,height:0};
-				this.delSelectedNote()
+				
 				
                 // if(pos.t==this.menu)
                     // this.delSelectedNote();
@@ -4723,7 +4768,7 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
 		
 		// chickenthing.delAllNotes();
 		// alert (correctChord.toString()+" "+arrangeNoteArray(accessibleNotesList).toString());
-		checkThisAnswer(arrangeNoteArray(accessibleNotesList));
+		checkThisAnswer(accessibleNotesList.sort(), arrangeNoteArray(accessibleNotesList));
 		playAnArray(accessibleNotesList);
 		
       // for (var coun=0; coun<this.sequence.length; coun++){
