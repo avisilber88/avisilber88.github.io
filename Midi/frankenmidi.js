@@ -2,6 +2,7 @@ var selectedNotesArray=[];
 var resetpianoroll=false;
 var accessibleNotesList=[];	
 var mouselastpos;
+var erasingRightClick=false;
 // Variable which tell us what step of the game we're on.
 // We'll use this later when we parse noteOn/Off messages
 var inversions = false;
@@ -2642,7 +2643,9 @@ $(function () {
             // isolate options scroll
             // @source: https://github.com/nobleclem/jQuery-IsolatedScroll
             optionsWrap.on('touchmove mousewheel DOMMouseScroll', function (e) {
+				
                 if (($(this).outerHeight() < $(this)[0].scrollHeight)) {
+					
                     var e0 = e.originalEvent,
                     delta = e0.wheelDelta || -e0.detail;
 
@@ -3913,6 +3916,7 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
         };
         this.delSelectedNote=function(){
             const l=this.sequence.length;
+			let eraseThemAll=false;
             for(let i=l-1;i>=0;--i){
                 const ev=this.sequence[i];
 				console.warn(ev.f);
@@ -3923,15 +3927,32 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
 					}
 					if (ev.n==mouselastpos){
                     this.sequence.splice(i,1);
-						accessibleNotesList=[]
-					    for (var coun=0; coun<this.sequence.length; coun++){
-				console.warn(this.sequence[coun].n);
-				accessibleNotesList.push(this.sequence[coun].n);
-				
-			}
+					if (ev.f){
+					eraseThemAll=true;
+					}
 					}
 				}
+				
+				
             }
+			const k=this.sequence.length;
+			if (eraseThemAll){
+			 for(let i=k-1;i>=0;--i){
+                const ev=this.sequence[i];
+				console.warn(ev.f);
+                if(ev.f){
+                    this.sequence.splice(i,1);
+				}
+				
+				
+            }
+			}
+			accessibleNotesList=[]
+					    for (var coun=0; coun<this.sequence.length; coun++){
+						console.warn(this.sequence[coun].n);
+					accessibleNotesList.push(this.sequence[coun].n);
+				
+					}
         };
 		
 		this.delAllNotes=function(){
@@ -4260,7 +4281,9 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
 			selectedNotesArray.push(Math.floor(this.downht.n));
 			
 			}
-			console.warn(selectedNotesArray.toString());
+			
+			console.warn(e.button+" "+this.downht.m);
+			// console.warn(selectedNotesArray.toString());
             this.longtapcount = 0;
             this.longtaptimer = setInterval(this.longtapcountup.bind(this),100);
             window.addEventListener("touchmove", this.bindpointermove,false);
@@ -4270,6 +4293,15 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
             window.addEventListener("contextmenu",this.bindcontextmenu);
 // alert ('yo');
             if(e.button==2){
+				if (e.button==2){
+					erasingRightClick=true;
+								if (erasingRightClick){
+				console.error("last seen at "+ mouselastpos);
+				this.delSelectedNote()
+				this.redraw();
+			}
+					
+				}
 				// alert("yo")
 				try{
 				mouselastpos=Math.floor(this.downht.n);
@@ -4300,6 +4332,7 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
             }
 		     if(e.ctrlKey){
 				// alert("yo")
+				// ctrlpressed=true;
 				try{
 				console.warn(this.downpos);
 				}	
@@ -4321,10 +4354,10 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
                 this.canvas.focus();
                 return false;
             }
+
             switch(e.target){
             case this.markendimg:
                 this.dragging={o:"E",x:this.downpos.x,m:this.markend};
-				// alert("lol");
                 ev.preventDefault();
                 ev.stopPropagation();
                 return false;
@@ -4341,13 +4374,17 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
             }
             this.dragging={o:null,x:this.downpos.x,y:this.downpos.y,offsx:this.xoffset,offsy:this.yoffset};
             this.canvas.focus();
+			console.warn(this.editmode);
             switch(this.editmode){
             case "gridpoly":
             case "gridmono":
+				console.warn("this.downpos2");
                 this.editGridDown(this.downpos);
                 break;
             case "dragpoly":
+                this.editDragDown(this.downpos);
             case "dragmono":
+				console.warn("this.downpos");
                 this.editDragDown(this.downpos);
                 break;
             }
@@ -4362,6 +4399,26 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
         };
         this.mousemove=function(e){
 			// alert("hi");
+			this.rcTarget=this.canvas.getBoundingClientRect();
+                const pos=this.getPos(e);
+               
+                const ht=this.hitTest(pos);
+			// console.warn(ht.n);
+			if (e.button==2){
+			erasingRightClick=true;
+			}
+					try{
+				mouselastpos=Math.floor(ht.n);
+				
+				}	
+					catch(error){console.error(error)}
+			// console.warn(erasingRightClick);
+			if (erasingRightClick){
+				// console.error("last seen at "+ mouselastpos);
+				this.delSelectedNote()
+				this.redraw();
+			}
+			// console.warn(e.button);
 			if (resetpianoroll){		
 				
                 this.delAllNotes();
@@ -4411,8 +4468,10 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
             case null:
                 if(this.xscroll)
                     this.xoffset=this.dragging.offsx+(this.dragging.x-pos.x)*(this.xrange/this.width);
-                if(this.yscroll)
+                if(this.yscroll){
+					
                     this.yoffset=this.dragging.offsy+(pos.y-this.dragging.y)*(this.yrange/this.height);
+				}
                 break;
             case "m":
                 if(ht.m=="m"){
@@ -4490,10 +4549,9 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
             const pos=this.getPos(e);
 		
 			
-			console.warn(e.button);
+			console.warn(e.button); // when 0 it denotes letting go of a note. // when 2 it denotes letting go of the number 2.
 			if(e.button==2){
-			this.delSelectedNote()
-			this.redraw();
+				erasingRightClick=false;
 			}
             if(this.dragging.o=="m"){
 				
@@ -4542,6 +4600,7 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
 //            window.removeEventListener("contextmenu",this.contextmenu);
         };
         this.wheel=function(e) {
+			
             let delta = 0;
             const pos=this.getPos(e);
             if(!e)
@@ -4551,7 +4610,33 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
             else if(e.detail)
                 delta = -e.detail/3;
             const ht=this.hitTest(pos);
+			console.warn(e.ctrlKey);
+			if (e.ctrlKey){
+				
+				
+                if(delta>0){
+                    this.yoffset=ht.n-(ht.n-this.yoffset)/1.2
+                    this.yrange/=1.2;
+                }
+                else{
+                    this.yoffset=ht.n-(ht.n-this.yoffset)*1.2
+                    this.yrange*=1.2;
+                }
+
+            
+			}
+			else{
+			if(delta>0){
+                    this.yoffset=ht.n-(ht.n-this.yoffset)/1.2
+                    // this.yrange/=1.2;
+                }
+                else{
+                    this.yoffset=ht.n-(ht.n-this.yoffset)*1.2
+                    // this.yrange*=1.2;
+                }
+			}
             if((this.wheelzoomx||this.wheelzoom) && ht.m=="x"){
+				alert (delta);
                 if(delta>0){
                     this.xoffset=ht.t-(ht.t-this.xoffset)/1.2
                     this.xrange/=1.2;
@@ -4562,6 +4647,7 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
                 }
             }
             if((this.wheelzoomy||this.wheelzoom) && ht.m=="y"){
+				alert (delta+"delta");
                 if(delta>0){
                     this.yoffset=ht.n-(ht.n-this.yoffset)/1.2
                     this.yrange/=1.2;
