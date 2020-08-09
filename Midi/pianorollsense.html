@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html xmlns = "http://www.w3.org/1999/xhtml">
+	<script src = 'vendor/webmidi.min.js'></script>
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
+<!-- MultiSelect CSS & JS library -->
+<link href="vendor/jquery.multiselect.css" rel="stylesheet" />
+<script src="vendor/jquery.multiselect.js"></script>
+
+<script src="vendor/vexflow-min.js"></script>
+	<!--script src = "vendor/jquery-3.4.1.js"></script-->
+	<script type = "text/javascript" src = "vendor/jquery-3.4.1.js"></script>
+	<link type = "text/css" rel = "stylesheet" href = "MidiApp2.css">
+	
+<link rel="stylesheet" href="vendor/notationmovement.css" type="text/css">
+
+<script>
+function myFunction() {
+if (location.protocol != 'https:')
+{
+ location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+}
+}
+</script>
+	<!--script src = "timbre.js"></script-->
+	<head>
+	
+<style>
+body{
+}
+#base {
+    background:#88d;
+    position:relative;
+    width:100%;
+    height:500px;
+	padding:0px;
+	margin-top: 20vh;
+}
+#proll{
+    position:absolute;
+    left:16px;
+    top:50px;
+}
+#xrange{
+    position:absolute;
+    left:700px;
+    top:400px;
+}
+#scoreRange{
+    position:absolute;
+    left:100px;
+    top:400px;
+}
+#xoffset{
+    position:absolute;
+    left:480px;
+    top:400px;
+}
+#yrange{
+    position:absolute;
+    left:850px;
+    top:270px;
+}
+#yoffset{
+    position:absolute;
+    left:850px;
+    top:60px;
+}
+#prollyoff{
+    position:absolute;
+    left:1040px;
+    top:16px;
+}
+#prollyzoom{
+    position:absolute;
+    left:1040px;
+    top:400px;
+}
+.ind{
+    background:#00f;
+    width:64px;
+    height:8px;
+    margin:0;
+    padding:0;
+    display:inline-block;
+}
+.pat{
+    background:#00f;
+    width:64px;
+    height:32px;
+    margin:0;
+    padding:0;
+    display:inline-block;
+}
+</style>
+
+<script src="https://g200kg.github.io/webaudio-controls/webaudio-controls.js" ></script>
+<script>
+timebase=16;
+actx=new AudioContext();
+osc=actx.createOscillator();
+gain=actx.createGain();
+gain.gain.value=0;
+osc.type="sawtooth";
+osc.start();
+osc.connect(gain).connect(actx.destination);
+
+function Callback(ev){
+    osc.detune.setValueAtTime((ev.n-69)*100,ev.t);
+    gain.gain.setTargetAtTime(0.5,ev.t,0.005);
+    gain.gain.setTargetAtTime(0,ev.g,0.1);
+}
+function Play(){
+    actx.resume();
+    document.getElementById("proll").play(actx,Callback);
+}
+function Layout(k){
+    switch(k.id){
+    case "xrange":
+        document.getElementById("proll").xrange=k.value*timebase;
+        break;
+    case "xoffset":
+        document.getElementById("proll").xoffset=k.value*timebase;
+        break;
+    case "yrange":
+        document.getElementById("proll").yrange=k.value;
+        break;
+    case "yoffset":
+        document.getElementById("proll").yoffset=k.value;
+        break;
+    }
+}
+</script>
+	<audio id = "sound-A1" src = "samples/_A2.wav" preload = "auto"></audio>
+	<audio id = "sound-Bb1" src = "samples/_Bb2.wav" preload = "auto"></audio>
+	<audio id = "sound-B1" src = "samples/_B2.wav" preload = "auto"></audio>
+	<audio id = "sound-C2" src = "samples/_C3.wav" preload = "auto"></audio>
+	<audio id = "sound-Db2" src = "samples/_Db3.wav" preload = "auto"></audio>
+	<audio id = "sound-D2" src = "samples/_D3.wav" preload = "auto"></audio>
+	<audio id = "sound-Eb2" src = "samples/_Eb3.wav" preload = "auto"></audio>
+	<audio id = "sound-E2" src = "samples/_E3.wav" preload = "auto"></audio>
+	<audio id = "sound-F2" src = "samples/_F3.wav" preload = "auto"></audio>
+	<audio id = "sound-Gb2" src = "samples/_Gb3.wav" preload = "auto"></audio>
+	<audio id = "sound-G2" src = "samples/_G3.wav" preload = "auto"></audio>
+	<audio id = "sound-Ab2" src = "samples/_Ab3.wav" preload = "auto"></audio>
+	<audio id = "sound-A2" src = "samples/A2.ogg" preload = "auto"></audio>
+	<audio id = "sound-Bb2" src = "samples/Bb2.ogg" preload = "auto"></audio>
+	<audio id = "sound-B2" src = "samples/B2.ogg" preload = "auto"></audio>
+	<audio id = "sound-Ab3" src = "samples/Ab3.ogg" preload = "auto"></audio>
+	<audio id = "sound-A3" src = "samples/A3.ogg" preload = "auto"></audio>
+	<audio id = "sound-Bb3" src = "samples/Bb3.ogg" preload = "auto"></audio>
+	<audio id = "sound-B3" src = "samples/B3.ogg" preload = "auto"></audio>
+	<audio id = "sound-C3" src = "samples/C3.ogg" preload = "auto"></audio>
+	<audio id = "sound-Db3" src = "samples/Db3.ogg" preload = "auto"></audio>
+	<audio id = "sound-D3" src = "samples/D3.ogg" preload = "auto"></audio>
+	<audio id = "sound-Eb3" src = "samples/Eb3.ogg" preload = "auto"></audio>
+	<audio id = "sound-E3" src = "samples/E3.ogg" preload = "auto"></audio>
+	<audio id = "sound-F3" src = "samples/F3.ogg" preload = "auto"></audio>
+	<audio id = "sound-Gb3" src = "samples/Gb3.ogg" preload = "auto"></audio>
+	<audio id = "sound-G3" src = "samples/G3.ogg" preload = "auto"></audio>
+	<audio id = "sound-Ab4" src = "samples/Ab4.ogg" preload = "auto"></audio>
+	<audio id = "sound-A4" src = "samples/A4.ogg" preload = "auto"></audio>
+	<audio id = "sound-Bb4" src = "samples/Bb4.ogg" preload = "auto"></audio>
+	<audio id = "sound-B4" src = "samples/B4.ogg" preload = "auto"></audio>
+	<audio id = "sound-C4" src = "samples/C4.ogg" preload = "auto"></audio>
+	<audio id = "sound-Db4" src = "samples/Db4.ogg" preload = "auto"></audio>
+	<audio id = "sound-D4" src = "samples/D4.ogg" preload = "auto"></audio>
+	<audio id = "sound-Eb4" src = "samples/Eb4.ogg" preload = "auto"></audio>
+	<audio id = "sound-E4" src = "samples/E4.ogg" preload = "auto"></audio>
+	<audio id = "sound-F4" src = "samples/F4.ogg" preload = "auto"></audio>
+	<audio id = "sound-Gb4" src = "samples/Gb4.ogg" preload = "auto"></audio>
+	<audio id = "sound-G4" src = "samples/G4.ogg" preload = "auto"></audio>
+	<audio id = "sound-C5" src = "samples/C5.ogg" preload = "auto"></audio>
+	<audio id = "sound-Db5" src = "samples/5_Db4_4.wav" preload = "auto"></audio>
+	<audio id = "sound-D5" src = "samples/5_D4_3.wav" preload = "auto"></audio>
+	<audio id = "sound-Eb5" src = "samples/5_Eb4_3.wav" preload = "auto"></audio>
+	<audio id = "sound-E5" src = "samples/5_E4_3.wav" preload = "auto"></audio>
+	<audio id = "sound-F5" src = "samples/5_F4_3.wav" preload = "auto"></audio>
+	<audio id = "sound-Gb5" src = "samples/5_Gb4_3.wav" preload = "auto"></audio>
+	<audio id = "sound-G5" src = "samples/5_G4_2.wav" preload = "auto"></audio>
+	<audio id = "sound-Ab5" src = "samples/5_Ab4_2.wav" preload = "auto"></audio>
+	<audio id = "sound-A5" src = "samples/5_A4_2.wav" preload = "auto"></audio>
+	<audio id = "sound-Bb5" src = "samples/5_Bb4_2.wav" preload = "auto"></audio>
+	<audio id = "sound-B5" src = "samples/5_B4_2.wav" preload = "auto"></audio>
+	<audio id = "sound-C6" src = "samples/5_C5_2.wav" preload = "auto"></audio>
+
+	<!--LINK JQUERY-->
+
+	<!--PERSONAL SCRIPT JavaScript-->
+	</head>
+	<body data-step="0">
+<div id="dropdown"><p>
+  <select name="basic[]" multiple="multiple" class="3col active">
+	<option value="justLearnNotes" selected id = "jln">Just Learn Notes</option>
+	<option value="easyFifths" id = "ez5" onclick = "resetChord()">Easy Fifths</option>
+	<option value="easyMajor" id = "ezmaj">Easy Major</option>
+	<option value="easyMinor" id = "ezm">Easy Minor</option>
+	<option value="fifths" id = "just5">Fifths</option>
+	<option value="major" id = "reg">Major</option>
+	<option value="minor" id = "regm">Minor</option>
+	<option value="sus2" id = "idsus2" >Sus2</option>
+	<option value="sus" id = "idsus">Sus</option>
+	<option value="minorSeventh" id = "m7">Minor Seventh</option>
+	<option value="majorSeventh" id = "maj7">Major Seventh</option>
+	<option value="dominantSeventh" id = "d7">Dominant Seventh</option>
+	<option value="minorNinth" id = "m9">Minor Ninth</option>
+	<option value="majorNinth" id = "maj9">Major Ninth</option>
+	<option value="dominantNinth" id = "d9">Dominant Ninth</option>
+	<option value="addNinth" id = "add9">Add Ninth</option>
+	<option value="romC" id = "romanc">Roman Numerals in C</option>
+	<option value="romA" id = "romana">Roman Numerals in A</option>
+	<option value="sChords" id = "slashChords">Require specific inversions as "Slash Chords"</option>
+	<option value="dubB" id = "doubleBass">Look for two additional root notes in the Bass</option>
+    </select>
+</p></div>
+<div class= "chickens" id ="submitAnswerDiv"><button type="button" id="sequenceButton" >submit answer</button></div>
+<div class= "chickens" id ="playAnswerDiv"><button type="button" id="playButton" >play answer</button></div>
+<div hidden id ="octaveButtonLinks" class = "chickens"><p><p><button type="button" id = "octaveUp"> octave &#8593;</button></p></div>
+<div hidden id ="octaveButtonLinksTwo" class = "chickens"><p><p><button type="button" id = "octaveDown">octave &#8595;</button></p></div>
+<div hidden id ="octaveNumBox" class = "chickens" style="background: white">Octave 3</div>
+<div hidden id ="sheetButtonLink"><p><p><button type="button" id = "sheetButton">Change To Words</button></p></div>
+<div id ="chordSenseLink"><p><p><button type="button"  id = "chordLink" onclick="myFunction()">Practice Scales</button></p></div>
+
+<script>
+function myFunction() {
+  window.location.replace("melodies.html");
+}
+</script>
+<script>
+    $(function () {
+        $('select[multiple].active.3col').multiselect({
+            columns: 1,
+            placeholder: 'Select Chords',
+            search: true,
+            searchOptions: {
+                'default': 'Search Chords'
+            },
+            selectAll: true
+        });
+
+    });
+</script>
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+	<defs>
+		<symbol id="note" viewBox="0 0 121 174">
+			<path d="M72.517 141.958c.741 13.022-12.003 26.182-30.168 30.376-19.642 4.534-38.183-3.132-41.414-17.123-3.23-13.992 10.075-29.01 29.716-33.545 7.576-1.749 14.988-1.683 21.42-.139L52 115.424V0c11.37 11.855 20.084 19.909 26.142 24.16 9.087 6.377 21.997 14.68 30.63 25.999 8.633 11.318 12.207 22.805 11.035 33.937-1.172 11.132-3.8 19.104-8.8 26.987-3.333 5.256-5.444 8.71-6.332 10.36 2.344-11.277 3.06-20.35 2.15-27.22-1.364-10.304-3.914-15.369-12.356-21.72-5.628-4.234-12.885-7.564-21.77-9.991v79.493l-.182-.047z" fill-rule="evenodd"/>
+		</symbol>
+	</defs>
+</svg>
+<div id="screen-wrapper">	
+	<div id="screens">
+
+		<div class="screen step0"></div>
+
+		<div class="screen step1">
+			<div hidden class="lock-input" id="lockinput">
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+			</div>
+			<p hidden class="hint">Hint: "Amazing Grace"  in F</p>
+		</div>
+		
+		<div class="screen step2">
+	<div class="row justify-content-start chickens" >
+			<br>
+				<div hidden id="staff-box" style="background:white"></div>
+			</div>	
+	
+			<div hidden class="lock-input">
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+				<div class="note"><svg><use xlink:href="#note"></use></svg></div>
+			</div>
+			<p id = "warning" style="color:#f0fc03;"></p>
+	<p hidden class = "keyboardImg"><img src = "Blank Keyboard.jpeg" id = "keyboardImg2"></img></p>
+		<p class="setpoint" id = "sp"> </p>
+	
+
+	
+<div id="base">
+<webaudio-pianoroll id="proll" width="800" height="320"></webaudio-pianoroll>
+
+			<div id="scoreRange"><p class="hint" id = "score" >Hint: C7 in root position</p></div>
+<webaudio-slider oninput="Layout(this)" id="xrange" direction="horz" width="120" height="24" min=".0625" max="2" step= ".0625" value=".0625"></webaudio-slider>
+<webaudio-slider oninput="Layout(this)" id="xoffset" direction="horz" width="200" height="24" min="0" max="20" step="0.01" value="0"></webaudio-slider>
+<webaudio-slider oninput="Layout(this)" id="yrange" direction="vert" width="24" height="120" min="3" max="32" value="16"></webaudio-slider>
+<webaudio-slider oninput="Layout(this)" id="yoffset" direction="vert" width="24" height="200" min="30" max="120" height="200" value="60"></webaudio-slider>
+</div>
+<button hidden onclick="document.getElementById('mml').value=(document.getElementById('proll').getMMLString())">getMMLString</button>
+<button hidden onclick="document.getElementById('proll').setMMLString(document.getElementById('mml').value)">setMMLString</button>
+<button hidden onclick="Play()">Play</button>
+<button hidden id = "yoButton" onclick="document.getElementById('proll').stop()">Stop</button>
+
+<br/>
+<textarea hidden id="mml" rows="10" cols="80"></textarea>
+<br/>
+<hr/>
+		</div>
+
+		<div class="screen step3">
+			<p>You win!!</p>
+		</div>
+	</div>
+</div>
+<div id="countdown">01:00</div>
+<script src="frankenmidi.js"></script>
+</body>
