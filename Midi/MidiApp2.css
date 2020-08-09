@@ -60,7 +60,21 @@ body.gameover::after {
 	width: 30vw;
 	HEIGHT: 4vh;
 }
+#submitAnswerDiv {
+	position: fixed;
+	z-index: 9;
+	left: 40vw;
+	width: 10vw;
+	HEIGHT: 6vh;
+}
 
+#playAnswerDiv {
+	position: fixed;
+	z-index: 9;
+	left: 50vw;
+	width: 10vw;
+	HEIGHT: 6vh;
+}
 #chordLink {
 position: right;
     z-index: 9;
@@ -74,6 +88,20 @@ position: right;
 	left: 50vw;
 	width: 10vw;
 	HEIGHT: 6vh;
+}
+#sequenceButton {
+	position: fixed;
+	z-index: 9;
+	left: 40vw;
+	width: 10vw;
+	HEIGHT: 4ch;
+}
+#playButton {
+	position: fixed;
+	z-index: 9;
+	left: 50vw;
+	width: 10vw;
+	HEIGHT: 4ch;
 }
 #octaveUp {
 	position: fixed;
