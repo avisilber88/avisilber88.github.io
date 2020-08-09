@@ -146,15 +146,16 @@ if (anotherLocalArray.length == correctChord.length) {
             if (match) {
                 rightAnswer();
                 document.getElementById("warning").innerHTML = "<style='fontSize:0px;'>"
-                    score = score + .05;
-                timerLength = (11.0 - score) / 60.0;
+                    score = score + .25;
+					// alert(correctChord.length);
+                timerLength = (11.0 - score/correctChord.length) / 60.0;
 				resetpianoroll=true;
                 document.getElementById("score").innerHTML = "Current Score = " + score.toFixed(2);
                 runSequence('lock2');
                 document.getElementById("keyboardImg2").src = "Blank Keyboard.jpeg";
                 //	currentStep--;
             } else {
-                score = score - .05;
+                score = score - .25;
                 document.getElementById("score").innerHTML = "Current Score = " + score.toFixed(2);
 
                 document.getElementById("keyboardImg2").src = currentImageName + ".jpeg";
@@ -4240,8 +4241,17 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
                 this.delSelectedNote();
                 this.redraw();
                 break;
-            }
+			case 13://enternote
+                sequenceButton.click();
+                break;
+				case 32://enternote
+                sequenceButton.click();
+                break;
+				}
+            
         };
+		
+		
         this.popMenu=function(pos){
             // const s=this.menu.style;
             // s.display="block";
