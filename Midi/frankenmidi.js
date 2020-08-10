@@ -4,6 +4,7 @@ var accessibleNotesList=[];
 var mouselastpos;
 var erasingRightClick=false;
 var windowresized=false;
+var answerRevealed=false;
 // Variable which tell us what step of the game we're on.
 // We'll use this later when we parse noteOn/Off messages
 var inversions = false;
@@ -30,7 +31,7 @@ var currentImageName = "Blank Keyboard.jpeg"
 var presentationType = "words"
     //document.getElementById("ez5").addEventListener(select
 
-
+var revealanswer=false;
     var firstNoteShown = false;
 var lastImageNote;
 var currentImageNote;
@@ -130,7 +131,7 @@ var noteArray = [
 // sheetButton.click();
 // sheetButton.click();
 checkThisAnswer=function (specificOtherArray, anotherLocalArray){
-if (anotherLocalArray.length == correctChord.length) {
+if ((anotherLocalArray.length == correctChord.length)||(answerRevealed)) {
             var match = true;
             for (var index = 0; index < anotherLocalArray.length; index++) {
                 if (correctChord.indexOf(anotherLocalArray[index]) < 0) {
@@ -144,18 +145,26 @@ if (anotherLocalArray.length == correctChord.length) {
                 document.getElementById("warning").innerHTML = "<style='fontSize:15px;'>Remember, Your root note should be " + getNoteNameGeneral(correctChord[pickedInversion]); //(arrangeNote(specificActiveChord[0]));
             }
             document.getElementById("score").innerHTML = "Current Difficulty = " + score.toFixed(2);
-            if (match) {
+            if ((match)||(answerRevealed)) {
                 rightAnswer();
                 document.getElementById("warning").innerHTML = "<style='fontSize:0px;'>"
+				if (!answerRevealed){
                     score = score + .25;
+				}
+				else{
+				answerRevealed=false;
+				}
 					// alert(correctChord.length);
                 timerLength = (11.0 - score/correctChord.length) / 60.0;
 				resetpianoroll=true;
+				
+				document.getElementById('proll').resetPianoRoll();
                 document.getElementById("score").innerHTML = "Current Score = " + score.toFixed(2);
                 runSequence('lock2');
                 document.getElementById("keyboardImg2").src = "Blank Keyboard.jpeg";
                 //	currentStep--;
             } else {
+				
                 score = score - .25;
                 document.getElementById("score").innerHTML = "Current Score = " + score.toFixed(2);
 
@@ -168,6 +177,15 @@ if (anotherLocalArray.length == correctChord.length) {
                 }, 500);
             }
         }
+		else{
+			if (correctChord.length>1){
+			document.getElementById("warning").innerHTML = "<style='fontSize:15px;'>Remember, there ssould be " + correctChord.length+" notes in this chord"; //(arrangeNote(specificActiveChord[0]));
+			}
+			else{ 
+			document.getElementById("warning").innerHTML = "<style='fontSize:15px;'>Remember, there should only be " + correctChord.length+" note in this chord"; //(arrangeNote(specificActiveChord[0]));
+		
+			}
+		}
 }
 arrangeNoteArray= function (arrayOfNotesLocal){
 let localArray=[];
@@ -3556,6 +3574,8 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
 <div id="wac-menu">Delete</div>
 </div>`;
 // this.width=600;
+
+		setInterval(this.checkMenu, 500);
         this.sortSequence=function(){
             this.sequence.sort((x,y)=>{return x.t-y.t;});
         };
@@ -4131,6 +4151,15 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
 				
 			}
         };
+		
+		this.resetPianoRoll=function(){
+		if (resetpianoroll){		
+				
+                this.delAllNotes();
+				this.redraw();
+				resetpianoroll=false;
+			}
+		}
         this.editGridDown=function(pos){
             const ht=this.hitTest(pos);
             if(ht.m=="n"){
@@ -4407,12 +4436,34 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
 			
 			
         };
+		this.revealAnswer=function(){
+					if (revealanswer){
+				// console.error(Object.getOwnPropertyNames(this.sequence[0]));
+				// console.error(this.sequence[0]);
+				console.warn(mouselastpos);
+				let floorOfScale=40;
+				
+					floorOfScale=Math.floor((mouselastpos-12)/12)*12;
+				// try{
+				// floorOfScale=Math.floor(this.sequence[0].n/12)*12;
+				// }
+				// catch(error){
+					// floorOfScale=Math.floor((mouselastpos-6)/12)*12;
+				// }
+				
+				this.sequence=[];
+				for (let thing1=0; thing1 < correctChord.length; thing1++){
+					this.sequence.push({f: 1, g:1, n: correctChord[thing1]+floorOfScale, og: 1, on: correctChord[thing1]+floorOfScale, ot: 0, t: 0});
+				}
+				this.clearSel();
+				revealanswer=false;
+				answerRevealed=true;
+				this.redraw();
+			}
+		}
         this.mousemove=function(e){
 			// alert("hi");
-			if (windowresized){
-			this.layout();
-			windowresized=false;
-			}
+
 			this.rcTarget=this.canvas.getBoundingClientRect();
                 const pos=this.getPos(e);
                
@@ -4433,12 +4484,12 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
 				this.redraw();
 			}
 			// console.warn(e.button);
-			if (resetpianoroll){		
+			// if (resetpianoroll){		
 				
-                this.delAllNotes();
-				this.redraw();
-				resetpianoroll=false;
-			}
+                // this.delAllNotes();
+				// this.redraw();
+				// resetpianoroll=false;
+			// }
             if(this.dragging.o==null){
 				
                 this.rcTarget=this.canvas.getBoundingClientRect();
@@ -4675,7 +4726,7 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
             e.preventDefault();
         };
 		window.onresize=function(){
-			windowresized=true;
+			document.getElementById('proll').layout();
 			// $('#wac-pianoroll').style.width=600;
 		}
 		
@@ -4887,9 +4938,22 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
 		
 		// chickenthing.delAllNotes();
 		// alert (correctChord.toString()+" "+arrangeNoteArray(accessibleNotesList).toString());
-		checkThisAnswer(accessibleNotesList.sort(), arrangeNoteArray(accessibleNotesList));
 		playAnArray(accessibleNotesList);
+		checkThisAnswer(accessibleNotesList.sort(), arrangeNoteArray(accessibleNotesList));
 		
+		
+      // for (var coun=0; coun<this.sequence.length; coun++){
+				// console.warn(this.sequence[coun].n);
+			// }
+    });
+		$('#revealButton').click(function () {
+		//delAllNotes();
+		// console.log("sup motha "+document.getElementById('proll').sequence.length);
+		// chickenthing.delAllNotes();
+			
+			// alert (correctChord.toString()+" "+arrangeNoteArray(accessibleNotesList).toString());
+	revealanswer=true;
+		document.getElementById('proll').revealAnswer();
       // for (var coun=0; coun<this.sequence.length; coun++){
 				// console.warn(this.sequence[coun].n);
 			// }

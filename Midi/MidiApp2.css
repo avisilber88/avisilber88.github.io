@@ -67,7 +67,13 @@ body.gameover::after {
 	width: 10vw;
 	HEIGHT: 6vh;
 }
-
+#revealAnswerDiv {
+	position: fixed;
+	z-index: 9;
+	left: 30vw;
+	width: 10vw;
+	HEIGHT: 6vh;
+}
 #playAnswerDiv {
 	position: fixed;
 	z-index: 9;
@@ -93,6 +99,13 @@ position: right;
 	position: fixed;
 	z-index: 9;
 	left: 40vw;
+	width: 10vw;
+	HEIGHT: 4ch;
+}
+#revealButton {
+	position: fixed;
+	z-index: 9;
+	left: 30vw;
 	width: 10vw;
 	HEIGHT: 4ch;
 }
