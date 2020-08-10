@@ -4411,6 +4411,7 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
 			// alert("hi");
 			if (windowresized){
 			this.layout();
+			windowresized=false;
 			}
 			this.rcTarget=this.canvas.getBoundingClientRect();
                 const pos=this.getPos(e);
