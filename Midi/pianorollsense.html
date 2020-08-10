@@ -46,7 +46,7 @@ body{
 }
 #xrange{
     position:absolute;
-    left:700px;
+    left:500px;
     top:400px;
 }
 #scoreRange{
@@ -56,27 +56,27 @@ body{
 }
 #xoffset{
     position:absolute;
-    left:480px;
+    left:280px;
     top:400px;
 }
 #yrange{
     position:absolute;
-    left:850px;
+    left:650px;
     top:270px;
 }
 #yoffset{
     position:absolute;
-    left:850px;
+    left:650px;
     top:60px;
 }
 #prollyoff{
     position:absolute;
-    left:1040px;
+    left:840;
     top:16px;
 }
 #prollyzoom{
     position:absolute;
-    left:1040px;
+    left:840;
     top:400px;
 }
 .ind{
@@ -293,7 +293,7 @@ function myFunction() {
 <div id="base">
 <webaudio-pianoroll id="proll" width="800" height="320"></webaudio-pianoroll>
 
-			<div id="scoreRange"><p class="hint" id = "score" >Hint: C7 in root position</p> <p id = "warning" style="color:#f0fc03;"></p></div>
+			<div id="scoreRange" style="border-width:1px; border-style:dashed; border-color:white; padding:10px"><p class="hint" id = "score" style="font-size:24px" >Hint: C7 in root position</p> <p id = "warning" style="color:#f0fc03;"></p></div>
 <webaudio-slider oninput="Layout(this)" id="xrange" direction="horz" width="120" height="24" min=".0625" max="2" step= ".0625" value=".0625"></webaudio-slider>
 <webaudio-slider oninput="Layout(this)" id="xoffset" direction="horz" width="200" height="24" min="0" max="20" step="0.01" value="0"></webaudio-slider>
 <webaudio-slider oninput="Layout(this)" id="yrange" direction="vert" width="24" height="120" min="3" max="32" value="16"></webaudio-slider>
