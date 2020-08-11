@@ -1173,6 +1173,33 @@ playASongLink("centuries.mp3");
 playASongLink("tochurch.mp3");
    // playASong("stromae");
    }); 
+   
+    $('#likeaprayer').click(function () {
+	try{
+	currentSong.pause();
+	}
+	catch(error){}
+playASongLink("likeaprayer.mp3");
+   // playASong("stromae");
+   }); 
+    $('#glory').click(function () {
+	try{
+	currentSong.pause();
+	}
+	catch(error){}
+playASongLink("glory.mp3");
+   // playASong("stromae");
+   }); 
+   
+   $('#riseup').click(function () {
+	try{
+	currentSong.pause();
+	}
+	catch(error){}
+playASongLink("riseup.mp3");
+   // playASong("stromae");
+   }); 
+   
          $('#submitButton').click(function () {
 	try{
 		generateMySubmissionKeys();
@@ -1396,6 +1423,15 @@ currentSongKeys=["A", "B", "C#/Db", "D", "E", "F#/Gb", "G#/Ab"];
 }
 if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/tochurch.mp3"){
 currentSongKeys=["A", "B", "C", "D", "E", "F#/Gb", "G"];
+}
+if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/likeaprayer.mp3"){
+currentSongKeys=["A", "A#/Bb", "C", "D", "E", "F", "G"];
+}
+if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/glory.mp3"){
+currentSongKeys=["A", "B", "C", "D", "E", "F", "G"];
+}
+if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/riseup.mp3"){
+currentSongKeys=["A#/Bb", "F", "C#/Db", "C", "D#/Eb", "F#/Gb", "G#/Ab"];
 }
 currentSongKeys.sort();
 }
