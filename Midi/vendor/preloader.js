@@ -105,4 +105,5 @@ function appStart(){
     $('body').removeClass('not-loaded');
     $('body').addClass('loaded');
     $("#preload-progress-bar").attr( 'value', TOTAL_ASSETS );
+	document.getElementById('app-preloader').hidden=true;
 }
