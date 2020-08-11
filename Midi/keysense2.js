@@ -23,6 +23,7 @@ var buttonColor = '#00cc00';
 var buttonNormalColor = 'buttonface';
 var songTitleSelected="";
 
+   var playingState="invisible"
 var referenceVolume = 60;
 var rhythmVolume = 50;
 var accompanimentVolume = 60;
@@ -190,7 +191,7 @@ console.warn(noteStr);
 
 
 async function playASong(songTitle) { // where we Play Notes  //important chordIsDone means we are not playing the chord. !chordIsDone means we are playing the chord or arpeggios.
-			
+
 			var noteStr = songTitle;
             // var noteStr = noteArray[arrayPlace][2]; // error spot 1
             // noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
@@ -248,6 +249,11 @@ console.warn(noteStr);
 
 async function playASongLink(songTitle) { // where we Play Notes  //important chordIsDone means we are not playing the chord. !chordIsDone means we are playing the chord or arpeggios.
 			resetSwitches();
+						if (playingState=="invisible"){
+	document.getElementById('pausePlayButton').hidden=false;
+	document.getElementById('pausePlayButton').innerHTML="&nbsp;&nbsp;&#9613;&#9613;";
+	playingState="playing";
+	}
 			var noteStr = songTitle;
             // var noteStr = noteArray[arrayPlace][2]; // error spot 1
             // noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
@@ -1266,6 +1272,22 @@ resetSwitches();
 		}
 	}
 	catch(error){console.error(error)}
+   }); 
+   $('#pausePlayButton').click(function () {
+	if (playingState=="invisible"){
+	document.getElementById('pausePlayButton').hidden=false;
+	playingState="playing";
+	} else if (playingState=="paused"){
+	currentSong.play();
+	playingState="playing";
+	document.getElementById('pausePlayButton').innerHTML="&nbsp;&nbsp;&#9613;&#9613;";
+	} else if (playingState=="playing"){
+		// alert ("yo")
+	currentSong.pause();
+	playingState="paused"
+	document.getElementById('pausePlayButton').innerHTML="&nbsp;&#9658;&nbsp;";
+	}
+	
    }); 
 
 $(function () {
