@@ -1179,6 +1179,14 @@ playASongLink("halo.mp3");
 playASongLink("centuries.mp3");
    // playASong("stromae");
    }); 
+   $('#sadipop').click(function () {
+	try{
+	currentSong.pause();
+	}
+	catch(error){}
+playASongLink("sadipop.mp3");
+   // playASong("stromae");
+   }); 
        $('#tochurch').click(function () {
 	try{
 	currentSong.pause();
@@ -1441,6 +1449,9 @@ currentSongKeys=["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
 }
 if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/centuries.mp3"){
 currentSongKeys=["A", "B", "C", "D", "E", "F#/Gb", "G"];
+}
+if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/sadipop.mp3"){
+currentSongKeys=["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
 }
 if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/halo.mp3"){
 currentSongKeys=["A", "B", "C#/Db", "D", "E", "F#/Gb", "G#/Ab"];
