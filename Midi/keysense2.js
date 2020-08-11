@@ -247,7 +247,7 @@ console.warn(noteStr);
 }
 
 async function playASongLink(songTitle) { // where we Play Notes  //important chordIsDone means we are not playing the chord. !chordIsDone means we are playing the chord or arpeggios.
-			
+			resetSwitches();
 			var noteStr = songTitle;
             // var noteStr = noteArray[arrayPlace][2]; // error spot 1
             // noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
@@ -576,7 +576,11 @@ $('#whitebtwo').click(function () {
 });
 
 onOffButtonHandle = function (choiceVariable, onButtonName, offButtonName){
-	if (choiceVariable=="unselected"){
+	if (choiceVariable=="unselect"){
+		document.getElementById(onButtonName).classList.remove('onButtonSelected');
+		document.getElementById(offButtonName).classList.remove('onButtonSelected');
+		document.getElementById(onButtonName).classList.remove('offButtonSelected');
+		document.getElementById(offButtonName).classList.remove('offButtonSelected');
 	}
 	else if (choiceVariable=="off"){
 		choiceVariable="off"
@@ -1230,6 +1234,9 @@ playASongLink("lighters.mp3");
 playASongLink("riseup.mp3");
    // playASong("stromae");
    }); 
+     $('#resetSwitchesButton').click(function () {
+resetSwitches();
+   }); 
    
          $('#submitButton').click(function () {
 	try{
@@ -1595,4 +1602,32 @@ alert ("You got it!! Select another song from the 'Select Song' pulldown menu ab
 else{
 alert ("Not Quite, click submit if you'd like to try again. Note, you'll have to enter your major key again.");
 }
+}
+
+resetSwitches = function (){
+cChoice="unselected";
+csChoice="unselected";
+dChoice="unselected";
+dsChoice="unselected";
+eChoice="unselected";
+fChoice="unselected";
+fsChoice="unselected";
+gChoice="unselected";
+gsChoice="unselected";
+aChoice="unselected";
+asChoice="unselected";
+bChoice="unselected";
+
+onOffButtonHandle ("unselect", 'cOnButton', 'cOffButton');
+onOffButtonHandle ("unselect", 'csOnButton', 'csOffButton');
+onOffButtonHandle ("unselect", 'dOnButton', 'dOffButton');
+onOffButtonHandle ("unselect", 'dsOnButton', 'dsOffButton');
+onOffButtonHandle ("unselect", 'eOnButton', 'eOffButton');
+onOffButtonHandle ("unselect", 'fOnButton', 'fOffButton');
+onOffButtonHandle ("unselect", 'fsOnButton', 'fsOffButton');
+onOffButtonHandle ("unselect", 'gOnButton', 'gOffButton');
+onOffButtonHandle ("unselect", 'gsOnButton', 'gsOffButton');
+onOffButtonHandle ("unselect", 'aOnButton', 'aOffButton');
+onOffButtonHandle ("unselect", 'asOnButton', 'asOffButton');
+onOffButtonHandle ("unselect", 'bOnButton', 'bOffButton');
 }
