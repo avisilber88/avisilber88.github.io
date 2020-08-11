@@ -1114,7 +1114,65 @@ playASongLink("sendmylove.mp3");
 playASongLink("closer.mp3");
    // playASong("stromae");
    }); 
-
+   
+         $('#oldtown').click(function () {
+	try{
+	currentSong.pause();
+	}
+	catch(error){}
+playASongLink("oldtown.mp3");
+   // playASong("stromae");
+   }); 
+         $('#ghost').click(function () {
+	try{
+	currentSong.pause();
+	}
+	catch(error){}
+playASongLink("ghost.mp3");
+   // playASong("stromae");
+   }); 
+            $('#highhopes').click(function () {
+	try{
+	currentSong.pause();
+	}
+	catch(error){}
+playASongLink("highhopes.mp3");
+   // playASong("stromae");
+   }); 
+              $('#phoenix').click(function () {
+	try{
+	currentSong.pause();
+	}
+	catch(error){}
+playASongLink("phoenix.mp3");
+   // playASong("stromae");
+   }); 
+   
+                $('#halo').click(function () {
+	try{
+	currentSong.pause();
+	}
+	catch(error){}
+playASongLink("halo.mp3");
+   // playASong("stromae");
+   }); 
+   
+             $('#centuries').click(function () {
+	try{
+	currentSong.pause();
+	}
+	catch(error){}
+playASongLink("centuries.mp3");
+   // playASong("stromae");
+   }); 
+       $('#tochurch').click(function () {
+	try{
+	currentSong.pause();
+	}
+	catch(error){}
+playASongLink("tochurch.mp3");
+   // playASong("stromae");
+   }); 
          $('#submitButton').click(function () {
 	try{
 		generateMySubmissionKeys();
@@ -1312,13 +1370,32 @@ if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/sendmylove.mp3"){
 currentSongKeys=["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
 }
 if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/closer.mp3"){
-currentSongKeys=["A#/Bb", "B", "C#/Db", "D#/Eb", "E", "F", "G#/Ab"];
+currentSongKeys=["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
 }
 
 if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/stromae.mp3"){
 currentSongKeys=["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
 }
-
-
+if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/oldtown.mp3"){
+currentSongKeys=["A#/Bb", "E", "C#/Db", "D#/Eb", "B", "F#/Gb", "G#/Ab"];
+}
+if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/ghost.mp3"){
+currentSongKeys=["A", "D", "C#/Db", "E", "B", "F#/Gb", "G#/Ab"];
+}
+if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/highhopes.mp3"){
+currentSongKeys=["A", "C", "D", "E", "B", "F", "A#/Bb"];
+}
+if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/phoenix.mp3"){
+currentSongKeys=["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
+}
+if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/centuries.mp3"){
+currentSongKeys=["A", "B", "C", "D", "E", "F#/Gb", "G"];
+}
+if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/halo.mp3"){
+currentSongKeys=["A", "B", "C#/Db", "D", "E", "F#/Gb", "G#/Ab"];
+}
+if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/tochurch.mp3"){
+currentSongKeys=["A", "B", "C", "D", "E", "F#/Gb", "G"];
+}
 currentSongKeys.sort();
 }
