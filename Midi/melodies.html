@@ -15,70 +15,62 @@
 	<script type = "text/javascript" src = "vendor/jquery-3.4.1.js"></script>
 	<link type = "text/css" rel = "stylesheet" href = "MidiApp2.css">
 	
+<link rel="stylesheet" href="vendor/preloader.css" type="text/css">
 	<link rel="stylesheet" href="vendor/notationmovement.css" type="text/css">
 	
 
 	<!--script src = "timbre.mmm"></script-->
 	<head>
 	
-	<audio id = "sound-A1" src = "samples/_A2.wav" preload = "auto"></audio>
-	<audio id = "sound-Bb1" src = "samples/_Bb2.wav" preload = "auto"></audio>
-	<audio id = "sound-B1" src = "samples/_B2.wav" preload = "auto"></audio>
-	<audio id = "sound-C2" src = "samples/_C3.wav" preload = "auto"></audio>
-	<audio id = "sound-Db2" src = "samples/_Db3.wav" preload = "auto"></audio>
-	<audio id = "sound-D2" src = "samples/_D3.wav" preload = "auto"></audio>
-	<audio id = "sound-Eb2" src = "samples/_Eb3.wav" preload = "auto"></audio>
-	<audio id = "sound-E2" src = "samples/_E3.wav" preload = "auto"></audio>
-	<audio id = "sound-F2" src = "samples/_F3.wav" preload = "auto"></audio>
-	<audio id = "sound-Gb2" src = "samples/_Gb3.wav" preload = "auto"></audio>
-	<audio id = "sound-G2" src = "samples/_G3.wav" preload = "auto"></audio>
-	<audio id = "sound-Ab2" src = "samples/_Ab3.wav" preload = "auto"></audio>
-	<audio id = "sound-A2" src = "samples/A2.ogg" preload = "auto"></audio>
-	<audio id = "sound-Bb2" src = "samples/Bb2.ogg" preload = "auto"></audio>
-	<audio id = "sound-B2" src = "samples/B2.ogg" preload = "auto"></audio>
-	<audio id = "sound-Ab3" src = "samples/Ab3.ogg" preload = "auto"></audio>
-	<audio id = "sound-A3" src = "samples/A3.ogg" preload = "auto"></audio>
-	<audio id = "sound-Bb3" src = "samples/Bb3.ogg" preload = "auto"></audio>
-	<audio id = "sound-B3" src = "samples/B3.ogg" preload = "auto"></audio>
-	<audio id = "sound-C3" src = "samples/C3.ogg" preload = "auto"></audio>
-	<audio id = "sound-Db3" src = "samples/Db3.ogg" preload = "auto"></audio>
-	<audio id = "sound-D3" src = "samples/D3.ogg" preload = "auto"></audio>
-	<audio id = "sound-Eb3" src = "samples/Eb3.ogg" preload = "auto"></audio>
-	<audio id = "sound-E3" src = "samples/E3.ogg" preload = "auto"></audio>
-	<audio id = "sound-F3" src = "samples/F3.ogg" preload = "auto"></audio>
-	<audio id = "sound-Gb3" src = "samples/Gb3.ogg" preload = "auto"></audio>
-	<audio id = "sound-G3" src = "samples/G3.ogg" preload = "auto"></audio>
-	<audio id = "sound-Ab4" src = "samples/Ab4.ogg" preload = "auto"></audio>
-	<audio id = "sound-A4" src = "samples/A4.ogg" preload = "auto"></audio>
-	<audio id = "sound-Bb4" src = "samples/Bb4.ogg" preload = "auto"></audio>
-	<audio id = "sound-B4" src = "samples/B4.ogg" preload = "auto"></audio>
-	<audio id = "sound-C4" src = "samples/C4.ogg" preload = "auto"></audio>
-	<audio id = "sound-Db4" src = "samples/Db4.ogg" preload = "auto"></audio>
-	<audio id = "sound-D4" src = "samples/D4.ogg" preload = "auto"></audio>
-	<audio id = "sound-Eb4" src = "samples/Eb4.ogg" preload = "auto"></audio>
-	<audio id = "sound-E4" src = "samples/E4.ogg" preload = "auto"></audio>
-	<audio id = "sound-F4" src = "samples/F4.ogg" preload = "auto"></audio>
-	<audio id = "sound-Gb4" src = "samples/Gb4.ogg" preload = "auto"></audio>
-	<audio id = "sound-G4" src = "samples/G4.ogg" preload = "auto"></audio>
-	<audio id = "sound-C5" src = "samples/C5.ogg" preload = "auto"></audio>
-	<audio id = "sound-Db5" src = "samples/5_Db4_4.wav" preload = "auto"></audio>
-	<audio id = "sound-D5" src = "samples/5_D4_3.wav" preload = "auto"></audio>
-	<audio id = "sound-Eb5" src = "samples/5_Eb4_3.wav" preload = "auto"></audio>
-	<audio id = "sound-E5" src = "samples/5_E4_3.wav" preload = "auto"></audio>
-	<audio id = "sound-F5" src = "samples/5_F4_3.wav" preload = "auto"></audio>
-	<audio id = "sound-Gb5" src = "samples/5_Gb4_3.wav" preload = "auto"></audio>
-	<audio id = "sound-G5" src = "samples/5_G4_2.wav" preload = "auto"></audio>
-	<audio id = "sound-Ab5" src = "samples/5_Ab4_2.wav" preload = "auto"></audio>
-	<audio id = "sound-A5" src = "samples/5_A4_2.wav" preload = "auto"></audio>
-	<audio id = "sound-Bb5" src = "samples/5_Bb4_2.wav" preload = "auto"></audio>
-	<audio id = "sound-B5" src = "samples/5_B4_2.wav" preload = "auto"></audio>
-	<audio id = "sound-C6" src = "samples/5_C5_2.wav" preload = "auto"></audio>
-
+	<audio id = "sound-A2" data-src = "samplestwo/A2.mp3"></audio>
+	<audio id = "sound-Bb2" data-src = "samplestwo/Bb2.mp3"></audio>
+	<audio id = "sound-B2" data-src = "samplestwo/B2.mp3"></audio>
+	<audio id = "sound-Ab3" data-src = "samplestwo/Ab3.mp3"></audio>
+	<audio id = "sound-A3" data-src = "samplestwo/A3.mp3"></audio>
+	<audio id = "sound-Bb3" data-src = "samplestwo/Bb3.mp3"></audio>
+	<audio id = "sound-B3" data-src = "samplestwo/B3.mp3"></audio>
+	<audio id = "sound-C3" data-src = "samplestwo/C3.mp3"></audio>
+	<audio id = "sound-Db3" data-src = "samplestwo/Db3.mp3"></audio>
+	<audio id = "sound-D3" data-src = "samplestwo/D3.mp3"></audio>
+	<audio id = "sound-Eb3" data-src = "samplestwo/Eb3.mp3"></audio>
+	<audio id = "sound-E3" data-src = "samplestwo/E3.mp3"></audio>
+	<audio id = "sound-F3" data-src = "samplestwo/F3.mp3"></audio>
+	<audio id = "sound-Gb3" data-src = "samplestwo/Gb3.mp3"></audio>
+	<audio id = "sound-G3" data-src = "samplestwo/G3.mp3"></audio>
+	<audio id = "sound-Ab4" data-src = "samplestwo/Ab4.mp3"></audio>
+	<audio id = "sound-A4" data-src = "samplestwo/A4.mp3"></audio>
+	<audio id = "sound-Bb4" data-src = "samplestwo/Bb4.mp3"></audio>
+	<audio id = "sound-B4" data-src = "samplestwo/B4.mp3"></audio>
+	<audio id = "sound-C4" data-src = "samplestwo/C4.mp3"></audio>
+	<audio id = "sound-Db4" data-src = "samplestwo/Db4.mp3"></audio>
+	<audio id = "sound-D4" data-src = "samplestwo/D4.mp3"></audio>
+	<audio id = "sound-Eb4" data-src = "samplestwo/Eb4.mp3"></audio>
+	<audio id = "sound-E4" data-src = "samplestwo/E4.mp3"></audio>
+	<audio id = "sound-F4" data-src = "samplestwo/F4.mp3"></audio>
+	<audio id = "sound-Gb4" data-src = "samplestwo/Gb4.mp3"></audio>
+	<audio id = "sound-G4" data-src = "samplestwo/G4.mp3"></audio>
+	<audio id = "sound-C5" data-src = "samplestwo/C5.mp3"></audio>
+	<audio id = "sound-Db5" data-src = "samplestwo/5_Db4_4.mp3"></audio>
+	<audio id = "sound-D5" data-src = "samplestwo/5_D4_3.mp3"></audio>
+	<audio id = "sound-Eb5" data-src = "samplestwo/5_Eb4_3.mp3"></audio>
+	<audio id = "sound-E5" data-src = "samplestwo/5_E4_3.mp3"></audio>
+	<audio id = "sound-F5" data-src = "samplestwo/5_F4_3.mp3"></audio>
+	<audio id = "sound-Gb5" data-src = "samplestwo/5_Gb4_3.mp3"></audio>
+	<audio id = "sound-G5" data-src = "samplestwo/5_G4_2.mp3"></audio>
+	<audio id = "sound-Ab5" data-src = "samplestwo/5_Ab4_2.mp3"></audio>
+	<audio id = "sound-A5" data-src = "samplestwo/5_A4_2.mp3"></audio>
+	<audio id = "sound-Bb5" data-src = "samplestwo/5_Bb4_2.mp3"></audio>
+	<audio id = "sound-B5" data-src = "samplestwo/5_B4_2.mp3"></audio>
+	<audio id = "sound-C6" data-src = "samplestwo/5_C5_2.mp3"></audio>
 	<!--LINK JQUERY-->
 
 	<!--PERSONAL SCRIPT JavaScript-->
 	</head>
 	<body data-step="0">
+		<div id="app-preloader">
+    <label for="preload-progress-bar">Downloading sounds and image files: <span class="progress-percentage"></span></label>
+    <progress id="preload-progress-bar"></progress>
+	</div>
 <div id="dropdown"><p>
   <select name="basic[]" multiple="multiple" class="3col active">
 	<option value="majorScale" selected id = "majS">Major Scale</option>
@@ -188,4 +180,7 @@ function myFunction() {
 <div id="countdown">01:00</div>
 
 <script src = "MelodyApp.js"></script>
+
+<script src="helper.js"></script>
+<script src="vendor/preloader.js"></script>
 </body>

@@ -254,6 +254,10 @@ async function playASongLink(songTitle) { // where we Play Notes  //important ch
 	document.getElementById('pausePlayButton').innerHTML="&nbsp;&nbsp;&#9613;&#9613;";
 	playingState="playing";
 	}
+	if (playingState=="paused"){
+	document.getElementById('pausePlayButton').innerHTML="&nbsp;&nbsp;&#9613;&#9613;";
+	playingState="playing";
+	}
 			var noteStr = songTitle;
             // var noteStr = noteArray[arrayPlace][2]; // error spot 1
             // noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
