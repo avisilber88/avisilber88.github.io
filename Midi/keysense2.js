@@ -103,6 +103,20 @@ var noteArray = [
     [1975.5, "B6", "B6"],
     [1000000, "rest", "rest"],
 ];
+var cMajorScale=["A", "B", "C", "D", "E", "F", "G"];
+var cSharpMajorScale=["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
+var dMajorScale=["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
+var dSharpMajorScale=["A#/Bb", "C", "D", "D#/Eb", "F", "G", "G#/Ab"];
+var eMajorScale=["A", "B", "C#/Db", "D#/Eb", "E", "F#/Gb", "G#/Ab"];
+var fMajorScale=["A", "A#/Bb", "C", "D", "E", "F", "G"];
+var fSharpMajorScale=["A#/Bb", "B", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
+var gMajorScale=["A", "B", "C", "D", "E", "F#/Gb", "G"];
+var gSharpMajorScale=["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "G", "G#/Ab"];
+var aMajorScale=["A", "B", "C#/Db", "D", "E", "F#/Gb", "G#/Ab"];
+var aSharpMajorScale=["A", "A#/Bb", "C", "D", "D#/Eb", "F", "G"];
+var bMajorScale=["A#/Bb", "B", "C#/Db", "D#/Eb", "E", "F#/Gb", "G#/Ab"];
+
+
 function soundId(id) {
     if (instrument == "humanVoice") {
         // alert ("human");
@@ -1221,7 +1235,8 @@ playASongLink("riseup.mp3");
 	
 		try{
 		if (JSON.stringify(mySubmissionKeys) === JSON.stringify(currentSongKeys)){
-			alert('YOU GOT IT!!!');
+			let answer=prompt('YOU GOT IT!!! Now... \n\nfollow-up question... what major key is this?');
+			checkMajorKeyAnswer(answer);
 		}
 		else{
 			alert ('Not quite, try again');
@@ -1446,4 +1461,127 @@ if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/lighters.mp3"){
 currentSongKeys=["A#/Bb", "C", "D#/Eb", "D", "F", "G", "G#/Ab"];
 }
 currentSongKeys.sort();
+}
+
+getMajorKey =function(localArrayOfNotes){
+	localArrayOfNotes.sort();
+	let thisLocalKey="";
+	if(JSON.stringify(localArrayOfNotes) === JSON.stringify(cMajorScale)){
+		thisLocalKey="C"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(cSharpMajorScale)){
+		thisLocalKey="C#/Db"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(dMajorScale)){
+		thisLocalKey="D"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(dSharpMajorScale)){
+		thisLocalKey="D#/Eb"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(eMajorScale)){
+		thisLocalKey="E"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(fMajorScale)){
+		thisLocalKey="F"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(fSharpMajorScale)){
+		thisLocalKey="F#/Gb"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(gMajorScale)){
+		thisLocalKey="G"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(gSharpMajorScale)){
+		thisLocalKey="G#/Ab"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(aMajorScale)){
+		thisLocalKey="A"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(aSharpMajorScale)){
+		thisLocalKey="A#/Bb"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(bMajorScale)){
+		thisLocalKey="B"
+	}		
+	return (thisLocalKey);
+}
+
+getMinorKey =function(localArrayOfNotes){
+	localArrayOfNotes.sort();
+	let thisLocalKey="";
+	if(JSON.stringify(localArrayOfNotes) === JSON.stringify(cMajorScale)){
+		thisLocalKey="A"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(cSharpMajorScale)){
+		thisLocalKey="A#/Bb"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(dMajorScale)){
+		thisLocalKey="B"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(dSharpMajorScale)){
+		thisLocalKey="C"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(eMajorScale)){
+		thisLocalKey="C#/Db"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(fMajorScale)){
+		thisLocalKey="D"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(fSharpMajorScale)){
+		thisLocalKey="D#/Eb"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(gMajorScale)){
+		thisLocalKey="E"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(gSharpMajorScale)){
+		thisLocalKey="F"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(aMajorScale)){
+		thisLocalKey="F#/Gb"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(aSharpMajorScale)){
+		thisLocalKey="G"
+	} else if(JSON.stringify(localArrayOfNotes) === JSON.stringify(bMajorScale)){
+		thisLocalKey="G#/Ab"
+	}		
+	return (thisLocalKey);
+}
+
+checkMajorKeyAnswer = function(userAnswer){
+if (userAnswer=="C#"){
+userAnswer="C#/Db";
+} else if (userAnswer=="Db"){
+userAnswer="C#/Db";
+} else if (userAnswer=="D#"){
+userAnswer="D#/Eb";
+} else if (userAnswer=="Eb"){
+userAnswer="D#/Eb";
+} else if (userAnswer=="F#"){
+userAnswer="F#/Gb";
+} else if (userAnswer=="Gb"){
+userAnswer="F#/Gb";
+} else if (userAnswer=="G#"){
+userAnswer="G#/Ab";
+} else if (userAnswer=="Ab"){
+userAnswer="G#/Ab";
+} else if (userAnswer=="A#"){
+userAnswer="A#/Bb";
+} else if (userAnswer=="Bb"){
+userAnswer="A#/Bb";
+}
+if (userAnswer===getMajorKey(currentSongKeys)){
+let answer=prompt('YOU GOT IT!!! Now... \n\nfollow-up question... what minor key is this?');
+			checkMinorKeyAnswer(answer);
+}
+else{
+alert ("Not Quite, click submit if you'd like to try again!");
+}
+}
+
+checkMinorKeyAnswer = function(userAnswer){
+if (userAnswer=="C#"){
+userAnswer="C#/Db";
+} else if (userAnswer=="Db"){
+userAnswer="C#/Db";
+} else if (userAnswer=="D#"){
+userAnswer="D#/Eb";
+} else if (userAnswer=="Eb"){
+userAnswer="D#/Eb";
+} else if (userAnswer=="F#"){
+userAnswer="F#/Gb";
+} else if (userAnswer=="Gb"){
+userAnswer="F#/Gb";
+} else if (userAnswer=="G#"){
+userAnswer="G#/Ab";
+} else if (userAnswer=="Ab"){
+userAnswer="G#/Ab";
+} else if (userAnswer=="A#"){
+userAnswer="A#/Bb";
+} else if (userAnswer=="Bb"){
+userAnswer="A#/Bb";
+}
+if (userAnswer===getMinorKey(currentSongKeys)){
+alert ("You got it!! Select another song from the 'Select Song' pulldown menu above. Once you have gotten five songs in a row perfectly that is probably a sign that you have masterd this skill.")
+}
+else{
+alert ("Not Quite, click submit if you'd like to try again. Note, you'll have to enter your major key again.");
+}
 }
