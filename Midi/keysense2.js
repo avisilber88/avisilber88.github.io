@@ -1191,6 +1191,15 @@ playASongLink("glory.mp3");
    // playASong("stromae");
    }); 
    
+       $('#lighters').click(function () {
+	try{
+	currentSong.pause();
+	}
+	catch(error){}
+playASongLink("lighters.mp3");
+   // playASong("stromae");
+   }); 
+   
    $('#riseup').click(function () {
 	try{
 	currentSong.pause();
@@ -1432,6 +1441,9 @@ currentSongKeys=["A", "B", "C", "D", "E", "F", "G"];
 }
 if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/riseup.mp3"){
 currentSongKeys=["A#/Bb", "F", "C#/Db", "C", "D#/Eb", "F#/Gb", "G#/Ab"];
+}
+if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/lighters.mp3"){
+currentSongKeys=["A", "B", "C#/Db", "D", "E", "F#/Gb", "G#/Ab"];
 }
 currentSongKeys.sort();
 }
