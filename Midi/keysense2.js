@@ -1544,28 +1544,29 @@ getMinorKey =function(localArrayOfNotes){
 }
 
 checkMajorKeyAnswer = function(userAnswer){
+userAnswer=userAnswer.toUpperCase()
 if (userAnswer=="C#"){
-userAnswer="C#/Db";
-} else if (userAnswer=="Db"){
-userAnswer="C#/Db";
+userAnswer="C#/DB";
+} else if (userAnswer=="DB"){
+userAnswer="C#/DB";
 } else if (userAnswer=="D#"){
-userAnswer="D#/Eb";
-} else if (userAnswer=="Eb"){
-userAnswer="D#/Eb";
+userAnswer="D#/EB";
+} else if (userAnswer=="EB"){
+userAnswer="D#/EB";
 } else if (userAnswer=="F#"){
-userAnswer="F#/Gb";
-} else if (userAnswer=="Gb"){
-userAnswer="F#/Gb";
+userAnswer="F#/GB";
+} else if (userAnswer=="GB"){
+userAnswer="F#/GB";
 } else if (userAnswer=="G#"){
-userAnswer="G#/Ab";
-} else if (userAnswer=="Ab"){
-userAnswer="G#/Ab";
+userAnswer="G#/AB";
+} else if (userAnswer=="AB"){
+userAnswer="G#/AB";
 } else if (userAnswer=="A#"){
-userAnswer="A#/Bb";
-} else if (userAnswer=="Bb"){
-userAnswer="A#/Bb";
+userAnswer="A#/BB";
+} else if (userAnswer=="BB"){
+userAnswer="A#/BB";
 }
-if (userAnswer===getMajorKey(currentSongKeys)){
+if (userAnswer.toLowerCase()===getMajorKey(currentSongKeys).toLowerCase()){
 let answer=prompt('YOU GOT IT!!! Now... \n\nfollow-up question... what minor key is this?');
 			checkMinorKeyAnswer(answer);
 }
@@ -1575,28 +1576,30 @@ alert ("Not Quite, click submit if you'd like to try again!");
 }
 
 checkMinorKeyAnswer = function(userAnswer){
+	
+userAnswer=userAnswer.toUpperCase()
 if (userAnswer=="C#"){
-userAnswer="C#/Db";
-} else if (userAnswer=="Db"){
-userAnswer="C#/Db";
+userAnswer="C#/DB";
+} else if (userAnswer=="DB"){
+userAnswer="C#/DB";
 } else if (userAnswer=="D#"){
-userAnswer="D#/Eb";
-} else if (userAnswer=="Eb"){
-userAnswer="D#/Eb";
+userAnswer="D#/EB";
+} else if (userAnswer=="EB"){
+userAnswer="D#/EB";
 } else if (userAnswer=="F#"){
-userAnswer="F#/Gb";
-} else if (userAnswer=="Gb"){
-userAnswer="F#/Gb";
+userAnswer="F#/GB";
+} else if (userAnswer=="GB"){
+userAnswer="F#/GB";
 } else if (userAnswer=="G#"){
-userAnswer="G#/Ab";
-} else if (userAnswer=="Ab"){
-userAnswer="G#/Ab";
+userAnswer="G#/AB";
+} else if (userAnswer=="AB"){
+userAnswer="G#/AB";
 } else if (userAnswer=="A#"){
-userAnswer="A#/Bb";
-} else if (userAnswer=="Bb"){
-userAnswer="A#/Bb";
+userAnswer="A#/BB";
+} else if (userAnswer=="BB"){
+userAnswer="A#/BB";
 }
-if (userAnswer===getMinorKey(currentSongKeys)){
+if (userAnswer.toLowerCase()===getMinorKey(currentSongKeys).toLowerCase()){
 alert ("You got it!! Select another song from the 'Select Song' pulldown menu above. Once you have gotten five songs in a row perfectly that is probably a sign that you have masterd this skill.")
 }
 else{
