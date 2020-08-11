@@ -1443,7 +1443,7 @@ if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/riseup.mp3"){
 currentSongKeys=["A#/Bb", "F", "C#/Db", "C", "D#/Eb", "F#/Gb", "G#/Ab"];
 }
 if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/lighters.mp3"){
-currentSongKeys=["A", "B", "C#/Db", "D", "E", "F#/Gb", "G#/Ab"];
+currentSongKeys=["A#/Bb", "C", "D#/Eb", "D", "F", "G", "G#/Ab"];
 }
 currentSongKeys.sort();
 }
