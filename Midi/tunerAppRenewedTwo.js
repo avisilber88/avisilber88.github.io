@@ -11548,6 +11548,6 @@ $('#playTargetButton').click(function () {
 auth();
 document.getElementById('card-section').style.display = 'none';
 initTuner();
- doSomethingAlertify("Welcome to Rhythm Sense! Login and then select your level from the pull-down menu.", logintothisapp, "Login here");
+ doSomethingAlertify("Welcome to Harmony Sense! Login and then select your level from the pull-down menu.", logintothisapp, "Login here");
 
 window.tuner_rand = 1111111;
