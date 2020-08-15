@@ -179,7 +179,7 @@ if ((anotherLocalArray.length == correctChord.length)||(answerRevealed)) {
         }
 		else{
 			if (correctChord.length>1){
-			document.getElementById("warning").innerHTML = "<style='fontSize:15px;'>Remember, there ssould be " + correctChord.length+" notes in this chord"; //(arrangeNote(specificActiveChord[0]));
+			document.getElementById("warning").innerHTML = "<style='fontSize:15px;'>Remember, there should be " + correctChord.length+" notes in this chord"; //(arrangeNote(specificActiveChord[0]));
 			}
 			else{ 
 			document.getElementById("warning").innerHTML = "<style='fontSize:15px;'>Remember, there should only be " + correctChord.length+" note in this chord"; //(arrangeNote(specificActiveChord[0]));
@@ -695,12 +695,12 @@ function showNotes(arrayOfNotes) {
             // alert(pickedInversion);
             if (pickedInversion == i) {
                 // alert("yo" + pickedInversion);
-                makeAndShowANote((arrayOfNotes[i] + octaveAdder - 12) + '', '2', "referenceNote");
+                // makeAndShowANote((arrayOfNotes[i] + octaveAdder - 12) + '', '2', "referenceNote");
             } else {
-                makeAndShowANote(arrayOfNotes[i] + octaveAdder, '2', "referenceNote");
+                // makeAndShowANote(arrayOfNotes[i] + octaveAdder, '2', "referenceNote");
             }
         } else {
-            makeAndShowANote(arrayOfNotes[i] + octaveAdder, '2', "referenceNote");
+            // makeAndShowANote(arrayOfNotes[i] + octaveAdder, '2', "referenceNote");
         }
     }
 
@@ -2110,7 +2110,7 @@ function setupChord(rootNote) {
     }
     rightAnswer();
     // alert(correctChord.toString());
-    showNotes(correctChord);
+    // showNotes(correctChord);
 }
 
 function setupMajRoman(rN) {
