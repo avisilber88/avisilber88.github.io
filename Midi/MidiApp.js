@@ -6,7 +6,10 @@ var pickedInversion = 0;
 var currentStep = -1;
 var score = 1;
 var octaveSetting = 24;
+var lowestNote=0;
+var middleNoteSet=false;
 // Timer length
+var middleNote=0;
 var timerLength = 10 / 60; // in minutes
 var timerTripped = false;
 // Lock 1 variables
@@ -55,7 +58,7 @@ var isFlat = false;
     });
 var noteArray = [
     [32.703, "C1", "C1"], //0
-    [34.648, "C1#", "C2b"],
+    [34.648, "C1#", "D2b"],
     [36.708, "D1", "D1"],
     [38.891, "D1#", "E1b"],
     [41.203, "E1", "E1"],
@@ -65,7 +68,7 @@ var noteArray = [
     [51.913, "G1#", "A1b"],
     [55, "A1", "A1"], //9, Avi says this is our first note that we have audio for
     [58.27, "A1#", "B1b"], //10
-    [61.735, "B1", "B1"], //11
+    [61.735, "B1", "C2b"], //11
     [65.406, "C2", "C2"], //12
     [69.296, "C2#", "D2b"], //13
     [73.416, "D2", "D2"], //14
@@ -77,7 +80,7 @@ var noteArray = [
     [103.83, "G2#", "A2b"],
     [110, "A2", "A2"],
     [116.54, "A2#", "B2b"],
-    [123.47, "B2", "B2"],
+    [123.47, "B2", "C3b"],
     [130.81, "C3", "C3"], //24 C's are always multiples of 12
     [138.59, "C3#", "D3b"],
     [146.83, "D3", "D3"],
@@ -89,7 +92,7 @@ var noteArray = [
     [207.65, "G3#", "A3b"],
     [220, "A3", "A3"],
     [233.08, "A3#", "B3b"],
-    [246.94, "B3", "B3"],
+    [246.94, "B3", "C4b"],
     [261.63, "C4", "C4"], //36
     [277.18, "C4#", "D4b"],
     [293.66, "D4", "D4"],
@@ -101,7 +104,7 @@ var noteArray = [
     [415.3, "G4#", "A4b"],
     [440, "A4", "A4"],
     [466.16, "A4#", "B4b"],
-    [493.88, "B4", "B4"],
+    [493.88, "B4", "C5b"],
     [523.25, "C5", "C5"],
     [554.37, "C5#", "D5b"],
     [587.33, "D5", "D5"],
@@ -113,7 +116,7 @@ var noteArray = [
     [830.61, "G5#", "A5b"],
     [880, "A5", "A5"],
     [932.33, "A5#", "B5b"],
-    [987.77, "B5", "B5"],
+    [987.77, "B5", "C6b"],
     [1046.5, "C6", "C6"], //Avi is not sure but he thinks this is 53
     [1108.7, "C6#", "D6b"],
     [1174.7, "D6", "D6"],
@@ -540,7 +543,66 @@ $('#octaveDown').click(function () {
     }
 });
 
+function findMiddleNote(arrayOfNotes){
+	let arrayOfNotesLocal=JSON.parse(JSON.stringify(arrayOfNotes));
+	    let octaveAdder = octaveSetting;
+    if (pickedInversion != 0) {
+
+        octaveAdder = octaveSetting + 12; ;
+    }
+	    for (var i = 0; i < arrayOfNotesLocal.length; i++) {
+        if (i > 0) {
+            if (arrayOfNotesLocal[i] < arrayOfNotesLocal[i - 1]) {
+                octaveAdder = octaveAdder + 12;
+            }
+
+        }
+        // noteStr = noteArray[arrayOfNotes[0]+24][1];
+        // partOne = noteStr.slice(0, 1) + '';
+        // partTwo = noteStr.slice(+2) + '';
+        // partThree = noteStr.slice(1, 2) + '';
+        // const note = new VF.StaveNote({
+        // clef: 'bass',
+        // keys: [partOne, partTwo, partThree],
+        // duration: '1',
+        // }).setContext(context).setStave(staveBass);
+        // if (partTwo)
+        // note.addAccidental(0, new VF.Accidental(partTwo));
+        if ((pickedInversion != 0)) {
+            // alert(pickedInversion);
+            if (pickedInversion == i) {
+                // alert("yo" + pickedInversion);
+                arrayOfNotesLocal[i]=arrayOfNotesLocal[i] + octaveAdder - 12;
+            } else {
+                arrayOfNotesLocal[i]=arrayOfNotesLocal[i] + octaveAdder;
+            }
+        } else {
+            arrayOfNotesLocal[i]=arrayOfNotesLocal[i] + octaveAdder;
+        }
+    }
+	console.error('ordering '+arrayOfNotesLocal.toString());
+	arrayOfNotesLocal.sort();
+	if (arrayOfNotesLocal.lengtth>2){
+	middleNote=arrayOfNotesLocal[1];
+	}
+	else{
+	middleNote=arrayOfNotesLocal[0];
+	}
+	
+	if (Math.abs(middleNote-36)<4){
+		
+	middleNote=37-(Math.random()*2);
+	}
+	middleNoteSet=true;
+	
+}
+
+
 function showNotes(arrayOfNotes) {
+	console.error(arrayOfNotes.toString());
+	if (!middleNoteSet){
+	findMiddleNote(arrayOfNotes);
+	}
     // let noteStr = noteArray[arrayOfNotes[0]+24][1];
     // let partOne = noteStr.slice(0, 1) + '';
     // let partTwo = noteStr.slice(+2) + '';
@@ -689,10 +751,18 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
 			noteStr = noteArray[noteArrayNum][2];
 		} 
 		else if (currentChordName.includes('Dbm')){}
-        else if ((currentChordName.includes('b'))||(currentChordName.includes('Gm'))||(currentChordName.includes('Cm'))||(currentChordName.includes('Dm'))||((currentChordName.includes('F'))&&(!(currentChordName.includes('#'))))) {
+        else if ((currentChordName.includes('b'))||((currentChordName.includes('Gm'))&&(!(currentChordName.includes('aj'))))||((currentChordName.includes('Cm'))&&(!(currentChordName.includes('aj'))))||((currentChordName.includes('Dm'))&&(!(currentChordName.includes('aj'))))||((currentChordName.includes('F'))&&(!(currentChordName.includes('#'))))) {
             console.warn(noteStr+' wewentwithsecond');
 			noteStr = noteArray[noteArrayNum][2];
-        }
+        } else if ((noteStr.includes('F'))&&(!(noteStr.includes('#')))){
+			if ((currentChordName.includes('C#'))||(currentChordName.includes('F#'))||(currentChordName.includes('G#'))||(currentChordName.includes('D#'))||(currentChordName.includes('A#'))){
+			if (currentChordName.includes('maj')){
+				noteStr= noteStr.replace('F', 'E');
+				noteStr= noteStr+'#';
+			}
+			
+			}
+		}
 	
         // noteStr='E5';
         // alert (noteStr);
@@ -706,7 +776,8 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
 
 
         if (wholesToTieAtTheBeginning > 0) {
-            if (noteArrayNum >= 36) {
+			
+            if (middleNote >= 36) {
                 noteWhole = [
                     [partOne, partTwo, partThree]
                 ].map(([letter, acc, octave]) => {
@@ -744,7 +815,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
         }
         if (tieOn) {
             console.log("tie on");
-            if (noteArrayNum >= 36) {
+            if (middleNote >= 36) {
                 notes = [
                     [partOne, partTwo, partThree, tieAmountOne]
                 ].map(([letter, acc, octave, tieAmount]) => {
@@ -885,7 +956,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
 
 
             //Start AREA OF NO TIES!
-            if (noteArrayNum >= 36) {
+            if (middleNote >= 36) {
                 notes = [
                     [partOne, partTwo, partThree]
                 ].map(([letter, acc, octave]) => {
@@ -1713,6 +1784,7 @@ function getChordName() {
 }
 
 function newChord() {
+	middleNoteSet=false;
 	console.warn("newChord");
     document.getElementById("keyboardImg2").src = "Blank Keyboard.jpeg";
     var thisChord = Math.floor(Math.random() * 24) + 1;
