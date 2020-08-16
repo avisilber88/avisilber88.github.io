@@ -2239,16 +2239,16 @@ function setupMajRoman(rN) {
 function setupMinRoman(rN) {
     switch (rN) {
     case 9:
-        currentChordName = "i in A";
-        currentImageName = "i in A";
+        currentChordName = "i in Am";
+        currentImageName = "i in Am";
         rN = fixNote(rN);
         var third = fixNote(rN + 3);
         var fifth = fixNote(rN + 7);
         correctChord = [rN, third, fifth];
         break;
     case 12:
-        currentChordName = "III in A"
-            currentImageName = "III in A"
+        currentChordName = "III in Am"
+            currentImageName = "III in Am"
             rN = fixNote(rN);
         rN = fixNote(rN);
         var third = fixNote(rN + 4);
@@ -2256,32 +2256,32 @@ function setupMinRoman(rN) {
         correctChord = [rN, third, fifth];
         break;
     case 2:
-        currentChordName = "iv in A"
-            currentImageName = "iv in A"
+        currentChordName = "iv in Am"
+            currentImageName = "iv in Am"
             rN = fixNote(rN);
         var third = fixNote(rN + 3);
         var fifth = fixNote(rN + 7);
         correctChord = [rN, third, fifth];
         break;
     case 4:
-        currentChordName = "v in A"
-            currentImageName = "v in A"
+        currentChordName = "v in Am"
+            currentImageName = "v in Am"
             rN = fixNote(rN);
         var third = fixNote(rN + 3);
         var fifth = fixNote(rN + 7);
         correctChord = [rN, third, fifth];
         break;
     case 5:
-        currentChordName = "VI in A"
-            currentImageName = "VI in A"
+        currentChordName = "VI in Am"
+            currentImageName = "VI in Am"
             rN = fixNote(rN);
         var third = fixNote(rN + 4);
         var fifth = fixNote(rN + 7);
         correctChord = [rN, third, fifth];
         break;
     case 7:
-        currentChordName = "VII in A"
-            currentImageName = "VII in A"
+        currentChordName = "VII in Am"
+            currentImageName = "VII in Am"
             rN = fixNote(rN);
         var third = fixNote(rN + 4);
         var fifth = fixNote(rN + 7);
