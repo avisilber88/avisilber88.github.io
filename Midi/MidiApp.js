@@ -44,6 +44,15 @@ var wholesToTieAtTheBeginning = 0;
 var sequenceOn = false;
 var isFlat = false;
 
+    document.getElementById("dropdown").addEventListener("change", function () {
+        //	alert("got");
+        if (score > 4) {
+            score = score - 3;
+            document.getElementById("sp").innerHTML = " ";
+        }
+		console.warn("restchordfromrunsequence");
+        resetChord();
+    });
 var noteArray = [
     [32.703, "C1", "C1"], //0
     [34.648, "C1#", "C2b"],
@@ -513,7 +522,7 @@ $('#sheetButton').click(function () {
         score = score - 3;
         document.getElementById("sp").innerHTML = " ";
     }
-
+	console.warn("restchordfromsheetbutton");
     resetChord();
 
 });
@@ -662,9 +671,29 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
         var currentWholeImageNote = noteWhole[0];
 
         let noteStr = noteArray[noteArrayNum][1];
-        if (currentChordName.includes('b')) {
-            noteStr = noteArray[noteArrayNum][2];
+		console.warn(noteStr+" "+currentChordName);
+		if (currentChordName.includes('Gb')){
+		
+		currentChordName = currentChordName.replace("Gb", "F#");
+		} 
+		else if ((currentChordName.includes('D#'))&&(!(currentChordName.includes('m')))){
+		
+			noteStr = noteArray[noteArrayNum][2];
+		} 
+		else if ((currentChordName.includes('G#'))&&(!(currentChordName.includes('m')))){
+		
+			noteStr = noteArray[noteArrayNum][2];
+		} 
+		else if ((currentChordName.includes('C#'))&&(!(currentChordName.includes('m')))){
+		
+			noteStr = noteArray[noteArrayNum][2];
+		} 
+		else if (currentChordName.includes('Dbm')){}
+        else if ((currentChordName.includes('b'))||(currentChordName.includes('Gm'))||(currentChordName.includes('Cm'))||(currentChordName.includes('Dm'))||((currentChordName.includes('F'))&&(!(currentChordName.includes('#'))))) {
+            console.warn(noteStr+' wewentwithsecond');
+			noteStr = noteArray[noteArrayNum][2];
         }
+	
         // noteStr='E5';
         // alert (noteStr);
         let partOne = noteStr.slice(0, 1) + '';
@@ -672,6 +701,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
         let partThree = noteStr.slice(1, 2) + '';
         // alert (partOne+" "+partTwo+" "+partThree+" ");
         noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
+		console.warn(noteStr);
         //Start AREA OF TIES!
 
 
@@ -1193,6 +1223,7 @@ jQuery(function ($) {
         } else {
             element.addClass('visible');
         }
+		console.warn("resetchordfromdropdownlist");
         resetChord();
     });
 });
@@ -1200,10 +1231,12 @@ jQuery(function ($) {
 //$("#ez5").change(resetChord());
 
 function resetChord() {
-
+	if (countChordTypesSelected()>0){
+	console.warn("resetChord");
     //alert ("done");
     clearChord();
     newChord();
+	}
 }
 function onMIDIFailure() {
     document.querySelector('.step0').innerHTML = 'Error: Could not access MIDI devices. Connect a device and refresh to try again.';
@@ -1291,6 +1324,8 @@ function noteOnListener(note, velocity) {
         // The first noteOn message we get will run the first sequence
     case 0:
         // Run our start up sequence
+		
+			console.warn('runsequence from noteonlistener');
         runSequence('gamestart');
 
         // Increment the currentStep so this is only triggered once
@@ -1321,6 +1356,8 @@ function noteOnListener(note, velocity) {
 
             if (match) {
                 // Run the next sequence and increment the current step
+				
+			console.warn('runsequence from match');
                 runSequence('lock1');
                 currentStep++;
             } else {
@@ -1386,6 +1423,8 @@ function noteOnListener(note, velocity) {
                     score = score + .05;
                 timerLength = (11.0 - score) / 60.0;
                 document.getElementById("score").innerHTML = "Current Score = " + score.toFixed(2);
+				
+			console.warn('runsequence from match lock2');
                 runSequence('lock2');
                 document.getElementById("keyboardImg2").src = "Blank Keyboard.jpeg";
                 //	currentStep--;
@@ -1580,15 +1619,35 @@ function noteOffListener(note) {
 }
 
 function runSequence(sequence) {
-    document.getElementById("dropdown").addEventListener("click", function () {
-        //	alert("got");
-        if (score > 4) {
-            score = score - 3;
-            document.getElementById("sp").innerHTML = " ";
-        }
-
-        resetChord();
-    });
+    // document.getElementById("dropdown").addEventListener("change", function () {
+        // //	alert("got");
+        // if (score > 4) {
+            // score = score - 3;
+            // document.getElementById("sp").innerHTML = " ";
+        // }
+		// console.warn("restchordfromrunsequence");
+        // resetChord();
+    // });
+	
+	// var uncircleAClass = async function (rowclassname) {
+    // let targetrollpulldownelements = document.getElementsByClassName('aChordOption');
+    // for (var i = 0; i < targetrollpulldownelements.length; i++) {
+			// // console.warn(targetrollpulldownelements[i].innerHTML);
+			// (function (i) {
+		    // targetrollpulldownelements[i].addEventListener('click', function () {
+        // //	alert("got");
+		// console.warn('selected or unselected');
+        // if (score > 4) {
+            // score = score - 3;
+            // document.getElementById("sp").innerHTML = " ";
+        // }
+		// console.warn("restchordfromrunsequence");
+        // resetChord();
+    // });
+    // })(i);
+	// }
+	
+	
     switch (sequence) {
     case 'gamestart':
         // Now we'll start a countdown timer...
@@ -1598,6 +1657,7 @@ function runSequence(sequence) {
         advanceScreen();
         successFlicker();
         advanceScreen();
+		console.warn("newchordfromgamestart");
         newChord();
 
         break;
@@ -1617,6 +1677,7 @@ function runSequence(sequence) {
         clearChord();
         //document.querySelector('.step3 p').innerHTML = "You lose...";
         successFlicker();
+		console.warn("newChordfromlock2");
         newChord();
 
         //successFlicker();
@@ -1635,7 +1696,7 @@ function runSequence(sequence) {
         //document.querySelector('body').classList.add('gameover');
         break;
     }
-}
+}	
 
 function setupInversions(theChord) {
     if (inversions == true) {
@@ -1652,6 +1713,7 @@ function getChordName() {
 }
 
 function newChord() {
+	console.warn("newChord");
     document.getElementById("keyboardImg2").src = "Blank Keyboard.jpeg";
     var thisChord = Math.floor(Math.random() * 24) + 1;
     switch (thisChord) {
@@ -1756,7 +1818,67 @@ function newChord() {
     setupChord(fixNote(thisChord));
 }
 
+function countChordTypesSelected(){
+	let totalselected=0;
+if (document.getElementById("jln").selected) { //checking to see if ________ is checked
+        totalselected++;
+    }
+    if (document.getElementById("ez5").selected) { //checking to see if ________ is checked
+        totalselected++;
+    }
+    if (document.getElementById("ezmaj").selected) { //checking to see if ________ is checked
+        totalselected++;
+    }
+    if (document.getElementById("ezm").selected) { //checking to see if ________ is checked
+        totalselected++;
+    }
+    if (document.getElementById("just5").selected) { //checking to see if ________ is checked
+       totalselected++;
+    }
+    if (document.getElementById("reg").selected) { //checking to see if ________ is checked
+    totalselected++;
+    }
+    if (document.getElementById("regm").selected) { //checking to see if ________ is document.getElementById"jln".selected
+       totalselected++;
+    }
+    if (document.getElementById("idsus2").selected) { //checking to see if ________ is document.getElementById"jln".selected
+        totalselected++;
+    }
+    if (document.getElementById("idsus").selected) { //checking to see if ________ is document.getElementById"jln".selected
+        totalselected++;
+    }
+    if (document.getElementById("m7").selected) { //checking to see if ________ is document.getElementById"jln".selected
+        totalselected++;
+    }
+    if (document.getElementById("maj7").selected) { //checking to see if ________ is document.getElementById"jln".selected
+        totalselected++;
+    }
+    if (document.getElementById("d7").selected) { //checking to see if ________ is document.getElementById"jln".selected
+       totalselected++;
+    }
+    if (document.getElementById("m9").selected) { //checking to see if ________ is document.getElementById"jln".selected
+       totalselected++;
+    }
+    if (document.getElementById("maj9").selected) { //checking to see if ________ is document.getElementById"jln".selected
+       totalselected++;
+    }
+    if (document.getElementById("d9").selected) { //checking to see if ________ is document.getElementById"jln".selected
+        totalselected++;
+    }
+    if (document.getElementById("add9").selected) { //checking to see if ________ is document.getElementById"jln".selected
+        totalselected++;
+    }
+    if (document.getElementById("romanc").selected) { //checking to see if ________ is checked
+        totalselected++;
+    }
+    if (document.getElementById("romana").selected) { //checking to see if ________ is checked
+        totalselected++;
+    }
+	return totalselected;
+}
+
 function setupChord(rootNote) {
+	console.warn("setupchord");
     var Chordlist = [];
 
     // alert(document.getElementById("ez5").selected);
@@ -2287,6 +2409,7 @@ function updateTimer() {
                 updateTimer();
             }, 1000);
         } else if (minutes == 0 && seconds == 0) {
+			console.warn('runsequence from updatetimer');
             runSequence('gameover');
         }
     }

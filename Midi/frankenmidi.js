@@ -51,7 +51,15 @@ var wholesToTieAtTheBeginning = 0;
 var sequenceOn = false;
 var isFlat = false;
 
+    document.getElementById("dropdown").addEventListener("change", function () {
+        //	alert("got");
+        if (score > 4) {
+            score = score - 3;
+            document.getElementById("sp").innerHTML = " ";
+        }
 
+        resetChord();
+    });
 
 var noteArray = [
     [32.703, "C1", "C1"], //0
@@ -1709,15 +1717,7 @@ function noteOffListener(note) {
 }
 
 function runSequence(sequence) {
-    document.getElementById("dropdown").addEventListener("click", function () {
-        //	alert("got");
-        if (score > 4) {
-            score = score - 3;
-            document.getElementById("sp").innerHTML = " ";
-        }
 
-        resetChord();
-    });
     switch (sequence) {
     case 'gamestart':
         // Now we'll start a countdown timer...
