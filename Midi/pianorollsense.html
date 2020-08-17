@@ -293,6 +293,15 @@ function myFunction() {
 <webaudio-slider oninput="Layout(this)" id="yrange" direction="vert" width="24" height="120" min="3" max="32" value="16"></webaudio-slider>
 <webaudio-slider oninput="Layout(this)" id="yoffset" direction="vert" width="24" height="200" min="30" max="120" height="200" value="60"></webaudio-slider>
 </div>
+		<div class="row" >
+		<button type="button" style="border-radius:0px" onclick="$('#my-dialog').dialog('open')">&#9432;</button>
+		<-click to the left for a reminder on the structure of your chords
+			</div>
+			
+<div>
+
+<div id="my-dialog" style="display:block" title="Chord Descriptions"><div id="alertMessage"></div></div>
+</div>
 <button hidden onclick="document.getElementById('mml').value=(document.getElementById('proll').getMMLString())">getMMLString</button>
 <button hidden onclick="document.getElementById('proll').setMMLString(document.getElementById('mml').value)">setMMLString</button>
 <button hidden onclick="Play()">Play</button>

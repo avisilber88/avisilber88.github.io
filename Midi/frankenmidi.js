@@ -5,6 +5,9 @@ var mouselastpos;
 var erasingRightClick=false;
 var windowresized=false;
 var answerRevealed=false;
+var ezmajon=false;
+var ezminon=false;
+var ez5on=false;
 // Variable which tell us what step of the game we're on.
 // We'll use this later when we parse noteOn/Off messages
 var inversions = false;
@@ -58,6 +61,23 @@ var isFlat = false;
             document.getElementById("sp").innerHTML = " ";
         }
 
+		$("#alertMessage").html("");
+            $("#my-dialog").dialog({
+            modal: false,
+            autoOpen: false,
+            buttons: [{
+                    text: "Hide",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+
+        });
+        $("#my-dialog").dialog({
+			width: window.innerWidth//document.getElementById('keyboardImg2').getBoundingClientRect().left
+
+        });
         resetChord();
     });
 
@@ -209,6 +229,138 @@ playAnArray = function (arrayOfNotesLocal){
 for (let counsing = 0; counsing<arrayOfNotesLocal.length; counsing++){
 playANote(arrayOfNotesLocal[counsing]);
 }
+}
+
+
+function countChordTypesSelected(){
+	let totalselected=0;
+	let subtractor=0;
+	let insertHTML="";
+	document.getElementById('alertMessage').innerHTML="";
+if (document.getElementById("jln").selected) { //checking to see if ________ is checked
+        totalselected++;
+		subtractor++;
+    }
+    if (document.getElementById("ez5").selected) { //checking to see if ________ is checked
+        totalselected++;
+		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Fifths:</strong> (Named 'root note' + '5' ex: C5) <br>&nbsp;1st note: The root note name <br>  &nbsp;2nd note: 7 semitones/half-steps above the root note<br></td>";
+   ez5on=true;
+	}
+	else{
+		ez5on=false;
+	}
+    if (document.getElementById("ezmaj").selected) { //checking to see if ________ is checked
+        totalselected++;
+				insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Majors:</strong> (Named 'root note' ex: C)<br>&nbsp;1st note: The root note name <br>  &nbsp;2nd note: 4 semitones/half-steps above the root note<br>  &nbsp;3rd note: 7 semitones/half-steps above the root note<br></td>";
+		ezmajon=true;
+
+    }
+	else{
+		ezmajon=false;
+	}
+    if (document.getElementById("ezm").selected) { //checking to see if ________ is checked
+        totalselected++;
+		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Minors:</strong> (Named 'root note' + 'm' ex: Cm) <br>&nbsp;1st note: The root note name <br>  &nbsp;2nd note: 3 semitones/half-steps above the root note<br>  &nbsp;3rd note: 7 semitones/half-steps above the root note<br></td>";
+		ezminon=true;
+    }else{
+		ezminon=false;
+		
+	}
+    if (document.getElementById("just5").selected) { //checking to see if ________ is checked
+       
+	
+	   if (!ez5on){
+		   totalselected++;	
+	   insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Fifths:</strong> (Named 'root note' + '5' ex: C5)<br>&nbsp;1st note: The root note name <br>  &nbsp;2nd note: 7 semitones/half-steps above the root note</strong><br></td>";
+	   }
+	   		if ((totalselected-subtractor)==4){
+	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
+	   }
+    }
+    if (document.getElementById("reg").selected) { //checking to see if ________ is checked
+
+	if (!ezmajon){
+		totalselected++;	
+			insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Majors:</strong> (Named 'root note' ex: C)<br>&nbsp;1st note: The root note name <br>  &nbsp;2nd note: 4 semitones/half-steps above the root note<br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br></td>";
+	}
+	if ((totalselected-subtractor)==4){
+	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
+	   }
+    }
+    if (document.getElementById("regm").selected) { //checking to see if ________ is document.getElementById"jln".selected
+	   if (!ezminon){
+		   totalselected++;	
+	   		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Minors: </strong> (Named 'root note' + 'm' ex: Cm)<br>&nbsp;1st note: The root note name <br>  &nbsp;2nd note: 3 semitones/half-steps above the root note<br>  &nbsp;3rd note: 7 semitones/half-steps above the root note<br></td>";
+	   }
+	   		if ((totalselected-subtractor)==4){
+	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
+	   }
+    }
+    if (document.getElementById("idsus2").selected) { //checking to see if ________ is document.getElementById"jln".selected
+        totalselected++;
+		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Suspension 2:</strong> (Named 'root note' + 'sus2' ex: Csus2)<br>&nbsp;1st note: The root note name <br>  &nbsp;2nd note: 2 semitones/half-steps above the root note<br>  &nbsp;3rd note: 7 semitones/half-steps above the root note<br></td>";
+		if ((totalselected-subtractor)==4){
+	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
+	   }
+    }
+    if (document.getElementById("idsus").selected) { //checking to see if ________ is document.getElementById"jln".selected
+        totalselected++;	
+		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Suspension [4]: </strong> (Named 'root note' + 'sus' ex: Csus)<br>&nbsp;1st note: The root note name <br>  &nbsp;2nd note: 5 semitones/half-steps above the root note<br>  &nbsp;3rd note: 7 semitones/half-steps above the root note<br></td>";
+		if ((totalselected-subtractor)==4){
+	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
+	   }
+    }
+    if (document.getElementById("m7").selected) { //checking to see if ________ is document.getElementById"jln".selected
+        totalselected++;
+		   		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Minor Sevenths: </strong> (Named 'root note' + 'm7' ex: Cm7)<br>&nbsp;1st note: The root note name <br>  &nbsp;2nd note: 3 semitones/half-steps above the root note<br>  &nbsp;3rd note: 7 semitones/half-steps above the root note<br>&nbsp;4th note: 10 semitones/half-steps above the root note<br></td>";
+			if ((totalselected-subtractor)==4){
+	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
+	   }
+    }
+    if (document.getElementById("maj7").selected) { //checking to see if ________ is document.getElementById"jln".selected
+        totalselected++;
+	insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Major Sevenths:</strong> (Named 'root note' + 'maj7' ex: Cmaj7)<br>&nbsp;1st note: The root note name <br>  &nbsp;2nd note: 4 semitones/half-steps above the root note<br>  &nbsp;3rd note: 7 semitones/half-steps above the root note<br>&nbsp;4th note: 11 semitones/half-steps above the root note<br></td>";
+			if ((totalselected-subtractor)==4){
+	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
+	   }
+    }
+    if (document.getElementById("d7").selected) { //checking to see if ________ is document.getElementById"jln".selected
+       totalselected++;
+	   insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Dominant Sevenths:</strong> (Named 'root note' + '7' ex: C7)<br>&nbsp;1st note: The root note name <br>  &nbsp;2nd note: 4 semitones/half-steps above the root note<br>  &nbsp;3rd note: 7 semitones/half-steps above the root note<br>&nbsp;4th note: 10 semitones/half-steps above the root note<br></td>";
+		if ((totalselected-subtractor)==4){
+	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
+	   } 
+ }
+    if (document.getElementById("m9").selected) { //checking to see if ________ is document.getElementById"jln".selected
+       totalselected++;
+    }
+    if (document.getElementById("maj9").selected) { //checking to see if ________ is document.getElementById"jln".selected
+       totalselected++;
+    }
+    if (document.getElementById("d9").selected) { //checking to see if ________ is document.getElementById"jln".selected
+        totalselected++;
+    }
+    if (document.getElementById("add9").selected) { //checking to see if ________ is document.getElementById"jln".selected
+        totalselected++;
+    }
+    if (document.getElementById("romanc").selected) { //checking to see if ________ is checked
+        totalselected++;
+			   // insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Roman Numeral Scale Chords in C:</strong> (Named 'root note' + '7' ex: C7)<br>&nbsp;1st note: The root note name <br>  &nbsp;2nd note: 4 semitones/half-steps above the root note<br>  &nbsp;Finger 4: 7 semitones/half-steps above the root note<br>&nbsp;Finger 5: 10 semitones/half-steps above the root note<br></td>";
+
+    }
+    if (document.getElementById("romana").selected) { //checking to see if ________ is checked
+        totalselected++;
+			   // $("#alertMessage").html(document.getElementById('alertMessage').innerHTML+"<td style = 'vertical-align:top'><strong>Dominant Sevenths:</strong> (Named 'root note' + '7' ex: C7)<br>&nbsp;1st note: The root note name <br>  &nbsp;2nd note: 4 semitones/half-steps above the root note<br>  &nbsp;Finger 4: 7 semitones/half-steps above the root note<br>&nbsp;Finger 5: 10 semitones/half-steps above the root note<br></td>");
+
+    }
+	// console.warn(insertHTML);
+	try{
+	document.getElementById('alertMessage').innerHTML="<table style = 'border: 1px solid black'><tr style = 'border: 1px solid black'>"+insertHTML+"</tr></table>";
+	}
+	catch(error){
+	}
+	// console.log(totalselected);
+	return totalselected;
 }
 
 playANote = function (note){
@@ -1337,10 +1489,11 @@ jQuery(function ($) {
 //$("#ez5").change(resetChord());
 
 function resetChord() {
-
+if (countChordTypesSelected()>0){
     //alert ("done");
     clearChord();
     newChord();
+	}
 }
 function onMIDIFailure() {
     document.querySelector('.step0').innerHTML = 'Error: Could not access MIDI devices. Connect a device and refresh to try again.';
@@ -4967,3 +5120,22 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
 	// chickens = function (){
 	// alert(accessibleNotesList.toString());
 	// }
+			$.noConflict();
+
+function alertify(messageThis) {
+        $("#alertMessage").html(messageThis);
+        // // Show dialog
+        $("#my-dialog").dialog({
+            modal: true,
+            autoOpen: false,
+            buttons: [{
+                    text: "Ok:",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+
+        });
+        $("#my-dialog").dialog("open");
+    }
