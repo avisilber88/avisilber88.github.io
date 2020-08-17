@@ -86,6 +86,7 @@
 	<option value="locrianScale" id = "locrianS">locrian Scale</option>
 	<option value="showNoteHelper" id = "showNote">show Note Helper</option>
 	<option value="upNDown" id = "upDown">Go up then down the scale</option>
+	<option value="oPlaying" class = "aChordOption" id = "octavePlaying">Require specific octave playing (sheet music only)</option>
     </select>
 </p></div>
 <div id ="octaveButtonLinks" class = "chickens"><p><p><button type="button" id = "octaveUp"> octave &#8593;</button></p></div>
@@ -155,6 +156,17 @@ function myFunction() {
 				<p class="hint" id = "score" id = "th">Current Score = 1.0</p>
 				
 	<p class = "keyboardImg"><img src = "Blank Keyboard.jpeg" id = "keyboardImg2"></img></p>
+
+		<div class="row" >
+		<button type="button" style="border-radius:0px" onclick="$('#my-dialog').dialog('open')">&#9432;</button>
+		<-click to the left for a reminder on the structure of your chords
+			</div>
+			
+<div>
+
+<div id="my-dialog" style="display:block" title="Scale Descriptions"><div id="alertMessage"></div></div>
+</div>
+		
 		</div>
 
 		<div class="screen step2">
