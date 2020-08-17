@@ -100,6 +100,7 @@ if (location.protocol != 'https:')
 	<option value="addNinth" class = "aChordOption" id = "add9">Add Ninth</option>
 	<option value="romC" class = "aChordOption" id = "romanc">Roman Numerals in C</option>
 	<option value="romA" class = "aChordOption" id = "romana">Roman Numerals in Am</option>
+	<option value="oPlaying" class = "aChordOption" id = "octavePlaying">Require specific octave playing (sheet music only)</option>
 	<option value="sChords" class = "aChordOption" id = "slashChords">Require specific inversions as "Slash Chords"</option>
 	<option value="dubB" class = "aChordOption" id = "doubleBass">Look for two additional root notes in the Bass</option>
     </select>
@@ -171,9 +172,18 @@ function myFunction() {
 			</div>
 			<p id = "warning" style="color:#f0fc03;"></p>
 			<p class="hint" id = "score" >Hint: C7 in root position</p>
+			
 	<p class = "keyboardImg"><img src = "Blank Keyboard.jpeg" id = "keyboardImg2"></img></p>
 		<p class="setpoint" id = "sp"> </p>
+		<div class="row" >
+		<button type="button" style="border-radius:0px" onclick="$('#my-dialog').dialog('open')">&#9432;</button>
+		<-click to the left for a reminder on the structure of your chords
+			</div>	
 	
+<div>
+
+<div id="my-dialog" style="display:block" title="Chord Descriptions"><div id="alertMessage"></div></div>
+</div>
 
 	
 		</div>

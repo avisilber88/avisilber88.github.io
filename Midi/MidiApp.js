@@ -1,6 +1,9 @@
 // Variable which tell us what step of the game we're on.
 // We'll use this later when we parse noteOn/Off messages
 var inversions = false;
+var ezmajon=false;
+var ezminon=false;
+var ez5on=false;
 var inversionAddOn = "";
 var pickedInversion = 0;
 var currentStep = -1;
@@ -12,6 +15,8 @@ var middleNoteSet=false;
 var middleNote=0;
 var timerLength = 10 / 60; // in minutes
 var timerTripped = false;
+var specificNotes=false;
+var specificCorrectChord=[];
 // Lock 1 variables
 var correctNoteSequence = [1, 2, 3, 4, 5, 6, 7, 8, 9]; // Amazing Grace in F
 var activeNoteSequence = [];
@@ -47,15 +52,45 @@ var wholesToTieAtTheBeginning = 0;
 var sequenceOn = false;
 var isFlat = false;
 
+
     document.getElementById("dropdown").addEventListener("change", function () {
         //	alert("got");
         if (score > 4) {
             score = score - 3;
             document.getElementById("sp").innerHTML = " ";
-        }
-		console.warn("restchordfromrunsequence");
+        }            
+		$("#alertMessage").html("");
+            $("#my-dialog").dialog({
+            modal: false,
+            autoOpen: false,
+            buttons: [{
+                    text: "Hide",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+
+        });
+        $("#my-dialog").dialog({
+			width: window.innerWidth//document.getElementById('keyboardImg2').getBoundingClientRect().left
+
+        });
+		        // $("#my-dialog").dialog({
+            // position: {
+                // my: 'top',
+                // at: 'bottom',
+                // of: '#keyboardImg2',
+                // collision: 'fit'
+            // }
+
+        // });
+		// alert(document.getElementById('keyboardImg2').getBoundingClientRect().left);
+        // $("#my-dialog").dialog("open");
+		// console.warn("restchordfromrunsequence");
         resetChord();
     });
+	    
 var noteArray = [
     [32.703, "C1", "C1"], //0
     [34.648, "C1#", "D2b"],
@@ -545,6 +580,7 @@ $('#octaveDown').click(function () {
 
 function findMiddleNote(arrayOfNotes){
 	let arrayOfNotesLocal=JSON.parse(JSON.stringify(arrayOfNotes));
+	
 	    let octaveAdder = octaveSetting;
     if (pickedInversion != 0) {
 
@@ -580,8 +616,13 @@ function findMiddleNote(arrayOfNotes){
             arrayOfNotesLocal[i]=arrayOfNotesLocal[i] + octaveAdder;
         }
     }
-	console.error('ordering '+arrayOfNotesLocal.toString());
+	
+	// console.error('ordering '+arrayOfNotesLocal.toString());
 	arrayOfNotesLocal.sort();
+	specificCorrectChord=JSON.parse(JSON.stringify(arrayOfNotesLocal));
+	for (let jkj = 0; jkj < specificCorrectChord.length; jkj++){
+	specificCorrectChord[jkj]=Number(specificCorrectChord[jkj])+24;
+	}
 	if (arrayOfNotesLocal.lengtth>2){
 	middleNote=arrayOfNotesLocal[1];
 	}
@@ -595,11 +636,12 @@ function findMiddleNote(arrayOfNotes){
 	}
 	middleNoteSet=true;
 	
+	
 }
 
 
 function showNotes(arrayOfNotes) {
-	console.error(arrayOfNotes.toString());
+	// console.error(arrayOfNotes.toString());
 	if (!middleNoteSet){
 	findMiddleNote(arrayOfNotes);
 	}
@@ -713,7 +755,7 @@ function showNotes(arrayOfNotes) {
 }
 
 function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
-    console.log("The Note Message has " + noteArrayNum + " " + voiceType + " " + theNoteLength);
+    // console.log("The Note Message has " + noteArrayNum + " " + voiceType + " " + theNoteLength);
     if (notationMode == "movingNotesMode") {
         // if (Math.round(theNoteLength) == 3) {
         // dotTheNote = true;
@@ -724,16 +766,16 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
         // if (theNoteLength > 4) {
         // theNoteLength = 4;
         // }
-        console.log(theNoteLength);
+        // console.log(theNoteLength);
         theNoteLength = durationNoteSelect(theNoteLength);
-        console.log(theNoteLength);
+        // console.log(theNoteLength);
         var lastImageNote = currentImageNote;
         var currentImageNote = notes[0];
         var currentSecondImageNote = note2[0];
         var currentWholeImageNote = noteWhole[0];
 
         let noteStr = noteArray[noteArrayNum][1];
-		console.warn(noteStr+" "+currentChordName);
+		// console.warn(noteStr+" "+currentChordName);
 		if (currentChordName.includes('Gb')){
 		
 		currentChordName = currentChordName.replace("Gb", "F#");
@@ -752,7 +794,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
 		} 
 		else if (currentChordName.includes('Dbm')){}
         else if ((currentChordName.includes('b'))||((currentChordName.includes('Gm'))&&(!(currentChordName.includes('aj'))))||((currentChordName.includes('Cm'))&&(!(currentChordName.includes('aj'))))||((currentChordName.includes('Dm'))&&(!(currentChordName.includes('aj'))))||((currentChordName.includes('F'))&&(!(currentChordName.includes('#'))))) {
-            console.warn(noteStr+' wewentwithsecond');
+            // console.warn(noteStr+' wewentwithsecond');
 			noteStr = noteArray[noteArrayNum][2];
         } else if ((noteStr.includes('F'))&&(!(noteStr.includes('#')))){
 			if ((currentChordName.includes('C#'))||(currentChordName.includes('F#'))||(currentChordName.includes('G#'))||(currentChordName.includes('D#'))||(currentChordName.includes('A#'))){
@@ -771,7 +813,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
         let partThree = noteStr.slice(1, 2) + '';
         // alert (partOne+" "+partTwo+" "+partThree+" ");
         noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
-		console.warn(noteStr);
+		// console.warn(noteStr);
         //Start AREA OF TIES!
 
 
@@ -951,7 +993,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
             // tickContext.addTickable(tiedNote.setContext(context));
         } else {
 
-            console.log("tie off");
+            // console.log("tie off");
             //END AREA OF TIES!
 
 
@@ -1123,7 +1165,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
 
         // visibleNoteGroups.push(group);
         // alert(visibleNoteGroups[0].));
-        console.log(voiceType);
+        // console.log(voiceType);
         if (voiceType == "singingNote") {
             visibleSingingNoteGroups.push(group);
             rememberSingingGroup = visibleSingingNoteGroups.indexOf(group);
@@ -1473,6 +1515,7 @@ function noteOnListener(note, velocity) {
             document.querySelector('.step2 .note:nth-child(' + (i + 1) + ')').classList.add('on');
         }
 
+			console.error(specificActiveChord.toString());
         // If the array is the same length as the correct chord, compare
         if (activeChord.length == correctChord.length) {
             var match = true;
@@ -1482,7 +1525,15 @@ function noteOnListener(note, velocity) {
                     break;
                 }
             }
-
+			if (specificNotes){
+			for (var index = 0; index < specificActiveChord.length; index++) {
+                if (specificCorrectChord.indexOf(specificActiveChord[index]) < 0) {
+                    match = false;
+                    break;
+                }
+            }
+			
+			}
             if ((inversions) & (arrangeNote(specificActiveChord[0]) != correctChord[pickedInversion])) {
                 match = false;
                 document.getElementById("warning").innerHTML = "<style='fontSize:15px;'>Remember, Your root note should be " + getNoteNameGeneral(correctChord[pickedInversion]); //(arrangeNote(specificActiveChord[0]));
@@ -1892,42 +1943,103 @@ function newChord() {
 
 function countChordTypesSelected(){
 	let totalselected=0;
+	let subtractor=0;
+	let insertHTML="";
+	document.getElementById('alertMessage').innerHTML="";
 if (document.getElementById("jln").selected) { //checking to see if ________ is checked
         totalselected++;
+		subtractor++;
     }
     if (document.getElementById("ez5").selected) { //checking to see if ________ is checked
         totalselected++;
-    }
+		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Fifths:</strong> (Named 'root note' + '5' ex: C5) <br>&nbsp;Thumb: The root note name <br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br></td>";
+   ez5on=true;
+	}
+	else{
+		ez5on=false;
+	}
     if (document.getElementById("ezmaj").selected) { //checking to see if ________ is checked
         totalselected++;
+				insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Majors:</strong> (Named 'root note' ex: C)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Middle: 4 semitones/half-steps above the root note<br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br></td>";
+		ezmajon=true;
+
     }
+	else{
+		ezmajon=false;
+	}
     if (document.getElementById("ezm").selected) { //checking to see if ________ is checked
         totalselected++;
-    }
+		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Minors:</strong> (Named 'root note' + 'm' ex: Cm) <br>&nbsp;Thumb: The root note name <br>  &nbsp;Middle: 3 semitones/half-steps above the root note<br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br></td>";
+		ezminon=true;
+    }else{
+		ezminon=false;
+		
+	}
     if (document.getElementById("just5").selected) { //checking to see if ________ is checked
-       totalselected++;
+       
+	
+	   if (!ez5on){
+		   totalselected++;	
+	   insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Fifths:</strong> (Named 'root note' + '5' ex: C5)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note</strong><br></td>";
+	   }
+	   		if ((totalselected-subtractor)==4){
+	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
+	   }
     }
     if (document.getElementById("reg").selected) { //checking to see if ________ is checked
-    totalselected++;
+
+	if (!ezmajon){
+		totalselected++;	
+			insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Majors:</strong> (Named 'root note' ex: C)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Middle: 4 semitones/half-steps above the root note<br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br></td>";
+	}
+	if ((totalselected-subtractor)==4){
+	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
+	   }
     }
     if (document.getElementById("regm").selected) { //checking to see if ________ is document.getElementById"jln".selected
-       totalselected++;
+	   if (!ezminon){
+		   totalselected++;	
+	   		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Minors: </strong> (Named 'root note' + 'm' ex: Cm)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Middle: 3 semitones/half-steps above the root note<br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br></td>";
+	   }
+	   		if ((totalselected-subtractor)==4){
+	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
+	   }
     }
     if (document.getElementById("idsus2").selected) { //checking to see if ________ is document.getElementById"jln".selected
         totalselected++;
+		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Suspension 2:</strong> (Named 'root note' + 'sus2' ex: Csus2)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Pointer Finger: 2 semitones/half-steps above the root note<br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br></td>";
+		if ((totalselected-subtractor)==4){
+	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
+	   }
     }
     if (document.getElementById("idsus").selected) { //checking to see if ________ is document.getElementById"jln".selected
-        totalselected++;
+        totalselected++;	
+		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Suspension [4]: </strong> (Named 'root note' + 'sus' ex: Csus)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Ring Finger: 5 semitones/half-steps above the root note<br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br></td>";
+		if ((totalselected-subtractor)==4){
+	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
+	   }
     }
     if (document.getElementById("m7").selected) { //checking to see if ________ is document.getElementById"jln".selected
         totalselected++;
+		   		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Minor Sevenths: </strong> (Named 'root note' + 'm7' ex: Cm7)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Finger 2: 3 semitones/half-steps above the root note<br>  &nbsp;Finger 4: 7 semitones/half-steps above the root note<br>&nbsp;Finger 5: 10 semitones/half-steps above the root note<br></td>";
+			if ((totalselected-subtractor)==4){
+	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
+	   }
     }
     if (document.getElementById("maj7").selected) { //checking to see if ________ is document.getElementById"jln".selected
         totalselected++;
+	insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Major Sevenths:</strong> (Named 'root note' + 'maj7' ex: Cmaj7)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Finger 2: 4 semitones/half-steps above the root note<br>  &nbsp;Finger 4: 7 semitones/half-steps above the root note<br>&nbsp;Finger 5: 11 semitones/half-steps above the root note<br></td>";
+			if ((totalselected-subtractor)==4){
+	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
+	   }
     }
     if (document.getElementById("d7").selected) { //checking to see if ________ is document.getElementById"jln".selected
        totalselected++;
-    }
+	   insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Dominant Sevenths:</strong> (Named 'root note' + '7' ex: C7)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Finger 2: 4 semitones/half-steps above the root note<br>  &nbsp;Finger 4: 7 semitones/half-steps above the root note<br>&nbsp;Finger 5: 10 semitones/half-steps above the root note<br></td>";
+		if ((totalselected-subtractor)==4){
+	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
+	   } 
+ }
     if (document.getElementById("m9").selected) { //checking to see if ________ is document.getElementById"jln".selected
        totalselected++;
     }
@@ -1942,10 +2054,21 @@ if (document.getElementById("jln").selected) { //checking to see if ________ is 
     }
     if (document.getElementById("romanc").selected) { //checking to see if ________ is checked
         totalselected++;
+			   // insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Roman Numeral Scale Chords in C:</strong> (Named 'root note' + '7' ex: C7)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Finger 2: 4 semitones/half-steps above the root note<br>  &nbsp;Finger 4: 7 semitones/half-steps above the root note<br>&nbsp;Finger 5: 10 semitones/half-steps above the root note<br></td>";
+
     }
     if (document.getElementById("romana").selected) { //checking to see if ________ is checked
         totalselected++;
+			   // $("#alertMessage").html(document.getElementById('alertMessage').innerHTML+"<td style = 'vertical-align:top'><strong>Dominant Sevenths:</strong> (Named 'root note' + '7' ex: C7)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Finger 2: 4 semitones/half-steps above the root note<br>  &nbsp;Finger 4: 7 semitones/half-steps above the root note<br>&nbsp;Finger 5: 10 semitones/half-steps above the root note<br></td>");
+
     }
+	// console.warn(insertHTML);
+	try{
+	document.getElementById('alertMessage').innerHTML="<table style = 'border: 1px solid black'><tr style = 'border: 1px solid black'>"+insertHTML+"</tr></table>";
+	}
+	catch(error){
+	}
+	// console.log(totalselected);
 	return totalselected;
 }
 
@@ -1963,6 +2086,11 @@ function setupChord(rootNote) {
         inversions = true;
     } else {
         inversions = false;
+    }
+	    if (document.getElementById("octavePlaying").selected) { //checking to see if ________ is checked
+        specificNotes = true;
+    } else {
+        specificNotes = false;
     }
     if (document.getElementById("jln").selected) { //checking to see if ________ is checked
         Chordlist.push("justNotes");
@@ -3492,3 +3620,24 @@ $(document).ready(function () {
     });
 
 });
+        // $("#alertMessage").html("yo");
+        // $("#my-dialog").dialog("open");
+		$.noConflict();
+
+function alertify(messageThis) {
+        $("#alertMessage").html(messageThis);
+        // // Show dialog
+        $("#my-dialog").dialog({
+            modal: true,
+            autoOpen: false,
+            buttons: [{
+                    text: "Ok:",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+
+        });
+        $("#my-dialog").dialog("open");
+    }
