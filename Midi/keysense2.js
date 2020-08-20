@@ -1581,7 +1581,14 @@ getMinorKey =function(localArrayOfNotes){
 }
 
 checkMajorKeyAnswer = function(userAnswer){
-userAnswer=userAnswer.toUpperCase()
+userAnswer=userAnswer.toUpperCase();
+userAnswer=userAnswer.replace(/\s/g, '');
+userAnswer=userAnswer.replace(/-/g, '');
+userAnswer=userAnswer.replace('FLAT', 'B');
+userAnswer=userAnswer.replace('SHARP', '#');
+userAnswer=userAnswer.replace('M', '');
+userAnswer=userAnswer.replace('AJOR', '');
+userAnswer=userAnswer.replace('INOR', '');
 if (userAnswer=="C#"){
 userAnswer="C#/DB";
 } else if (userAnswer=="DB"){
@@ -1613,8 +1620,14 @@ alert ("Not Quite, click submit if you'd like to try again!");
 }
 
 checkMinorKeyAnswer = function(userAnswer){
-	
-userAnswer=userAnswer.toUpperCase()
+userAnswer=userAnswer.toUpperCase();
+userAnswer=userAnswer.replace(/\s/g, '');
+userAnswer=userAnswer.replace(/-/g, '');
+userAnswer=userAnswer.replace('FLAT', 'B');
+userAnswer=userAnswer.replace('SHARP', '#');
+userAnswer=userAnswer.replace('M', '');
+userAnswer=userAnswer.replace('AJOR', '');
+userAnswer=userAnswer.replace('INOR', '');
 if (userAnswer=="C#"){
 userAnswer="C#/DB";
 } else if (userAnswer=="DB"){
