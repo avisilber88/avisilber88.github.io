@@ -1,4 +1,8 @@
 var noteAdapter=24;
+var currentTag="";
+var grumpsofar=[];
+var grumpsofarmajor=[];
+var grumpsofarminor=[];
 var instrument="piano";
 var audioArray = [];
 var keyType="major";
@@ -23,6 +27,7 @@ var buttonColor = '#00cc00';
 var buttonNormalColor = 'buttonface';
 var songTitleSelected="";
 
+var score = 0;
    var playingState="invisible"
 var referenceVolume = 60;
 var rhythmVolume = 50;
@@ -1080,6 +1085,7 @@ playASongLink("quiet.mp3");
 
 $('#quiet').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1091,6 +1097,7 @@ playASongLink("quiet.mp3");
 
 $('#quiet').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1099,6 +1106,7 @@ playASongLink("quiet.mp3");
    }); 
    $('#shatterme').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1107,6 +1115,7 @@ playASongLink("shatterme.mp3");
    }); 
    $('#titanium').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1115,6 +1124,7 @@ playASongLink("titanium.mp3");
    }); 
    $('#takecare').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1123,6 +1133,7 @@ playASongLink("takecare.mp3");
    }); 
    $('#radioactive').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1131,6 +1142,7 @@ playASongLink("radioactive.mp3");
    }); 
    $('#swimmingpools').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1139,6 +1151,8 @@ playASongLink("swimmingpools.mp3");
    }); 
    $('#nightingale').click(function () {
 	try{
+	currentTag=this.id
+		
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1147,6 +1161,7 @@ playASongLink("nightingale.mp3");
    }); 
    $('#stromae').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1156,6 +1171,7 @@ playASongLink("stromae.mp3");
   
    $('#wakemeup').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1164,6 +1180,7 @@ playASongLink("wakemup.mp3");
    }); 
    $('#sendmylove').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1172,6 +1189,7 @@ playASongLink("sendmylove.mp3");
    }); 
       $('#closer').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1181,6 +1199,7 @@ playASongLink("closer.mp3");
    
         $('#blackparade').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1189,6 +1208,7 @@ playASongLink("blackparade.mp3");
    }); 
          $('#oldtown').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1197,6 +1217,7 @@ playASongLink("oldtown.mp3");
    }); 
          $('#ghost').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1205,6 +1226,7 @@ playASongLink("ghost.mp3");
    }); 
             $('#highhopes').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1213,6 +1235,7 @@ playASongLink("highhopes.mp3");
    }); 
               $('#phoenix').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1222,6 +1245,7 @@ playASongLink("phoenix.mp3");
    
                 $('#halo').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1231,6 +1255,7 @@ playASongLink("halo.mp3");
    
              $('#centuries').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1239,6 +1264,7 @@ playASongLink("centuries.mp3");
    }); 
    $('#sadipop').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1247,6 +1273,7 @@ playASongLink("sadipop.mp3");
    }); 
        $('#tochurch').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1256,6 +1283,7 @@ playASongLink("tochurch.mp3");
    
     $('#likeaprayer').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1264,6 +1292,7 @@ playASongLink("likeaprayer.mp3");
    }); 
     $('#glory').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1273,6 +1302,7 @@ playASongLink("glory.mp3");
    
        $('#lighters').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1282,6 +1312,7 @@ playASongLink("lighters.mp3");
    
    $('#riseup').click(function () {
 	try{
+	currentTag=this.id
 	currentSong.pause();
 	}
 	catch(error){}
@@ -1293,6 +1324,7 @@ resetSwitches();
    }); 
    
          $('#submitButton').click(function () {
+			 if (currentSong!=null){
 	try{
 		generateMySubmissionKeys();
 	}
@@ -1304,14 +1336,25 @@ resetSwitches();
 	
 		try{
 		if (JSON.stringify(mySubmissionKeys) === JSON.stringify(currentSongKeys)){
-			let answer=prompt('YOU GOT IT!!! Now... \n\nfollow-up question... what major key is this?');
-			checkMajorKeyAnswer(answer);
+			if (!(grumpsofar.includes(currentSong.src))){
+			grumpsofar.push(currentSong.src);
+			score=score+1;
+			updateScores();
+			
+			document.getElementById(currentTag).innerHTML=document.getElementById(currentTag).innerHTML+"&#10004";
+			}
+			setTimeout(goToMajor,200);
 		}
 		else{
 			alert ('Not quite, try again');
+			if (!(grumpsofarmajor.includes(currentSong.src))){
+			score=score-1;
+			updateScores();
+			}
 		}
 	}
 	catch(error){console.error(error)}
+			 }
    }); 
    $('#pausePlayButton').click(function () {
 	if (playingState=="invisible"){
@@ -1329,7 +1372,11 @@ resetSwitches();
 	}
 	
    }); 
-
+function goToMajor(){
+			
+			let answer=prompt('YOU GOT IT!!! Now... \n\nfollow-up question... what major key is this?');
+			checkMajorKeyAnswer(answer);
+}
 $(function () {
     $("#slider-horizontal").slider({
         orientation: "horizontal",	
@@ -1379,6 +1426,13 @@ numInClass = function (nameOfClass){
     }
 return counter;
 
+}
+
+updateScores = function(){
+	// alert ("hi");
+	// document.getElementById('totalscore').innerHTML=correct;
+	document.getElementById('currentScore').innerHTML=score;
+	
 }
 function updateOnOffCounters(){
 let numChecks=numInClass('onButtonSelected')/2;
@@ -1647,13 +1701,32 @@ userAnswer="A#/BB";
 userAnswer="A#/BB";
 }
 if (userAnswer.toLowerCase()===getMajorKey(currentSongKeys).toLowerCase()){
-let answer=prompt('YOU GOT IT!!! Now... \n\nfollow-up question... what minor key is this?');
-			checkMinorKeyAnswer(answer);
+
+if (!(grumpsofarmajor.includes(currentSong.src))){
+score=score+.25;
+
+			document.getElementById(currentTag).innerHTML=document.getElementById(currentTag).innerHTML+"&#10004";
+document.getElementById('currentScore').innerHTML=score;
+
+
+updateScores();
+grumpsofarmajor.push(currentSong.src);
+}
+
+			setTimeout(goToMinor,200);
 }
 else{
 alert ("Not Quite, click submit if you'd like to try again!");
+if (!(grumpsofarmajor.includes(currentSong.src))){
+
 }
 }
+}
+goToMinor=function(){
+
+setTimeout(checkMinorKeyAnswer(prompt('YOU GOT IT!!! Now... \n\nfollow-up question... what minor key is this?')), 200);
+}
+
 
 checkMinorKeyAnswer = function(userAnswer){
 userAnswer=userAnswer.toUpperCase();
@@ -1687,9 +1760,23 @@ userAnswer="A#/BB";
 }
 if (userAnswer.toLowerCase()===getMinorKey(currentSongKeys).toLowerCase()){
 alert ("You got it!! Select another song from the 'Select Song' pulldown menu above. Once you have gotten five songs in a row perfectly that is probably a sign that you have masterd this skill.")
+if (!(grumpsofarminor.includes(currentSong.src))){
+	// correct++;
+				document.getElementById(currentTag).innerHTML=document.getElementById(currentTag).innerHTML+"&#10004";
+
+score=score+.25;
+updateScores();
+
+grumpsofarminor.push(currentSong.src);
+}
 }
 else{
 alert ("Not Quite, click submit if you'd like to try again. Note, you'll have to enter your major key again.");
+if (!(grumpsofarminor.includes(currentSong.src))){
+// correct++;
+// score=score-.5;
+// updateScores();
+}
 }
 }
 
