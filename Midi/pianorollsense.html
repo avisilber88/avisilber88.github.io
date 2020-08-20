@@ -2,11 +2,17 @@
 <html xmlns = "http://www.w3.org/1999/xhtml">
 	<script src = 'vendor/webmidi.min.js'></script>
 <!-- jQuery library -->
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
 <!-- MultiSelect CSS & JS library -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+<!-- <script src="papaparse.min.js"></script> -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
 <link href="vendor/jquery.multiselect.css" rel="stylesheet" />
 <script src="vendor/jquery.multiselect.js"></script>
 
@@ -45,16 +51,36 @@ body{
     top:50px;
 }
 #xrange{
+	display: none;
     position:absolute;
     left:500px;
     top:400px;
 }
-#scoreRange{
+#scoreAndInfo{
     position:absolute;
+	<!-- align:left; -->
     left:100px;
-    top:400px;
+    top:375px;
+	width:80%;
+}
+#scoreRange{
+    <!-- position:relative; -->
+	<!-- text-align:left; -->
+    <!-- left:100px; -->
+	left:100px;
+    <!-- top:375px; -->
+	<!-- width:25%; -->
+}
+#inforow{
+    <!-- position:relative; -->
+	<!-- text-align:left; -->
+    <!-- left:40%; -->
+	<!-- right:200px; -->
+    <!-- top:375px; -->
+	<!-- width:50%; -->
 }
 #xoffset{
+	display: none;
     position:absolute;
     left:280px;
     top:400px;
@@ -295,22 +321,26 @@ function myFunction() {
 	
 <div id="base">
 <webaudio-pianoroll id="proll" width="800" height="320"></webaudio-pianoroll>
-
-			<div id="scoreRange" style="border-width:1px; border-style:dashed; border-color:white; padding:10px"><p class="hint" id = "score" style="font-size:24px" >Hint: C7 in root position</p> <p id = "warning" style="color:#f0fc03;"></p></div>
-<webaudio-slider oninput="Layout(this)" id="xrange" direction="horz" width="120" height="24" min=".0625" max="2" step= ".0625" value=".0625"></webaudio-slider>
-<webaudio-slider oninput="Layout(this)" id="xoffset" direction="horz" width="200" height="24" min="0" max="20" step="0.01" value="0"></webaudio-slider>
+<webaudio-slider hidden oninput="Layout(this)" id="xrange" direction="horz" width="120" height="24" min=".0625" max="2" step= ".0625" value=".0625"></webaudio-slider>
+<webaudio-slider hidden oninput="Layout(this)" id="xoffset" direction="horz" width="200" height="24" min="0" max="20" step="0.01" value="0"></webaudio-slider>
 <webaudio-slider oninput="Layout(this)" id="yrange" direction="vert" width="24" height="120" min="3" max="32" value="16"></webaudio-slider>
 <webaudio-slider oninput="Layout(this)" id="yoffset" direction="vert" width="24" height="200" min="30" max="120" height="200" value="60"></webaudio-slider>
-</div>
-		<div class="row" >
-		<button type="button" style="border-radius:0px" onclick="$('#my-dialog').dialog('open')">&#9432;</button>
+
+<div class = "container" id = "scoreAndInfo">
+<div class = "row">
+			<div id="scoreRange" class = "col" style="left: 20px; max-width: 300px; width: 25%; border-width:1px; border-style:dashed; border-color:white; padding:10px"><p class="hint" id = "score" style="font-size:24px" >Hint: C7 in root position</p> <p id = "warning" style="color:#f0fc03;"></p></div>
+		<div class="col" id="inforow" style"width:50%" >
+		<button type="button" style="border-radius:0px" onclick="getInfo()">&#9432;</button>
 		<-click to the left for a reminder on the structure of your chords
 			</div>
-			
-<div>
+</div>
+	</div>	
+	<div>
 
 <div id="my-dialog" style="display:block" title="Chord Descriptions"><div id="alertMessage"></div></div>
 </div>
+		</div>	
+
 <button hidden onclick="document.getElementById('mml').value=(document.getElementById('proll').getMMLString())">getMMLString</button>
 <button hidden onclick="document.getElementById('proll').setMMLString(document.getElementById('mml').value)">setMMLString</button>
 <button hidden onclick="Play()">Play</button>

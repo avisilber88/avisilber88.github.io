@@ -8,6 +8,7 @@ var answerRevealed=false;
 var ezmajon=false;
 var ezminon=false;
 var ez5on=false;
+var anyRealBoxes=false;
 // Variable which tell us what step of the game we're on.
 // We'll use this later when we parse noteOn/Off messages
 var inversions = false;
@@ -360,6 +361,12 @@ if (document.getElementById("jln").selected) { //checking to see if ________ is 
 	catch(error){
 	}
 	// console.log(totalselected);
+	if ((totalselected-subtractor)==0){
+		anyRealBoxes=false;
+	}
+	else{
+		anyRealBoxes=true;
+	}
 	return totalselected;
 }
 
@@ -3612,7 +3619,7 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
         this.module = {
             is:"webaudio-pianoroll",
             properties:{
-                width:              {type:Number, value:640, observer:'layout'},
+                width:              {type:Number, value:700, observer:'layout'},
                 height:             {type:Number, value:320, observer:'layout'},
                 timebase:           {type:Number, value:1, observer:'layout'},
                 editmode:           {type:String, value:"dragpoly"},
@@ -4880,18 +4887,18 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
             }
             e.preventDefault();
         };
-		window.onresize=function(){
-			document.getElementById('proll').layout();
-			// $('#wac-pianoroll').style.width=600;
-		}
+		// window.onresize=function(){
+			// document.getElementById('proll').layout();
+			// // $('#wac-pianoroll').style.width=600;
+		// }
 		
         this.layout=function(){
 			
 			// alert (window.innerWidth);
-			if (this.width!=(window.innerWidth*.8)){
+			if (this.width!=(window.innerWidth*.7)){
 				// alert('hi');
-			this.width=Number(window.innerWidth)*.8;
-			let difference=this.width-800;
+			this.width=Number(window.innerWidth)*.7;
+			let difference=this.width-700;
 			document.getElementById('yrange').style.left=(850+difference)+"px";
 			document.getElementById('yoffset').style.left=(850+difference)+"px";
 			document.getElementById('xrange').style.left=(700+difference)+"px";
@@ -5142,9 +5149,20 @@ function alertify(messageThis) {
         $("#my-dialog").dialog("open");
     }
 		window.onresize=function(){
+			console.error(window.innerWidth);
+						document.getElementById('proll').width=window.innerWidth*.8;
+			document.getElementById('proll').layout()
 			        $("#my-dialog").dialog({
-			width: window.innerWidth//document.getElementById('keyboardImg2').getBoundingClientRect().left
+			width: window.innerWidth*.8//document.getElementById('keyboardImg2').getBoundingClientRect().left
 
         });
+		if (document.getElementById('alertMessage').innerHTML==""){
+		$("#my-dialog").dialog("close");
 		}
-		
+		}
+		function getInfo(){
+		if (anyRealBoxes){
+		$("#my-dialog").dialog("open");
+		}
+		}
+       window.setTimeout( $("#my-dialog").dialog("close"), 1000);
