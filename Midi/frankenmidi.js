@@ -1496,7 +1496,7 @@ if (countChordTypesSelected()>0){
 	}
 }
 function onMIDIFailure() {
-    document.querySelector('.step0').innerHTML = 'Error: Could not access MIDI devices. Connect a device and refresh to try again.';
+    document.querySelector('.step0').innerHTML = 'Click here to begin...';
 }
 
 function getMIDIMessage(message) {
