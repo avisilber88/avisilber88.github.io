@@ -5139,3 +5139,9 @@ function alertify(messageThis) {
         });
         $("#my-dialog").dialog("open");
     }
+		window.onresize=function(){
+			        $("#my-dialog").dialog({
+			width: window.innerWidth//document.getElementById('keyboardImg2').getBoundingClientRect().left
+
+        });
+		}

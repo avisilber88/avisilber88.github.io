@@ -578,21 +578,25 @@ $('#octaveDown').click(function () {
     }
 });
 
-function findMiddleNote(arrayOfNotes){
-	let arrayOfNotesLocal=JSON.parse(JSON.stringify(arrayOfNotes));
-	
-	    let octaveAdder = octaveSetting;
-    if (pickedInversion != 0) {
+function findMiddleNote(arrayOfNotes) {
 
-        octaveAdder = octaveSetting + 12; ;
-    }
-	    for (var i = 0; i < arrayOfNotesLocal.length; i++) {
+    let arrayOfNotesLocal = JSON.parse(JSON.stringify(arrayOfNotes));
+    // arrayOfNotesLocal.sort();
+    let octaveAdder = octaveSetting;
+
+   
+    for (var i = 0; i < arrayOfNotesLocal.length; i++) {
+
+
         if (i > 0) {
-            if (arrayOfNotesLocal[i] < arrayOfNotesLocal[i - 1]) {
+
+            if (Number(arrayOfNotes[i]) < Number(arrayOfNotes[i - 1])) {
+
                 octaveAdder = octaveAdder + 12;
             }
 
         }
+
         // noteStr = noteArray[arrayOfNotes[0]+24][1];
         // partOne = noteStr.slice(0, 1) + '';
         // partTwo = noteStr.slice(+2) + '';
@@ -604,39 +608,39 @@ function findMiddleNote(arrayOfNotes){
         // }).setContext(context).setStave(staveBass);
         // if (partTwo)
         // note.addAccidental(0, new VF.Accidental(partTwo));
+
         if ((pickedInversion != 0)) {
             // alert(pickedInversion);
-            if (pickedInversion == i) {
+            if (pickedInversion <= i) {
                 // alert("yo" + pickedInversion);
-                arrayOfNotesLocal[i]=arrayOfNotesLocal[i] + octaveAdder - 12;
+                arrayOfNotesLocal[i] = arrayOfNotesLocal[i] + octaveAdder - 12;
             } else {
-                arrayOfNotesLocal[i]=arrayOfNotesLocal[i] + octaveAdder;
+                arrayOfNotesLocal[i] = arrayOfNotesLocal[i] + octaveAdder;
             }
         } else {
-            arrayOfNotesLocal[i]=arrayOfNotesLocal[i] + octaveAdder;
+            arrayOfNotesLocal[i] = arrayOfNotesLocal[i] + octaveAdder;
         }
     }
-	
-	// console.error('ordering '+arrayOfNotesLocal.toString());
-	arrayOfNotesLocal.sort();
-	specificCorrectChord=JSON.parse(JSON.stringify(arrayOfNotesLocal));
-	for (let jkj = 0; jkj < specificCorrectChord.length; jkj++){
-	specificCorrectChord[jkj]=Number(specificCorrectChord[jkj])+24;
-	}
-	if (arrayOfNotesLocal.lengtth>2){
-	middleNote=arrayOfNotesLocal[1];
-	}
-	else{
-	middleNote=arrayOfNotesLocal[0];
-	}
-	
-	if (Math.abs(middleNote-36)<4){
-		
-	middleNote=37-(Math.random()*2);
-	}
-	middleNoteSet=true;
-	
-	
+
+    // console.error('ordering '+arrayOfNotesLocal.toString());
+    arrayOfNotesLocal.sort();
+
+    specificCorrectChord = JSON.parse(JSON.stringify(arrayOfNotesLocal));
+    for (let jkj = 0; jkj < specificCorrectChord.length; jkj++) {
+        specificCorrectChord[jkj] = Number(specificCorrectChord[jkj]) + 24;
+    }
+    if (arrayOfNotesLocal.lengtth > 2) {
+        middleNote = arrayOfNotesLocal[1];
+    } else {
+        middleNote = arrayOfNotesLocal[0];
+    }
+
+    if (Math.abs(middleNote - 36) < 4) {
+
+        middleNote = 37 - (Math.random() * 2);
+    }
+    middleNoteSet = true;
+
 }
 
 
@@ -645,6 +649,9 @@ function showNotes(arrayOfNotes) {
 	if (!middleNoteSet){
 	findMiddleNote(arrayOfNotes);
 	}
+	let arrayOfNotesLocal=JSON.parse(JSON.stringify(arrayOfNotes));
+	
+	// console.log(arrayOfNotesLocal);
     // let noteStr = noteArray[arrayOfNotes[0]+24][1];
     // let partOne = noteStr.slice(0, 1) + '';
     // let partTwo = noteStr.slice(+2) + '';
@@ -652,18 +659,21 @@ function showNotes(arrayOfNotes) {
     // // alert (partOne+" "+partTwo+" "+partThree+" ");
     // noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
     // alert(arrayOfNotes.length);
+	// pickedInversion=0;
     let octaveAdder = octaveSetting;
-    if (pickedInversion != 0) {
-
-        octaveAdder = octaveSetting + 12; ;
-    }
+    // if (pickedInversion != 0) {
+		// console.log(pickedInversion);
+        // octaveAdder = octaveSetting + 12; ;
+    // }
     for (var i = 0; i < arrayOfNotes.length; i++) {
+
         if (i > 0) {
             if (arrayOfNotes[i] < arrayOfNotes[i - 1]) {
                 octaveAdder = octaveAdder + 12;
             }
 
         }
+		
         // noteStr = noteArray[arrayOfNotes[0]+24][1];
         // partOne = noteStr.slice(0, 1) + '';
         // partTwo = noteStr.slice(+2) + '';
@@ -677,7 +687,7 @@ function showNotes(arrayOfNotes) {
         // note.addAccidental(0, new VF.Accidental(partTwo));
         if ((pickedInversion != 0)) {
             // alert(pickedInversion);
-            if (pickedInversion == i) {
+            if (pickedInversion <= i) {
                 // alert("yo" + pickedInversion);
                 makeAndShowANote((arrayOfNotes[i] + octaveAdder - 12) + '', '2', "referenceNote");
             } else {
@@ -1515,29 +1525,36 @@ function noteOnListener(note, velocity) {
             document.querySelector('.step2 .note:nth-child(' + (i + 1) + ')').classList.add('on');
         }
 
-			console.error(specificActiveChord.toString());
+			// console.error(specificActiveChord.toString());
         // If the array is the same length as the correct chord, compare
         if (activeChord.length == correctChord.length) {
             var match = true;
+			document.getElementById("warning").innerHTML =""
             for (var index = 0; index < activeChord.length; index++) {
                 if (correctChord.indexOf(activeChord[index]) < 0) {
+					document.getElementById("warning").innerHTML = document.getElementById("warning").innerHTML+"<style='fontSize:15px;'>-Incorrect Chord, see notes below.</style><br>"; //(arrangeNote(specificActiveChord[0]));
                     match = false;
                     break;
                 }
             }
-			if (specificNotes){
+			            if ((match)&&(inversions) & (arrangeNote(specificActiveChord[0]) != correctChord[pickedInversion])) {
+                match = false;
+                document.getElementById("warning").innerHTML = document.getElementById("warning").innerHTML+"<style='fontSize:15px;'>-Your root note should be " + getNoteNameGeneral(correctChord[pickedInversion])+"</style><br>"; //(arrangeNote(specificActiveChord[0]));
+            }
+			if ((specificNotes)&&(match)){
 			for (var index = 0; index < specificActiveChord.length; index++) {
                 if (specificCorrectChord.indexOf(specificActiveChord[index]) < 0) {
+				document.getElementById("warning").innerHTML = document.getElementById("warning").innerHTML+"<style='fontSize:15px;'>-You are playing in the wrong octave.</style>"; //(arrangeNote(specificActiveChord[0]));
+
                     match = false;
                     break;
                 }
             }
 			
 			}
-            if ((inversions) & (arrangeNote(specificActiveChord[0]) != correctChord[pickedInversion])) {
-                match = false;
-                document.getElementById("warning").innerHTML = "<style='fontSize:15px;'>Remember, Your root note should be " + getNoteNameGeneral(correctChord[pickedInversion]); //(arrangeNote(specificActiveChord[0]));
-            }
+			// document.getElementById("warning").innerHTML =""
+
+			
             document.getElementById("score").innerHTML = "Current Difficulty = " + score.toFixed(2);
             if (match) {
                 rightAnswer();
@@ -2069,6 +2086,10 @@ if (document.getElementById("jln").selected) { //checking to see if ________ is 
 	catch(error){
 	}
 	// console.log(totalselected);
+	if (totalselected-subtractor==0){
+		document.getElementById('alertMessage').innerHTML="No Chords are currently selected. You may only be playing single notes. Or perhaps nothing at all.";
+	
+	}
 	return totalselected;
 }
 
@@ -3641,3 +3662,33 @@ function alertify(messageThis) {
         });
         $("#my-dialog").dialog("open");
     }
+			window.onresize=function(){
+			        $("#my-dialog").dialog({
+			width: window.innerWidth//document.getElementById('keyboardImg2').getBoundingClientRect().left
+
+        });
+			}
+			$("#alertMessage").html("");
+            $("#my-dialog").dialog({
+                modal: false,
+                autoOpen: false,
+                buttons: [{
+                        text: "Hide",
+                        click: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                ]
+
+            });
+			
+		$("#my-dialog").dialog("close");
+				$("#my-dialog").dialog({
+                width: window.innerWidth //document.getElementById('keyboardImg2').getBoundingClientRect().left
+
+            });
+			getInfo=function(){
+countChordTypesSelected();
+
+    $("#my-dialog").dialog("open");
+}

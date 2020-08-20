@@ -2510,7 +2510,7 @@ function showANote() {
         const index = visibleNoteGroups.indexOf(group);
         if (index === -1)
             return;
-        group.classList.add('too-slow');
+        group.classList.add('correct');
         visibleNoteGroups.shift();
     }, 5000);
 }
@@ -3023,7 +3023,7 @@ async function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
                 const index = visibleSingingNoteGroups.indexOf(group);
                 if (index === -1)
                     return;
-                group.classList.add('too-slow');
+                group.classList.add('correct');
                 visibleSingingNoteGroups.shift();
 
             } else if (voiceType == "targetNote") {
