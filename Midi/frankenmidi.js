@@ -1497,6 +1497,8 @@ if (countChordTypesSelected()>0){
 }
 function onMIDIFailure() {
     document.querySelector('.step0').innerHTML = 'Click here to begin...';
+	
+        $("#my-dialog").dialog("close");
 }
 
 function getMIDIMessage(message) {
@@ -5145,3 +5147,4 @@ function alertify(messageThis) {
 
         });
 		}
+		
