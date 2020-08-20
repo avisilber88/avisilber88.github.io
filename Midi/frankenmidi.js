@@ -1460,7 +1460,7 @@ if (navigator.requestMIDIAccess) {
 
 } else {
     //console.log('WebMIDI is not supported in this browser.');
-    document.querySelector('.step0').innerHTML = 'Error: This browser does not support WebMIDI.';
+    document.querySelector('.step0').innerHTML = 'Click here to begin...';
 }
 
 function onMIDISuccess(midiAccess) {
