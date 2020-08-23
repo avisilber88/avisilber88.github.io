@@ -1196,7 +1196,18 @@ playASongLink("sendmylove.mp3");
 playASongLink("closer.mp3");
    // playASong("stromae");
    }); 
-   
+   playASongLink("sendmylove.mp3");
+   // playASong("stromae");
+   }); 
+      $('#closer').click(function () {
+	try{
+	currentTag=this.id
+	currentSong.pause();
+	}
+	catch(error){}
+playASongLink("closer.mp3");
+   // playASong("stromae");
+   }); 
         $('#blackparade').click(function () {
 	try{
 	currentTag=this.id
@@ -1206,6 +1217,26 @@ playASongLink("closer.mp3");
 playASongLink("blackparade.mp3");
    // playASong("stromae");
    }); 
+   $('#hello').click(function () {
+	try{
+	currentTag=this.id
+	currentSong.pause();
+	}
+	catch(error){}
+playASongLink("hello.mp3");
+   // playASong("stromae");
+   }); 
+   
+      $('#tiger').click(function () {
+	try{
+	currentTag=this.id
+	currentSong.pause();
+	}
+	catch(error){}
+playASongLink("tiger.mp3");
+   // playASong("stromae");
+   }); 
+   
          $('#oldtown').click(function () {
 	try{
 	currentTag=this.id
@@ -1550,6 +1581,10 @@ currentSongKeys=["C", "D", "D#/Eb", "F", "G", "A", "A#/Bb"];
 if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/titanium.mp3"){
 currentSongKeys=["A#/Bb", "C", "D", "D#/Eb", "F", "G", "G#/Ab"];
 }
+
+if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/tiger.mp3"){
+currentSongKeys=["A#/Bb", "C", "D", "D#/Eb", "F", "G", "G#/Ab"];
+}
 if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/wakemup.mp3"){
 currentSongKeys=["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
 }
@@ -1571,7 +1606,9 @@ currentSongKeys=["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
 if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/closer.mp3"){
 currentSongKeys=["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
 }
-
+if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/hello.mp3"){
+currentSongKeys=["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
+}
 if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/stromae.mp3"){
 currentSongKeys=["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
 }
