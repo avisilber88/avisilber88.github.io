@@ -1299,6 +1299,15 @@ playASongLink("likeaprayer.mp3");
 playASongLink("glory.mp3");
    // playASong("stromae");
    }); 
+       $('#setfire').click(function () {
+	try{
+	currentTag=this.id
+	currentSong.pause();
+	}
+	catch(error){}
+playASongLink("setfire.mp3");
+   // playASong("stromae");
+   }); 
    
        $('#lighters').click(function () {
 	try{
@@ -1594,6 +1603,10 @@ if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/tochurch.mp3"){
 currentSongKeys=["A", "B", "C", "D", "E", "F#/Gb", "G"];
 }
 if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/likeaprayer.mp3"){
+currentSongKeys=["A", "A#/Bb", "C", "D", "E", "F", "G"];
+}
+
+if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/setfire.mp3"){
 currentSongKeys=["A", "A#/Bb", "C", "D", "E", "F", "G"];
 }
 if (currentSong.src=="https://www.nwhsaob.com/Midi/samplestwo/glory.mp3"){
