@@ -1277,6 +1277,15 @@ $('#setfire').click(function () {
     // playASong("stromae");
 });
 
+$('#lovesong').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("lovesong.mp3");
+    // playASong("stromae");
+});
+
 $('#lighters').click(function () {
     try {
         currentTag = this.id
@@ -1575,7 +1584,9 @@ function checkCurrentSongAnswer() {
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/likeaprayer.mp3") {
         currentSongKeys = ["A", "A#/Bb", "C", "D", "E", "F", "G"];
     }
-
+    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/lovesong.mp3") {
+        currentSongKeys = ["A", "A#/Bb", "C", "D", "E", "F", "G"];
+    }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/setfire.mp3") {
         currentSongKeys = ["A", "A#/Bb", "C", "D", "E", "F", "G"];
     }
