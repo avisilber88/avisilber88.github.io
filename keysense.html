@@ -56,7 +56,7 @@ button {
 border-radius: 6px
 }
 .dropdown-item{
-font-size:11px;
+font-size:14px;
 }
 </style>
 </head>
@@ -106,38 +106,50 @@ Welcome to Key Sense
   <li class="nav-item">
   <button type ='button' hidden class="nav-link" id ="directions" onclick="alert('Single Notes \nLevel 1: One note repeated. Interval changes every 10 reps.\nLevel 2: #1 but the note changes each rep\nLevel 3: One note repeatedly. Intervals shuffle each rep\n\nSequences\nLevel 4: Sequence of 2 notes, interval changes every 10 reps\nLevel 5: Sequence of notes, new interval each rep, every 10 reps the length of the sequence lengthens\nLevel 6: Sequence of notes, the interval changes each note. Sequence lengthens every 10 reps\nLevel 7: #6 but with music\nLevel 8: Sequence of notes with varying lengths, same intervals. Every 10 reps the sequence lengthens\nLevel 9: #8 but the intervals change every note\nLevel 10: #9 with music\n\nDo more\nPlan-Your-Own: Import or play in your own sequence.\nFreestyle: Decide your own harmonic excercise routine')">Instructions Guide</button>
   </li>
-  
+<li>
+
+<!-- <a type = 'button' class="nav-link" id="return-button" style="position: relative; right: 0; text-decoration:none; color: black" href = "https://avisilber88.github.io/chordsensehome.html" >Check out other music apps</a> -->
+<button type = 'button' class="nav-link" style="position: relative; right: 0; text-decoration:none; color: black" onclick="window.location.href='https://avisilber88.github.io/chordsensehome.html'" >See other music apps</button>
+
+
+
+</li>  
   <li class="navbar-nav nav-item dropdown">
 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     Select Song
   </button>
   
   
-  <div class="dropdown-menu" aria-labelledby="dropdownMenu2" style = "background-color: white">
+  <div class="dropdown-menu" aria-labelledby="dropdownMenu2" style = "background-color: white; max-height:300px; overflow:auto">
    <button class="dropdown-item" type ='button' id ="quiet">Quiet - Music Tech Original</button>
    <button class="dropdown-item" type ='button' id ="lighters">Lighters - Bella Dastvan (Music Tech Original)</button>
    <button class="dropdown-item" type ='button' id ="sadipop">Sad Ipop - 242 ft. Kang (Music Tech Alum)</button>
+   <div class="dropdown-divider" style = "background-color: #E9EBEE"></div>
+   <button class="dropdown-item" type ='button' id ="centuries">Centuries - Fall Out Boy</button>
+   <button class="dropdown-item" type ='button' id ="closer">Closer - The Chainsmokers ft. Halsey</button>
+   <button class="dropdown-item" type ='button' id ="tiger">Eye of the Tiger - Survivor</button>
+   <button class="dropdown-item" type ='button' id ="ghost">Ghost - Ella Henderson</button>
    <button class="dropdown-item" type ='button' id ="glory">Glory - Common and John Legend</button>
+   <button class="dropdown-item" type ='button' id ="halo">Halo - Beyonce</button>
+   <button class="dropdown-item" type ='button' id ="hello">Hello - Adele</button>
+   <button class="dropdown-item" type ='button' id ="highhopes">High Hopes - Panic! At the Disco</button>
+   <button class="dropdown-item" type ='button' id ="likeaprayer">Like a Prayer - Madonna</button>
+   <button class="dropdown-item" type ='button' id ="lovesong">Love Song - Sara Bareilles</button>
+   <button class="dropdown-item" type ='button' id ="nightingale">Nightingale - Demi Lovato</button>
+   <button class="dropdown-item" type ='button' id ="oldtown">Old Town Road - Lil Nas X ft. Billy Ray Cyrus</button>
+   <button class="dropdown-item" type ='button' id ="stromae">Papaoutai - Stromae</button>
+   <button class="dropdown-item" type ='button' id ="phoenix">Phoenix - LOL ft. Cailin Russo, Chrissy Costanza</button>
+   <button class="dropdown-item" hidden type ='button' id ="radioactive">Radioactive - Imagine Dragons</button>
    <button class="dropdown-item" type ='button' id ="riseup">Rise Up - Andra Day</button>
+   <button class="dropdown-item" type ='button' id ="sendmylove">Send My Love - Adele</button>
+   <button class="dropdown-item" type ='button' id ="setfire">Set Fire to the Rain - Adele</button>
    <button class="dropdown-item" type ='button' id ="shatterme">Shatter Me - Lindsey Stirling ft. Lizzy Hale </button>
+   <button class="dropdown-item" type ='button' id ="swimmingpools">Swimming Pools - Kendrick Lamar</button>
+   <button class="dropdown-item" type ='button' id ="tochurch">Take Me to Church - Hozier</button>
    <button class="dropdown-item" type ='button' id ="titanium">Titanium - David Guetta ft. Sia</button>
    <button class="dropdown-item" type ='button' id ="takecare">Take Care - Drake ft. Rihanna</button>
-   <button class="dropdown-item" hidden type ='button' id ="radioactive">Radioactive - Imagine Dragons</button>
-   <button class="dropdown-item" type ='button' id ="swimmingpools">Swimming Pools - Kendrick Lamr</button>
-   <button class="dropdown-item" type ='button' id ="nightingale">Nightingale - Demi Lovato</button>
-   <button class="dropdown-item" type ='button' id ="stromae">Papaoutai - Stromae</button>
-   <button class="dropdown-item" type ='button' id ="blackparade">Welcome to the Black Parade - My Chemical Romance</button>
    <button class="dropdown-item" type ='button' id ="wakemeup">Wake Me Up - Avicii</button>
-   <button class="dropdown-item" type ='button' id ="sendmylove">Send My Love - Adele</button>
-   <button class="dropdown-item" type ='button' id ="closer">Closer - The Chainsmokers ft. Halsey</button>
-   <button class="dropdown-item" type ='button' id ="oldtown">Old Town Road - Lil Nas X ft. Billy Ray Cyrus</button>
-   <button class="dropdown-item" type ='button' id ="ghost">Ghost - Ella Henderson</button>
-   <button class="dropdown-item" type ='button' id ="highhopes">High Hopes - Panic! At the Disco</button>
-   <button class="dropdown-item" type ='button' id ="phoenix">Phoenix - LOL ft. Cailin Russo, Chrissy Costanza</button>
-   <button class="dropdown-item" type ='button' id ="halo">Halo - Beyonce</button>
-   <button class="dropdown-item" type ='button' id ="centuries">Centuries - Fall Out Boy</button>
-   <button class="dropdown-item" type ='button' id ="tochurch">Take Me to Church - Hozier</button>
-   <button class="dropdown-item" type ='button' id ="likeaprayer">Like a Prayer - Madonna</button>
+   <button class="dropdown-item" type ='button' id ="blackparade">Welcome to the Black Parade - My Chemical Romance</button>
    <button class="dropdown-item" hidden type ='button' id ="testing-button-base-case">Level One</button>
    <button class="dropdown-item" hidden type ='button' id ="testing-button-test-case-one">Level Two</button>
    <button class="dropdown-item" hidden type ='button' id ="level-three">Level Three</button>
@@ -151,21 +163,13 @@ Welcome to Key Sense
       <!-- <a class="dropdown-item" href="#">Action</a> -->
       <!-- <a class="dropdown-item" href="#">Another action</a> -->
       <!-- <a class="dropdown-item" href="#">Something else here</a> -->
-   <div class="dropdown-divider" style = "background-color: #E9EBEE"></div>
    <button hidden class="dropdown-item" type ='button' id ="practice-button">Practice Single Intervals</button>
    <button hidden class="dropdown-item" type ='button' id ="testing-button-test-case-zero">Freestyle</button>
    <button hidden class="dropdown-item" type ='button' id ="play-your-own">Play-Your-Own</button>
       <!-- <a class="dropdown-item" href="#">Separated link</a> -->
     </div>
   </li>		
-<li>
 
-<!-- <a type = 'button' class="nav-link" id="return-button" style="position: relative; right: 0; text-decoration:none; color: black" href = "https://avisilber88.github.io/chordsensehome.html" >Check out other music apps</a> -->
-<button type = 'button' class="nav-link" id="return-button" style="position: relative; right: 0; text-decoration:none; color: black" onclick="window.location.href='https://avisilber88.github.io/chordsensehome.html'" >See other music apps</a>
-
-
-
-</li>  
 <li>
 
 <button hidden type = 'button' class="nav-link" id="login-button" style="position: absolute; right: 0" >Click Here to Login</button>
@@ -200,6 +204,15 @@ Welcome to Key Sense
 </div>
 
 <div id = "card-section" class = "card-body">
+<div class="row" >
+		<button type="button" style="border-radius:100px; vertical-align:center" onclick="$('#my-dialog').dialog('open')">&#9432;</button>
+		<span style="vertical-align:center; font-size: 18px">	&nbsp;&lArr;	&nbsp;Click for Key/Scale Charts<span>
+			</div>
+			
+<div>
+
+<div id="my-dialog" style="display:block" title="Hints for Sharps & Flats"><div id="alertMessage"></div></div>
+</div>
 <h3 id = "opening-info" hidden> Press "Turn on the Tuner" to Begin, there are adjustable settings both above and below the tuner on the page</h3>
 <h3 id = "lesson-name" hidden>sss</h3>
 <div class="row justify-content-start">
@@ -246,7 +259,7 @@ Time = <span id="countdown">01:00</span>
 
 
 	<div class="options-info">
-			<div class="row justify-content-start" id = "octaves">
+			<div class="row justify-content-start" id = "octaves" style = "margin-left:42px">
 			<button type ='button' id ="octave2">Octave 2</button>
 			<button type ='button' id ="octave3" style=background:#00cc00>Octave 3 (selected)</button>
 			<button type ='button' id ="octave4">Octave 4</button>
@@ -285,6 +298,11 @@ Time = <span id="countdown">01:00</span>
 </div>
 	<div style="margin:0px">
 <div class="container" style="padding-left:0px; padding-right:0px; margin:0px">
+<div id = "scoreRow" class="row" style="padding-left:0px; padding-right:0px; margin:0px; margin-left:42px; width:100%">
+<button type ='button' hidden id ="pauseButton">Pause Timer and Sound</button>  
+Score = &nbsp;<span id="currentScore">0</span>  
+<button type ='button' hidden id ="hide-button">Hide Advanced Options</button>  
+</div>
 <div class="row" style="padding-left:0px; padding-right:0px; margin:0px; margin-left:42px; width:100%">
 <div class="onButton" id="cOnButton" style="height: 28px; width:42px">&#10004</div>
 <div class="onButton" id="csOnButton" style="height: 28px; width:28px">&#10004</div>
