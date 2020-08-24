@@ -1341,7 +1341,7 @@ $('#pausePlayButton').click(function () {
         // alert ("yo")
         currentSong.pause();
         playingState = "paused"
-            document.getElementById('pausePlayButton').innerHTML = "&nbsp;&#9658;&nbsp;";
+            document.getElementById('pausePlayButton').innerHTML = "&#9658;";
     }
 
 });
