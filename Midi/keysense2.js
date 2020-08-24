@@ -1286,6 +1286,14 @@ $('#lovesong').click(function () {
     // playASong("stromae");
 });
 
+$('#wait').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("wait.mp3");
+    // playASong("stromae");
+});
 $('#lighters').click(function () {
     try {
         currentTag = this.id
@@ -1594,6 +1602,9 @@ function checkCurrentSongAnswer() {
         currentSongKeys = ["A", "B", "C", "D", "E", "F", "G"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/riseup.mp3") {
+        currentSongKeys = ["A#/Bb", "F", "C#/Db", "C", "D#/Eb", "F#/Gb", "G#/Ab"];
+    }
+	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/wait.mp3") {
         currentSongKeys = ["A#/Bb", "F", "C#/Db", "C", "D#/Eb", "F#/Gb", "G#/Ab"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/lighters.mp3") {
