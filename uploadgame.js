@@ -1,5 +1,9 @@
 $(document).ready(function () {
+	//The following are still unfinished: sing a sequence template; import a midi.
+	var studentSchoolNameIdsArray=[];
+	var breakoutfilename;
     var data = null;
+    var data2 = null;
     var columnOfStudy = 0;
     var columnArray = [];
     var nameArray = [];
@@ -105,23 +109,150 @@ $(document).ready(function () {
         }
     }
 
+
+document.getElementById('txtFileUpload2').addEventListener('change', upload2, false);
+
+    // Method that checks that the browser supports the HTML5 File API
+    // Method that reads and processes the selected file
+    function upload2(evt) {
+        if (!browserSupportFileUpload()) {
+            alert('The File APIs are not fully supported in this browser!');
+        } else {
+            data2 = null;
+            var file2 = evt.target.files[0];
+            var reader2 = new FileReader();
+            reader2.readAsText(file2);
+            reader2.onload = function (event) {
+                var csvData = event.target.result;
+                data2 = $.csv.toArrays(csvData);
+                if (data2 && data2.length > 0) {
+                    // alert('Imported -' + data.length + '- rows successfully!');
+                    // console.log (data[2].toString());
+
+                    // $(".fileupload").slideToggle();
+
+                    generateNameIDMatchArray(data2);
+                } else {
+                    alert('No data to import!');
+                }
+            };
+            reader2.onerror = function () {
+                alert('Unable to read ' + file.fileName);
+            };
+        }
+    }
+	
+	
+	var generateNameIDMatchArray = function (dataArray){
+		// document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:xx-large'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitAssignment' style='font-size: xx-large'>Submit</button></div>";
+        // $('#assignmentSelect').empty();
+		
+       let nameArray=getNameIDCol(data2+"", 4);// columnArray = getCol(data, columnOfStudy);
+		// console.log(nameArray.toString());
+	   let idArray=getNameIDCol(data2, 0);
+	   let nameIDArray=[]
+        for (var i = 1; i < data2.length; i++) {
+           nameIDArray.push([data2[i][4]+"", idArray[i-1]]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
+        }
+		console.log(nameIDArray.toString());
+		let rowsInExport = [];
+	
+		
+		// for (var i = 0; i < nameIDArray.length; i++) {
+			// // console.warn(nameIDArray[i][1]);
+           // rowsInExport.push(["room"+i, (nameIDArray[i][1][0]+"@mcpsmd.net")]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
+        // }
+		let groupThenNameArray=[];
+		for (let parentnum = 0; parentnum < groupOfGroupsArray.length; parentnum++){
+		let parentDiv = [];
+		console.warn(allGroupIds[parentnum]);
+	let subgroup = document.getElementById(allGroupIds[parentnum]).childNodes;
+	for (let childnum = 0; childnum < subgroup.length; childnum++){
+		// console.warn(subgroup[childnum].id);	
+		console.warn(allStudentBoxIds.length);
+		for (let boxid = 0; boxid < allStudentBoxIds.length; boxid++){
+				// console.log(allStudentBoxIds[boxid][0]);
+				// console.log(subgroup[childnum].id);
+			if (allStudentBoxIds[boxid][0]==subgroup[childnum].id){
+				console.warn(allStudentBoxIds[boxid][1]);
+						for (var i = 0; i < nameIDArray.length; i++) {
+							if (nameIDArray[i][0].includes(allStudentBoxIds[boxid][1])){
+								// console.warn(nameIDArray.toString());
+								groupThenNameArray.push([JSON.stringify("room"+parentnum), JSON.stringify(allStudentBoxIds[boxid][1]+""), JSON.stringify(nameIDArray[i][1][0]+"@mcpsmd.net")]);
+							}
+							// rowsInExport.push(["room"+i, (nameIDArray[i][1][0]+"@mcpsmd.net")]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
+						}
+				// console.warn(nameIdArray.indexOf(allStudentBoxIds[boxid][1]
+			}
+		}
+		
+		
+	}
+			
+}
+for (var i = 0; i < groupThenNameArray.length; i++) {
+			// console.warn(nameIDArray[i][1]);
+			
+           rowsInExport.push([groupThenNameArray[i][0], groupThenNameArray[i][2]]);//, groupThenNameArray[i][1]]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
+        }
+	// rowsInExport.sort();
+	rowsInExport.unshift(["Pre-assign Room Name", "Email Address"]);
+
+		breakoutfilename=prompt ("What would you like to call your breakout rooms pre-assign csv?")+".csv";
+ console.warn(groupThenNameArray.toString());
+		let csvContent = "data:text/csv;charset=utf-8," + rowsInExport.map(e => e.join(",")).join("\n").replace(/"/g,"");
+		var encodedUri = encodeURI(csvContent);
+var link = document.createElement("a");
+link.setAttribute("href", encodedUri);
+link.setAttribute("download", breakoutfilename);
+document.body.appendChild(link); // Required for FF
+
+link.click();
+        // $('#submitAssignment').click(function () {
+            // // alert ("hi");
+            // // if (true){
+            // for (var i = 2; i < dataArray[2].length; i++) {
+                // if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")))) {
+                    // columnOfStudy = i + 0;
+                // }
+            // }
+
+            // // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
+            // // }
+            // $(".pickassignment").slideToggle();
+            // generateSliders();
+        // });
+	}
+	
     // document.getElementById("coefficientNumOne").innerHTML = "<input type='text'  name='organicCompoundCoefficient' id = 'organicCompoundCoefficient' value='coefficient?'></input>"; //<font color= 'white'>";
 
 
     //Step 2: Generate dropdown menus.
     var generateDropdowns = function (dataArray) {
+		console.log(dataArray[3].toString());
         document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:xx-large'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitAssignment' style='font-size: xx-large'>Submit</button></div>";
         $('#assignmentSelect').empty();
-        for (var i = 2; i < dataArray[2].length; i++) {
-            addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
+        for (var i = 1; i < dataArray[3].length; i++) {
+			if (dataArray[3][i].includes("MAX")){
+            addAssignmentOption(dataArray[3][i].substring(0, dataArray[3][i].indexOf("MAX")));
+			}
+			else{
+				addAssignmentOption(dataArray[3][i]);
+			}
         }
         $('#submitAssignment').click(function () {
             // alert ("hi");
             // if (true){
-            for (var i = 2; i < dataArray[2].length; i++) {
-                if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")))) {
+            for (var i = 2; i < dataArray[3].length; i++) {
+                if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[3][i].substring(0, dataArray[3][i].indexOf("MAX")))) {
                     columnOfStudy = i + 0;
                 }
+				else if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[3][i])) {
+                    columnOfStudy = i + 0;
+                }
+				else if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == ("Grade")){
+				columnOfStudy = 1;
+				}
             }
 
             // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
@@ -135,22 +266,28 @@ $(document).ready(function () {
 
     var generateSliders = function () {
         columnArray = getCol(data, columnOfStudy);
-        console.log(columnArray.toString());
-
+        console.log(columnOfStudy);
+	
         // alert(largestScore + " " + smallestScore);
         $(".studentsContainerOne").slideToggle();
         document.getElementById('selectionsBox').innerHTML = "<div class = 'scoreRangeSelected' style='padding-left:60px; padding-top:60px; font-size:xx-large'>Select the borders in score between your 3 groups<div class = 'sequence-mode row'> <div id='noteLengthSlider' style='width:90%; max-width:800px;'></div></div><div class='row' style = 'padding-top:10vh'><button type ='button' id ='submitScoreRange' style='font-size: xx-large'>Submit</button> </div></div>";
         //<div class='row'><div class='col-sm' id = 'groupa'>underperforming group</div><div class='col-sm' id = 'groupb'>middle-performing group</div><div class='col-sm' id = 'groupc'>top performing group</div></div></div><div class='row'>
-
+		console.log(columnArray.toString());
         columnArray.sort(compareSecondColumn);
         console.log(columnArray);
-
+	
         var slider = document.getElementById('noteLengthSlider');
-
+let stepamount=1;
+let values = (largestScore - smallestScore + 1)
+// if (largestScore>20)
+	if (largestScore==smallestScore){
+	largestScore=smallestScore+1;
+	}
+	
         noUiSlider.create(slider, {
             start: [smallestScore + 1, largestScore - 1],
             connect: true,
-            step: 1,
+            step: stepamount,
             range: {
                 'min': smallestScore,
                 'max': largestScore
@@ -158,12 +295,13 @@ $(document).ready(function () {
 
             pips: {
                 mode: 'count',
-                values: (largestScore - smallestScore + 1),
+                values: 10,//(largestScore - smallestScore + 1),
                 stepped: true,
                 density: 100,
             },
             // width: 500px,
         });
+		
         // .noUi-background {
         // background-image: linear-gradient(to right, #a2ea4c 20%, #07aa91 20%, #07aa91 80%, #a2ea4c 80%);
         // }
@@ -279,8 +417,16 @@ $(document).ready(function () {
     }
     function getCol(matrix, col) { //put data in for matrix
         var column = [];
-        for (var i = 3; i < matrix.length; i++) {
+		
+        for (var i = 4; i < matrix.length; i++) {
+			if (columnOfStudy==1){
+				matrix[i][col]=((matrix[i][col]).replace(/[a-z]/gi, '' ));
+				matrix[i][col]=Number((matrix[i][col]).replace(/\//g, ""));
+			}
+                console.log(Number((matrix[i][col])));
             if (smallestScore > Number((matrix[i][col]))) {
+				
+                console.log(Number((matrix[i][col])) + 0);
                 smallestScore = Number((matrix[i][col])) + 0;
             }
             if (largestScore < Number((matrix[i][col]))) {
@@ -291,7 +437,20 @@ $(document).ready(function () {
 
         return column;
     }
-
+    function getNameIDCol(matrix, col) { //put data in for matrix
+        var column = [];
+        for (var i = 1; i < matrix.length; i++) {
+            if (smallestScore > Number((matrix[i][col]))) {
+                smallestScore = Number((matrix[i][col])) + 0;
+            }
+            if (largestScore < Number((matrix[i][col]))) {
+                largestScore = Number((matrix[i][col])) + 0;
+            }
+            column.push([matrix[i][0], Number(matrix[i][col])]);
+        }
+		console.warn(column.toString());
+        return column;
+    }
     function getBetween(matrix, minScore, maxScore) { //put data in for matrix
         let columnLocal = [];
 
@@ -300,7 +459,7 @@ $(document).ready(function () {
                 columnLocal.push([matrix[i][0], Number(matrix[i][1])]);
             }
         }
-
+	
         return columnLocal;
     }
 
@@ -521,7 +680,7 @@ $(document).ready(function () {
         }
         console.log(groupOfGroupsArray.toString());
         let groupPlacement = 0;
-        console.warn(groupCArray[0][0].toString());
+        // console.warn(groupCArray[0][0].toString());
         for (var g = 0; g < groupCArray.length; g++) {
             console.log(groupPlacement);
 
@@ -700,6 +859,10 @@ $(document).ready(function () {
                 document.getElementById(allStudentBoxIds[j][0]).classList.remove("nottargeted");
                 // document.getElementById('KARENBROWN').style.backgroundColor = "white";
             }
+				if (confirm("Are you hoping to export your groups to use with MCPS Zoom Breakout rooms?\n\nIf/when you press okay, you will need to select your 'class list' export file from synergy.")){
+		
+			document.getElementById('txtFileUpload2').click();
+					}   
             $(".finalizeGroups").slideToggle();
         });
     }
@@ -733,7 +896,7 @@ $(document).ready(function () {
         }
         console.log(groupOfGroupsArray.toString());
         let groupPlacement = 0;
-        console.warn(groupCArray[0][0].toString());
+        // console.warn(groupCArray[0][0].toString());
        for (var g = 0; g < groupCArray.length; g++) {
             console.log(groupPlacement);
 
@@ -887,6 +1050,8 @@ $(document).ready(function () {
         // groupByStudents();
         // });
         $('#finalizeGroupsButton').click(function () {
+			// alert ("hi")
+
             lockNames = true;
             // console.warn("yo yo yo "+allStudentBoxIds[5]);
             // document.getElementById(allStudentBoxIds[5]).style.="";
@@ -913,8 +1078,30 @@ $(document).ready(function () {
                 document.getElementById(allStudentBoxIds[j][0]).classList.remove("nottargeted");
                 // document.getElementById('KARENBROWN').style.backgroundColor = "white";
             }
-            $(".finalizeGroups").slideToggle();
+						// console.log(groupNamesArray[1].toString());
+			// console.log(groupOfGroupsArray[1]);
+			// console.log(groupOfGroupsArray[2]);
+			// console.log(groupOfGroupsArray[3]);
+					if (confirm("Are you hoping to export your groups to use with MCPS Zoom Breakout rooms?\n\nIf/when you press okay, you will need to select your 'class list' export file from synergy.")){
+		
+			document.getElementById('txtFileUpload2').click();
+					}        
+		$(".finalizeGroups").slideToggle();
+
         });
     }
+var exportBreakout = function(){
+	
+	
+var encodedUri = encodeURI(csvContent);
+var link = document.createElement("a");
+link.setAttribute("href", encodedUri);
+link.setAttribute("download", breakoutfilename);
+document.body.appendChild(link); // Required for FF
+
+link.click();
+}
 
 });
+
+
