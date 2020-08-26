@@ -1175,7 +1175,14 @@ $('#hello').click(function () {
     playASongLink("hello.mp3");
     // playASong("stromae");
 });
-
+$('#sprung').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("sprung.mp3");
+    // playASong("stromae");
+});
 $('#tiger').click(function () {
     try {
         currentTag = this.id
@@ -1557,6 +1564,9 @@ function checkCurrentSongAnswer() {
         currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/hello.mp3") {
+        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
+    }
+	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/sprung.mp3") {
         currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/stromae.mp3") {
