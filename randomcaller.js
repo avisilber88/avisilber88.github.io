@@ -2,6 +2,7 @@ $(document).ready(function () {
 	//The following are still unfinished: sing a sequence template; import a midi.
 	var studentSchoolNameIdsArray=[];
 	var breakoutfilename;
+	var repeatingStudents=true;
     var data = null;
     var data2 = null;
     var columnOfStudy = 0;
@@ -9,6 +10,7 @@ $(document).ready(function () {
     var nameArray = [];
     var nameGradeArray = [];
     var smallestScore = 1000;
+	var countedStudents=[];
     var largestScore = 0;
     var scoreCutoffOne = 3;
     var scoreCutoffTwo = 4;
@@ -228,22 +230,53 @@ link.click();
 
 
     //Step 2: Generate dropdown menus.
+	var shuffleStudents = function(){
+		let randomStudentNum=Math.floor(Math.random()*columnArray.length)
+						   columnArray.sort();
+				   countedStudents.sort();
+				   console.log(columnArray.length+" "+columnArray.toString());
+
+				   console.log(countedStudents.length+" "+countedStudents.toString());
+		// for (var i = 0; i < columnArray.length; i++) {
+			var fullName = columnArray[randomStudentNum][0].split(', ');
+            var testIdName = fullName[1] + " "+fullName[0];
+			// if ((i==randomStudentNum)){
+				if ((!(countedStudents.includes(JSON.stringify(columnArray[randomStudentNum][0]))))){
+					console.warn(columnArray[randomStudentNum][0]);
+					if (!repeatingStudents){
+						countedStudents.push(JSON.stringify(columnArray[randomStudentNum][0]));
+					}
+					document.getElementById("groupA").innerHTML = "<div class='card low' id = '" + testIdName + "'><div class='container' style = 'horizontal-align:center; width: 100%'> <h2 style = 'text-align:center'><b>" + testIdName + "</b></h2></div></div>";
+				}
+				else if (countedStudents.length==columnArray.length){
+					countedStudents=[];
+					shuffleStudents();
+					
+				}
+				else {
+					shuffleStudents();
+					// break;
+				}
+	}
+	
+	
     var generateDropdowns = function (dataArray) {
-		
+		document.getElementById('repeatsButton').hidden=false;
         columnArray = getCol(data, columnOfStudy);
-		 document.getElementById('selectionsBox').innerHTML = "<div class = 'scoreRangeSelected' style='padding-left:60px; padding-top:60px; font-size:xx-large'>Press New Card to pick a new random student<div class = 'sequence-mode row'> <div id='groupA'style = 'width: 100%'></div></div><div class='row' style = 'width: 100%;padding-top:10vh'><button type ='button' id ='submitAssignment' style='font-size: xx-large'>New Card</button> </div></div>";
-  
+		document.getElementById('selectionsBox').innerHTML = "<div class = 'scoreRangeSelected' style='padding-left:60px; padding-top:60px; font-size:xx-large'>Press New Card to pick a new random student<div class = 'sequence-mode row'> <div id='groupA'style = 'width: 100%'></div></div><div class='row' style = 'width: 100%;padding-top:10vh'><button type ='button' id ='submitAssignment' style='font-size: xx-large'>New Card</button> </div></div>";
+		let stillGotStudents=false;
 		// console.log(dataArray[3].toString());
       // document.getElementById("groupA").innerHTML = "Students scoring " + smallestScore + " to " + scoreCutoffOne + "<br>(" + groupAArray.length + " members)<p>";
                    // $('#assignmentSelect').empty();
-		randomStudentNum=Math.floor(Math.random()*columnArray.length)
-		for (var i = 0; i < columnArray.length; i++) {
-			var fullName = columnArray[i][0].split(', ');
-            var testIdName = fullName[1] + " "+fullName[0];
-			if (i==randomStudentNum){
-            document.getElementById("groupA").innerHTML = document.getElementById("groupA").innerHTML + "<div class='card low' id = '" + testIdName + "'><div class='container' style = 'horizontal-align:center; width: 100%'> <h2 style = 'text-align:center'><b>" + testIdName + "</b></h2></div></div>";
-        }
-		}
+
+				   
+		
+				
+				// }
+			// }
+		
+	
+		
         // for (var i = 1; i < dataArray[3].length; i++) {
 			// if (dataArray[3][i].includes("MAX")){
             // addAssignmentOption(dataArray[3][i].substring(0, dataArray[3][i].indexOf("MAX")));
@@ -267,14 +300,58 @@ link.click();
 				// }
             // }
 // alert ('yo');
-generateDropdowns();
+console.log("YOU CLICKED ME!!!");
+shuffleStudents();
             // // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
             // // }
             // $(".pickassignment").slideToggle();
             // generateSliders();
         });
+		        
     }
-
+$('#repeatsButton').click(function () {
+	if (repeatingStudents){
+	document.getElementById('repeatsButton').innerHTML="Turn Student Repeating On";
+	repeatingStudents=false;
+	}
+	else{
+	document.getElementById('repeatsButton').innerHTML="Turn Student Repeating Off";
+	repeatingStudents=true;
+	}
+	countedStudents=[];
+	     // columnArray = getCol(data, columnOfStudy);
+		// document.getElementById('selectionsBox').innerHTML = "<div class = 'scoreRangeSelected' style='padding-left:60px; padding-top:60px; font-size:xx-large'>Press New Card to pick a new random student<div class = 'sequence-mode row'> <div id='groupA'style = 'width: 100%'></div></div><div class='row' style = 'width: 100%;padding-top:10vh'><button type ='button' id ='submitAssignment' style='font-size: xx-large'>New Card</button> </div></div>";
+  
+		// console.log(dataArray[3].toString());
+      // document.getElementById("groupA").innerHTML = "Students scoring " + smallestScore + " to " + scoreCutoffOne + "<br>(" + groupAArray.length + " members)<p>";
+                   // $('#assignmentSelect').empty();
+		randomStudentNum=Math.floor(Math.random()*columnArray.length)
+		// for (var i = 0; i < columnArray.length; i++) {
+			// // var fullName = columnArray[i][0].split(', ');
+            // // var testIdName = fullName[1] + " "+fullName[0];
+			// if (i==randomStudentNum){
+            // // document.getElementById("groupA").innerHTML = document.getElementById("groupA").innerHTML + "<div class='card low' id = '" + testIdName + "'><div class='container' style = 'horizontal-align:center; width: 100%'> <h2 style = 'text-align:center'><b>" + testIdName + "</b></h2></div></div>";
+        // }
+            // alert ("hi");
+            // if (true){
+            // for (var i = 2; i < dataArray[3].length; i++) {
+                // if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[3][i].substring(0, dataArray[3][i].indexOf("MAX")))) {
+                    // columnOfStudy = i + 0;
+                // }
+				// else if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[3][i])) {
+                    // columnOfStudy = i + 0;
+                // }
+				// else if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == ("Grade")){
+				// columnOfStudy = 1;
+				// }
+            // }
+// alert ('yo');
+// repeats=false;
+            // // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
+            // // }
+            // $(".pickassignment").slideToggle();
+            // generateSliders();
+        });
     //Step 3: Generate Sliders
 
     var generateSliders = function () {
