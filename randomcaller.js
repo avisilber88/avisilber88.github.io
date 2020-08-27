@@ -249,6 +249,7 @@ link.click();
 					document.getElementById("groupA").innerHTML = "<div class='card low' id = '" + testIdName + "'><div class='container' style = 'horizontal-align:center; width: 100%'> <h2 style = 'text-align:center'><b>" + testIdName + "</b></h2></div></div>";
 				}
 				else if (countedStudents.length==columnArray.length){
+					alert ("Each card has been pulled, they are now shuffled and beginning again.");
 					countedStudents=[];
 					shuffleStudents();
 					
