@@ -26,6 +26,8 @@ arpeggioPlayInRhythm = false;
 	$('#my-dialog-prev-next-timed').dialog("open");
 	
 	$('#my-dialog-prev-next-timed').dialog("close");
+	
+var takadimi = false;
 var clockTester = 0;
 var snaresAllowed = true;
 var randomNoteNum
@@ -13495,7 +13497,55 @@ $('#metronomeButton').click(function () {
         metronomePostTutorialAction();
     }
 });
-
+$('#metronomeview').click(function () {
+    if (takadimi) {
+        takadimi = false;
+		document.getElementById('guidestepone').innerHTML = "1";
+		document.getElementById('guidesteptwo').innerHTML = "e";
+		document.getElementById('guidestepthree').innerHTML = "and";
+		document.getElementById('guidestepfour').innerHTML = "a";
+		document.getElementById('guidestepfive').innerHTML = "2";
+		document.getElementById('guidestepsix').innerHTML = "e";
+		document.getElementById('guidestepseven').innerHTML = "and";
+		document.getElementById('guidestepeight').innerHTML = "a";
+		document.getElementById('guidestepnine').innerHTML = "3";
+		document.getElementById('guidestepten').innerHTML = "e";
+		document.getElementById('guidestepeleven').innerHTML = "and";
+		document.getElementById('guidesteptwelve').innerHTML = "a";
+		document.getElementById('guidestepthirteen').innerHTML = "4";
+		document.getElementById('guidestepfourteen').innerHTML = "e";
+		document.getElementById('guidestepfifteen').innerHTML = "and";
+		document.getElementById('guidestepsixteen').innerHTML = "a";
+        document.getElementById('metronomeview').innerHTML = "Switch time notation to 'ta ka di mi'";
+    } else {
+        takadimi = true;
+        document.getElementById('metronomeview').innerHTML = "Switch time notation to '1 e and a...'";
+		document.getElementById('guidestepone').innerHTML = "ta<br>(1)";
+		document.getElementById('guidesteptwo').innerHTML = "ka";
+		document.getElementById('guidestepthree').innerHTML = "di";
+		document.getElementById('guidestepfour').innerHTML = "mi";
+		document.getElementById('guidestepfive').innerHTML = "ta<br>(2)";
+		document.getElementById('guidestepsix').innerHTML = "ka";
+		document.getElementById('guidestepseven').innerHTML = "di";
+		document.getElementById('guidestepeight').innerHTML = "mi";
+		document.getElementById('guidestepnine').innerHTML = "ta<br>(3)";
+		document.getElementById('guidestepten').innerHTML = "ka";
+		document.getElementById('guidestepeleven').innerHTML = "di";
+		document.getElementById('guidesteptwelve').innerHTML = "mi";
+		document.getElementById('guidestepthirteen').innerHTML = "ta<br>(4)";
+		document.getElementById('guidestepfourteen').innerHTML = "ka";
+		document.getElementById('guidestepfifteen').innerHTML = "di";
+		document.getElementById('guidestepsixteen').innerHTML = "mi";
+    }
+	try{
+    setupMetronome();
+	}
+	catch(error){}
+    if (metronomeTutorial) {
+        metronomeTutorial = false;
+        metronomePostTutorialAction();
+    }
+});
 $('#backbeatButton').click(function () {
     if ((backbeat) && (snaresAllowed)) {
         backbeat = false;
@@ -13750,8 +13800,12 @@ $('#rhythm-level-two').click(function () {
 		// circleAClass('upbeat');
 		circleAClass('offbeat');
     // nextTimedDialog(messageThis, secondsForAlert, nextAction) { //not setup yet
-        nextTimedAlertify("Level 5:<br>Starting on this level we will be adding in the offbeats. We are now including all 16th notes. <br><br>It is often helpful to sound out '1-e-and-a' '2-e-and-a' 3-e-and-a' '4-e-and-a'. Try saying this out loud in time with the metronome counter below.", 3, offbeatinstruction);
-    });
+if (takadimi){   
+   nextTimedAlertify("Level 5:<br>Starting on this level we will be adding in the offbeats. We are now including all 16th notes. <br><br>It is often helpful to sound out 'ta-ka-di-mi' 'ta-ka-di-mi' 'ta-ka-di-mi' 'ta-ka-di-mi' while keeping track of the 1, 2, 3, and 4 beats on 'ta'. Try saying this out loud in time with the metronome counter below.", 3, offbeatinstruction);
+}else{  
+  nextTimedAlertify("Level 5:<br>Starting on this level we will be adding in the offbeats. We are now including all 16th notes. <br><br>It is often helpful to sound out '1-e-and-a' '2-e-and-a' 3-e-and-a' '4-e-and-a'. Try saying this out loud in time with the metronome counter below.", 3, offbeatinstruction);
+}
+	});
 	
 	function offbeatinstruction(){
 	uncircleAClass('offbeat')
@@ -14748,6 +14802,8 @@ function scroll_down_to(div){
 
         uncircleAClass('blocklegend');
         circleAClass('kickstep');
+		uncircleAClass('offbeat');
+		uncircleAClass('upbeat');
         $("#my-dialog-prev-next-timed").dialog({
             position: {
                 my: 'top',
