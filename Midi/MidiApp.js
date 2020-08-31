@@ -1969,7 +1969,7 @@ if (document.getElementById("jln").selected) { //checking to see if ________ is 
     }
     if (document.getElementById("ez5").selected) { //checking to see if ________ is checked
         totalselected++;
-		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Fifths:</strong> (Named 'root note' + '5' ex: C5) <br>&nbsp;Thumb: The root note name <br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br></td>";
+		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Fifths:</strong> (Named 'root note' + '5' ex: C5) <br>&nbsp;Thumb: The root note name <br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br><img src='C5.jpeg' style = 'width:60%; position: relative; vertical-align:bottom' alt=''></td>";
    ez5on=true;
 	}
 	else{
@@ -1977,7 +1977,7 @@ if (document.getElementById("jln").selected) { //checking to see if ________ is 
 	}
     if (document.getElementById("ezmaj").selected) { //checking to see if ________ is checked
         totalselected++;
-				insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Majors:</strong> (Named 'root note' ex: C)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Middle: 4 semitones/half-steps above the root note<br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br></td>";
+				insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Majors:</strong> (Named 'root note' ex: C)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Middle: 4 semitones/half-steps above the root note<br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br><img src='C.jpeg' style = 'width:60%; position: relative; bottom:0px' alt=''></td>";
 		ezmajon=true;
 
     }
@@ -1986,7 +1986,7 @@ if (document.getElementById("jln").selected) { //checking to see if ________ is 
 	}
     if (document.getElementById("ezm").selected) { //checking to see if ________ is checked
         totalselected++;
-		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Minors:</strong> (Named 'root note' + 'm' ex: Cm) <br>&nbsp;Thumb: The root note name <br>  &nbsp;Middle: 3 semitones/half-steps above the root note<br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br></td>";
+		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Minors:</strong> (Named 'root note' + 'm' ex: Cm) <br>&nbsp;Thumb: The root note name <br>  &nbsp;Middle: 3 semitones/half-steps above the root note<br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br><img src='Cm.jpeg' style = 'width:60%; position: relative; bottom:0px' alt=''></td>";
 		ezminon=true;
     }else{
 		ezminon=false;
@@ -1997,7 +1997,7 @@ if (document.getElementById("jln").selected) { //checking to see if ________ is 
 	
 	   if (!ez5on){
 		   totalselected++;	
-	   insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Fifths:</strong> (Named 'root note' + '5' ex: C5)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note</strong><br></td>";
+	   insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Fifths:</strong> (Named 'root note' + '5' ex: C5)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note</strong><br><img src='C5.jpeg' style = 'width:60%' alt=''></td>";
 	   }
 	   		if ((totalselected-subtractor)==4){
 	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
@@ -2007,7 +2007,7 @@ if (document.getElementById("jln").selected) { //checking to see if ________ is 
 
 	if (!ezmajon){
 		totalselected++;	
-			insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Majors:</strong> (Named 'root note' ex: C)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Middle: 4 semitones/half-steps above the root note<br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br></td>";
+			insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Majors:</strong> (Named 'root note' ex: C)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Middle: 4 semitones/half-steps above the root note<br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br><img src='C.jpeg' style = 'width:60%' alt=''></td>";
 	}
 	if ((totalselected-subtractor)==4){
 	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
@@ -2016,7 +2016,7 @@ if (document.getElementById("jln").selected) { //checking to see if ________ is 
     if (document.getElementById("regm").selected) { //checking to see if ________ is document.getElementById"jln".selected
 	   if (!ezminon){
 		   totalselected++;	
-	   		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Minors: </strong> (Named 'root note' + 'm' ex: Cm)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Middle: 3 semitones/half-steps above the root note<br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br></td>";
+	   		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Minors: </strong> (Named 'root note' + 'm' ex: Cm)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Middle: 3 semitones/half-steps above the root note<br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br><img src='Cm.jpeg' style = 'width:60%' alt=''></td>";
 	   }
 	   		if ((totalselected-subtractor)==4){
 	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
@@ -2024,35 +2024,35 @@ if (document.getElementById("jln").selected) { //checking to see if ________ is 
     }
     if (document.getElementById("idsus2").selected) { //checking to see if ________ is document.getElementById"jln".selected
         totalselected++;
-		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Suspension 2:</strong> (Named 'root note' + 'sus2' ex: Csus2)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Pointer Finger: 2 semitones/half-steps above the root note<br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br></td>";
+		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Suspension 2:</strong> (Named 'root note' + 'sus2' ex: Csus2)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Pointer Finger: 2 semitones/half-steps above the root note<br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br><img src='Csus2.jpeg' style = 'width:60%' alt=''></td>";
 		if ((totalselected-subtractor)==4){
 	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
 	   }
     }
     if (document.getElementById("idsus").selected) { //checking to see if ________ is document.getElementById"jln".selected
         totalselected++;	
-		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Suspension [4]: </strong> (Named 'root note' + 'sus' ex: Csus)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Ring Finger: 5 semitones/half-steps above the root note<br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br></td>";
+		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Suspension [4]: </strong> (Named 'root note' + 'sus' ex: Csus)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Ring Finger: 5 semitones/half-steps above the root note<br>  &nbsp;Pinkie: 7 semitones/half-steps above the root note<br><img src='Csus.jpeg' style = 'width:60%' alt=''></td>";
 		if ((totalselected-subtractor)==4){
 	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
 	   }
     }
     if (document.getElementById("m7").selected) { //checking to see if ________ is document.getElementById"jln".selected
         totalselected++;
-		   		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Minor Sevenths: </strong> (Named 'root note' + 'm7' ex: Cm7)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Finger 2: 3 semitones/half-steps above the root note<br>  &nbsp;Finger 4: 7 semitones/half-steps above the root note<br>&nbsp;Finger 5: 10 semitones/half-steps above the root note<br></td>";
+		   		insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Minor Sevenths: </strong> (Named 'root note' + 'm7' ex: Cm7)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Finger 2: 3 semitones/half-steps above the root note<br>  &nbsp;Finger 4: 7 semitones/half-steps above the root note<br>&nbsp;Finger 5: 10 semitones/half-steps above the root note<br><img src='Cm7.jpeg' style = 'width:60%' alt=''></td>";
 			if ((totalselected-subtractor)==4){
 	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
 	   }
     }
     if (document.getElementById("maj7").selected) { //checking to see if ________ is document.getElementById"jln".selected
         totalselected++;
-	insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Major Sevenths:</strong> (Named 'root note' + 'maj7' ex: Cmaj7)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Finger 2: 4 semitones/half-steps above the root note<br>  &nbsp;Finger 4: 7 semitones/half-steps above the root note<br>&nbsp;Finger 5: 11 semitones/half-steps above the root note<br></td>";
+	insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Major Sevenths:</strong> (Named 'root note' + 'maj7' ex: Cmaj7)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Finger 2: 4 semitones/half-steps above the root note<br>  &nbsp;Finger 4: 7 semitones/half-steps above the root note<br>&nbsp;Finger 5: 11 semitones/half-steps above the root note<br><img src='Cmaj7.jpeg' style = 'width:60%' alt=''></td>";
 			if ((totalselected-subtractor)==4){
 	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
 	   }
     }
     if (document.getElementById("d7").selected) { //checking to see if ________ is document.getElementById"jln".selected
        totalselected++;
-	   insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Dominant Sevenths:</strong> (Named 'root note' + '7' ex: C7)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Finger 2: 4 semitones/half-steps above the root note<br>  &nbsp;Finger 4: 7 semitones/half-steps above the root note<br>&nbsp;Finger 5: 10 semitones/half-steps above the root note<br></td>";
+	   insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Dominant Sevenths:</strong> (Named 'root note' + '7' ex: C7)<br>&nbsp;Thumb: The root note name <br>  &nbsp;Finger 2: 4 semitones/half-steps above the root note<br>  &nbsp;Finger 4: 7 semitones/half-steps above the root note<br>&nbsp;Finger 5: 10 semitones/half-steps above the root note<br><img src='C7.jpeg' style = 'width:60%' alt=''></td>";
 		if ((totalselected-subtractor)==4){
 	    insertHTML=insertHTML+"</tr><tr style = 'border: 1px solid black'>";
 	   } 
