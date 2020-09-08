@@ -263,6 +263,7 @@ link.click();
 	
     var generateDropdowns = function (dataArray) {
 		document.getElementById('repeatsButton').hidden=false;
+		document.getElementById('repeatingMessage').hidden=false;
         columnArray = getCol(data, columnOfStudy);
 		document.getElementById('selectionsBox').innerHTML = "<div class = 'scoreRangeSelected' style='padding-left:60px; padding-top:60px; font-size:xx-large'>Press New Card to pick a new random student<div class = 'sequence-mode row'> <div id='groupA'style = 'width: 100%'></div></div><div class='row' style = 'width: 100%;padding-top:10vh'><button type ='button' id ='submitAssignment' style='font-size: xx-large'>New Card</button> </div></div>";
 		let stillGotStudents=false;
@@ -313,10 +314,12 @@ shuffleStudents();
 $('#repeatsButton').click(function () {
 	if (repeatingStudents){
 	document.getElementById('repeatsButton').innerHTML="Turn Student Repeating On";
+	document.getElementById('repeatingMessage').innerHTML="Students names currently will NOT repeat, they are being taken out of the deck until the deck is complete";
 	repeatingStudents=false;
 	}
 	else{
 	document.getElementById('repeatsButton').innerHTML="Turn Student Repeating Off";
+	document.getElementById('repeatingMessage').innerHTML="Students names are currently able to repeat, they are being shuffled back in";
 	repeatingStudents=true;
 	}
 	countedStudents=[];
