@@ -352,6 +352,7 @@ console.log(JSON.stringify(presentStudents[k][1]).replace(/\"/g, "").replace(/\\
 		document.getElementById('selectionsBox').innerHTML = "<table><tbody><tr style = 'border: 1px solid black'><td>Name</td><td>time spent</td></tr>"+tableInfo+"</tbody></table>";
 let checkIt=false;
 let absentStudents="Absent Students:";
+let extraStudents="Extra Students:";
 	for (let j = 1; j<data2.length; j++){ //from the id sheet
 	checkIt=false;
 		for (let i = 4; i<data.length; i++){ //from the zoom export
@@ -368,7 +369,24 @@ let absentStudents="Absent Students:";
 			absentStudents=absentStudents+"\n"+JSON.stringify(data2[j][4]);
 		}
 	}
-	alert(absentStudents);
+			for (let i = 4; i<data.length; i++){ //from the zoom export
+		checkIt=false;
+	
+		for (let j = 1; j<data2.length; j++){ //from the id sheet
+
+	//	console.log(dataArray[i][1].replace('@mcpsmd.net','').toString());
+	
+			if (data[i][1].replace('@mcpsmd.net','').toString()==data2[j][0].toString()){
+				checkIt=true;
+				// presentStudents.push([JSON.stringify(data2[j][4]), JSON.stringify(data[i][2])]);
+			}
+	//	console.log(dataArray2[i][0].toString());
+		}
+		if (!checkIt){
+			extraStudents=extraStudents+"\n"+JSON.stringify(data[i][0]);
+		}
+	}
+	alert(absentStudents+"\n"+"\n"+extraStudents);
 	   // let nameArray=getNameIDCol(data2+"", 4);// columnArray = getCol(data, columnOfStudy);
 		// // console.log(nameArray.toString());
 	   // let idArray=getNameIDCol(data2, 0);
