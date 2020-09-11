@@ -1579,7 +1579,7 @@ function checkCurrentSongAnswer() {
         currentSongKeys = ["A", "D", "C#/Db", "E", "B", "F#/Gb", "G#/Ab"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/highhopes.mp3") {
-        currentSongKeys = ["A", "C", "D", "E", "B", "F", "A#/Bb"];
+        currentSongKeys = ["A", "C", "D", "E", "G", "F", "A#/Bb"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/phoenix.mp3") {
         currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
