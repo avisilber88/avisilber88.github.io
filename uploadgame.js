@@ -229,25 +229,25 @@ link.click();
 
     //Step 2: Generate dropdown menus.
     var generateDropdowns = function (dataArray) {
-		console.log(dataArray[3].toString());
+		console.log(dataArray[2].toString());
         document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:xx-large'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitAssignment' style='font-size: xx-large'>Submit</button></div>";
         $('#assignmentSelect').empty();
-        for (var i = 1; i < dataArray[3].length; i++) {
-			if (dataArray[3][i].includes("MAX")){
-            addAssignmentOption(dataArray[3][i].substring(0, dataArray[3][i].indexOf("MAX")));
+        for (var i = 1; i < dataArray[2].length; i++) {
+			if (dataArray[2][i].includes("MAX")){
+            addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
 			}
 			else{
-				addAssignmentOption(dataArray[3][i]);
+				addAssignmentOption(dataArray[2][i]);
 			}
         }
         $('#submitAssignment').click(function () {
             // alert ("hi");
             // if (true){
-            for (var i = 2; i < dataArray[3].length; i++) {
-                if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[3][i].substring(0, dataArray[3][i].indexOf("MAX")))) {
+            for (var i = 1; i < dataArray[2].length; i++) {
+                if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")))) {
                     columnOfStudy = i + 0;
                 }
-				else if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[3][i])) {
+				else if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[2][i])) {
                     columnOfStudy = i + 0;
                 }
 				else if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == ("Grade")){
@@ -265,6 +265,7 @@ link.click();
     //Step 3: Generate Sliders
 
     var generateSliders = function () {
+		
         columnArray = getCol(data, columnOfStudy);
         console.log(columnOfStudy);
 	
@@ -418,7 +419,7 @@ let values = (largestScore - smallestScore + 1)
     function getCol(matrix, col) { //put data in for matrix
         var column = [];
 		
-        for (var i = 4; i < matrix.length; i++) {
+        for (var i = 3; i < matrix.length; i++) {
 			if (columnOfStudy==1){
 				matrix[i][col]=((matrix[i][col]).replace(/[a-z]/gi, '' ));
 				matrix[i][col]=Number((matrix[i][col]).replace(/\//g, ""));
