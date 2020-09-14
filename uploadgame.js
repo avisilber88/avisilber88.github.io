@@ -229,25 +229,32 @@ link.click();
 
     //Step 2: Generate dropdown menus.
     var generateDropdowns = function (dataArray) {
-		console.log(dataArray[2].toString());
+		let startRow=2;
+		if(dataArray[2][0].toString().includes('Student')){
+	
+		}
+		else if (dataArray[3][0].toString().includes('Student')){
+			startRow=3;
+		}
+		console.log(dataArray[startRow].toString());
         document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:xx-large'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitAssignment' style='font-size: xx-large'>Submit</button></div>";
         $('#assignmentSelect').empty();
-        for (var i = 1; i < dataArray[2].length; i++) {
-			if (dataArray[2][i].includes("MAX")){
-            addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
+        for (var i = 1; i < dataArray[startRow].length; i++) {
+			if (dataArray[startRow][i].includes("MAX")){
+            addAssignmentOption(dataArray[startRow][i].substring(0, dataArray[startRow][i].indexOf("MAX")));
 			}
 			else{
-				addAssignmentOption(dataArray[2][i]);
+				addAssignmentOption(dataArray[startRow][i]);
 			}
         }
         $('#submitAssignment').click(function () {
             // alert ("hi");
             // if (true){
-            for (var i = 1; i < dataArray[2].length; i++) {
-                if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")))) {
+            for (var i = 1; i < dataArray[startRow].length; i++) {
+                if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[startRow][i].substring(0, dataArray[startRow][i].indexOf("MAX")))) {
                     columnOfStudy = i + 0;
                 }
-				else if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[2][i])) {
+				else if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[startRow][i])) {
                     columnOfStudy = i + 0;
                 }
 				else if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == ("Grade")){
