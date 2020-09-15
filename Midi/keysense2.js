@@ -1242,6 +1242,14 @@ $('#centuries').click(function () {
     playASongLink("centuries.mp3");
     // playASong("stromae");
 });
+$('#chungus').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("chungus.mp3");
+    // playASong("stromae");
+});
 $('#sadipop').click(function () {
     try {
         currentTag = this.id
@@ -1585,6 +1593,9 @@ function checkCurrentSongAnswer() {
         currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/centuries.mp3") {
+        currentSongKeys = ["A", "B", "C", "D", "E", "F#/Gb", "G"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/chungus.mp3") {
         currentSongKeys = ["A", "B", "C", "D", "E", "F#/Gb", "G"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/blackparade.mp3") {
