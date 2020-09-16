@@ -1250,6 +1250,14 @@ $('#chungus').click(function () {
     playASongLink("chungus.mp3");
     // playASong("stromae");
 });
+$('#breathe').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("breathe.mp3");
+    // playASong("stromae");
+});
 $('#sadipop').click(function () {
     try {
         currentTag = this.id
@@ -1541,6 +1549,9 @@ function checkCurrentSongAnswer() {
         currentSongKeys = ["A", "B", "C", "D", "E", "F", "G"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/quiet.mp3") {
+        currentSongKeys = ["C", "D", "D#/Eb", "F", "G", "A", "A#/Bb"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/breathe.mp3") {
         currentSongKeys = ["C", "D", "D#/Eb", "F", "G", "A", "A#/Bb"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/titanium.mp3") {
