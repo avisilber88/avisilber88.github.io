@@ -1,6 +1,7 @@
 $(document).ready(function () {
 	//The following are still unfinished: sing a sequence template; import a midi.
 	var studentSchoolNameIdsArray=[];
+	var startRow=2;
 	var breakoutfilename;
     var data = null;
     var data2 = null;
@@ -229,7 +230,7 @@ link.click();
 
     //Step 2: Generate dropdown menus.
     var generateDropdowns = function (dataArray) {
-		let startRow=2;
+		startRow=2;
 		if(dataArray[2][0].toString().includes('Student')){
 	
 		}
@@ -426,10 +427,15 @@ let values = (largestScore - smallestScore + 1)
     function getCol(matrix, col) { //put data in for matrix
         var column = [];
 		
-        for (var i = 3; i < matrix.length; i++) {
+        for (var i = (startRow+1); i < matrix.length; i++) {
 			if (columnOfStudy==1){
-				matrix[i][col]=((matrix[i][col]).replace(/[a-z]/gi, '' ));
-				matrix[i][col]=Number((matrix[i][col]).replace(/\//g, ""));
+				// matrix[i][col]=((matrix[i][col]).replace(/[a-z]/gi, '' ));
+				// matrix[i][col]=Number((matrix[i][col]).replace(/\//g, ""));
+				matrix[i][col]=matrix[i][col].substr(0,matrix[i][col].indexOf(' '));
+			
+				matrix[i][col]=Number((matrix[i][col]));
+			
+				// console.log(matrix[i][col]);
 			}
                 console.log(Number((matrix[i][col])));
             if (smallestScore > Number((matrix[i][col]))) {
