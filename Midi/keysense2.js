@@ -1307,7 +1307,14 @@ $('#setfire').click(function () {
     playASongLink("setfire.mp3");
     // playASong("stromae");
 });
-
+$('#twicemore').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("twicemore.mp3");
+    // playASong("stromae");
+});
 $('#lovesong').click(function () {
     try {
         currentTag = this.id
@@ -1636,6 +1643,9 @@ function checkCurrentSongAnswer() {
         currentSongKeys = ["A", "A#/Bb", "C", "D", "E", "F", "G"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/setfire.mp3") {
+        currentSongKeys = ["A", "A#/Bb", "C", "D", "E", "F", "G"];
+    }
+	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/twicemore.mp3") {
         currentSongKeys = ["A", "A#/Bb", "C", "D", "E", "F", "G"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/glory.mp3") {
