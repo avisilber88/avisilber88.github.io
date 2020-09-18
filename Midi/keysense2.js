@@ -1175,6 +1175,14 @@ $('#hello').click(function () {
     playASongLink("hello.mp3");
     // playASong("stromae");
 });
+$('#everytime').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("everytime.mp3");
+    // playASong("stromae");
+});
 $('#sprung').click(function () {
     try {
         currentTag = this.id
@@ -1640,6 +1648,9 @@ function checkCurrentSongAnswer() {
         currentSongKeys = ["A#/Bb", "F", "C#/Db", "C", "D#/Eb", "F#/Gb", "G#/Ab"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/lighters.mp3") {
+        currentSongKeys = ["A#/Bb", "C", "D#/Eb", "D", "F", "G", "G#/Ab"];
+    }
+	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/everytime.mp3") {
         currentSongKeys = ["A#/Bb", "C", "D#/Eb", "D", "F", "G", "G#/Ab"];
     }
     currentSongKeys.sort();
