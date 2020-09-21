@@ -1,8 +1,13 @@
 $(document).ready(function(){
-		n =  new Date();
+n =  new Date();
 y = n.getFullYear();
 m = n.getMonth() + 1;
 d = n.getDate();
+var finalNum1;
+var finalNum2;
+var signIs;
+var counting;
+var answers=[];
 document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;		
 
 	var whatnameis = prompt ("What is your name?");
@@ -26,7 +31,7 @@ $(window).resize(function(){
 //$('.ansbox').css('width',window.innerWidth/4-2);
 //$('.ansbox').css('height',window.innerWidth/4-2);
 
-//$('#blocka').css('left',$('blocka').width*0);
+//$('#blocka').css('left',$('blocka').width*0); 
 //$('#blockb').css('position','absolute');
 //$('#blockb').css('left',$('blockb').width*1);
 
@@ -110,7 +115,35 @@ var getSigFigs = function (num) {
   return n.replace(FIND_FRONT_ZEROS_SIGN_DOT_EXP, "").length;
 };
 
+var toOurExponential=function(n1){
 
+
+	var answerString=Number(n1).toExponential()+"";
+//	answerString=round(answerString,3)+"";
+	var eSpot=answerString.indexOf("e");
+	var exponency=answerString.substring(eSpot+1, answerString.length);
+	if (exponency.substring(0,1)==="+"){
+		exponency=exponency.substring(1,exponency.length);
+	}
+	//nakedAnswer is the resolution, exponency is the other thing
+	var decimallessAnswer=(n1+"").split('.').join("");
+	// console.log(decimallessAnswer);
+	var nakedAnswer=decimallessAnswer;
+	if (nakedAnswer.length>numSigFigs){
+			var nakedAnswer=nakedAnswer.substring(0,numSigFigs);
+			//alert (nakedAnswer+"");
+		}		
+		console.log(nakedAnswer);
+	if (nakedAnswer[0]=="-"){
+	var nakedAnswer = nakedAnswer.slice(0, 2) + "." + nakedAnswer.slice(2, nakedAnswer.length);
+		
+	}else{
+	var nakedAnswer = nakedAnswer.slice(0, 1) + "." + nakedAnswer.slice(1, nakedAnswer.length);
+	}
+		// console.log(nakedAnswer);
+	var answerStringFinal=nakedAnswer+"*10"+(""+exponency).sup();
+	return answerStringFinal;
+}
 function round(value, exp) {
   if (typeof exp === 'undefined' || +exp === 0)
     return Math.round(value);
@@ -137,6 +170,7 @@ function round(value, exp) {
 
 
 var setupAnswers=function(n1, n2, signI){
+	// console.log(n1);
  numSigs1=parseInt(getSigFigs(n1));
  numSigs2=parseInt(getSigFigs(n2));
  numSigFigs =parseInt(numSigs1)+0;
@@ -157,7 +191,7 @@ var setupAnswers=function(n1, n2, signI){
  //" "+numSigs2+" "+answer);
  if ((Number(signI))>=1){
 	answerOriginal=Number(n1)*Number(n2);
-	numsigs1="himult";
+	numSigs1="himult";
  }
  else {
 	answerOriginal=Number(n1)/Number(n2);
@@ -168,72 +202,102 @@ var setupAnswers=function(n1, n2, signI){
 
 
 			answer=sigFigs(Number(answerOriginal), numSigFigs);
+			// console.error(answer);
 // $('#score').text("Score = " +getSigFigs(answer)+" "+numSigFigs + " " + numSigs1 +
  //" "+numSigs2+" "+answerOriginal+" "+answer);
+ // console.log(getSigFigs(("0.1690")));
 			if (Number(getSigFigs(answer))<(numSigFigs)){
 				if (Number(answer)%1!=0){  //the number contains a decimal.
+					// console.log (answer+" "+getSigFigs(answer)+" "+numSigFigs);
+					if ((answer+"").includes("e")){
+						resetQuestion();
+					}
+					while (Number(getSigFigs(answer))<(numSigFigs)){
 					answer=answer+"0";
+					}
+					// console.log("here");
+					// resetQuestion();
 				}
-			else if (Number(answer)%10!=0){
+				else if (Number(answer)%10!=0){
 					answer=answer+".0";
-			}
-
+					// resetQuestion();
+				}
+				else{
+					answer=answer+".";
+					// alert ("WAIT");
+					// console.log("length is "+answer.length+" "+numSigFigs);
+					if ((answer.length-1)!=numSigFigs){
+						answer =toOurExponential(answer);
+					}
+					
+					resetQuestion();
+				}
+				// console.log("happenone");
 			}
 			else if (Number(getSigFigs(answer))>(numSigFigs)){
+			// console.log("happentwo");
 				resetQuestion();
 				//answer=sigFigs(Number(answer), numSigFigs);
 
 			}
 			else{
+			// console.log("happenthree");
+				// resetQuestion();
+			
+			}
 			wrongAnswer1=sigFigs(Number(answerOriginal), Math.floor(Math.random()*10));
-			var counting = 0;
-			while (wrongAnswer1==answer){
+			counting = 0;
+			while (wrongAnswer1==answer && (wrongAnswer1!=" ")){
 			wrongAnswer1=sigFigs(Number(answerOriginal), Math.floor(Math.random()*10));	
 			counting=counting+1;
 			if (counting>10){
 				wrongAnswer1=" ";
-				break;
+				
+				
 			}
 
 			}
-			var counting = 0;
+			counting = 0;
 			wrongAnswer2=sigFigs(Number(answerOriginal), Math.floor(Math.random()*10));
-			while ((wrongAnswer2==answer) || (wrongAnswer2==wrongAnswer1)){
+ while (((wrongAnswer2==answer) || (wrongAnswer2==wrongAnswer1)) && (wrongAnswer2!=" ")){
 			wrongAnswer2=sigFigs(Number(answerOriginal), Math.floor(Math.random()*10));	
 			counting=counting+1;
 			if (counting>10){
 				wrongAnswer2=" ";
-				break;
-			}
+				}
 			}			
 	
 			wrongAnswer3=sigFigs(Number(answerOriginal), Math.floor(Math.random()*10));	
-			var counting = 0;
-			while (wrongAnswer3==answer || wrongAnswer3==wrongAnswer1 || wrongAnswer3==wrongAnswer2){
+			counting = 0;
+			while ((wrongAnswer3==answer || wrongAnswer3==wrongAnswer1 || wrongAnswer3==wrongAnswer2) && (wrongAnswer3!=" ")){
 			wrongAnswer3=sigFigs(Number(answerOriginal), Math.floor(Math.random()*10));	
 			counting=counting+1;
 			if (counting>10){
 				wrongAnswer3=" ";
-				break;
+				
 			}
 			}			
-
-		var answers = [];
+			
+// console.warn("way way before");
+		answers = [];
 		answers[0]=answer;
 		answers[1]=wrongAnswer1;
 		answers[2]=wrongAnswer2;
 		answers[3]=wrongAnswer3;
 		
+// console.warn("way before");
 		for (i=0; i<answers.length; i++){
 			
 			for (j=0; j<answers.length; j++){
 				if ((j!=i)&&(answers[i]===answers[j])){
-					setupAnswers(n1);
+					// alert("this is it?");
+					// setupAnswers(n1, n2, signI);
+					resetQuestion();
 				}	
 			}
 		}
 
-
+// console.warn("before");
 		$("*").removeClass('answer');
 		$("*").removeClass('wrongAnswer');
 		$("*").removeClass('wrong');
@@ -244,6 +308,7 @@ var setupAnswers=function(n1, n2, signI){
 		
 
 		var random3 = Math.floor(Math.random()*24);
+		// console.warn(random3);
 		if (random3===0){
 		$('#bworda').text(answer);
 		$('#bwordb').text(wrongAnswer1);
@@ -413,7 +478,7 @@ var setupAnswers=function(n1, n2, signI){
 		$('#boxd').addClass('answer');
 		}
  }
-}
+
  	};
 	// $('#num2').text($('#num1').val());
 	
@@ -422,16 +487,16 @@ var resetQuestion=function(){
 		// $('#boxb').text(35);
 		// $('#bwordb').text(35);
 
-		var signIs = Math.floor(Math.random()*2);
+signIs = Math.floor(Math.random()*2);
 
 		number1=(Math.floor(Math.random()*2000000-1000000));
-		var finalNum1 = number1*Math.pow(10, -1*Math.floor(Math.random()*9))
+		finalNum1 = number1*Math.pow(10, -1*Math.floor(Math.random()*9))
 		finalNum1=round(finalNum1, Math.floor(Math.random()*4));
 		
 
 
 		number2=(Math.floor(Math.random()*2000000-1000000));
-		var finalNum2 = number2*Math.pow(10, -1*Math.floor(Math.random()*9))
+		finalNum2 = number2*Math.pow(10, -1*Math.floor(Math.random()*9))
 		finalNum2=round(finalNum2, Math.floor(Math.random()*4));
 		
 		if (signIs>=1) {
