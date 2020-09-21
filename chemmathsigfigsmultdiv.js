@@ -307,175 +307,151 @@ var setupAnswers=function(n1, n2, signI){
 		$("#boxd").addClass('wrongAnswer');
 		
 
-		var random3 = Math.floor(Math.random()*24);
-		// console.warn(random3);
-		if (random3===0){
-		$('#bworda').text(answer);
-		$('#bwordb').text(wrongAnswer1);
-		$('#bwordc').text(wrongAnswer2);
-		$('#bwordd').text(wrongAnswer3);
-		$('#boxa').addClass('answer');
-		}
-		else if (random3===1){
-		$('#bworda').text(answer);
-		$('#bwordc').text(wrongAnswer1);
-		$('#bwordb').text(wrongAnswer2);
-		$('#bwordd').text(wrongAnswer3);
-		$('#boxa').addClass('answer');
-		}
-		else if (random3===2){
-		$('#bworda').text(answer);
-		$('#bwordc').text(wrongAnswer1);
-		$('#bwordd').text(wrongAnswer2);
-		$('#bwordb').text(wrongAnswer3);
-		$('#boxa').addClass('answer');
-		}
-		else if (random3===3){
-		$('#bworda').text(answer);
-		$('#bwordd').text(wrongAnswer1);
-		$('#bwordb').text(wrongAnswer2);
-		$('#bwordc').text(wrongAnswer3);
-		$('#boxa').addClass('answer');
-		}
-		else if (random3===4){
-		$('#bworda').text(answer);
-		$('#bwordb').text(wrongAnswer1);
-		$('#bwordd').text(wrongAnswer2);
-		$('#bwordc').text(wrongAnswer3);
-		$('#boxa').addClass('answer');
-		}
-		else if (random3===5){
-		$('#bworda').text(answer);
-		$('#bwordd').text(wrongAnswer1);
-		$('#bwordc').text(wrongAnswer2);
-		$('#bwordb').text(wrongAnswer3);
-		$('#boxa').addClass('answer');
-		}
-		else if (random3===6){
-		$('#bwordb').text(answer);
-		$('#bworda').text(wrongAnswer1);
-		$('#bwordc').text(wrongAnswer2);
-		$('#bwordd').text(wrongAnswer3);
-		$('#boxb').addClass('answer');
-		}
-		else if (random3===7){
-		$('#bwordb').text(answer);
-		$('#bworda').text(wrongAnswer1);
-		$('#bwordd').text(wrongAnswer2);
-		$('#bwordc').text(wrongAnswer3);
-		$('#boxb').addClass('answer');
-		}
-		else if (random3===8){
-		$('#bwordb').text(answer);
-		$('#bwordc').text(wrongAnswer1);
-		$('#bwordd').text(wrongAnswer2);
-		$('#bworda').text(wrongAnswer3);
-		$('#boxb').addClass('answer');
-		}
-		else if (random3===9){
-		$('#bwordb').text(answer);
-		$('#bwordc').text(wrongAnswer1);
-		$('#bworda').text(wrongAnswer2);
-		$('#bwordd').text(wrongAnswer3);
-		$('#boxb').addClass('answer');
-		}
-		else if (random3===10){
-		$('#bwordb').text(answer);
-		$('#bwordd').text(wrongAnswer1);
-		$('#bworda').text(wrongAnswer2);
-		$('#bwordc').text(wrongAnswer3);
-		$('#boxb').addClass('answer');
-		}
-		else if (random3===11){
-		$('#bwordb').text(answer);
-		$('#bwordd').text(wrongAnswer1);
-		$('#bwordc').text(wrongAnswer2);
-		$('#bworda').text(wrongAnswer3);
-		$('#boxb').addClass('answer');
-		}
-		else if (random3===12){
-		$('#bwordc').text(answer);
-		$('#bworda').text(wrongAnswer1);
-		$('#bwordb').text(wrongAnswer2);
-		$('#bwordd').text(wrongAnswer3);
-		$('#boxc').addClass('answer');
-		}
-		else if (random3===13){
-		$('#bwordc').text(answer);
-		$('#bworda').text(wrongAnswer1);
-		$('#bwordd').text(wrongAnswer2);
-		$('#bwordb').text(wrongAnswer3);
-		$('#boxc').addClass('answer');
-		}
-		else if (random3===14){
-		$('#bwordc').text(answer);
-		$('#bwordb').text(wrongAnswer1);
-		$('#bwordd').text(wrongAnswer2);
-		$('#bworda').text(wrongAnswer3);
-		$('#boxc').addClass('answer');
-		}
-		else if (random3===15){
-		$('#bwordc').text(answer);
-		$('#bwordb').text(wrongAnswer1);
-		$('#bworda').text(wrongAnswer2);
-		$('#bwordd').text(wrongAnswer3);
-		$('#boxc').addClass('answer');
-		}
-		else if (random3===16){
-		$('#bwordc').text(answer);
-		$('#bwordd').text(wrongAnswer1);
-		$('#bworda').text(wrongAnswer2);
-		$('#bwordb').text(wrongAnswer3);
-		$('#boxc').addClass('answer');
-		}
-		else if (random3===17){
-		$('#bwordc').text(answer);
-		$('#bwordd').text(wrongAnswer1);
-		$('#bwordb').text(wrongAnswer2);
-		$('#bworda').text(wrongAnswer3);
-		$('#boxc').addClass('answer');
-		}
-		else if (random3===18){
-		$('#bwordd').text(answer);
-		$('#bworda').text(wrongAnswer1);
-		$('#bwordb').text(wrongAnswer2);
-		$('#bwordc').text(wrongAnswer3);
-		$('#boxd').addClass('answer');
-		}
-		else if (random3===19){
-		$('#bwordd').text(answer);
-		$('#bworda').text(wrongAnswer1);
-		$('#bwordc').text(wrongAnswer2);
-		$('#bwordb').text(wrongAnswer3);
-		$('#boxd').addClass('answer');
-		}
-		else if (random3===20){
-		$('#bwordd').text(answer);
-		$('#bwordb').text(wrongAnswer1);
-		$('#bworda').text(wrongAnswer2);
-		$('#bwordc').text(wrongAnswer3);
-		$('#boxd').addClass('answer');
-		}
-		else if (random3===21){
-		$('#bwordd').text(answer);
-		$('#bwordb').text(wrongAnswer1);
-		$('#bwordc').text(wrongAnswer2);
-		$('#bworda').text(wrongAnswer3);
-		$('#boxd').addClass('answer');
-		}
-		else if (random3===22){
-		$('#bwordd').text(answer);
-		$('#bwordc').text(wrongAnswer1);
-		$('#bworda').text(wrongAnswer2);
-		$('#bwordb').text(wrongAnswer3);
-		$('#boxd').addClass('answer');
-		}
-		else if (random3===23){
-		$('#bwordd').text(answer);
-		$('#bwordc').text(wrongAnswer1);
-		$('#bwordb').text(wrongAnswer2);
-		$('#bworda').text(wrongAnswer3);
-		$('#boxd').addClass('answer');
+		var random3 = Math.floor(Math.random() * 24);
+		if (random3 === 0) {
+			document.getElementById("bworda").innerHTML = answer;
+			document.getElementById("bwordb").innerHTML = wrongAnswer1;
+			document.getElementById("bwordc").innerHTML = wrongAnswer2;
+			document.getElementById("bwordd").innerHTML = (wrongAnswer3);
+			$('#boxa').addClass('answer');
+		} else if (random3 === 1) {
+			document.getElementById("bworda").innerHTML = (answer);
+			document.getElementById("bwordc").innerHTML = (wrongAnswer1);
+			document.getElementById("bwordb").innerHTML = (wrongAnswer2);
+			document.getElementById("bwordd").innerHTML = (wrongAnswer3);
+			$('#boxa').addClass('answer');
+		} else if (random3 === 2) {
+			document.getElementById("bworda").innerHTML = (answer);
+			document.getElementById("bwordc").innerHTML = (wrongAnswer1);
+			document.getElementById("bwordd").innerHTML = (wrongAnswer2);
+			document.getElementById("bwordb").innerHTML = (wrongAnswer3);
+			$('#boxa').addClass('answer');
+		} else if (random3 === 3) {
+			document.getElementById("bworda").innerHTML = (answer);
+			document.getElementById("bwordd").innerHTML = (wrongAnswer1);
+			document.getElementById("bwordb").innerHTML = (wrongAnswer2);
+			document.getElementById("bwordc").innerHTML = (wrongAnswer3);
+			$('#boxa').addClass('answer');
+		} else if (random3 === 4) {
+			document.getElementById("bworda").innerHTML = (answer);
+			document.getElementById("bwordb").innerHTML = (wrongAnswer1);
+			document.getElementById("bwordd").innerHTML = (wrongAnswer2);
+			document.getElementById("bwordc").innerHTML = (wrongAnswer3);
+			$('#boxa').addClass('answer');
+		} else if (random3 === 5) {
+			document.getElementById("bworda").innerHTML = (answer);
+			document.getElementById("bwordd").innerHTML = (wrongAnswer1);
+			document.getElementById("bwordc").innerHTML = (wrongAnswer2);
+			document.getElementById("bwordb").innerHTML = (wrongAnswer3);
+			$('#boxa').addClass('answer');
+		} else if (random3 === 6) {
+			document.getElementById("bwordb").innerHTML = (answer);
+			document.getElementById("bworda").innerHTML = (wrongAnswer1);
+			document.getElementById("bwordc").innerHTML = (wrongAnswer2);
+			document.getElementById("bwordd").innerHTML = (wrongAnswer3);
+			$('#boxb').addClass('answer');
+		} else if (random3 === 7) {
+			document.getElementById("bwordb").innerHTML = (answer);
+			document.getElementById("bworda").innerHTML = (wrongAnswer1);
+			document.getElementById("bwordd").innerHTML = (wrongAnswer2);
+			document.getElementById("bwordc").innerHTML = (wrongAnswer3);
+			$('#boxb').addClass('answer');
+		} else if (random3 === 8) {
+			document.getElementById("bwordb").innerHTML = (answer);
+			document.getElementById("bwordc").innerHTML = (wrongAnswer1);
+			document.getElementById("bwordd").innerHTML = (wrongAnswer2);
+			document.getElementById("bworda").innerHTML = (wrongAnswer3);
+			$('#boxb').addClass('answer');
+		} else if (random3 === 9) {
+			document.getElementById("bwordb").innerHTML = (answer);
+			document.getElementById("bwordc").innerHTML = (wrongAnswer1);
+			document.getElementById("bworda").innerHTML = (wrongAnswer2);
+			document.getElementById("bwordd").innerHTML = (wrongAnswer3);
+			$('#boxb').addClass('answer');
+		} else if (random3 === 10) {
+			document.getElementById("bwordb").innerHTML = (answer);
+			document.getElementById("bwordd").innerHTML = (wrongAnswer1);
+			document.getElementById("bworda").innerHTML = (wrongAnswer2);
+			document.getElementById("bwordc").innerHTML = (wrongAnswer3);
+			$('#boxb').addClass('answer');
+		} else if (random3 === 11) {
+			document.getElementById("bwordb").innerHTML = (answer);
+			document.getElementById("bwordd").innerHTML = (wrongAnswer1);
+			document.getElementById("bwordc").innerHTML = (wrongAnswer2);
+			document.getElementById("bworda").innerHTML = (wrongAnswer3);
+			$('#boxb').addClass('answer');
+		} else if (random3 === 12) {
+			document.getElementById("bwordc").innerHTML = (answer);
+			document.getElementById("bworda").innerHTML = (wrongAnswer1);
+			document.getElementById("bwordb").innerHTML = (wrongAnswer2);
+			document.getElementById("bwordd").innerHTML = (wrongAnswer3);
+			$('#boxc').addClass('answer');
+		} else if (random3 === 13) {
+			document.getElementById("bwordc").innerHTML = (answer);
+			document.getElementById("bworda").innerHTML = (wrongAnswer1);
+			document.getElementById("bwordd").innerHTML = (wrongAnswer2);
+			document.getElementById("bwordb").innerHTML = (wrongAnswer3);
+			$('#boxc').addClass('answer');
+		} else if (random3 === 14) {
+			document.getElementById("bwordc").innerHTML = (answer);
+			document.getElementById("bwordb").innerHTML = (wrongAnswer1);
+			document.getElementById("bwordd").innerHTML = (wrongAnswer2);
+			document.getElementById("bworda").innerHTML = (wrongAnswer3);
+			$('#boxc').addClass('answer');
+		} else if (random3 === 15) {
+			document.getElementById("bwordc").innerHTML = (answer);
+			document.getElementById("bwordb").innerHTML = (wrongAnswer1);
+			document.getElementById("bworda").innerHTML = (wrongAnswer2);
+			document.getElementById("bwordd").innerHTML = (wrongAnswer3);
+			$('#boxc').addClass('answer');
+		} else if (random3 === 16) {
+			document.getElementById("bwordc").innerHTML = (answer);
+			document.getElementById("bwordd").innerHTML = (wrongAnswer1);
+			document.getElementById("bworda").innerHTML = (wrongAnswer2);
+			document.getElementById("bwordb").innerHTML = (wrongAnswer3);
+			$('#boxc').addClass('answer');
+		} else if (random3 === 17) {
+			document.getElementById("bwordc").innerHTML = (answer);
+			document.getElementById("bwordd").innerHTML = (wrongAnswer1);
+			document.getElementById("bwordb").innerHTML = (wrongAnswer2);
+			document.getElementById("bworda").innerHTML = (wrongAnswer3);
+			$('#boxc').addClass('answer');
+		} else if (random3 === 18) {
+			document.getElementById("bwordd").innerHTML = (answer);
+			document.getElementById("bworda").innerHTML = (wrongAnswer1);
+			document.getElementById("bwordb").innerHTML = (wrongAnswer2);
+			document.getElementById("bwordc").innerHTML = (wrongAnswer3);
+			$('#boxd').addClass('answer');
+		} else if (random3 === 19) {
+			document.getElementById("bwordd").innerHTML = (answer);
+			document.getElementById("bworda").innerHTML = (wrongAnswer1);
+			document.getElementById("bwordc").innerHTML = (wrongAnswer2);
+			document.getElementById("bwordb").innerHTML = (wrongAnswer3);
+			$('#boxd').addClass('answer');
+		} else if (random3 === 20) {
+			document.getElementById("bwordd").innerHTML = (answer);
+			document.getElementById("bwordb").innerHTML = (wrongAnswer1);
+			document.getElementById("bworda").innerHTML = (wrongAnswer2);
+			document.getElementById("bwordc").innerHTML = (wrongAnswer3);
+			$('#boxd').addClass('answer');
+		} else if (random3 === 21) {
+			document.getElementById("bwordd").innerHTML = (answer);
+			document.getElementById("bwordb").innerHTML = (wrongAnswer1);
+			document.getElementById("bwordc").innerHTML = (wrongAnswer2);
+			document.getElementById("bworda").innerHTML = (wrongAnswer3);
+			$('#boxd').addClass('answer');
+		} else if (random3 === 22) {
+			document.getElementById("bwordd").innerHTML = (answer);
+			document.getElementById("bwordc").innerHTML = (wrongAnswer1);
+			document.getElementById("bworda").innerHTML = (wrongAnswer2);
+			document.getElementById("bwordb").innerHTML = (wrongAnswer3);
+			$('#boxd').addClass('answer');
+		} else if (random3 === 23) {
+			document.getElementById("bwordd").innerHTML = (answer);
+			document.getElementById("bwordc").innerHTML = (wrongAnswer1);
+			document.getElementById("bwordb").innerHTML = (wrongAnswer2);
+			document.getElementById("bworda").innerHTML = (wrongAnswer3);
+			$('#boxd').addClass('answer');
 		}
  }
 

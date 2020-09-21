@@ -119,7 +119,21 @@ var toOurExponential=function(n1){
 
 	var nakedAnswer=answerString.substring(0,eSpot);
 	if (nakedAnswer.length>3){
-			var nakedAnswer=nakedAnswer.substring(0,3);
+			var nakedAnswer=nakedAnswer.substring(0,4);
+			// console.error(Number(nakedAnswer.slice(3,4)));
+			if (Number(nakedAnswer.slice(3,4))>4){
+				// console.log("hi");
+				if (Number(nakedAnswer.slice(2,3))==9){
+					
+				nakedAnswer=(Number(nakedAnswer.substring(0,1))+1)+".0";
+				}
+				else{
+				nakedAnswer=nakedAnswer.substring(0,2)+(Number(nakedAnswer.slice(2,3))+1);
+				}
+			}
+			else{
+				nakedAnswer=nakedAnswer.substring(0,2)+(Number(nakedAnswer.slice(2,3)));
+			}
 			//alert (nakedAnswer+"");
 		}		
 	var answerStringFinal=nakedAnswer+"*10"+(""+exponency).sup();
@@ -130,7 +144,7 @@ var toOurExponential=function(n1){
 
 //$('#scoremessage').text(n1 +" " + n2 + " " +Number(n1)/Number(n2));
 		var answerString=Number(sigFigs(Number(n1/n2),3)).toExponential()+"";
-
+		// console.error(answerString);
 		var eSpot=answerString.indexOf("e");
 		var exponency=answerString.substring(eSpot+1, answerString.length);
 
@@ -139,14 +153,16 @@ var toOurExponential=function(n1){
 if (exponency.substring(0,1)==="+"){
 			exponency=exponency.substring(1,exponency.length);
 		}
-			var nakedAnswer=answerString.substring(0,eSpot);
+		var nakedAnswer=answerString.substring(0,eSpot);
+		// console.error(nakedAnswer);
 		var answerStringFinal=answerString.substring(0,eSpot)+"*10^"+exponency;
-
+		// console.error(answerStringFinal);
 
 			answer=toOurExponential(sigFigs((n1/n2),3));
-			wrongAnswer1=nakedAnswer+"*10"+((Math.floor(Math.random()*20)-10)+"").sup();
-			wrongAnswer2=nakedAnswer+"*10"+((Math.floor(Math.random()*20)-10)+"").sup();
-			wrongAnswer3=nakedAnswer+"*10"+((Math.floor(Math.random()*20)-10)+"").sup();
+			// console.error(answer);
+			wrongAnswer1=(answer+"").slice(0, (answer+"").indexOf("*"))+"*10"+((Math.floor(Math.random()*20)-10)+"").sup();
+			wrongAnswer2=(answer+"").slice(0, (answer+"").indexOf("*"))+"*10"+((Math.floor(Math.random()*20)-10)+"").sup();
+			wrongAnswer3=(answer+"").slice(0, (answer+"").indexOf("*"))+"*10"+((Math.floor(Math.random()*20)-10)+"").sup();
 		var answers = [];
 		answers[0]=answer;
 		answers[1]=wrongAnswer1;
@@ -359,11 +375,21 @@ if (exponency.substring(0,1)==="+"){
 
 		document.getElementById("num1").innerHTML=(toOurExponential(sigFigs(finalNum, 3)));		
 		document.getElementById("den1").innerHTML=(toOurExponential(sigFigs(finalNumtwo, 3)));
-			setupAnswers(finalNum, finalNumtwo);
+		finalNumTake1=toOurExponential(sigFigs(finalNum, 3));
+		finalNumTake1=Number(finalNumTake1.slice(0,finalNumTake1.indexOf("*")));
+		finalNumTake1Power=toOurExponential(sigFigs(finalNum, 3));
+		finalNumTake1=(finalNumTake1*Math.pow(10, finalNumTake1Power.slice(finalNumTake1Power.indexOf("p>")+2,finalNumTake1Power.indexOf("</"))));
+		// finalNumTake1Power=Number(finalNumTake1Power.slice(finalNumTake1Power.indexOf("10")));
+		finalNumTake2=toOurExponential(sigFigs(finalNumtwo, 3));
+		finalNumTake2=Number(finalNumTake2.slice(0,finalNumTake2.indexOf("*")));
+		finalNumTake2Power=toOurExponential(sigFigs(finalNumtwo, 3));
+		finalNumTake2=(finalNumTake2*Math.pow(10, finalNumTake2Power.slice(finalNumTake2Power.indexOf("p>")+2,finalNumTake2Power.indexOf("</"))));
+			setupAnswers(finalNumTake1, finalNumTake2);
 	};
 
 	if($('#num1:contains(704)')){
 		// $('#bwordb').text(35);
+		
 		resetQuestion();
 	};
 
