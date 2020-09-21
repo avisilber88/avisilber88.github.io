@@ -339,7 +339,7 @@ var combineThings = function(){
 	if ((JSON.stringify(presentStudents[k][0]).replace(/\"/g, "").replace(/\\/g, ""))==(JSON.stringify(presentStudents[k+1][0]).replace(/\"/g, "").replace(/\\/g, ""))){
 console.log(	JSON.stringify(presentStudents[k][1]).replace(/\"/g, "").replace(/\\/g, ""));
 console.log(JSON.stringify(presentStudents[k][1]).replace(/\"/g, "").replace(/\\/g, ""));
-	presentStudents[k+1][1]=Number(JSON.stringify(presentStudents[k][1]).replace(/\"/g, "").replace(/\\/g, ""))+Number(JSON.stringify(presentStudents[k][1]).replace(/\"/g, "").replace(/\\/g, ""))
+	presentStudents[k+1][1]=Number(JSON.stringify(presentStudents[k+1][1]).replace(/\"/g, "").replace(/\\/g, ""))+Number(JSON.stringify(presentStudents[k][1]).replace(/\"/g, "").replace(/\\/g, ""))
 	}
 	else{
 		tableInfo=tableInfo+'<tr><td>'+JSON.stringify(presentStudents[k][0]).replace(/\"/g, "").replace(/\\/g, "")+'</td><td>'+JSON.stringify(presentStudents[k][1]).replace(/\"/g, "").replace(/\\/g, "")+'</td></tr>';
