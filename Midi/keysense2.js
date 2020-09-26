@@ -1232,7 +1232,14 @@ $('#phoenix').click(function () {
     playASongLink("phoenix.mp3");
     // playASong("stromae");
 });
-
+$('#attention').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("attention.mp3");
+    // playASong("stromae");
+});
 $('#halo').click(function () {
     try {
         currentTag = this.id
@@ -1617,6 +1624,9 @@ function checkCurrentSongAnswer() {
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/phoenix.mp3") {
         currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/attention.mp3") {
+        currentSongKeys = ["A#/Bb", "B", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/centuries.mp3") {
         currentSongKeys = ["A", "B", "C", "D", "E", "F#/Gb", "G"];
