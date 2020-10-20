@@ -133,7 +133,7 @@ $(document).ready(function () {
 	var setupAnswers = function (questionType, halfLifeTime, startingMass, endingMass, numHalfLives, totalTime, demRemaining, fractionRemaining, timeUnit) {
 		
 	let coinFlip = Math.floor(Math.random() * 2);
-	console.log(coinFlip);
+	
 		if ((questionType == 2) || (questionType == 3)) {
 			answer = halfLifeTime + " " + timeUnit;
 			wrongAnswer1 = halfLifeTime / 2 + " " + timeUnit;
