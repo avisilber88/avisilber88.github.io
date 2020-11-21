@@ -5,8 +5,103 @@ m = n.getMonth() + 1;
 d = n.getDate();
 document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;		
 
-	var whatnameis = prompt ("What is your name?");
+//beginning of the things to replace
+	var whatnameis = ""// prompt ("What is your name?");
+	var askagain = function (whatnameis){
+	whatnameis = prompt ("What is your full name (first and last)?");
+	if (whatnameis.length<2){
+		askagain();
+	}
+	else if (!(/\s/.test(whatnameis))) {
+    // It has any kind of whitespace
+		askagain()
+	}
+	else{
 	document.getElementById("nameis").innerHTML = whatnameis;
+	}
+    }
+	askagain();
+	whatnameis=document.getElementById("nameis").innerHTML;
+	var loadDatabase = [];
+var db;
+var loginMessageShown = true;
+	var auth = function () {
+    // alert ("auth");
+    firebase.auth().signInAnonymously()
+    .then(function (result) {
+        db = firebase.firestore();
+        db.settings({
+            timestampsInSnapshots: true
+        });
+
+        db.collection("chemscores").get().then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+                // clone template row and append to table body
+                // var tr = tempTr.clone();
+                // tr.data('id', doc.id);
+                // console.warn(doc.id + "");
+                loadDatabase.push(doc.id + "");
+                // var data = doc.data();
+                // // set cell values from Contact data
+                // tr.find('td[data-prop]').each(function () {
+                // var td = $(this);
+                // td.text(data[td.data('prop')] || '');
+                // });
+                // tblBody.append(tr);
+            });
+        });
+    })
+    .catch(function (error) {
+        alert("failed to anonymously sign-in");
+    });
+
+};
+var init = function () {
+    auth();
+
+    // $('#testthisish').click();
+};
+
+auth();
+function addLevelCompleted(nameis, dateis, levelcomplete) {
+        // alert (levelcomplete);
+        // let levelcompletenumber = 0;
+        // if (levelcomplete === "levelOne") {
+        // levelcompletenumber = 1;
+        // } else if (levelcomplete === "levelTwo") {
+        // levelcompletenumber = 2;
+        // } else if (levelcomplete === "levelThree") {
+        // levelcompletenumber = 3;
+        // } else if (levelcomplete === "levelFour") {
+        // levelcompletenumber = 4;
+        // } else if (levelcomplete === "levelFive") {
+        // levelcompletenumber = 5;
+        // } else if (levelcomplete === "levelSix") {
+        // levelcompletenumber = 6;
+        // } else if (levelcomplete === "levelSeven") {
+        // levelcompletenumber = 7;
+        // } else if (levelcomplete === "levelEight") {
+        // levelcompletenumber = 8;
+        // } else if (levelcomplete === "levelNine") {
+        // levelcompletenumber = 9;
+        // } else if (levelcomplete === "levelTen") {
+        // levelcompletenumber = 10;
+        // }
+        var data = {
+            date: dateis,
+            name: whatnameis,
+            score: levelcomplete,
+			level: thisAppNum
+        }
+        db.collection("chemscores").add(data).then(function (result) {
+            // list();
+        })
+        .catch(function (error) {
+            console.warn("failed to save contact");
+        });
+    }
+
+//end of the things to replace
 	var times=0;
 	var numer1;
 	var numer2;
@@ -571,6 +666,7 @@ document.getElementById("num1").innerHTML = "What is the molarity of a "+formula
 		if	($(this).hasClass('answer')){//children('p').contains(answer)){// p.text("hello"));
 			// $('#bwordb').text(answer);
 			score=score+1;
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
 			$('#score').text("Score = " +score);
 			$('#scoremessage').text(specialMessage(score));
 			$(this).removeClass("highlighted");
