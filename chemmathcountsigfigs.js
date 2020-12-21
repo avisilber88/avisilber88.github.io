@@ -24,27 +24,27 @@ var loginMessageShown = true;
     // alert ("auth");
     firebase.auth().signInAnonymously()
     .then(function (result) {
+		
         db = firebase.firestore();
-        db.settings({
-            timestampsInSnapshots: true
-        });
-
-        db.collection("chemscores").get().then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
-                // clone template row and append to table body
-                // var tr = tempTr.clone();
-                // tr.data('id', doc.id);
-                // console.warn(doc.id + "");
-                loadDatabase.push(doc.id + "");
-                // var data = doc.data();
-                // // set cell values from Contact data
-                // tr.find('td[data-prop]').each(function () {
-                // var td = $(this);
-                // td.text(data[td.data('prop')] || '');
-                // });
-                // tblBody.append(tr);
-            });
-        });
+        // db.settings({             // timestampsInSnapshots: true         }); 
+        // db.collection("chemscores").get().then(function (querySnapshot) {
+            // querySnapshot.forEach(function (doc) {
+				
+				// console.log("for what?");
+                // // clone template row and append to table body
+                // // var tr = tempTr.clone();
+                // // tr.data('id', doc.id);
+                // // console.warn(doc.id + "");
+                // loadDatabase.push(doc.id + "");
+                // // var data = doc.data();
+                // // // set cell values from Contact data
+                // // tr.find('td[data-prop]').each(function () {
+                // // var td = $(this);
+                // // td.text(data[td.data('prop')] || '');
+                // // });
+                // // tblBody.append(tr);
+            // });
+        // });
     })
     .catch(function (error) {
         alert("failed to anonymously sign-in");
@@ -57,7 +57,7 @@ var init = function () {
     // $('#testthisish').click();
 };
 
-auth();
+init();
 function addLevelCompleted(nameis, dateis, levelcomplete) {
         // alert (levelcomplete);
         // let levelcompletenumber = 0;
