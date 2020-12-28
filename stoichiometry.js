@@ -1832,7 +1832,7 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 		if ((cationcoefficient != null) && (anioncoefficient != null) && (organicCompoundCoefficient != null) && (oxygenCoefficient != null)) {
 			if ((cationcoefficient == catCoefficientAnswer) && (anioncoefficient == anCoefficientAnswer) && (oxygenCoefficient == oxygenCoefficientAnswer) && (organicCompoundCoefficient == organicCompoundCoefficientAnswer)) {
 				score = score + 1;
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 				$('#score').text("Score = " + score);
 				$('#scoremessage').text(specialMessage(score));
 				resetQuestion();
@@ -2293,7 +2293,7 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 			//	alert ("answer is" + round(thisAnswer, 0));
 			if (("" + givenAnswer).toUpperCase().replace(/\s/g, '') == ("" + thisAnswer).toUpperCase().replace(/\s/g, '')) {
 				score = score + 1;
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 				$('#score').text("Score = " + score);
 				$('#scoremessage').text(specialMessage(score));
 				document.getElementById("givenAnswer").value = "";
@@ -2540,7 +2540,7 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 		if ($(this).hasClass('answer')) { //children('p').contains(answer)){// p.text("hello"));
 			// $('#bwordb').text(answer);
 			score = score + 1;
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 			$('#score').text("Score = " + score);
 			$('#scoremessage').text(specialMessage(score));
 			$(this).removeClass("highlighted");

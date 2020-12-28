@@ -1718,7 +1718,7 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 		if ((cationcoefficient == catCoefficientAnswer) && (anioncoefficient == anCoefficientAnswer) && (oxygenCoefficient == oxygenCoefficientAnswer) && (organicCompoundCoefficient == organicCompoundCoefficientAnswer)) {
 			score = score + 1;
 			
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 			$('#score').text("Score = " + score);
 			$('#scoremessage').text(specialMessage(score));
 			resetQuestion();
@@ -2222,7 +2222,7 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 					if ((("" + cationcoefficientWrite).toUpperCase().replace(/\s/g, '') == ("" + catCoefficientAnswerWrite).toUpperCase().replace(/\s/g, '')) && (("" + organicCompoundCoefficientWrite).toUpperCase().replace(/\s/g, '') == ("" + organicCompoundCoefficientAnswerWrite).toUpperCase().replace(/\s/g, '')) && (("" + oxygenCoefficientWrite).toUpperCase().replace(/\s/g, '') == ("" + oxygenCoefficientAnswerWrite).toUpperCase().replace(/\s/g, ''))) {
 						score = score + 1;
 						
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 						$('#score').text("Score = " + score);
 						$('#scoremessage').text(specialMessage(score));
 						document.getElementById("oxygenCoefficient").value = "coefficient?";
@@ -2326,7 +2326,7 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 					if ((("" + cationcoefficientWrite).toUpperCase().replace(/\s/g, '') == ("" + catCoefficientAnswerWrite).toUpperCase().replace(/\s/g, '')) && (("" + anioncoefficientWrite).toUpperCase().replace(/\s/g, '') == ("" + anCoefficientAnswerWrite).toUpperCase().replace(/\s/g, '')) && (("" + organicCompoundCoefficientWrite).toUpperCase().replace(/\s/g, '') == ("" + organicCompoundCoefficientAnswerWrite).toUpperCase().replace(/\s/g, ''))) {
 						score = score + 1;
 						
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 						$('#score').text("Score = " + score);
 						$('#scoremessage').text(specialMessage(score));
 						// document.getElementById("oxygenCoefficient").value = "coefficient?";
@@ -2424,7 +2424,7 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 					if ((("" + cationcoefficientWrite).toUpperCase().replace(/\s/g, '') == ("" + catCoefficientAnswerWrite).toUpperCase().replace(/\s/g, '')) && (("" + anioncoefficientWrite).toUpperCase().replace(/\s/g, '') == ("" + anCoefficientAnswerWrite).toUpperCase().replace(/\s/g, '')) && (("" + organicCompoundCoefficientWrite).toUpperCase().replace(/\s/g, '') == ("" + organicCompoundCoefficientAnswerWrite).toUpperCase().replace(/\s/g, '')) && (("" + oxygenCoefficientWrite).toUpperCase().replace(/\s/g, '') == ("" + oxygenCoefficientAnswerWrite).toUpperCase().replace(/\s/g, ''))) {
 						score = score + 1;
 						
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 						$('#score').text("Score = " + score);
 						$('#scoremessage').text(specialMessage(score));
 						document.getElementById("oxygenCoefficient").value = "coefficient?";
@@ -2542,7 +2542,7 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 						// if ((correctAnswerStatement + "") == (proposedAnswerStatement + "")) {
 						score = score + 1;
 						
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 						$('#score').text("Score = " + score);
 						$('#scoremessage').text(specialMessage(score));
 						document.getElementById("oxygenCoefficient").value = "coefficient?";
@@ -2715,7 +2715,7 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 						// if ((correctAnswerStatement + "") == (proposedAnswerStatement + "")) {
 						score = score + 1;
 						
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 						$('#score').text("Score = " + score);
 						$('#scoremessage').text(specialMessage(score));
 						document.getElementById("oxygenCoefficient").value = "coefficient?";
@@ -2833,7 +2833,7 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 				// $('#bwordb').text(answer);
 				score = score + 1;
 				
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 				$('#score').text("Score = " + score);
 				$('#scoremessage').text(specialMessage(score));
 				$(this).removeClass("highlighted");

@@ -687,7 +687,7 @@ $('#num1').text("What is the molarity of a "+formulaName+" solution do we get wh
 		if	($(this).hasClass('answer')){//children('p').contains(answer)){// p.text("hello"));
 			// $('#bwordb').text(answer);
 			score=score+1;
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 			$('#score').text("Score = " +score);
 			$('#scoremessage').text(specialMessage(score));
 			$(this).removeClass("highlighted");

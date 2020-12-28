@@ -959,7 +959,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 		if ((cationcoefficient != null)&&(anioncoefficient !=null)) {
 			if ((cationcoefficient == catCoefficientAnswer)&&(anioncoefficient==anCoefficientAnswer)&&(anioncoefficient==anCoefficientAnswer)&&(anioncoefficient==anCoefficientAnswer)) {
 				score = score + 1;
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 				$('#score').text("Score = " + score);
 				$('#scoremessage').text(specialMessage(score));
 				resetQuestion();
@@ -1088,7 +1088,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 		if ((cationcoefficient != null)&&(anioncoefficient != null)&&(cationcharge != null)&&(anioncharge != null)&&(cationName != null)&&(anionName != null)) {
 			if ((("" + cationcoefficient).toUpperCase().replace(/\s/g, '').replace(/1/g, '') == ("" + catCoefficientAnswer).toUpperCase().replace(/\s/g, ''))&&(("" + anioncoefficient).toUpperCase().replace(/\s/g, '').replace(/1/g, '') == ("" + anCoefficientAnswer).toUpperCase().replace(/\s/g, ''))&&(("" + cationcharge).toUpperCase().replace(/\s/g, '').replace(/\+/g, '') == ("" + catChargeAnswer).toUpperCase().replace(/\s/g, ''))&&(("" + anioncharge).toUpperCase().replace(/\s/g, '').replace(/\-/g, '') == ("" + anChargeAnswer).toUpperCase().replace(/\s/g, ''))&&((cationName) == (cationArray[0].replace(/[()]/g, '')))&&((anionName) == (anionArray[0].replace(/[()]/g, '')))) {
 				score = score + 1;
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 				$('#score').text("Score = " + score);
 				$('#scoremessage').text(specialMessage(score));
 				document.getElementById("cationcoefficient").value = "cation coefficient?";
@@ -1150,7 +1150,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 		if ($(this).hasClass('answer')) { //children('p').contains(answer)){// p.text("hello"));
 			// $('#bwordb').text(answer);
 			score = score + 1;
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 			$('#score').text("Score = " + score);
 			$('#scoremessage').text(specialMessage(score));
 			$(this).removeClass("highlighted");

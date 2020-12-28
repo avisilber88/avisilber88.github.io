@@ -24,9 +24,9 @@ var loginMessageShown = true;
     firebase.auth().signInAnonymously()
     .then(function (result) {
         db = firebase.firestore();
-        // db.settings({
-            // timestampsInSnapshots: true
-        // });
+        db.settings({
+            timestampsInSnapshots: true
+        });
 
         // db.collection("chemscores").get().then(function (querySnapshot) {
             // querySnapshot.forEach(function (doc) {
@@ -81,6 +81,7 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
         // } else if (levelcomplete === "levelTen") {
         // levelcompletenumber = 10;
         // }
+		// dateis=firebase.firestore.Timestamp.fromDate(new Date(dateis));
         var data = {
             date: dateis,
             name: whatnameis,
@@ -452,7 +453,7 @@ else {
 			// $('#bwordb').text(answer);
 			score=score+1;
 			
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 			$('#score').text("Score = " +score);
 			$('#scoremessage').text(specialMessage(score));
 			$(this).removeClass("highlighted");

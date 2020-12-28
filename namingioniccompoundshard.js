@@ -893,7 +893,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 		if (givenAnswer != null) {
 			if (givenAnswer == answer) {
 				score = score + 1;
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 				$('#score').text("Score = " + score);
 				$('#scoremessage').text(specialMessage(score));
 				resetQuestion();
@@ -916,7 +916,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 		if (givenAnswer != null) {
 			if (("" + givenAnswer).toUpperCase().replace(/\s/g, '') == ("" + thisAnswer).toUpperCase().replace(/\s/g, '')) {
 				score = score + 1;
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 				$('#score').text("Score = " + score);
 				$('#scoremessage').text(specialMessage(score));
 				document.getElementById("givenAnswer").value = "";
@@ -956,7 +956,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 		if ($(this).hasClass('answer')) { //children('p').contains(answer)){// p.text("hello"));
 			// $('#bwordb').text(answer);
 			score = score + 1;
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 			$('#score').text("Score = " + score);
 			$('#scoremessage').text(specialMessage(score));
 			$(this).removeClass("highlighted");

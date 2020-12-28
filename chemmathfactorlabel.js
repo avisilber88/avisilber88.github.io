@@ -599,7 +599,7 @@ if (score>19){
 			// $('#bwordb').innerHTML=(answer);
 			score=score+1;
 			
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 			document.getElementById("score").innerHTML=("Score = " +score);
 			$('#scoremessage').innerHTML=(specialMessage(score));
 			$(this).removeClass("highlighted");

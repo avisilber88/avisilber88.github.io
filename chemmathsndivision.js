@@ -512,7 +512,7 @@ if (exponency.substring(0,1)==="+"){
 			// $('#bwordb').text(answer);
 			score=score+1;
 			
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 			$('#score').text("Score = " +score);
 			$('#scoremessage').text(specialMessage(score));
 			$(this).removeClass("highlighted");

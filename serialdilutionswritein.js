@@ -695,7 +695,7 @@ document.getElementById("num1").innerHTML = "Your supervisor provides you with a
 			//	alert ("answer is" + round(thisAnswer, 0));
 			if (("" + givenAnswer).toUpperCase().replace(/\s/g, '') == ("" + thisAnswer).toUpperCase().replace(/\s/g, '')) {
 				score = score + 1;
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 				$('#score').text("Score = " + score);
 				$('#scoremessage').text(specialMessage(score));
 				document.getElementById("givenAnswer").value = "";

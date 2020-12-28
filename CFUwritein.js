@@ -615,7 +615,7 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 				// $('#bwordb').text(answer);
 				score = score + 1;
 				
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 				$('#score').text("Score = " + score);
 				$('#scoremessage').text(specialMessage(score));
 				$(this).removeClass("highlighted");
@@ -686,7 +686,7 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 				if (("" + givenAnswer).toUpperCase().replace(/\s/g, '') == ("" + thisAnswer).toUpperCase().replace(/\s/g, '')) {
 					score = score + 1;
 					
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score+""));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 					$('#score').text("Score = " + score);
 					$('#scoremessage').text(specialMessage(score));
 					document.getElementById("givenAnswer").value = "";
