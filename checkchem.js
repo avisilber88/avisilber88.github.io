@@ -9,29 +9,32 @@ var ourDate="never";
 var auth = function () {
 	console.log("hello");
     // alert ("auth");
-    firebase.auth().signInAnonymously()
+	let email="nwhschemscores@gmail.com";
+	let password="nwhschem";
+    firebase.auth().signInWithEmailAndPassword(email, password)
     .then(function (result) {
+		console.log("hi");
         db = firebase.firestore();
-        db.settings({
-            timestampsInSnapshots: true
-        });
+        // db.settings({
+            // timestampsInSnapshots: true
+        // });
 
-        db.collection("chemscores").get().then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
-                // clone template row and append to table body
-                // var tr = tempTr.clone();
-                // tr.data('id', doc.id);
-                // console.warn(doc.id + "");
-                loadDatabase.push(doc.id + "");
-                // var data = doc.data();
-                // // set cell values from Contact data
-                // tr.find('td[data-prop]').each(function () {
-                // var td = $(this);
-                // td.text(data[td.data('prop')] || '');
-                // });
-                // tblBody.append(tr);
-            });
-        });
+        // db.collection("chemscores").get().then(function (querySnapshot) {
+            // querySnapshot.forEach(function (doc) {
+                // // clone template row and append to table body
+                // // var tr = tempTr.clone();
+                // // tr.data('id', doc.id);
+                // // console.warn(doc.id + "");
+                // loadDatabase.push(doc.id + "");
+                // // var data = doc.data();
+                // // // set cell values from Contact data
+                // // tr.find('td[data-prop]').each(function () {
+                // // var td = $(this);
+                // // td.text(data[td.data('prop')] || '');
+                // // });
+                // // tblBody.append(tr);
+            // });
+        // });
     })
     .catch(function (error) {
         alert("failed to anonymously sign-in");
@@ -66,12 +69,18 @@ levelis=prompt("app #?");
        let levelNumber = 0;
 	   
         // alert (loadDatabase.length);
-        for (var loadlistplace = 0; loadlistplace < loadDatabase.length; loadlistplace++) {
+        // for (var loadlistplace = 0; loadlistplace < loadDatabase.length; loadlistplace++) {
                     //console.log ("hi")// we got in here
-					db.collection("chemscores").doc(loadDatabase[loadlistplace]).get().then(function (doc) {
-					
-                   if (doc.exists) {
-					console.log ("hi")// we got in here
+					console.log(JSON.stringify(levelis));
+					// console.log(db.collection("chemtest").where("name", "==", JSON.stringify(whoItIsUsingThis)).where("level","==",levelis).orderBy("score", "desc").limit(1)[0].get().data.score);
+					db.collection("chemscores").where("name", "==", whoItIsUsingThis).where("level","==", Number(levelis)).orderBy("score", "desc").limit(1).get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+            //  
+			//doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+			
+			if (doc.exists) {
+					//console.log ("hi")// we got in here
                     var data = doc.data();
                     // console.warn(data.email);
                     // console.warn(data.name);
@@ -79,7 +88,7 @@ levelis=prompt("app #?");
 						//alert ("YO");
 				   }
 					
-                    if (((JSON.stringify(whoItIsUsingThis) === JSON.stringify(data.name)))&&(levelis==data.level)) {
+                    // if (((JSON.stringify(whoItIsUsingThis) === JSON.stringify(data.name)))&&(levelis==data.level)) {
                         //console.log(data.levelcomplete);
 						let blob = Number(data.score) + 0;
 						//console.log(blob);
@@ -95,19 +104,62 @@ levelis=prompt("app #?");
 
                         } catch (e) {}
 
-                    }
+                    // }
 					console.log(levelNumber);
                     ourLevelNumber = levelNumber + 0;
                     //updateTheLevel(levelNumber);
                 } else {
                     console.error("No such record");
                 }
-            }).catch(function (error) {
-                console.error(error);
-                console.error("failed to read contact");
-            });
+				
+        });
+    })
+    .catch(function(error) {
+        console.log("Error getting documents: ", error);
+    });
+					
+					
+					// alert ("hi");
+					// .where("level","==",levelis)
+					// //.orderBy("score", "desc").limit(1)
+                   // if (doc.exists) {
+					// //console.log ("hi")// we got in here
+                    // var data = doc.data();
+                    // // console.warn(data.email);
+                    // // console.warn(data.name);
+					// if (levelis==data.level){
+						// //alert ("YO");
+				   // }
+					
+                    // // if (((JSON.stringify(whoItIsUsingThis) === JSON.stringify(data.name)))&&(levelis==data.level)) {
+                        // //console.log(data.levelcomplete);
+						// let blob = Number(data.score) + 0;
+						// //console.log(blob);
+                        // // console.log("you have the score " + blob + " " + levelNumber);
+                        // try {
+                            // if (blob > levelNumber) {
+								
+                                // levelNumber = blob + 0;
+                                // // alert (levelNumber);
+								// ourDate = data.date;
+								
+                            // }
 
-        }
+                        // } catch (e) {}
+
+                    // // }
+					// console.log(levelNumber);
+                    // ourLevelNumber = levelNumber + 0;
+                    // //updateTheLevel(levelNumber);
+                // } else {
+                    // console.error("No such record");
+                // }
+            // }).catch(function (error) {
+                // console.error(error);
+                // console.error("failed to read contact");
+            // });
+
+        // }
 		
 });
 
