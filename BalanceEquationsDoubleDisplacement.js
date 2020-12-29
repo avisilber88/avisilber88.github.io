@@ -81,7 +81,9 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
         // } else if (levelcomplete === "levelTen") {
         // levelcompletenumber = 10;
         // }
-        var data = {
+        dateis=dateis.replace(/\s/g, '');
+	dateis=firebase.firestore.Timestamp.fromDate(new Date(dateis)); 
+        var data = { 
             date: dateis,
             name: whatnameis,
             score: levelcomplete,
@@ -1275,7 +1277,7 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 			if ((cationcoefficient == catCoefficientAnswer) && (anioncoefficient == anCoefficientAnswer) && (oxygenCoefficient == oxygenCoefficientAnswer) && (organicCompoundCoefficient == organicCompoundCoefficientAnswer)) {
 				score = score + 1;
 				
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 				$('#score').text("Score = " + score);
 				$('#scoremessage').text(specialMessage(score));
 				resetQuestion();
@@ -1697,7 +1699,7 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 				// if ((correctAnswerStatement + "") == (proposedAnswerStatement + "")) {
 					score = score + 1;
 					
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 					$('#score').text("Score = " + score);
 					$('#scoremessage').text(specialMessage(score));
 					document.getElementById("oxygenCoefficient").value = "coefficient?";
@@ -1815,7 +1817,7 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 			// $('#bwordb').text(answer);
 			score = score + 1;
 			
-				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, (score));
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 			$('#score').text("Score = " + score);
 			$('#scoremessage').text(specialMessage(score));
 			$(this).removeClass("highlighted");

@@ -86,7 +86,9 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
         // } else if (levelcomplete === "levelTen") {
         // levelcompletenumber = 10;
         // }
-        var data = {
+        dateis=dateis.replace(/\s/g, '');
+	dateis=firebase.firestore.Timestamp.fromDate(new Date(dateis)); 
+        var data = { 
             date: dateis,
             name: whatnameis,
             score: levelcomplete,
