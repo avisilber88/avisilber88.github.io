@@ -477,7 +477,9 @@ $(document).ready(init);
 // sign-in anonymously
 var auth = function () {
     // alert ("auth");
-    firebase.auth().signInAnonymously()
+	let email="nwhschemscores@gmail.com";
+	let password="nwhschem";
+    firebase.auth().signInWithEmailAndPassword(email, password)
     .then(function (result) {
         db = firebase.firestore();
         db.settings({
