@@ -267,22 +267,22 @@ var auth = function () {
             timestampsInSnapshots: true
         });
 
-        db.collection("harmonysenselogins").get().then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
-                // clone template row and append to table body
-                // var tr = tempTr.clone();
-                // tr.data('id', doc.id);
-                console.warn(doc.id + "");
-                loadDatabase.push(doc.id + "");
-                // var data = doc.data();
-                // // set cell values from Contact data
-                // tr.find('td[data-prop]').each(function () {
-                // var td = $(this);
-                // td.text(data[td.data('prop')] || '');
-                // });
-                // tblBody.append(tr);
-            });
-        });
+        // db.collection("harmonysenselogins").get().then(function (querySnapshot) {
+            // querySnapshot.forEach(function (doc) {
+                // // clone template row and append to table body
+                // // var tr = tempTr.clone();
+                // // tr.data('id', doc.id);
+                // console.warn(doc.id + "");
+                // loadDatabase.push(doc.id + "");
+                // // var data = doc.data();
+                // // // set cell values from Contact data
+                // // tr.find('td[data-prop]').each(function () {
+                // // var td = $(this);
+                // // td.text(data[td.data('prop')] || '');
+                // // });
+                // // tblBody.append(tr);
+            // });
+        // });
     })
     .catch(function (error) {
         alert("failed to anonymously sign-in");
@@ -11248,9 +11248,12 @@ var updateUnlockedLevelsByUser = function (nameis, emailis) {
     document.getElementById('welcomefam').innerHTML = 'Welcome to Harmony Sense, ' + nameis + '!<br><br>Select your level from above, or select freestyle to open up all of the options and settings (how it used to look before).';
     let levelNumber = 0;
 	// alert (loadDatabase.length);
-    for (var loadlistplace = 0; loadlistplace < loadDatabase.length; loadlistplace++) {
-        db.collection("harmonysenselogins").doc(loadDatabase[loadlistplace]).get().then(function (doc) {
-            if (doc.exists) {
+    db.collection("harmonysenselogins").where("name", "==", whoItIsUsingThis).where("email","==", emailis).orderBy("levelcomplete", "desc").limit(1).get().then(function(querySnapshot) {
+					querySnapshot.forEach(function(doc) {
+            // db.collection("rhythmsenselogins").doc(loadDatabase[loadlistplace]).get().then(function (doc) {
+                if (doc.exists) {
+                    // alert ("hi") we got in here
+                    var data = doc.data();
                 // alert ("hi") we got in here
                 var data = doc.data();
                 console.warn(data.email);
@@ -11283,7 +11286,7 @@ var updateUnlockedLevelsByUser = function (nameis, emailis) {
             console.error("failed to read contact");
         });
 
-    }
+    });
 }
 
 $('#octave3').click(function () {

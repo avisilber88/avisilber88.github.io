@@ -486,22 +486,22 @@ var auth = function () {
             timestampsInSnapshots: true
         });
 
-        db.collection("rhythmsenselogins").get().then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
-                // clone template row and append to table body
-                // var tr = tempTr.clone();
-                // tr.data('id', doc.id);
-                // console.warn(doc.id + "");
-                loadDatabase.push(doc.id + "");
-                // var data = doc.data();
-                // // set cell values from Contact data
-                // tr.find('td[data-prop]').each(function () {
-                // var td = $(this);
-                // td.text(data[td.data('prop')] || '');
-                // });
-                // tblBody.append(tr);
-            });
-        });
+        // db.collection("rhythmsenselogins").get().then(function (querySnapshot) {
+            // querySnapshot.forEach(function (doc) {
+                // // clone template row and append to table body
+                // // var tr = tempTr.clone();
+                // // tr.data('id', doc.id);
+                // // console.warn(doc.id + "");
+                // loadDatabase.push(doc.id + "");
+                // // var data = doc.data();
+                // // // set cell values from Contact data
+                // // tr.find('td[data-prop]').each(function () {
+                // // var td = $(this);
+                // // td.text(data[td.data('prop')] || '');
+                // // });
+                // // tblBody.append(tr);
+            // });
+        // });
     })
     .catch(function (error) {
         alert("failed to anonymously sign-in");
@@ -14487,10 +14487,16 @@ nextLevel();
             document.getElementById('welcomefam').innerHTML = 'Welcome to Harmony Sense, ' + nameis + '!<br><br>Select your level from above, or select freestyle to open up all of the options and settings (how it used to look before).';
         let levelNumber = 0;
         // alert (loadDatabase.length);
-        for (var loadlistplace = 0; loadlistplace < loadDatabase.length; loadlistplace++) {
-            db.collection("rhythmsenselogins").doc(loadDatabase[loadlistplace]).get().then(function (doc) {
+				// alert ("yo");
+				// alert ("yo");
+				// alert (whoItIsUsingThis);
+        // for (var loadlistplace = 0; loadlistplace < loadDatabase.length; loadlistplace++) {
+			db.collection("rhythmsenselogins").where("name", "==", whoItIsUsingThis).where("email","==", emailis).orderBy("levelcomplete", "desc").limit(1).get().then(function(querySnapshot) {
+					querySnapshot.forEach(function(doc) {
+            // db.collection("rhythmsenselogins").doc(loadDatabase[loadlistplace]).get().then(function (doc) {
+				// console.error(doc.data());
                 if (doc.exists) {
-                    // alert ("hi") we got in here
+                    // alert ("hi"); //we got in here
                     var data = doc.data();
                     // console.warn(data.email);
                     // console.warn(data.name);
@@ -14516,11 +14522,11 @@ nextLevel();
                     console.error("No such record");
                 }
             }).catch(function (error) {
-                console.error(error);
-                console.error("failed to read contact");
-            });
-
-        }
+			console.error(error);
+            console.error("failed to read contact");
+        });
+						
+        });
     }
 
     $('#octave3').click(function () {
