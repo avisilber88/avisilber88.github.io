@@ -14490,19 +14490,21 @@ nextLevel();
 				// alert ("yo");
 				// alert ("yo");
 				// alert (whoItIsUsingThis);
-        // for (var loadlistplace = 0; loadlistplace < loadDatabase.length; loadlistplace++) {
-			db.collection("rhythmsenselogins").where("name", "==", whoItIsUsingThis).where("email","==", emailis).orderBy("levelcomplete", "desc").limit(1).get().then(function(querySnapshot) {
+        // for (var loadlistplace = 0; loadlistplace < loadDatabase.length; loadlistplace++) {.collection("rhythmsenselogins")
+
+			db.collection("rhythmsenselogins").where("levelcomplete", "not-in", ["freestyle"]).where("name", "==", whoItIsUsingThis).where("email","==", emailis).orderBy("levelcomplete", "desc").limit(1).get().then(function(querySnapshot) {
 					querySnapshot.forEach(function(doc) {
             // db.collection("rhythmsenselogins").doc(loadDatabase[loadlistplace]).get().then(function (doc) {
 				// console.error(doc.data());
                 if (doc.exists) {
                     // alert ("hi"); //we got in here
                     var data = doc.data();
-                    // console.warn(data.email);
-                    // console.warn(data.name);
+                     console.warn(data.email);
+                     console.warn(data.name);
+                     console.warn(data.levelcomplete);
                     if ((JSON.stringify(emailis) === JSON.stringify(data.email)) && (JSON.stringify(whoItIsUsingThis) === JSON.stringify(data.name))) {
                         let blob = Number(data.levelcomplete) + 0;
-                        // console.log("you have the score " + blob + " " + levelNumber);
+                         console.log("you have the score " + blob + " " + levelNumber);
                         try {
                             if (blob > levelNumber) {
 
