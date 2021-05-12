@@ -95,6 +95,13 @@ position: right;
 	width: 10vw;
 	HEIGHT: 6vh;
 }
+#loadMidi {
+	position: fixed;
+	z-index: 9;
+	left: 60vw;
+	width: 10vw;
+	HEIGHT: 6vh;
+}
 #sequenceButton {
 	position: fixed;
 	z-index: 9;
