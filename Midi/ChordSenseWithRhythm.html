@@ -149,12 +149,12 @@ if (location.protocol != 'https:')
 	<option value="dubB" class = "aChordOption" id = "doubleBass">Look for two additional root notes in the Bass</option>
     </select>
 </p></div>
-<div id ="octaveButtonLinks" class = "chickens"><p><p><button type="button" id = "octaveUp"> octave &#8593;</button></p></div>
-<div id ="octaveButtonLinksTwo" class = "chickens"><p><p><button type="button" id = "octaveDown">octave &#8595;</button></p></div>
-<div id ="octaveNumBox" class = "chickens" style="background: white">Octave 3</div>
-<div id ="sheetButtonLink"><p><p><button type="button" id = "sheetButton">Change To Words</button></p></div>
-<div id = "loadMidi"><input type="file" data-buttonText="Your label here." style = "height:500" id="filereader"/ > Import a Midi file as a sequence. </div>
-<div id ="chordSenseLink"><p><p><button type="button"  id = "chordLink" onclick="myFunction()">Practice Scales</button></p></div>
+<div hidden id ="octaveButtonLinks" class = "chickens"><p><p><button type="button" id = "octaveUp"> octave &#8593;</button></p></div>
+<div hidden id ="octaveButtonLinksTwo" class = "chickens"><p><p><button type="button" id = "octaveDown">octave &#8595;</button></p></div>
+<div hidden id ="octaveNumBox" class = "chickens" style="background: white">Octave 3</div>
+<div hidden id ="sheetButtonLink"><p><p><button type="button" id = "sheetButton">Change To Words</button></p></div>
+<div id = "loadMidi"><input type="file" id="filereader" > .</input><p> Import a Midi file as a sequence</div>
+<div hidden id ="chordSenseLink"><p><p><button type="button"  id = "chordLink" onclick="myFunction()">Practice Scales</button></p></div>
 <script>
 function myFunction() {
   window.location.replace("melodies.html");

@@ -955,9 +955,9 @@ function showNotes(arrayOfNotes) {
 }
 
 function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
-	console.log(theNoteLength);
+	// console.log(theNoteLength);
 	middleNote=noteArrayNum;
-	console.log(middleNote);
+	// console.log(middleNote);
     // console.log("The Note Message has " + noteArrayNum + " " + voiceType + " " + theNoteLength);
     if (notationMode == "movingNotesMode") {
         // if (Math.round(theNoteLength) == 3) {
@@ -1508,7 +1508,7 @@ function rightAnswer() {
             // at http://www.useragentman.com/blog/2011/01/07/css3-matrix-transform-for-the-mathematically-challenged/
             const x = transformMatrix.split(',')[4].trim();
             // And, finally, we set the note's style.transform property to send it skyward.
-            group.style.transform = `translate(${x}px, -1600px)`;
+            group.style.transform = `translate(${x-1000}px, -0px)`;
         }
     } catch (error) {}
 }
@@ -1519,12 +1519,12 @@ function prepAnswer() {
 			
            group = visibleReferenceNoteGroups[i];
 		   
-			console.log(group.classList[0]);
+			// console.log(group.classList[0]);
 			
-			console.log(group.classList[1]);
+			// console.log(group.classList[1]);
             group.classList.add('prepping');
-			console.log(group.classList.length);
-			console.log(group.classList[2]);
+			// console.log(group.classList.length);
+			// console.log(group.classList[2]);
             // The note will be somewhere in the middle of its move to the left -- by
             // getting its computed style we find its x-position, freeze it there, and
             // then send it straight up to note heaven with no horizontal motion.
@@ -1541,15 +1541,15 @@ function prepAnswer() {
     } catch (error) {}
 }
 function readyAnswer() {
-	console.log(visibleReferenceNoteGroups.length)
+	// console.log(visibleReferenceNoteGroups.length)
     try {
         for (var i = 0; i < visibleReferenceNoteGroups.length; i++) {
 			
            group = visibleReferenceNoteGroups[i];
 		   
-			console.log(group.classList[0]);
+			// console.log(group.classList[0]);
 			
-			console.log(group.classList[1]);
+			// console.log(group.classList[1]);
             group.classList.remove('prepping');
 			        // The note will be somewhere in the middle of its move to the left -- by
             // getting its computed style we find its x-position, freeze it there, and
@@ -1761,7 +1761,7 @@ function noteOnListener(note, velocity) {
 
         if (activeChord.includes(arrangeNote(note)) == false) { //4/9/2020 I think I may need to add a new activeChordlisting that includes the actual note and not just the arrangenote, so I can be certain the note order in addition here. Avi
             activeChord.push(arrangeNote(note));
-            console.log(arrangeNote(specificActiveChord[0]));
+            // console.log(arrangeNote(specificActiveChord[0]));
         } else if ((arrangeNote(note) == correctChord[0]) && (bassMatched > 0) && (bassMatched < 3)) {
             activeChord.push(bassMatched + 12);
             //alert (bassMatched+12); //spot1
@@ -2115,7 +2115,8 @@ function newChord() {
 	console.warn("newChord");
     document.getElementById("keyboardImg2").src = "Blank Keyboard.jpeg";
     var thisChord = Math.floor(Math.random() * 24) + 1;
-	thisChord=(specificComplexChordQueue[arraySpot][0][0]+1)%12-1;
+	thisChord=((specificComplexChordQueue[arraySpot][0][0]+1)%12+12-1);
+	console.log(thisChord);
     switch (thisChord) {
     case 12:
         currentChordName = "C";
@@ -2215,6 +2216,7 @@ function newChord() {
         currentImageName = "B";
         break;
     }
+	console.log(currentImageName);
     setupChord(fixNote(thisChord));
 }
 
@@ -2430,12 +2432,15 @@ function setupChord(rootNote) {
     // alert(Chordlist[0]+"");
     var chordType = Chordlist[Math.floor(Math.random() * Chordlist.length)];
 
+	chordType="justNotes";
     switch (chordType) {
     case "justNotes":
         currentChordName = currentChordName + " Note";
-
+if (!(currentImageName.includes ("Note"))){
         currentImageName = currentImageName + " Note";
+}
         setupJustNotes(rootNote);
+
         break;
     case "easyFifths":
 
@@ -2585,7 +2590,7 @@ function setupChord(rootNote) {
     rightAnswer();
     // alert(correctChord.toString());
 	//correctChord=correctChordQueue[arraySpot];
-	console.log(arraySpot);
+	//console.log(arraySpot);
 	correctChord=correctComplexChordQueue[arraySpot][0];
 	
 	let specificCorrectComplexChord=specificComplexChordQueue[arraySpot][0];
@@ -2595,12 +2600,12 @@ function setupChord(rootNote) {
 	if (arraySpot>(correctComplexChordQueue.length-1)){
 	arraySpot=0;
 	}
+	console.log(currentImageName);
+	//console.log(arraySpot+ " of "+correctComplexChordQueue.length);
 	
-	console.log(arraySpot+ " of "+correctComplexChordQueue.length);
-	
-	console.log(correctChord+" "+beatLength);
+	//console.log(correctChord+" "+beatLength);
 	for (var i = 0; i<specificCorrectComplexChord.length;i++){
-		console.log(specificCorrectComplexChord[i]-24+" "+beatLength);
+		//console.log(specificCorrectComplexChord[i]-24+" "+beatLength);
 	makeAndShowANote(specificCorrectComplexChord[i]-24, beatLength, "referenceNote");
 	}
    // showNotes(specificCorrectComplexChord);

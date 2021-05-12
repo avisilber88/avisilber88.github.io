@@ -96,11 +96,22 @@ position: right;
 	HEIGHT: 6vh;
 }
 #loadMidi {
+	font-size:14px;
+	text-align: center;
+	background-color:white;
+	font:black;
 	position: fixed;
 	z-index: 9;
-	left: 60vw;
-	width: 10vw;
+	left: 40vw;
+	width: 20vw;
 	HEIGHT: 6vh;
+}
+#filereader {
+
+}
+#file-upload-button{
+
+
 }
 #sequenceButton {
 	position: fixed;
