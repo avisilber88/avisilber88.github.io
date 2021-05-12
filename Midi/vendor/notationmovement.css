@@ -55,6 +55,15 @@ transition: transform 10s linear, opacity 0.05s ease-out, fill 0.2s linear;
 .correct {
   opacity: 0;
 }
+.newcorrect {
+  opacity: 100;
+}
+
+.prepping {
+	outline: solid 1px blue;
+  opacity: 0.5;
+  color: yellow;
+}
 
 .too-slow {
   transform: translate(-800px, 2000px);
