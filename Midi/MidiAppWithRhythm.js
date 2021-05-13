@@ -349,7 +349,7 @@ MidiParser.parse(sourceofmidi, function (obj) {
 	
 	console.log(specificComplexChordQueue[i][0]-24+" "+specificComplexChordQueue[i][1]);
 	}
-	console.log(correctComplexChordQueue);
+	//console.log(correctComplexChordQueue);
 });
 
 $(".lock-input").slideToggle();
@@ -634,9 +634,18 @@ function durationNoteSelect(localBeatCount) {
         beatCount = durationNoteSelectEight(localBeatCount/4);
 		console.log(beatCount);
         wholesToTieAtTheBeginning = Math.floor(beatCount / 8);
+		
+		console.warn("it is " + beatCount);
         beatCount = beatCount % 8;
+		
+		console.warn("it is " + beatCount);
+		beatCount = Math.round(beatCount);
+		console.warn("it is " + beatCount);
         //the code below is for 1/8 where each case is the numerator
         switch (beatCount) {
+			case 0:
+            return 4;
+            break;
         case 1:
             return 0;
             break;
@@ -969,9 +978,9 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
         // if (theNoteLength > 4) {
         // theNoteLength = 4;
         // }
-        // console.log(theNoteLength);
+        console.log("say who "+theNoteLength);
         theNoteLength = durationNoteSelect(theNoteLength);
-        // console.log(theNoteLength);
+        console.log("say what "+theNoteLength);
         var lastImageNote = currentImageNote;
         var currentImageNote = notes[0];
         var currentSecondImageNote = note2[0];
@@ -1046,12 +1055,12 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
                 ].map(([letter, acc, octave]) => {
 
                     const note = new VF.StaveNote({
-                            clef: 'treble',
+                            clef: 'bass',
                             keys: [`${letter}${acc}/${octave}`],
                             duration: durations[4],
                         })
                         .setContext(context)
-                        .setStave(staveTreble);
+                        .setStave(staveBass);
                     if (acc)
                         note.addAccidental(0, new VF.Accidental(acc));
                     // tickContext.addTickable(note)
@@ -1200,7 +1209,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
             // console.log("tie off");
             //END AREA OF TIES!
 				
-			console.log(theNoteLength);
+			//console.log(theNoteLength);
             //Start AREA OF NO TIES!
             if (middleNote >= 36) {
                 notes = [
@@ -2604,8 +2613,9 @@ if (!(currentImageName.includes ("Note"))){
 	correctChord=correctComplexChordQueue[arraySpot][0];
 	
 	let specificCorrectComplexChord=specificComplexChordQueue[arraySpot][0];
-	previousBeatLength=beatLength;
-	beatLength=correctComplexChordQueue[arraySpot][1]
+	previousBeatLength=Math.round(beatLength);
+	beatLength=correctComplexChordQueue[arraySpot][1];
+	console.log("current beats "+beatLength);
 	arraySpot++;
 	if (arraySpot>(correctComplexChordQueue.length-1)){
 	arraySpot=0;
@@ -2617,7 +2627,7 @@ if (!(currentImageName.includes ("Note"))){
 	specificCorrectChord=[];
 	for (var i = 0; i<specificCorrectComplexChord.length;i++){
 		//console.log(specificCorrectComplexChord[i]-24+" "+beatLength);
-	makeAndShowANote(specificCorrectComplexChord[i]-24, beatLength, "referenceNote");
+	makeAndShowANote(specificCorrectComplexChord[i]-24, Math.round(beatLength), "referenceNote");
 	console.warn(specificCorrectComplexChord[i]);
 	specificCorrectChord.push(specificCorrectComplexChord[i]);
 	}
@@ -2970,10 +2980,10 @@ catch (error){}
         snareSequenceArray = [];
         snareSequenceCopy = [];
         newQuestionTime = false;
-						clearChord();
-readyAnswer();
+		clearChord();
+		readyAnswer();
 		console.log(currentBPM);
-		currentBPM=120;
+		//currentBPM=120;
     }
 
     var minutes = Math.floor(clockTester / 4 / currentBPM);
