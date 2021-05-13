@@ -1487,7 +1487,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
             // const index = visibleNoteGroups.indexOf(group);
 
 
-        }, (60000*16) / (currentBPM)); // TIMER SETTING FOR WHEN THE NOTE DROPS OFF, CURRENTLY THIS CONSTITUTES 8 S at 120 bpm, or 16 beats, which is 4 measures at 4/4! 
+        }, (60000*640) / (currentBPM)); // TIMER SETTING FOR WHEN THE NOTE DROPS OFF, CURRENTLY THIS CONSTITUTES 8 S at 120 bpm, or 16 beats, which is 4 measures at 4/4! 
     }
 }
 
@@ -1753,16 +1753,22 @@ function noteOnListener(note, velocity) {
     case 2:
         // add the note to the active chord array
         //alert((arrangeNote(note)+"" +correctChord[0]));
-
+		
         if (specificActiveChord.includes(note) == false) {
             specificActiveChord.push(note);
             specificActiveChord.sort();
+			for (var i = 0; i<specificActiveChord.length; i++){
+			console.warn(specificActiveChord[i]);
+			}
+			for (var i = 0; i<specificCorrectChord.length; i++){
+			console.error(specificCorrectChord[i]);
+			}
         }
 
         if (activeChord.includes(arrangeNote(note)) == false) { //4/9/2020 I think I may need to add a new activeChordlisting that includes the actual note and not just the arrangenote, so I can be certain the note order in addition here. Avi
             activeChord.push(arrangeNote(note));
             // console.log(arrangeNote(specificActiveChord[0]));
-        } else if ((arrangeNote(note) == correctChord[0]) && (bassMatched > 0) && (bassMatched < 3)) {
+       } else if ((arrangeNote(note) == correctChord[0]) && (bassMatched > 0) && (bassMatched < 3)) {
             activeChord.push(bassMatched + 12);
             //alert (bassMatched+12); //spot1
             bassMatched++
@@ -1776,24 +1782,28 @@ function noteOnListener(note, velocity) {
 
 			// console.error(specificActiveChord.toString());
         // If the array is the same length as the correct chord, compare
-        if (activeChord.length == correctChord.length) {
+        if ((activeChord.length == correctChord.length)||(specificActiveChord.length == specificCorrectChord.length)) {
+			console.log("yo");
             var match = true;
 			document.getElementById("warning").innerHTML =""
-            for (var index = 0; index < activeChord.length; index++) {
+            if (!specificNotes){
+			for (var index = 0; index < activeChord.length; index++) {
                 if (correctChord.indexOf(activeChord[index]) < 0) {
 					document.getElementById("warning").innerHTML = document.getElementById("warning").innerHTML+"<style='fontSize:15px;'>-Incorrect Chord, see notes below.</style><br>"; //(arrangeNote(specificActiveChord[0]));
                     match = false;
                     break;
                 }
             }
-			            if ((match)&&(inversions) & (arrangeNote(specificActiveChord[0]) != correctChord[pickedInversion])) {
+			if ((match)&&(inversions) & (arrangeNote(specificActiveChord[0]) != correctChord[pickedInversion])) {
                 match = false;
                 document.getElementById("warning").innerHTML = document.getElementById("warning").innerHTML+"<style='fontSize:15px;'>-Your root note should be " + getNoteNameGeneral(correctChord[pickedInversion])+"</style><br>"; //(arrangeNote(specificActiveChord[0]));
             }
+			}
 			if ((specificNotes)&&(match)){
 			for (var index = 0; index < specificActiveChord.length; index++) {
                 if (specificCorrectChord.indexOf(specificActiveChord[index]) < 0) {
-				document.getElementById("warning").innerHTML = document.getElementById("warning").innerHTML+"<style='fontSize:15px;'>-You are playing in the wrong octave.</style>"; //(arrangeNote(specificActiveChord[0]));
+					console.log ("it was "+specificCorrectChord.indexOf(specificActiveChord[index]));
+					document.getElementById("warning").innerHTML = document.getElementById("warning").innerHTML+"<style='fontSize:15px;'>-You are playing in the wrong octave.</style>"; //(arrangeNote(specificActiveChord[0]));
 
                     match = false;
                     break;
@@ -2604,10 +2614,14 @@ if (!(currentImageName.includes ("Note"))){
 	//console.log(arraySpot+ " of "+correctComplexChordQueue.length);
 	
 	//console.log(correctChord+" "+beatLength);
+	specificCorrectChord=[];
 	for (var i = 0; i<specificCorrectComplexChord.length;i++){
 		//console.log(specificCorrectComplexChord[i]-24+" "+beatLength);
 	makeAndShowANote(specificCorrectComplexChord[i]-24, beatLength, "referenceNote");
+	console.warn(specificCorrectComplexChord[i]);
+	specificCorrectChord.push(specificCorrectComplexChord[i]);
 	}
+	specificCorrectChord.sort();
    // showNotes(specificCorrectComplexChord);
 }
 

@@ -126,27 +126,27 @@ if (location.protocol != 'https:')
 	</div>
 <div id="dropdown"><p>
   <select name="basic[]" multiple="multiple" class="3col active">
-	<option value="justLearnNotes" class = "aChordOption" selected id = "jln">Just Learn Notes</option>
-	<option value="easyFifths" class = "aChordOption" id = "ez5" onclick = "resetChord()">Easy Fifths</option>
-	<option value="easyMajor" class = "aChordOption" id = "ezmaj">Easy Major</option>
-	<option value="easyMinor" class = "aChordOption" id = "ezm">Easy Minor</option>
-	<option value="fifths" class = "aChordOption" id = "just5">Fifths</option>
-	<option value="major" class = "aChordOption" id = "reg">Major</option>
-	<option value="minor" class = "aChordOption" id = "regm">Minor</option>
-	<option value="sus2" class = "aChordOption" id = "idsus2" >Sus2</option>
-	<option value="sus" class = "aChordOption" id = "idsus">Sus</option>
-	<option value="minorSeventh" class = "aChordOption" id = "m7">Minor Seventh</option>
-	<option value="majorSeventh" class = "aChordOption" id = "maj7">Major Seventh</option>
-	<option value="dominantSeventh" class = "aChordOption" id = "d7">Dominant Seventh</option>
-	<option value="minorNinth" class = "aChordOption" id = "m9">Minor Ninth</option>
-	<option value="majorNinth" class = "aChordOption" id = "maj9">Major Ninth</option>
-	<option value="dominantNinth" class = "aChordOption" id = "d9">Dominant Ninth</option>
-	<option value="addNinth" class = "aChordOption" id = "add9">Add Ninth</option>
-	<option value="romC" class = "aChordOption" id = "romanc">Roman Numerals in C</option>
-	<option value="romA" class = "aChordOption" id = "romana">Roman Numerals in Am</option>
-	<option value="oPlaying" class = "aChordOption" id = "octavePlaying">Require specific octave playing (sheet music only)</option>
-	<option value="sChords" class = "aChordOption" id = "slashChords">Require specific inversions as "Slash Chords"</option>
-	<option value="dubB" class = "aChordOption" id = "doubleBass">Look for two additional root notes in the Bass</option>
+	<option hidden value="justLearnNotes" class = "aChordOption" selected id = "jln">Just Learn Notes</option>
+	<option hidden value="easyFifths" class = "aChordOption" id = "ez5" onclick = "resetChord()">Easy Fifths</option>
+	<option hidden value="easyMajor" class = "aChordOption" id = "ezmaj">Easy Major</option>
+	<option hidden value="easyMinor" class = "aChordOption" id = "ezm">Easy Minor</option>
+	<option hidden value="fifths" class = "aChordOption" id = "just5">Fifths</option>
+	<option hidden value="major" class = "aChordOption" id = "reg">Major</option>
+	<option hidden value="minor" class = "aChordOption" id = "regm">Minor</option>
+	<option hidden value="sus2" class = "aChordOption" id = "idsus2" >Sus2</option>
+	<option hidden value="sus" class = "aChordOption" id = "idsus">Sus</option>
+	<option hidden value="minorSeventh" class = "aChordOption" id = "m7">Minor Seventh</option>
+	<option hidden value="majorSeventh" class = "aChordOption" id = "maj7">Major Seventh</option>
+	<option hidden value="dominantSeventh" class = "aChordOption" id = "d7">Dominant Seventh</option>
+	<option hidden value="minorNinth" class = "aChordOption" id = "m9">Minor Ninth</option>
+	<option hidden value="majorNinth" class = "aChordOption" id = "maj9">Major Ninth</option>
+	<option hidden value="dominantNinth" class = "aChordOption" id = "d9">Dominant Ninth</option>
+	<option hidden value="addNinth" class = "aChordOption" id = "add9">Add Ninth</option>
+	<option hidden value="romC" class = "aChordOption" id = "romanc">Roman Numerals in C</option>
+	<option hidden value="romA" class = "aChordOption" id = "romana">Roman Numerals in Am</option>
+	<option value="oPlaying" selected class = "aChordOption" id = "octavePlaying">Require specific octave playing (sheet music only)</option>
+	<option hidden value="sChords" class = "aChordOption" id = "slashChords">Require specific inversions as "Slash Chords"</option>
+	<option hidden value="dubB" class = "aChordOption" id = "doubleBass">Look for two additional root notes in the Bass</option>
     </select>
 </p></div>
 <div hidden id ="octaveButtonLinks" class = "chickens"><p><p><button type="button" id = "octaveUp"> octave &#8593;</button></p></div>
