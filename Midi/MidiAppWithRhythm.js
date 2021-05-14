@@ -56,6 +56,8 @@ var smallestNoteDenominator = 8;
 var wholesToTieAtTheBeginning = 0;
 var sequenceOn = false;
 var isFlat = false;
+var trackList=[];
+var trackSelected=0;
 var correctChordQueue=[[12, 4],[9],[12,4], [9], [12, 5],[9],[12,5], [9],[12, 4],[7], [12,4], [7], [11, 2], [7], [11, 2], [7]];
 var correctComplexChordQueue = [[[12, 4], 5],[[9], 9],[[12,4], 5], [[9], 9]];
 var specificComplexChordQueue = [[[12+48, 4+48], 5],[[9+48], 9],[[12+48,4+48], 5], [[9+48], 9]];
@@ -172,7 +174,9 @@ var noteArray = [
     [1975.5, "B6", "B6"]
 ];
 // const VF = Vex.Flow;
+//var midiFileParser = require('midi-file-parser');
 
+//var fs = require('fs')
 
 let sourceofmidi = document.getElementById('filereader');
 // provide the File source and a callback function
@@ -183,11 +187,19 @@ var channels = 0;
 
 // channels=6;
 
+var addAssignmentOption = function (cationOption) {
+        var sel = document.getElementById("assignmentSelect");
+        var opt = document.createElement('option');
+        opt.innerHTML = cationOption;
+        //		opt.appendChild(document.createTextNode((cationOption)));
+        opt.value = (cationOption);
+        sel.appendChild(opt);
 
+}
 MidiParser.parse(sourceofmidi, function (obj) {
     $("button.tuneron").click();
 	correctComplexChordQueue=[];
-	
+	trackList=[];
 	specificComplexChordQueue=[];
     let importArray = [];
     let ticksOfThisNote = 0;
@@ -204,6 +216,11 @@ MidiParser.parse(sourceofmidi, function (obj) {
         for (var i = 0; i < (obj.track.length); i++) {
             try {
                 for (var j = 0; j < (obj.track[i].event.length); j++) {
+
+					if (obj.track[i].event[j].metaType == 3){
+						//console.log (i+" "+j+" "+obj.track[i].event[j].data);
+						trackList.push(obj.track[i].event[j].data);
+					}
 
                     if ((obj.track[i].event[j].type == 9) && (!trackPicked)) {
                         console.log("channel " + obj.track[i].event[j].channel);
@@ -230,7 +247,157 @@ MidiParser.parse(sourceofmidi, function (obj) {
             }
 
         }
+		
+		//transplanted from uploadgame
+		document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:large'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  </div>";
+        $('#assignmentSelect').empty();
+        for (var i = 0; i < trackList.length; i++) {
+			//if (dataArray[startRow][i].includes("MAX")){
+            addAssignmentOption(trackList[i]);
+			//}
+			//else{
+			//addAssignmentOption(dataArray[startRow][i]);
+			//}
+        }
+		document.getElementById("assignmentSelect").selectedIndex=(noteContainingTrack-1);
+        $('#assignmentSelect').change(function () {
+			
+				correctComplexChordQueue=[];
+	
+	specificComplexChordQueue=[];
+	let importArray = [];
+    let ticksOfThisNote = 0;
+    let lastNote = 0;
+    let currentNote = 0;
+            // alert ("hi");
+            // if (true){
+				//console.log("hi bob");
+            for (var i = 0; i < trackList.length; i++) {
+                if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (trackList[i])) {
+                    noteContainingTrack = i+1;
+					//alert(noteContainingTrack);
+                }
 
+
+
+            }
+			
+			if (tempNewTempo > 30) {
+            // alert ("hi "+tempNewTempo);
+            newTempo = tempNewTempo;
+        } else {
+            // alert ("hi2 "+tempNewTempo);
+            let otherNewTempo = prompt("What tempo is the song you are importing?");
+            if (otherNewTempo) {
+                newTempo = otherNewTempo;
+            }
+        }
+        // alert (obj.track.length); // when I return to this, elle's song works but hercules doesn't...
+        singingTimeArray = [];
+
+        $("#BPMAmount").val(newTempo);
+
+        currentBPM = newTempo;
+		var loadingChord=[];
+		var specificLoadingChord=[];
+        for (var i = 0; i < (obj.track[noteContainingTrack].event.length); i++) {
+            // console.log(obj.track[obj.track.length-1].event[0].data);
+            // console.log(obj.timeDivision);
+            var importTicksPerBeat = obj.timeDivision;
+
+            // console.log(obj.track[2].event[i].deltaTime);
+            // console.log(obj.track[noteContainingTrack].event[i].type);
+            ticksOfThisNote = ticksOfThisNote + obj.track[noteContainingTrack].event[i].deltaTime; //add the time of the message to the building message.
+            if ((obj.track[noteContainingTrack].event[i].type == 9) && (obj.track[noteContainingTrack].event[i].channel == channels)) { //if note on
+                // ticksOfThisNote=ticksOfThisNote+obj.track[2].event[i].deltaTime; //add the time of the message to the building message.
+                lastNote = currentNote + 0;
+                // alert (lastNote);
+				//console.warn(lastNote);
+                if (lastNote != 0) {
+                    singingTimeArray.push([lastNote - 24, (60 * (ticksOfThisNote + 0) / importTicksPerBeat) / currentBPM, 0]);
+					let beatsOfThisNotes = (ticksOfThisNote + 0) / importTicksPerBeat;
+					if (beatsOfThisNotes ==0){
+						loadingChord.push((lastNote-1)%12+1);
+						specificLoadingChord.push(lastNote);
+					}
+					else{
+					
+						loadingChord.push((lastNote-1)%12+1);
+						specificLoadingChord.push(lastNote);
+					correctComplexChordQueue.push([JSON.parse(JSON.stringify(loadingChord)), beatsOfThisNotes*4]);
+					specificComplexChordQueue.push([JSON.parse(JSON.stringify(specificLoadingChord)), beatsOfThisNotes*4]);
+					loadingChord=[];
+					specificLoadingChord=[];
+					}
+
+                } else {
+					
+					//THIS IS WHAT I AM NOT SURE ABOUT
+                    singingTimeArray.push([12, (60 * (ticksOfThisNote + 0) / importTicksPerBeat) / currentBPM, 0]);
+					//correctComplexChordQueue.push([0, 4*(ticksOfThisNote + 0) / importTicksPerBeat]);
+                }
+                currentNote = obj.track[noteContainingTrack].event[i].data[0];
+                ticksOfThisNote = 0;
+            }
+
+        }
+        lastNote = currentNote + 0;
+        // alert (lastNote);
+
+        if (lastNote != 0) {
+            singingTimeArray.push([(lastNote-1)%12+1 - 24, (60 * (ticksOfThisNote + 0) / importTicksPerBeat) / currentBPM, 0]);
+			correctComplexChordQueue.push([[(lastNote-1)%12+1], 4*(ticksOfThisNote + 0) / importTicksPerBeat]);
+			specificComplexChordQueue.push([[lastNote], 4*(ticksOfThisNote + 0) / importTicksPerBeat]);
+        }
+			//end of transplant
+            // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
+            // }
+            //$(".pickassignment").slideToggle();
+            //generateSliders();
+			
+			 try {
+        synth.triggerRelease();
+        stopAllNotes();
+    } catch (error) {}
+    // alert(rhythmSequenceArray.toString());
+    sequenceArray = [];
+    sequenceCopy = [];
+    arpeggioArray = [];
+    chordSequenceArray = [];
+    chordSequenceCopy = [];
+    buttonsCaptured = false;
+    captureButtons = true;
+    buttonStartEndTimes = [];
+    buttonPlay = true;
+    // buttonStartEndTimes.push([0, new Date(new Date().getTime())]);
+    // if (buttonStartEndTimes.length > 1) {
+    // // alert("long");
+    // singingTimeArray.push([buttonStartEndTimes[0][0], (buttonStartEndTimes[1][1] - buttonStartEndTimes[0][1]) / 1000, 0]);
+    // buttonStartEndTimes.shift();
+    // // console.log(singingTimeArray.toString());
+    // }
+    captureButtons = false;
+    buttonsCaptured = true;
+    singingCaptured = true;
+    sequencePlay = true;
+    nonReferencePlay = true;
+    newQuestionTime = true;
+	arraySpot=0;
+    arrayOfSungNotesOnly = [];
+	newChord();
+    for (i = 0; i < singingTimeArray.length; i++) {
+       arrayOfSungNotesOnly.push((singingTimeArray[i][0])%12);
+    }
+    //console.log(singingTimeArray.toString());
+    //findKey(arrayOfSungNotesOnly);
+
+    // console.log(obj.track[2].event[i].data);
+	for (var i = 0; i<correctComplexChordQueue.length; i++){ 
+	//console.log(correctComplexChordQueue[i][0]+" "+correctComplexChordQueue[i][1]);
+	
+	console.log(specificComplexChordQueue[i][0]-24+" "+specificComplexChordQueue[i][1]);
+	}
+        });
         // if (midiFormatType==0){ // A COP OUT. THIS IS ONLY BECAUSE I DONT KNOW WHAT TO DO WITH BIG MIDI LIKE HERCULES
         // channels=1;
         // }
@@ -351,6 +518,26 @@ MidiParser.parse(sourceofmidi, function (obj) {
 	}
 	//console.log(correctComplexChordQueue);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 $(".lock-input").slideToggle();
 // // Create a VexFlow renderer attaced to the DIV element "boo"

@@ -95,6 +95,13 @@ position: right;
 	width: 10vw;
 	HEIGHT: 6vh;
 }
+#selectionsBox {
+	position: fixed;
+	z-index: 9;
+	right: 15vw;
+	width: 10vw;
+	HEIGHT: 6vh;
+}
 #loadMidi {
 	font-size:14px;
 	text-align: center;

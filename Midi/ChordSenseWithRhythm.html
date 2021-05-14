@@ -115,6 +115,8 @@ if (location.protocol != 'https:')
 	<audio id = "sound-Bb7" data-src = "samplestwo/Bb7.mp3"></audio>
 	<audio id = "sound-B7" data-src = "samplestwo/B7.mp3"></audio>
 	<audio id = "sound-C8" data-src = "samplestwo/C8.mp3"></audio>
+	<!-- <file id = "> </base64String> -->
+	
 	<!--LINK JQUERY-->
 
 	<!--PERSONAL SCRIPT JavaScript-->
@@ -154,7 +156,7 @@ if (location.protocol != 'https:')
 <div hidden id ="octaveNumBox" class = "chickens" style="background: white">Octave 3</div>
 <div hidden id ="sheetButtonLink"><p><p><button type="button" id = "sheetButton">Change To Words</button></p></div>
 <div id = "loadMidi"><input type="file" id="filereader" > .</input><p> Import a Midi file as a sequence</div>
-<div hidden id ="chordSenseLink"><p><p><button type="button"  id = "chordLink" onclick="myFunction()">Practice Scales</button></p></div>
+<div id ="selectionsBox"><p><p></p></div>
 <script>
 function myFunction() {
   window.location.replace("melodies.html");
