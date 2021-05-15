@@ -223,7 +223,7 @@ MidiParser.parse(sourceofmidi, function (obj) {
 					}
 
                     if ((obj.track[i].event[j].type == 9) && (!trackPicked)) {
-                        console.log("channel " + obj.track[i].event[j].channel);
+                        //console.log("channel " + obj.track[i].event[j].channel);
                         if (channels < (Number(obj.track[i].event[j].channel))) {
                             channels = obj.track[i].event[j].channel;
 
@@ -314,12 +314,18 @@ MidiParser.parse(sourceofmidi, function (obj) {
                 // alert (lastNote);
 				//console.warn(lastNote);
                 if (lastNote != 0) {
+					console.error(lastNote);
                     singingTimeArray.push([lastNote - 24, (60 * (ticksOfThisNote + 0) / importTicksPerBeat) / currentBPM, 0]);
 					let beatsOfThisNotes = (ticksOfThisNote + 0) / importTicksPerBeat;
-					if (beatsOfThisNotes ==0){
+					// if (beatsOfThisNotes ==0){
+						// loadingChord.push((lastNote-1)%12+1);
+						// specificLoadingChord.push(lastNote);
+					// }
+
+					if (Math.round(beatsOfThisNotes*4) == 0){
 						loadingChord.push((lastNote-1)%12+1);
 						specificLoadingChord.push(lastNote);
-					}
+					}				
 					else{
 					
 						loadingChord.push((lastNote-1)%12+1);
@@ -332,6 +338,7 @@ MidiParser.parse(sourceofmidi, function (obj) {
 
                 } else {
 					
+					console.error(lastNote);
 					//THIS IS WHAT I AM NOT SURE ABOUT
                     singingTimeArray.push([12, (60 * (ticksOfThisNote + 0) / importTicksPerBeat) / currentBPM, 0]);
 					//correctComplexChordQueue.push([0, 4*(ticksOfThisNote + 0) / importTicksPerBeat]);
@@ -345,10 +352,21 @@ MidiParser.parse(sourceofmidi, function (obj) {
         // alert (lastNote);
 
         if (lastNote != 0) {
-            singingTimeArray.push([(lastNote-1)%12+1 - 24, (60 * (ticksOfThisNote + 0) / importTicksPerBeat) / currentBPM, 0]);
-			correctComplexChordQueue.push([[(lastNote-1)%12+1], 4*(ticksOfThisNote + 0) / importTicksPerBeat]);
-			specificComplexChordQueue.push([[lastNote], 4*(ticksOfThisNote + 0) / importTicksPerBeat]);
-        }
+			
+					// console.error(lastNote);
+            // singingTimeArray.push([(lastNote-1)%12+1 - 24, (60 * (ticksOfThisNote + 0) / importTicksPerBeat) / currentBPM, 0]);
+			// correctComplexChordQueue.push([[(lastNote-1)%12+1], 4*(ticksOfThisNote + 0) / importTicksPerBeat]);
+			// specificComplexChordQueue.push([[lastNote], 4*(ticksOfThisNote + 0) / importTicksPerBeat]);
+ let beatsOfThisNotes = (ticksOfThisNote + 0) / importTicksPerBeat;
+					
+						loadingChord.push((lastNote-1)%12+1);
+						specificLoadingChord.push(lastNote);
+					correctComplexChordQueue.push([JSON.parse(JSON.stringify(loadingChord)), beatsOfThisNotes*4]);
+					specificComplexChordQueue.push([JSON.parse(JSON.stringify(specificLoadingChord)), beatsOfThisNotes*4]);
+					loadingChord=[];
+					specificLoadingChord=[];
+
+ }
 			//end of transplant
             // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
             // }
@@ -435,10 +453,14 @@ MidiParser.parse(sourceofmidi, function (obj) {
                 if (lastNote != 0) {
                     singingTimeArray.push([lastNote - 24, (60 * (ticksOfThisNote + 0) / importTicksPerBeat) / currentBPM, 0]);
 					let beatsOfThisNotes = (ticksOfThisNote + 0) / importTicksPerBeat;
-					if (beatsOfThisNotes ==0){
+					// if (beatsOfThisNotes ==0){
+						// loadingChord.push((lastNote-1)%12+1);
+						// specificLoadingChord.push(lastNote);
+					// }
+										if (Math.round(beatsOfThisNotes*4) == 0){
 						loadingChord.push((lastNote-1)%12+1);
 						specificLoadingChord.push(lastNote);
-					}
+					}	
 					else{
 					
 						loadingChord.push((lastNote-1)%12+1);
@@ -464,9 +486,14 @@ MidiParser.parse(sourceofmidi, function (obj) {
         // alert (lastNote);
 
         if (lastNote != 0) {
-            singingTimeArray.push([(lastNote-1)%12+1 - 24, (60 * (ticksOfThisNote + 0) / importTicksPerBeat) / currentBPM, 0]);
-			correctComplexChordQueue.push([[(lastNote-1)%12+1], 4*(ticksOfThisNote + 0) / importTicksPerBeat]);
-			specificComplexChordQueue.push([[lastNote], 4*(ticksOfThisNote + 0) / importTicksPerBeat]);
+			let beatsOfThisNotes = (ticksOfThisNote + 0) / importTicksPerBeat;
+					
+ 						loadingChord.push((lastNote-1)%12+1);
+						specificLoadingChord.push(lastNote);
+					correctComplexChordQueue.push([JSON.parse(JSON.stringify(loadingChord)), beatsOfThisNotes*4]);
+					specificComplexChordQueue.push([JSON.parse(JSON.stringify(specificLoadingChord)), beatsOfThisNotes*4]);
+					loadingChord=[];
+					specificLoadingChord=[];
         }
 
     } else if (midiFormatType == 0) {
@@ -511,10 +538,10 @@ MidiParser.parse(sourceofmidi, function (obj) {
     //findKey(arrayOfSungNotesOnly);
 
     // console.log(obj.track[2].event[i].data);
-	for (var i = 0; i<correctComplexChordQueue.length; i++){ 
+	for (var i = 0; i<specificComplexChordQueue.length; i++){ 
 	//console.log(correctComplexChordQueue[i][0]+" "+correctComplexChordQueue[i][1]);
 	
-	console.log(specificComplexChordQueue[i][0]-24+" "+specificComplexChordQueue[i][1]);
+	console.log(specificComplexChordQueue[i][0]+" "+specificComplexChordQueue[i][1]);
 	}
 	//console.log(correctComplexChordQueue);
 });
@@ -2802,7 +2829,7 @@ if (!(currentImageName.includes ("Note"))){
 	let specificCorrectComplexChord=specificComplexChordQueue[arraySpot][0];
 	previousBeatLength=Math.round(beatLength);
 	beatLength=correctComplexChordQueue[arraySpot][1];
-	console.log("current beats "+beatLength);
+	console.log("current beats "+Math.round(beatLength) +" was " + previousBeatLength);
 	arraySpot++;
 	if (arraySpot>(correctComplexChordQueue.length-1)){
 	arraySpot=0;
@@ -3099,6 +3126,7 @@ function repeatEverySixteenth() {
         // setupStepRhythmSequence();
     // }
 	
+    thisBeatNum = clockTester % 16 + 1;
     clockTester = clockTester + 1;
 
     // instrument="rhythmInstruments";
@@ -3106,7 +3134,6 @@ function repeatEverySixteenth() {
     chordIsDone = true;
     updateTimer();
     // alertify (clockTester%16);
-    thisBeatNum = clockTester % 16 + 1;
     // alertify(thisBeatNum);
     if (thisBeatNum % 4 == 0) { // if the beat i1 1, 2, 3, or 4
         instrument = "rhythmInstruments";
@@ -3117,7 +3144,9 @@ function repeatEverySixteenth() {
 
     }
 	// console.log(thisBeatNum);
-if (thisBeatNum==previousBeatLength){
+//	console.warn(thisBeatNum + " " + previousBeatLength);
+if (thisBeatNum%16==Math.round(previousBeatLength)%16){
+	
 	timeIsRight=true;
 }
 else{
