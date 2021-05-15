@@ -324,11 +324,13 @@ MidiParser.parse(sourceofmidi, function (obj) {
 
 					if (Math.round(beatsOfThisNotes*4) == 0){
 						loadingChord.push((lastNote-1)%12+1);
+						if(!(specificLoadingChord.includes(lastNote)))
 						specificLoadingChord.push(lastNote);
 					}				
 					else{
 					
 						loadingChord.push((lastNote-1)%12+1);
+						if(!(specificLoadingChord.includes(lastNote)))
 						specificLoadingChord.push(lastNote);
 					correctComplexChordQueue.push([JSON.parse(JSON.stringify(loadingChord)), beatsOfThisNotes*4]);
 					specificComplexChordQueue.push([JSON.parse(JSON.stringify(specificLoadingChord)), beatsOfThisNotes*4]);
@@ -360,6 +362,7 @@ MidiParser.parse(sourceofmidi, function (obj) {
  let beatsOfThisNotes = (ticksOfThisNote + 0) / importTicksPerBeat;
 					
 						loadingChord.push((lastNote-1)%12+1);
+						if(!(specificLoadingChord.includes(lastNote)))
 						specificLoadingChord.push(lastNote);
 					correctComplexChordQueue.push([JSON.parse(JSON.stringify(loadingChord)), beatsOfThisNotes*4]);
 					specificComplexChordQueue.push([JSON.parse(JSON.stringify(specificLoadingChord)), beatsOfThisNotes*4]);
@@ -457,13 +460,16 @@ MidiParser.parse(sourceofmidi, function (obj) {
 						// loadingChord.push((lastNote-1)%12+1);
 						// specificLoadingChord.push(lastNote);
 					// }
-										if (Math.round(beatsOfThisNotes*4) == 0){
+					if (Math.round(beatsOfThisNotes*4) == 0){
 						loadingChord.push((lastNote-1)%12+1);
+						
+						if(!(specificLoadingChord.includes(lastNote)))
 						specificLoadingChord.push(lastNote);
 					}	
 					else{
 					
 						loadingChord.push((lastNote-1)%12+1);
+						if(!(specificLoadingChord.includes(lastNote)))
 						specificLoadingChord.push(lastNote);
 					correctComplexChordQueue.push([JSON.parse(JSON.stringify(loadingChord)), beatsOfThisNotes*4]);
 					specificComplexChordQueue.push([JSON.parse(JSON.stringify(specificLoadingChord)), beatsOfThisNotes*4]);
@@ -489,6 +495,7 @@ MidiParser.parse(sourceofmidi, function (obj) {
 			let beatsOfThisNotes = (ticksOfThisNote + 0) / importTicksPerBeat;
 					
  						loadingChord.push((lastNote-1)%12+1);
+						if(!(specificLoadingChord.includes(lastNote)))
 						specificLoadingChord.push(lastNote);
 					correctComplexChordQueue.push([JSON.parse(JSON.stringify(loadingChord)), beatsOfThisNotes*4]);
 					specificComplexChordQueue.push([JSON.parse(JSON.stringify(specificLoadingChord)), beatsOfThisNotes*4]);
