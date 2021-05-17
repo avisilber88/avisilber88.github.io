@@ -16,7 +16,7 @@
 	<script type = "text/javascript" src = "vendor/jquery-3.4.1.js"></script>
 	<link type = "text/css" rel = "stylesheet" href = "MidiApp2.css">
 	
-<link rel="stylesheet" href="vendor/notationmovement.css" type="text/css">
+<link rel="stylesheet" href="vendor/notationmovementrhythm.css" type="text/css">
 
 <link rel="stylesheet" href="vendor/preloader.css" type="text/css">
 	
@@ -115,6 +115,7 @@ if (location.protocol != 'https:')
 	<audio id = "sound-Bb7" data-src = "samplestwo/Bb7.mp3"></audio>
 	<audio id = "sound-B7" data-src = "samplestwo/B7.mp3"></audio>
 	<audio id = "sound-C8" data-src = "samplestwo/C8.mp3"></audio>
+	<audio id = "sound-clave" data-src = "samplestwo/clave.mp3"></audio>
 	<!-- <file id = "> </base64String> -->
 	
 	<!--LINK JQUERY-->
@@ -126,7 +127,7 @@ if (location.protocol != 'https:')
     <label for="preload-progress-bar">Downloading sounds and image files: <span class="progress-percentage"></span></label>
     <progress id="preload-progress-bar"></progress>
 	</div>
-<div id="dropdown"><p>
+<div hidden id="dropdown"><p>
   <select name="basic[]" multiple="multiple" class="3col active">
 	<option hidden value="justLearnNotes" class = "aChordOption" selected id = "jln">Just Learn Notes</option>
 	<option hidden value="easyFifths" class = "aChordOption" id = "ez5" onclick = "resetChord()">Easy Fifths</option>
@@ -154,6 +155,7 @@ if (location.protocol != 'https:')
 <div hidden id ="octaveButtonLinks" class = "chickens"><p><p><button type="button" id = "octaveUp"> octave &#8593;</button></p></div>
 <div hidden id ="octaveButtonLinksTwo" class = "chickens"><p><p><button type="button" id = "octaveDown">octave &#8595;</button></p></div>
 <div hidden id ="octaveNumBox" class = "chickens" style="background: white">Octave 3</div>
+<div id = "metronomeButtonSpot"><button type ='button' id ="metronomeButton">Turn on Metronome</button>  </div>
 <div hidden id ="sheetButtonLink"><p><p><button type="button" id = "sheetButton">Change To Words</button></p></div>
 <div id = "loadMidi"><input type="file" id="filereader" > .</input><p> Import a Midi file as a sequence</div>
 <div id ="selectionsBox"><p><p></p></div>

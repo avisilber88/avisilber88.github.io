@@ -113,6 +113,17 @@ position: right;
 	width: 20vw;
 	HEIGHT: 6vh;
 }
+#metronomeButtonSpot {
+	font-size:14px;
+	text-align: center;
+	background-color:white;
+	font:black;
+	position: fixed;
+	z-index: 9;
+	left: 0vw;
+	width: 20vw;
+	HEIGHT: 6vh;
+}
 #filereader {
 
 }

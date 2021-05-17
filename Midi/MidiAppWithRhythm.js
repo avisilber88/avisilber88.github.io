@@ -1,6 +1,7 @@
 // Variable which tell us what step of the game we're on.
 // We'll use this later when we parse noteOn/Off messages
 var arraySpot=0;
+var metronome=false;
 var inversions = false;
 var ezmajon=false;
 var ezminon=false;
@@ -9,12 +10,16 @@ var inversionAddOn = "";
 var pickedInversion = 0;
 var currentBPM = 120;
 var clockTester = 0;
+var metroTester = 0;
 var newQuestionTime = false;
 var currentStep = -1;
 var score = 1;
 var octaveSetting = 24;
+var leadInCounter=0;
 var lowestNote=0;
 var middleNoteSet=false;
+var mostRecentDistanceSpot=0;
+var timeCheck=0;
 // Timer length
 var middleNote=0;
 var timerLength = 10 / 60; // in minutes
@@ -25,7 +30,7 @@ var beatLength=5;
 // Lock 1 variables
 var correctNoteSequence = [1, 2, 3, 4, 5, 6, 7, 8, 9]; // Amazing Grace in F
 var activeNoteSequence = [];
-
+var leadNum=4;
 // Lock 2 variables
 var correctChord = [11, 4, 5, 7, 15]; // C7 chord starting on middle C
 var activeChord = [];
@@ -36,7 +41,7 @@ var currentImageName = "Blank Keyboard.jpeg"
     var slashRoot = 0;
 var presentationType = "sheet"
     //document.getElementById("ez5").addEventListener(select
-
+var moreMeasures=0;
 
     var firstNoteShown = false;
 var lastImageNote;
@@ -55,6 +60,7 @@ var tieAmountTwo = 1;
 var smallestNoteDenominator = 8;
 var wholesToTieAtTheBeginning = 0;
 var sequenceOn = false;
+var beginning = false;
 var isFlat = false;
 var trackList=[];
 var trackSelected=0;
@@ -403,9 +409,14 @@ MidiParser.parse(sourceofmidi, function (obj) {
     sequencePlay = true;
     nonReferencePlay = true;
     newQuestionTime = true;
+	beginning=true;
+	leadInCounter=leadNum;
 	arraySpot=0;
     arrayOfSungNotesOnly = [];
-	newChord();
+	allRightAnswer();
+	
+	
+	//newChord();
     for (i = 0; i < singingTimeArray.length; i++) {
        arrayOfSungNotesOnly.push((singingTimeArray[i][0])%12);
     }
@@ -535,9 +546,13 @@ MidiParser.parse(sourceofmidi, function (obj) {
     sequencePlay = true;
     nonReferencePlay = true;
     newQuestionTime = true;
+		beginning=true;
+	leadInCounter=leadNum;
 	arraySpot=0;
     arrayOfSungNotesOnly = [];
-	newChord();
+	allRightAnswer();
+	
+	//newChord();
     for (i = 0; i < singingTimeArray.length; i++) {
        arrayOfSungNotesOnly.push((singingTimeArray[i][0])%12);
     }
@@ -550,6 +565,7 @@ MidiParser.parse(sourceofmidi, function (obj) {
 	
 	console.log(specificComplexChordQueue[i][0]+" "+specificComplexChordQueue[i][1]);
 	}
+	// if leadNum>specificComplexChordQueue.length
 	//console.log(correctComplexChordQueue);
 });
 
@@ -950,7 +966,7 @@ function showANote() {
             return;
         group.classList.add('too-slow');
         visibleNoteGroups.shift();
-    }, (60000*40) / (currentBPM));
+    }, (60000*16000) / (currentBPM));
 }
 
 $('#sheetButton').click(function () {
@@ -1624,11 +1640,13 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
             }
             // console.error(referenceGroups.toString());
         }
-        let startingSetX = 400 - wholesToTieAtTheBeginning * 25;
+		checkDistance();
+		console.error(arraySpot+" "+Math.round(specificComplexChordQueue[(arraySpot+leadNum*specificComplexChordQueue.length-1)%specificComplexChordQueue.length][1]));
+        let startingSetX = 700 - ((1+leadNum)*50) - wholesToTieAtTheBeginning * 25 + (leadNum-leadInCounter)*50;//+Math.round(specificComplexChordQueue[(arraySpot+specificComplexChordQueue.length-2)%specificComplexChordQueue.length][1])*3;
         if (tieOn) {
             startingSetX = startingSetX - 50;
         }
-
+		
         for (i = 0; i < wholesToTieAtTheBeginning; i++) {
             tiedNote = new VF.StaveTie({
                     first_note: currentImageNote,
@@ -1642,10 +1660,11 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
             tiedNote.setContext(context).draw();
             startingSetX = startingSetX + 25;
         }
-        tickContext.preFormat().setX(startingSetX);
+	console.log(mostRecentDistanceSpot);
+        tickContext.preFormat().setX(startingSetX+mostRecentDistanceSpot);
         currentImageNote.draw();
         if (tieOn) {
-            tickContext.preFormat().setX(startingSetX + 25);
+            tickContext.preFormat().setX(startingSetX + 25+mostRecentDistanceSpot);
             currentSecondImageNote.draw();
             tiedNote = new VF.StaveTie({
                     first_note: currentImageNote,
@@ -1654,9 +1673,10 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
                     last_indices: [0]
                 })
 
-                tickContext.preFormat().setX(startingSetX + 12);
+                tickContext.preFormat().setX(startingSetX + 12+mostRecentDistanceSpot);
             tiedNote.setContext(context).draw();
         }
+		//checkDistance();
         // tiedNote.draw();
         context.closeGroup();
 
@@ -1700,7 +1720,7 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
                 if (index === -1)
                     return;
                 group.classList.add('too-slow');
-                visibleReferenceNoteGroups.shift();
+                //visibleReferenceNoteGroups.shift();
                 // if (referenceGroups.includes(index + 0)) {
                 // referenceGroups.splice(referenceGroups.indexOf(index + 0), 1);
                 // makeAndShowANote(randomNoteNum, 2, "referenceNote");
@@ -1717,13 +1737,38 @@ function makeAndShowANote(noteArrayNum, theNoteLength, voiceType) {
             // const index = visibleNoteGroups.indexOf(group);
 
 
-        }, (60000*640) / (currentBPM)); // TIMER SETTING FOR WHEN THE NOTE DROPS OFF, CURRENTLY THIS CONSTITUTES 8 S at 120 bpm, or 16 beats, which is 4 measures at 4/4! 
+        }, (60000*2048) / (currentBPM)); // TIMER SETTING FOR WHEN THE NOTE DROPS OFF, CURRENTLY THIS CONSTITUTES 8 S at 120 bpm, or 16 beats, which is 4 measures at 4/4! 
     }
 }
 
-function rightAnswer() {
+function allRightAnswer() {
     try {
-        for (var i = 0; i < visibleReferenceNoteGroups.length; i = 0) {
+        for (var i = 0; i < visibleReferenceNoteGroups.length; i=0) {
+            group = visibleReferenceNoteGroups.shift();
+			group.classList.remove('prepping');
+            group.classList.add('newcorrect');
+            // The note will be somewhere in the middle of its move to the left -- by
+            // getting its computed style we find its x-position, freeze it there, and
+            // then send it straight up to note heaven with no horizontal motion.
+            const transformMatrix = window.getComputedStyle(group).transform;
+            // transformMatrix will be something like 'matrix(1, 0, 0, 1, -118, 0)'
+            // where, since we're only translating in x, the 4th property will be
+            // the current x-translation. You can dive into the gory details of
+            // CSS3 transform matrices (along with matrix multiplication) if you want
+            // at http://www.useragentman.com/blog/2011/01/07/css3-matrix-transform-for-the-mathematically-challenged/
+            const x = transformMatrix.split(',')[4].trim();
+			// console.log("current location is "+x);
+            // And, finally, we set the note's style.transform property to send it skyward.
+            group.style.transform = `translate(${x-750}px, -0px)`;
+        }
+    } catch (error) {}
+}
+
+function rightAnswer() {
+	console.error("yo that");
+    try {
+        for (var i = 0; i < (specificCorrectChord.length); i++) {
+			console.log(specificCorrectChord);
             group = visibleReferenceNoteGroups.shift();
 			group.classList.remove('prepping');
             group.classList.add('newcorrect');
@@ -1738,14 +1783,14 @@ function rightAnswer() {
             // at http://www.useragentman.com/blog/2011/01/07/css3-matrix-transform-for-the-mathematically-challenged/
             const x = transformMatrix.split(',')[4].trim();
             // And, finally, we set the note's style.transform property to send it skyward.
-            group.style.transform = `translate(${x-1000}px, -0px)`;
+            group.style.transform = `translate(${x-750}px, -0px)`;
         }
     } catch (error) {}
 }
 function prepAnswer() {
-	console.log(visibleReferenceNoteGroups.length)
+	console.log("LOOKKKKK!!! "+visibleReferenceNoteGroups.length +" "+specificComplexChordQueue[(arraySpot+specificComplexChordQueue.length-1)%specificComplexChordQueue.length][0].length);
     try {
-        for (var i = 0; i < visibleReferenceNoteGroups.length; i++) {
+        for (var i = 0; i < visibleReferenceNoteGroups.length-specificComplexChordQueue[(arraySpot+specificComplexChordQueue.length-1)%specificComplexChordQueue.length][0].length; i++) {
 			
            group = visibleReferenceNoteGroups[i];
 		   
@@ -1753,6 +1798,10 @@ function prepAnswer() {
 			
 			// console.log(group.classList[1]);
             group.classList.add('prepping');
+			for (var j = 0; j < group.classList.length; j++){
+				
+			console.log(group.classList[j]);
+			}
 			// console.log(group.classList.length);
 			// console.log(group.classList[2]);
             // The note will be somewhere in the middle of its move to the left -- by
@@ -1764,16 +1813,107 @@ function prepAnswer() {
             // the current x-translation. You can dive into the gory details of
             // CSS3 transform matrices (along with matrix multiplication) if you want
             // at http://www.useragentman.com/blog/2011/01/07/css3-matrix-transform-for-the-mathematically-challenged/
-            //const x = transformMatrix.split(',')[4].trim();
+
+            const transformMatrix = window.getComputedStyle(group).transform;
+			const x = transformMatrix.split(',')[4].trim();
+						console.log("current location is "+x);
             // And, finally, we set the note's style.transform property to send it skyward.
             //group.style.transform = `translate(${x}px, -800px)`;
+			let timeMultiplier=0;//(Math.round(timerLength*60)-1-timeCheck);
+			group.style.transform = `translate(${x-(100+75*timeMultiplier)}px, -0px)`;
+			//group.setX(200);
         }
+		//console.log(specificComplexChordQueue[(arraySpot+leadNum*specificComplexChordQueue.length-1-leadNum)%specificComplexChordQueue.length][0]);
+		console.log("LOOKKKKK!!! "+visibleReferenceNoteGroups.length +" "+specificComplexChordQueue[(arraySpot+specificComplexChordQueue.length-1)%specificComplexChordQueue.length][0].length);
+   
+		 for (var i = visibleReferenceNoteGroups.length-specificComplexChordQueue[(arraySpot+specificComplexChordQueue.length-1)%specificComplexChordQueue.length][0].length; i < visibleReferenceNoteGroups.length; i++) {
+           console.log(i);
+		   group = visibleReferenceNoteGroups[i];
+
+			// console.log(group.classList.length);
+			// console.log(group.classList[2]);
+            // The note will be somewhere in the middle of its move to the left -- by
+            // getting its computed style we find its x-position, freeze it there, and
+            // then send it straight up to note heaven with no horizontal motion.
+            //const transformMatrix = window.getComputedStyle(group).transform;
+            // transformMatrix will be something like 'matrix(1, 0, 0, 1, -118, 0)'
+            // where, since we're only translating in x, the 4th property will be
+            // the current x-translation. You can dive into the gory details of
+            // CSS3 transform matrices (along with matrix multiplication) if you want
+            // at http://www.useragentman.com/blog/2011/01/07/css3-matrix-transform-for-the-mathematically-challenged/
+
+            const transformMatrix = window.getComputedStyle(group).transform;
+			const x = transformMatrix.split(',')[4].trim();
+						console.log("current location is "+x);
+            // And, finally, we set the note's style.transform property to send it skyward.
+            //group.style.transform = `translate(${x}px, -800px)`;
+			let timeMultiplier=0;//(Math.round(timerLength*60)-1-timeCheck);
+			group.style.transform = `translate(${x-(10+75*timeMultiplier)}px, -0px)`;
+			//group.setX(200);
+        }
+		           // group = visibleReferenceNoteGroups[visibleReferenceNoteGroups.length-1];
+		            // const transformMatrix = window.getComputedStyle(group).transform;
+			// const x = transformMatrix.split(',')[4].trim();
+						// console.log("current location is "+x);
+            // // And, finally, we set the note's style.transform property to send it skyward.
+            // //group.style.transform = `translate(${x}px, -800px)`;
+			// let timeMultiplier=0;//(Math.round(timerLength*60)-1-timeCheck);
+			// group.style.transform = `translate(${x-(50+75*timeMultiplier)}px, -0px)`;
+    } catch (error) {
+		console.error(error);
+	}
+}
+function checkDistance() {
+	console.log(visibleReferenceNoteGroups.length)
+    try {
+        for (var i = 0; i < visibleReferenceNoteGroups.length; i++) {
+			
+           group = visibleReferenceNoteGroups[i];
+		   
+			// console.log(group.classList[0]);
+			
+			// console.log(group.classList[1]);
+            group.classList.add('prepping');
+			console.log(group.classList[0]);
+			console.log(group.classList[1]);
+			// console.log(group.classList.length);
+			// console.log(group.classList[2]);
+            // The note will be somewhere in the middle of its move to the left -- by
+            // getting its computed style we find its x-position, freeze it there, and
+            // then send it straight up to note heaven with no horizontal motion.
+            //const transformMatrix = window.getComputedStyle(group).transform;
+            // transformMatrix will be something like 'matrix(1, 0, 0, 1, -118, 0)'
+            // where, since we're only translating in x, the 4th property will be
+            // the current x-translation. You can dive into the gory details of
+            // CSS3 transform matrices (along with matrix multiplication) if you want
+            // at http://www.useragentman.com/blog/2011/01/07/css3-matrix-transform-for-the-mathematically-challenged/
+
+            const transformMatrix = window.getComputedStyle(group).transform;
+			//
+			const x = transformMatrix.split(',')[4].trim();
+						console.log("current location is "+x);
+						
+            // And, finally, we set the note's style.transform property to send it skyward.
+            //group.style.transform = `translate(${x}px, -800px)`;
+			//group.style.transform = `translate(${x-1000}px, -0px)`;
+        }
+
+
+		               // const transformMatrix = window.getComputedStyle(group).transform;
+			// const x = transformMatrix.split(',')[4].trim();
+			// mostRecentDistanceSpot=x
+			//group.style.transform = `translate(${x+1000}px, -0px)`;
     } catch (error) {}
+	           group = visibleReferenceNoteGroups[0];
+		   console.error(window.getComputedStyle(group).transition);
 }
 function readyAnswer() {
 	// console.log(visibleReferenceNoteGroups.length)
     try {
-        for (var i = 0; i < visibleReferenceNoteGroups.length; i++) {
+		console.error(arraySpot);
+		console.error(specificComplexChordQueue.length);
+		console.error(specificComplexChordQueue[(arraySpot+leadNum*specificComplexChordQueue.length-leadNum-1)%specificComplexChordQueue.length][0])
+        for (var i = 0; i < specificComplexChordQueue[(arraySpot+leadNum*specificComplexChordQueue.length-leadNum-1)%specificComplexChordQueue.length][0].length; i++) {
 			
            group = visibleReferenceNoteGroups[i];
 		   
@@ -1792,7 +1932,10 @@ function readyAnswer() {
             // at http://www.useragentman.com/blog/2011/01/07/css3-matrix-transform-for-the-mathematically-challenged/
             //const x = transformMatrix.split(',')[4].trim();
             // And, finally, we set the note's style.transform property to send it skyward.
-            //group.style.transform = `translate(${x}px, -800px)`;
+			
+            const transformMatrix = window.getComputedStyle(group).transform;
+			            const x = transformMatrix.split(',')[4].trim();
+			group.style.transform = `translate(${x-150}px, -0px)`;
         }
     } catch (error) {}
 }
@@ -1833,6 +1976,7 @@ jQuery(function ($) {
 //$("#ez5").change(resetChord());
 
 function resetChord() {
+	alert("reset");
 	if (countChordTypesSelected()>0){
 	console.warn("resetChord");
     //alert ("done");
@@ -2012,8 +2156,8 @@ function noteOnListener(note, velocity) {
 
 			// console.error(specificActiveChord.toString());
         // If the array is the same length as the correct chord, compare
-        if ((activeChord.length == correctChord.length)||(specificActiveChord.length == specificCorrectChord.length)) {
-			console.log("yo");
+        if ((specificActiveChord.length == specificCorrectChord.length)) {
+			console.log("yo "+activeChord+" "+correctChord);
             var match = true;
 			document.getElementById("warning").innerHTML =""
             if (!specificNotes){
@@ -2030,6 +2174,8 @@ function noteOnListener(note, velocity) {
             }
 			}
 			if ((specificNotes)&&(match)){
+				
+					console.log(specificCorrectChord+" "+specificActiveChord);
 			for (var index = 0; index < specificActiveChord.length; index++) {
                 if (specificCorrectChord.indexOf(specificActiveChord[index]) < 0) {
 					console.log ("it was "+specificCorrectChord.indexOf(specificActiveChord[index]));
@@ -2047,8 +2193,8 @@ function noteOnListener(note, velocity) {
             document.getElementById("score").innerHTML = "Current Difficulty = " + score.toFixed(2);
             if ((match)&&(!newQuestionTime)) {
                 rightAnswer();
-		newChord();
-		prepAnswer();
+				newChord();
+				prepAnswer();
                 document.getElementById("warning").innerHTML = "<style='fontSize:0px;'>"
                     score = score + .05;
                 timerLength = (11.0 - score) / 60.0;
@@ -2088,9 +2234,9 @@ function clearSequence() {
         note.classList.remove('on');
     }
     //}, 500);
-    startTimer();
-	clearInterval(intervalSetting);
- intervalSetting = setInterval(repeatEverySixteenth, 60000 / (4 * currentBPM));
+    //startTimer();
+	//clearInterval(intervalSetting);
+	//intervalSetting = setInterval(repeatEverySixteenth, 60000 / (4 * currentBPM));
 
     document.querySelector('.hint').innerHTML = "You lose...";
 }
@@ -2098,9 +2244,9 @@ function clearSequence() {
 function clearChord() {
     // Clear the array and start over
     var lockInput = document.querySelector('.step2 .lock-input');
-    startTimer();
-		clearInterval(intervalSetting);
- intervalSetting = setInterval(repeatEverySixteenth, 60000 / (4 * currentBPM));
+   startTimer();
+		//clearInterval(intervalSetting);
+ //intervalSetting = setInterval(repeatEverySixteenth, 60000 / (4 * currentBPM));
 
     timerTripped = false;
     document.querySelector('.hint').innerHTML = "You lose...";
@@ -2827,29 +2973,36 @@ if (!(currentImageName.includes ("Note"))){
         correctChord.push(13);
         correctChord.push(14);
     }
-    rightAnswer();
+    //rightAnswer();
     // alert(correctChord.toString());
 	//correctChord=correctChordQueue[arraySpot];
 	//console.log(arraySpot);
 	correctChord=correctComplexChordQueue[arraySpot][0];
 	
-	let specificCorrectComplexChord=specificComplexChordQueue[arraySpot][0];
+	let specificCorrectComplexChord=specificComplexChordQueue[(arraySpot+leadNum*specificComplexChordQueue.length-leadNum)%specificComplexChordQueue.length][0];
 	previousBeatLength=Math.round(beatLength);
-	beatLength=correctComplexChordQueue[arraySpot][1];
+	//alert(previousBeatLength);
+	beatLength=correctComplexChordQueue[(arraySpot+leadNum*specificComplexChordQueue.length-leadNum)%specificComplexChordQueue.length][1];
 	console.log("current beats "+Math.round(beatLength) +" was " + previousBeatLength);
-	arraySpot++;
+		arraySpot++;
 	if (arraySpot>(correctComplexChordQueue.length-1)){
-	arraySpot=0;
+		arraySpot=0;
 	}
 	console.log(currentImageName);
 	//console.log(arraySpot+ " of "+correctComplexChordQueue.length);
 	
 	//console.log(correctChord+" "+beatLength);
 	specificCorrectChord=[];
+	for (var i = 0; i<specificComplexChordQueue[(arraySpot+specificComplexChordQueue.length-1)%specificComplexChordQueue.length][0].length;i++){
+		//console.log(specificCorrectComplexChord[i]-24+" "+beatLength);
+	makeAndShowANote(specificComplexChordQueue[(arraySpot+specificComplexChordQueue.length-1)%specificComplexChordQueue.length][0][i]-24, Math.round(specificComplexChordQueue[(arraySpot+specificComplexChordQueue.length-1)%specificComplexChordQueue.length][1]), "referenceNote");
+	//console.warn(specificCorrectComplexChord[i]);
+	//specificCorrectChord.push(specificCorrectComplexChord[i]);
+	}
 	for (var i = 0; i<specificCorrectComplexChord.length;i++){
 		//console.log(specificCorrectComplexChord[i]-24+" "+beatLength);
-	makeAndShowANote(specificCorrectComplexChord[i]-24, Math.round(beatLength), "referenceNote");
-	console.warn(specificCorrectComplexChord[i]);
+	//makeAndShowANote(specificComplexChordQueue[(arraySpot+specificComplexChordQueue.length-leadNum)%specificComplexChordQueue.length][0][i]-24, Math.round(beatLength), "referenceNote");
+	//console.warn(specificCorrectComplexChord[i]);
 	specificCorrectChord.push(specificCorrectComplexChord[i]);
 	}
 	specificCorrectChord.sort();
@@ -3135,6 +3288,7 @@ function repeatEverySixteenth() {
 	
     thisBeatNum = clockTester % 16 + 1;
     clockTester = clockTester + 1;
+    metroTester = metroTester + 1;
 
     // instrument="rhythmInstruments";
 	//console.log("hi");
@@ -3142,8 +3296,58 @@ function repeatEverySixteenth() {
     updateTimer();
     // alertify (clockTester%16);
     // alertify(thisBeatNum);
+	if (metronome){
+	if (metroTester % 4 == 0) { // if the beat i1 1, 2, 3, or 4
+        //instrument = "rhythmInstruments";
+		var audio = document.getElementById('sound-clave');
+        //	alert (""+soundId(getNoteName(note)));
+        // if audio(const playPromise = audio.play();
+        // if (playPromise !== null) {
+        // playPromise.catch(() => {
+        // audio.pause();
+        // audio.volume = 1.0;
+        // if (audio.readyState >= 2) {
+        // audio.currentTime = 0;
+        // // audio.play();
+        // }
+        // })
+        // }
+        // if (audio) {
+
+        // }
+
+        //press();
+        //playNote(midiNoteToFrequency(note));
+        //press(note);
+
+            if (audio) {
+                audio.pause();
+                audio.volume = 0.1;
+                if (audio.readyState >= 2) {
+                    audio.currentTime = 0;
+					
+                    var promise = audio.play();
+
+                    if (promise !== undefined) {
+                        promise.then(_ => {
+                            // Autoplay started!
+                        }).catch(error => {
+                            //alert ("it worked");
+                            // Autoplay was prevented.
+                            // Show a "Play" button so that user can start playback.
+                        });
+                    }
+
+                }
+            }
+       
+ 
+    }
+	}
     if (thisBeatNum % 4 == 0) { // if the beat i1 1, 2, 3, or 4
-        instrument = "rhythmInstruments";
+        //instrument = "rhythmInstruments";
+		
+       
         // playANote("kick0");
        // parseAndConstructArrays();
         let thisStep = (thisBeatNum / 4);
@@ -3152,12 +3356,18 @@ function repeatEverySixteenth() {
     }
 	// console.log(thisBeatNum);
 //	console.warn(thisBeatNum + " " + previousBeatLength);
+
+	timeIsRight=false;
 if (thisBeatNum%16==Math.round(previousBeatLength)%16){
-	
+	if (previousBeatLength>=16){
+		previousBeatLength-=16;
+	}
+	else{
+	console.error(thisBeatNum%16+" "+Math.round(previousBeatLength)%16)
 	timeIsRight=true;
+	}
 }
 else{
-	timeIsRight=false;
 }
 //		console.log(thisBeatNum);	
 try{
@@ -3168,6 +3378,31 @@ try{
 	}
 }
 catch (error){}
+if (beginning){
+	console.error("Hi");
+	if (thisBeatNum%8==2){
+	if (leadInCounter>0){
+		leadInCounter=leadInCounter-1;
+			for (var i = 0; i<specificComplexChordQueue[(arraySpot+specificComplexChordQueue.length)%specificComplexChordQueue.length][0].length;i++){
+		//console.log(specificCorrectComplexChord[i]-24+" "+beatLength);
+			makeAndShowANote(specificComplexChordQueue[(arraySpot+specificComplexChordQueue.length)%specificComplexChordQueue.length][0][i]-24, Math.round(specificComplexChordQueue[(arraySpot+specificComplexChordQueue.length)%specificComplexChordQueue.length][1]), "referenceNote");
+	//console.warn(specificCorrectComplexChord[i]);
+	//specificCorrectChord.push(specificCorrectComplexChord[i]);
+	}
+	arraySpot++;
+	
+	console.log("Array Spot: "+arraySpot);
+	}
+	else{
+	leadInCounter=-1;
+	beginning=false;
+	newChord();
+	}
+	}
+	if (leadInCounter==0){
+
+	}
+} else
     if ((newQuestionTime)&&(timeIsRight)) {
         noMorePoints = false;
         numOfThisNoteInSequence = 0;
@@ -3241,7 +3476,7 @@ function updateTimer() {
     var distance = timeEnd.getTime() - now.getTime();
     var minutes = Math.floor(distance / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
+	timeCheck=0+seconds;
     if (minutes < 10)
         minutes = "0" + minutes;
     if (seconds < 10)
@@ -3275,6 +3510,22 @@ function updateTimer() {
 
 /* Piano keyboard pitches. Names match sound files by ID attribute. */
 
+
+
+$('#metronomeButton').click(function () {
+    if (metronome) {
+        document.getElementById("metronomeButton").innerHTML = "Turn on Metronome";
+        metronome = false;
+
+    } else {
+
+
+        document.getElementById("metronomeButton").innerHTML = "Turn off Metronome";
+        metronome = true;
+
+    }
+
+});
 var keys = [
     'A2', 'Bb2', 'B2', 'C3', 'Db3', 'D3', 'Eb3', 'E3', 'F3', 'Gb3', 'G3', 'Ab3',
     'A3', 'Bb3', 'B3', 'C4', 'Db4', 'D4', 'Eb4', 'E4', 'F4', 'Gb4', 'G4', 'Ab4',
