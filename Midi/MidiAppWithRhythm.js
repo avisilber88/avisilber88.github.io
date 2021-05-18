@@ -3355,7 +3355,7 @@ function repeatEverySixteenth() {
     thisBeatNum = clockTester % 16 + 1;
     clockTester = clockTester + 1;
     metroTester = metroTester + 1;
-
+	console.log("bpm is "+currentBPM);
     // instrument="rhythmInstruments";
 	//console.log("hi");
     chordIsDone = true;
@@ -3596,9 +3596,9 @@ $('#playerModeButton').click(function () {
     if (playerMode) {
         document.getElementById("playerModeButton").innerHTML = "How should the song sound?";
         playerMode = false;
-
+		releaseEarly=1;
     } else {
-
+releaseEarly=0;
 
         document.getElementById("playerModeButton").innerHTML = "Let me play it now.";
         playerMode = true;
