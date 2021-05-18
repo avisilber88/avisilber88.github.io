@@ -2199,7 +2199,7 @@ function noteOnListener(note, velocity) {
                     score = score + .05;
                 timerLength = (11.0 - score) / 60.0;
                 document.getElementById("score").innerHTML = "Current Score = " + score.toFixed(2);
-				
+				specificActiveChord=[];
 			console.warn('runsequence from match lock2');
                 runSequence('lock2');
                 document.getElementById("keyboardImg2").src = "Blank Keyboard.jpeg";
