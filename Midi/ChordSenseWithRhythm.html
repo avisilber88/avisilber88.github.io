@@ -155,7 +155,10 @@ if (location.protocol != 'https:')
 <div hidden id ="octaveButtonLinks" class = "chickens"><p><p><button type="button" id = "octaveUp"> octave &#8593;</button></p></div>
 <div hidden id ="octaveButtonLinksTwo" class = "chickens"><p><p><button type="button" id = "octaveDown">octave &#8595;</button></p></div>
 <div hidden id ="octaveNumBox" class = "chickens" style="background: white">Octave 3</div>
-<div id = "metronomeButtonSpot"><button type ='button' id ="metronomeButton">Turn on Metronome</button>  </div>
+<div id = "metronomeButtonSpot"><button type ='button' id ="metronomeButton">Turn on Metronome</button>  
+<button type ='button' id ="playerModeButton">How should the song sound?</button>  
+					<div id="slider-horizontal-BPMAmount" style="width:80%; max-width:300px; left:3.5vw"></div><label for="BPMAmount">Set the Tempo (BPM)</label>
+					<input  type="text" id="BPMAmount" readonly style="border:0; color:#f6931f; font-weight:bold; width:10%;"></div>
 <div hidden id ="sheetButtonLink"><p><p><button type="button" id = "sheetButton">Change To Words</button></p></div>
 <div id = "loadMidi"><input type="file" id="filereader" > .</input><p> Import a Midi file as a sequence</div>
 <div id ="selectionsBox"><p><p></p></div>

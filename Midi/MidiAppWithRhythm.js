@@ -20,6 +20,7 @@ var lowestNote=0;
 var middleNoteSet=false;
 var mostRecentDistanceSpot=0;
 var timeCheck=0;
+var playerMode=false;
 // Timer length
 var middleNote=0;
 var timerLength = 10 / 60; // in minutes
@@ -63,6 +64,7 @@ var sequenceOn = false;
 var beginning = false;
 var isFlat = false;
 var trackList=[];
+var releaseEarly=1;
 var trackSelected=0;
 var correctChordQueue=[[12, 4],[9],[12,4], [9], [12, 5],[9],[12,5], [9],[12, 4],[7], [12,4], [7], [11, 2], [7], [11, 2], [7]];
 var correctComplexChordQueue = [[[12, 4], 5],[[9], 9],[[12,4], 5], [[9], 9]];
@@ -304,6 +306,7 @@ MidiParser.parse(sourceofmidi, function (obj) {
         $("#BPMAmount").val(newTempo);
 
         currentBPM = newTempo;
+		document.getElementById("BPMAmount").value=currentBPM;
 		var loadingChord=[];
 		var specificLoadingChord=[];
         for (var i = 0; i < (obj.track[noteContainingTrack].event.length); i++) {
@@ -1820,7 +1823,7 @@ function prepAnswer() {
             // And, finally, we set the note's style.transform property to send it skyward.
             //group.style.transform = `translate(${x}px, -800px)`;
 			let timeMultiplier=0;//(Math.round(timerLength*60)-1-timeCheck);
-			group.style.transform = `translate(${x-(100+75*timeMultiplier)}px, -0px)`;
+			group.style.transform = `translate(${x-(100*currentBPM/120)}px, -0px)`;
 			//group.setX(200);
         }
 		//console.log(specificComplexChordQueue[(arraySpot+leadNum*specificComplexChordQueue.length-1-leadNum)%specificComplexChordQueue.length][0]);
@@ -1848,7 +1851,7 @@ function prepAnswer() {
             // And, finally, we set the note's style.transform property to send it skyward.
             //group.style.transform = `translate(${x}px, -800px)`;
 			let timeMultiplier=0;//(Math.round(timerLength*60)-1-timeCheck);
-			group.style.transform = `translate(${x-(10+75*timeMultiplier)}px, -0px)`;
+			group.style.transform = `translate(${x-(10*currentBPM/120)}px, -0px)`;
 			//group.setX(200);
         }
 		           // group = visibleReferenceNoteGroups[visibleReferenceNoteGroups.length-1];
@@ -1916,7 +1919,9 @@ function readyAnswer() {
         for (var i = 0; i < specificComplexChordQueue[(arraySpot+leadNum*specificComplexChordQueue.length-leadNum-1)%specificComplexChordQueue.length][0].length; i++) {
 			
            group = visibleReferenceNoteGroups[i];
-		   
+		   if (playerMode){
+		   playTheNote(specificComplexChordQueue[(arraySpot+leadNum*specificComplexChordQueue.length-leadNum-1)%specificComplexChordQueue.length][0][i]);
+		   }
 			// console.log(group.classList[0]);
 			
 			// console.log(group.classList[1]);
@@ -1937,6 +1942,9 @@ function readyAnswer() {
 			            const x = transformMatrix.split(',')[4].trim();
 			group.style.transform = `translate(${x-150}px, -0px)`;
         }
+		if (playerMode){
+		fakeMatch();
+		}
     } catch (error) {}
 }
 if (navigator.requestMIDIAccess) {
@@ -1974,6 +1982,50 @@ jQuery(function ($) {
 });
 
 //$("#ez5").change(resetChord());
+
+function playTheNote(note){
+	var audio = document.getElementById(soundId(getNoteName(note)));
+        //	alert (""+soundId(getNoteName(note)));
+        // if audio(const playPromise = audio.play();
+        // if (playPromise !== null) {
+        // playPromise.catch(() => {
+        // audio.pause();
+        // audio.volume = 1.0;
+        // if (audio.readyState >= 2) {
+        // audio.currentTime = 0;
+        // // audio.play();
+        // }
+        // })
+        // }
+        // if (audio) {
+
+        // }
+
+        //press();
+        //playNote(midiNoteToFrequency(note));
+        //press(note);
+
+            if (audio) {
+                audio.pause();
+                audio.volume = 1.0;
+                if (audio.readyState >= 2) {
+                    audio.currentTime = 0;
+                    var promise = audio.play();
+
+                    if (promise !== undefined) {
+                        promise.then(_ => {
+                            // Autoplay started!
+                        }).catch(error => {
+                            //alert ("it worked");
+                            // Autoplay was prevented.
+                            // Show a "Play" button so that user can start playback.
+                        });
+                    }
+
+                }
+            }
+
+}
 
 function resetChord() {
 	alert("reset");
@@ -2219,6 +2271,20 @@ function noteOnListener(note, velocity) {
         }
         break;
     }
+}
+
+function fakeMatch(){
+                rightAnswer();
+				newChord();
+				prepAnswer();
+                document.getElementById("warning").innerHTML = "<style='fontSize:0px;'>"
+                //    score = score + .05;
+                timerLength = (11.0 - score) / 60.0;
+                document.getElementById("score").innerHTML = "Current Score = " + score.toFixed(2);
+				specificActiveChord=[];
+			console.warn('runsequence from match lock2');
+                runSequence('lock2');
+                document.getElementById("keyboardImg2").src = "Blank Keyboard.jpeg";
 }
 
 function clearSequence() {
@@ -2996,7 +3062,7 @@ if (!(currentImageName.includes ("Note"))){
 	for (var i = 0; i<specificComplexChordQueue[(arraySpot+specificComplexChordQueue.length-1)%specificComplexChordQueue.length][0].length;i++){
 		//console.log(specificCorrectComplexChord[i]-24+" "+beatLength);
 	makeAndShowANote(specificComplexChordQueue[(arraySpot+specificComplexChordQueue.length-1)%specificComplexChordQueue.length][0][i]-24, Math.round(specificComplexChordQueue[(arraySpot+specificComplexChordQueue.length-1)%specificComplexChordQueue.length][1]), "referenceNote");
-	//console.warn(specificCorrectComplexChord[i]);
+		//console.warn(specificCorrectComplexChord[i]);
 	//specificCorrectChord.push(specificCorrectComplexChord[i]);
 	}
 	for (var i = 0; i<specificCorrectComplexChord.length;i++){
@@ -3358,7 +3424,7 @@ function repeatEverySixteenth() {
 //	console.warn(thisBeatNum + " " + previousBeatLength);
 
 	timeIsRight=false;
-if (thisBeatNum%16==Math.round(previousBeatLength)%16){
+if (thisBeatNum%16==Math.round(previousBeatLength+16-releaseEarly)%16){
 	if (previousBeatLength>=16){
 		previousBeatLength-=16;
 	}
@@ -3440,7 +3506,7 @@ if (beginning){
         newQuestionTime = false;
 		clearChord();
 		readyAnswer();
-		console.log(currentBPM);
+		console.log("YO THIS TEMPO IS "+currentBPM);
 		//currentBPM=120;
     }
 
@@ -3524,6 +3590,49 @@ $('#metronomeButton').click(function () {
         metronome = true;
 
     }
+
+});
+$('#playerModeButton').click(function () {
+    if (playerMode) {
+        document.getElementById("playerModeButton").innerHTML = "How should the song sound?";
+        playerMode = false;
+
+    } else {
+
+
+        document.getElementById("playerModeButton").innerHTML = "Let me play it now.";
+        playerMode = true;
+		readyAnswer();
+
+    }
+
+});
+
+$(function () {
+    $("#slider-horizontal-BPMAmount").slider({
+        orientation: "horizontal",
+        range: "min",
+        min: 60,
+        max: 200,
+        value: 100,
+        stop: function (event, ui) {
+            $("#BPMAmount").val(ui.value);
+            currentBPM = Number(document.getElementById("BPMAmount").value) + 0;
+            newQuestionTime = true;
+            // alert ("hi");
+			metroTester=0;
+			clockTester=0;
+            clearInterval(intervalSetting);
+            intervalSetting = setInterval(repeatEverySixteenth, 60000 / (4 * currentBPM));
+
+        }
+    });
+    $("#BPMAmount").val($("#slider-horizontal-BPMAmount").slider("value"));
+    currentBPM = Number(document.getElementById("BPMAmount").value) + 0;
+    // console.log("it is " + sequenceLength);
+    // stopAllNotes();
+    // clearAllNotes();
+    newQuestionTime = true;
 
 });
 var keys = [
