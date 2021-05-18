@@ -418,7 +418,7 @@ MidiParser.parse(sourceofmidi, function (obj) {
     arrayOfSungNotesOnly = [];
 	allRightAnswer();
 	
-	
+
 	//newChord();
     for (i = 0; i < singingTimeArray.length; i++) {
        arrayOfSungNotesOnly.push((singingTimeArray[i][0])%12);
@@ -452,6 +452,8 @@ MidiParser.parse(sourceofmidi, function (obj) {
         $("#BPMAmount").val(newTempo);
 
         currentBPM = newTempo;
+		
+		document.getElementById("BPMAmount").value=currentBPM;
 		var loadingChord=[];
 		var specificLoadingChord=[];
         for (var i = 0; i < (obj.track[noteContainingTrack].event.length); i++) {
@@ -570,6 +572,10 @@ MidiParser.parse(sourceofmidi, function (obj) {
 	}
 	// if leadNum>specificComplexChordQueue.length
 	//console.log(correctComplexChordQueue);
+	
+	            clearInterval(intervalSetting);
+            intervalSetting = setInterval(repeatEverySixteenth, 60000 / (4 * currentBPM));
+	
 });
 
 
@@ -3588,6 +3594,8 @@ $('#metronomeButton').click(function () {
 
         document.getElementById("metronomeButton").innerHTML = "Turn off Metronome";
         metronome = true;
+		metroTester=0;
+		clockTester=0;
 
     }
 
