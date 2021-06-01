@@ -1096,7 +1096,7 @@ else if (xyDotArray[1]>expectedY){
 
 		// $('#num1').text(toOurExponential(sigFigs(finalNum, 3)));
 		// $('#den1').text(toOurExponential(sigFigs(finalNumtwo, 3)));
-		//document.getElementById("num1").innerHTML = "What is the molarity of a "+formulaName+" solution do we get when we mix " + number +" "+ units1 +" of "+ formulaName + " in " +  numbertwo+" " + units2 + " of water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)";
+		//document.getElementById("num1").innerHTML = "What is the molarity of a "+formulaName+" solution do we get when we successfully have dissolved " + number +" "+ units1 +" of "+ formulaName + " in " +  numbertwo+" " + units2 + " of water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)";
 xValues = [50,60,70,80,90,100,110,120,130,140,150];
 yValues = [7,8,8,9,9,9,10,11,14,14,15];
 		getRandomSolubilityCurve();
