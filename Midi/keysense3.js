@@ -456,7 +456,7 @@ try{	currentSong.src =("https://www.nwhsaob.com/Midi/samplestwo/" + songTitle);
 }
 catch(error){
    currentSong = new Audio("https://www.nwhsaob.com/Midi/samplestwo/" + songTitle);
-alert("did it");
+// alert("did it");
 }
     currentSong.play();
 
