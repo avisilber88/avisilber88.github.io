@@ -305,7 +305,12 @@ async function playASongLink(songTitle) { // where we Play Notes  //important ch
     var noteStr = songTitle;
     // var noteStr = noteArray[arrayPlace][2]; // error spot 1
     // noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
-    currentSong = new Audio("https://www.nwhsaob.com/Midi/samplestwo/" + songTitle);
+try{	currentSong.src =("https://www.nwhsaob.com/Midi/samplestwo/" + songTitle);
+}
+catch(error){
+   currentSong = new Audio("https://www.nwhsaob.com/Midi/samplestwo/" + songTitle);
+alert("did it");
+}
     currentSong.play();
 
     currentSong.volume = ((0.01 + rhythmVolume)) / 400.0 - .00001;
@@ -1561,7 +1566,7 @@ function intializePlayer() {
 // CHANGED HERE
 function seektimeupdate() {
     var nt = audio.currentTime * (100 / audio.duration);
-    console.log('nt:', nt); // check console to see if this is getting called.
+//    console.log('nt:', nt); // check console to see if this is getting called.
     seekslider.slider("value", nt); // CHANGED HERE
 }
 

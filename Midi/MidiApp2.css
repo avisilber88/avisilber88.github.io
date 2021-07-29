@@ -109,9 +109,20 @@ position: right;
 	font:black;
 	position: fixed;
 	z-index: 9;
-	left: 40vw;
+	left: 35vw;
 	width: 20vw;
 	HEIGHT: 6vh;
+}
+#defaultMidi {
+	font-size:14px;
+	text-align: center;
+	/* background-color:white; */
+	font:black;
+	position: fixed;
+	z-index: 9;
+	left: 58vw;
+	width: 15vw;
+	/* HEIGHT: 4vh; */
 }
 #metronomeButtonSpot {
 	font-size:14px;
