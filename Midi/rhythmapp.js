@@ -8230,7 +8230,12 @@ function checkMyRhythmAnswer() {
             noMorePoints = true;
             document.getElementById("totalscore").innerHTML = "#Correct = " + totalScore;
 			if (currentLevelScore<20){
+				if (rhythmSpeedMode){
+            alertify("Nice Job! You got that one! Click 'Ok' to continue")
+				}
+				else{
             alertify("Nice Job! You got that one! Hit 'Give me another!' to move on.")
+				}
             }
 			if (rhythmSpeedMode) {
 				if (currentLevelScore<20){
@@ -8742,6 +8747,7 @@ catch (error){}
 }
 
 function repeatOnFrame() {
+	console.log("hi");
     // alert ("hi");
     clockTester = clockTester + .5;
     // instrument="rhythmInstruments";
@@ -13217,6 +13223,8 @@ $('#unmute-button').click(function () {
     micMute = false;
 });
 
+
+
 $('#pauseButton').click(function () {
     if (paused) {
         document.getElementById("pauseButton").innerHTML = "Pause Timer and Sound";
@@ -13247,7 +13255,6 @@ $('#pauseButton').click(function () {
     }
 
 });
-
 $('#hide-button').click(function () {
     if (!hiddenOptions) {
         document.getElementById("hide-button").innerHTML = "Show Advanced Options";
