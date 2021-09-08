@@ -33,6 +33,105 @@ var playingState = "invisible"
 var rhythmVolume = 50;
 var accompanimentVolume = 60;
 
+var foreverNoteCounter=0;
+var scheduledNoteCounter=0;
+const audioCtx = window.AudioContext ? new AudioContext() : new webkitAudioContext();
+
+async function getFile(audioContext, filepath) {
+  const response = await fetch(filepath);
+  const arrayBuffer = await response.arrayBuffer();
+  // ! A callback has been added here as a second param for Safari only !
+  const audioBuffer = await audioContext.decodeAudioData(arrayBuffer, function() {return});
+  return audioBuffer;
+}
+
+let playbackRate = 1;
+function playSample(audioContext, audioBuffer, time) {
+  const sampleSource = audioContext.createBufferSource();
+  sampleSource.buffer = audioBuffer;
+  sampleSource.playbackRate.value = playbackRate;
+  sampleSource.connect(audioContext.destination)
+  sampleSource.start(time);
+  return sampleSource;
+}
+
+async function setupSample(noteString) {
+  let filePath = noteString;
+  // Here we're `await`ing the async/promise that is `getFile`.
+  // To be able to use this keyword we need to be within an `async` function
+  const sample = await getFile(audioCtx, filePath);
+  return sample;
+}
+let tempo = 60.0;
+
+const lookahead = 25.0; // How frequently to call scheduling function (in milliseconds)
+const scheduleAheadTime = 0.02; // How far ahead to schedule audio (sec)
+const stepsPerBeat = 4;
+let currentStepPosition = 0; // The note we are currently playing
+let nextStepTime = 0.0; // when the next note is due.
+
+function nextNote() {
+  const secondsPerStep = (60.0 / tempo)/stepsPerBeat;
+	
+  nextStepTime += secondsPerStep; // Add beat length to last beat time
+
+  // Advance the beat number, wrap to zero
+  currentStepPosition++;
+ // if (currentStepPosition === 4) {//this is assuming we have 4 spots and not 16.
+   // currentStepPosition = 0;
+  //}
+
+}
+
+// Create a queue for the notes that are to be played, with the current time that we want them to play:
+const notesInQueue = [];
+let dtmf;
+
+
+function scheduleNote(stepNumber, nextTime) {
+  // push the note on the queue, even if we're not playing.
+  if (scheduledNoteCounter<foreverNoteCounter){
+	  scheduledNoteCounter++;
+  notesInQueue.push({note: stepNumber, nextTime: nextTime});//this is pushing an array including a note with the value stepNumber, and a time with a value time
+  }
+  // console.log(stepNumber, time);
+
+  // if (pads[0].querySelectorAll('button')[stepNumber].getAttribute('aria-checked') === 'true') {
+    // playSweep(time);
+  // }
+  // if (pads[1].querySelectorAll('button')[stepNumber].getAttribute('aria-checked') === 'true') {
+    // playPulse(time);
+  // }
+  // if (pads[2].querySelectorAll('button')[stepNumber].getAttribute('aria-checked') === 'true') {
+    // playNoise(time);
+  // }
+  //if (pads[3].querySelectorAll('button')[stepNumber].getAttribute('aria-checked') === 'true') {
+	//alert(notesInQueue.length);
+  
+   if (notesInQueue.length>0){
+	   
+		playSample(audioCtx, dtmf, nextTime);
+		
+		}
+		
+		notesInQueue.splice(0,1) 
+  //}
+
+}
+
+let timerID;
+function scheduler() {
+  // while there are notes that will need to play before the next interval,
+  // schedule them and advance the pointer.
+  while (nextStepTime < audioCtx.currentTime + scheduleAheadTime ) {
+	  scheduleNote(currentStepPosition, nextStepTime);
+      nextNote();
+  }
+  timerID = window.setTimeout(scheduler, lookahead);
+}
+
+let isPlaying = false;
+
 var noteArray = [
     [32.703, "C1", "C1"], //0  midinumber+24
     [34.648, "C1#", "C2b"],
@@ -173,10 +272,37 @@ function sound(id) {
 
 async function playANote(arrayPlace) { // where we Play Notes  //important chordIsDone means we are not playing the chord. !chordIsDone means we are playing the chord or arpeggios.
 
-
+	
     var noteStr = noteArray[arrayPlace][2]; // error spot 1
     noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
-    let audio = (document.getElementById(soundId(noteStr)));
+	setupSample("https://www.nwhsaob.com/Midi/samplestwo/"+noteStr+".mp3")
+  .then((sample) => {
+    //loadingEl.style.display = 'none';
+
+    dtmf = sample; // to be used in our playSample function
+		foreverNoteCounter++;
+		//alert ("hi");
+    // playButton.addEventListener('click', ev => {
+      // isPlaying = !isPlaying;
+	isPlaying=true;
+      if (isPlaying) { // start playing
+
+        // check if context is in suspended state (autoplay policy)
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        currentStepPosition = 0;
+        nextStepTime = audioCtx.currentTime;
+        scheduler(); // kick off scheduling
+        requestAnimationFrame(draw); // start the drawing loop.
+        // ev.target.dataset.playing = 'true';
+      } else {
+        window.clearTimeout(timerID);
+        // ev.target.dataset.playing = 'false';
+      }
+    })
+  // });
+    let audiophone ="https://www.nwhsaob.com/Midi/samplestwo/"+noteStr;
     console.warn(noteStr);
     // var audioContextual= amplifyMedia(audio, 1);
     // audio.crossOrigin = "anonymous";
@@ -191,7 +317,7 @@ async function playANote(arrayPlace) { // where we Play Notes  //important chord
                 console.log(audioArray[i][0]);
                 audioArray[i][0].pause();
                 newNote = false;
-                audioArray[i] = [audio, [noteStr, (instrument + "")]];
+                audioArray[i] = [audiophone, [noteStr, (instrument + "")]];
             }
         }
     } catch (error) {
@@ -199,36 +325,57 @@ async function playANote(arrayPlace) { // where we Play Notes  //important chord
     }
     if (newNote == true) {
 
-        audioArray.push([audio, [arrayPlace, (instrument + "")]])
+        audioArray.push([audiophone, [arrayPlace, (instrument + "")]])
 
     }
+	let lastNoteDrawn=3;
+function draw() { //THIS IS FOR DRAWING BUT IT IS STILL SORT OF IMPORTANT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  let drawNote = lastNoteDrawn;
+  const currentTime = audioCtx.currentTime;
 
+  while (notesInQueue.length && notesInQueue[0].time < currentTime) {
+    drawNote = notesInQueue[0].note;
+    notesInQueue.splice(0,1);   // remove note from queue
+  }
+
+  // We only need to draw if the note has moved.
+  if (lastNoteDrawn !== drawNote) {
+  //  pads.forEach(el => {
+      //el.children[lastNoteDrawn].style.borderColor = 'hsla(0, 0%, 10%, 1)';
+     // el.children[drawNote].style.borderColor = 'hsla(49, 99%, 50%, 1)';
+   // });
+
+    lastNoteDrawn = drawNote;
+  }
+  // set up to draw again
+  requestAnimationFrame(draw);
+}
     //console.log(audioArray.toString());
-    if (audio) {
-        try {
+    // if (audio) {
+        // try {
 
-            audio.volume = ((0.01 + accompanimentVolume)) / 100 - .0001; //accompanimentVolume/50;
-
-
-        } catch (error) {
-            console.error(error)
-        }
-        // audioContextual.amplify(accompanimentVolume/50);//1.0;
+            // audio.volume = ((0.01 + accompanimentVolume)) / 100 - .0001; //accompanimentVolume/50;
 
 
-        if (audio.readyState >= 2) {
-            audio.currentTime = 0;
+        // } catch (error) {
+            // console.error(error)
+        // }
+        // // audioContextual.amplify(accompanimentVolume/50);//1.0;
 
-            var promise = audio.play();
 
-            if (promise !== undefined) {
-                promise.then(_ => {}).catch(error => {
-                    console.error(error)
-                });
-            }
+        // if (audio.readyState >= 2) {
+            // audio.currentTime = 0;
 
-        }
-    }
+           // // var promise = audio.play();
+
+            // if (promise !== undefined) {
+                // promise.then(_ => {}).catch(error => {
+                    // console.error(error)
+                // });
+            // }
+
+        // }
+    // }
 }
 
 async function playASong(songTitle) { // where we Play Notes  //important chordIsDone means we are not playing the chord. !chordIsDone means we are playing the chord or arpeggios.
@@ -305,7 +452,12 @@ async function playASongLink(songTitle) { // where we Play Notes  //important ch
     var noteStr = songTitle;
     // var noteStr = noteArray[arrayPlace][2]; // error spot 1
     // noteStr = noteStr.slice(0, 1) + noteStr.slice(+2) + noteStr.slice(1, 2);
-    currentSong = new Audio("https://www.nwhsaob.com/Midi/samplestwo/" + songTitle);
+try{	currentSong.src =("https://www.nwhsaob.com/Midi/samplestwo/" + songTitle);
+}
+catch(error){
+   currentSong = new Audio("https://www.nwhsaob.com/Midi/samplestwo/" + songTitle);
+// alert("did it");
+}
     currentSong.play();
 
     currentSong.volume = ((0.01 + rhythmVolume)) / 400.0 - .00001;
