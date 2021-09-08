@@ -1243,6 +1243,33 @@ $('#titanium').click(function () {
     playASongLink("titanium.mp3");
     // playASong("stromae");
 });
+
+$('#vacant').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("vacant.mp3");
+    // playASong("stromae");
+});
+
+$('#lethergo').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("lethergo.mp3");
+    // playASong("stromae");
+});
+
+$('#talk').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("talk.mp3");
+    // playASong("stromae");
+});
 $('#takecare').click(function () {
     try {
         currentTag = this.id
@@ -1724,6 +1751,15 @@ function checkCurrentSongAnswer() {
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/quiet.mp3") {
         currentSongKeys = ["C", "D", "D#/Eb", "F", "G", "A", "A#/Bb"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/vacant.mp3") {
+        currentSongKeys = ["A", "E", "C#/Db", "D#/Eb", "B", "F#/Gb", "G#/Ab"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/lethergo.mp3") {
+        currentSongKeys = ["A", "B", "C", "D", "E", "F#/Gb", "G"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/talk.mp3") {
+        currentSongKeys = ["A", "A#/Bb", "C", "D", "E", "F", "G"];
     }
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/breathe.mp3") {
         currentSongKeys = ["C", "D", "D#/Eb", "F", "G", "A", "A#/Bb"];
