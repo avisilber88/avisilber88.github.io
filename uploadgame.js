@@ -143,7 +143,87 @@ document.getElementById('txtFileUpload2').addEventListener('change', upload2, fa
         }
     }
 	
+	var generateNameIDMatchArray2 = function (){
+		// document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:xx-large'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitAssignment' style='font-size: xx-large'>Submit</button></div>";
+        // $('#assignmentSelect').empty();
+		
+       // let nameArray=getNameIDCol(data2+"", 4);// columnArray = getCol(data, columnOfStudy);
+		// console.log(nameArray.toString());
+	   // let idArray=getNameIDCol(data2, 0);
+	   // let nameIDArray=[]
+        // for (var i = 1; i < data2.length; i++) {
+           // nameIDArray.push([data2[i][4]+"", idArray[i-1]]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
+        // }
+		// console.log(nameIDArray.toString());
+		let rowsInExport = [];
 	
+		
+		// for (var i = 0; i < nameIDArray.length; i++) {
+			// // console.warn(nameIDArray[i][1]);
+           // rowsInExport.push(["room"+i, (nameIDArray[i][1][0]+"@mcpsmd.net")]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
+        // }
+		let groupThenNameArray=[];
+		for (let parentnum = 0; parentnum < groupOfGroupsArray.length; parentnum++){
+		let parentDiv = [];
+		console.warn(allGroupIds[parentnum]);
+	let subgroup = document.getElementById(allGroupIds[parentnum]).childNodes;
+	for (let childnum = 0; childnum < subgroup.length; childnum++){
+		// console.warn(subgroup[childnum].id);	
+		console.warn(allStudentBoxIds.length);
+		for (let boxid = 0; boxid < allStudentBoxIds.length; boxid++){
+				// console.log(allStudentBoxIds[boxid][0]);
+				// console.log(subgroup[childnum].id);
+			if (allStudentBoxIds[boxid][0]==subgroup[childnum].id){
+				console.warn(allStudentBoxIds[boxid][1]);
+						//for (var i = 0; i < nameIDArray.length; i++) {
+							//if (nameIDArray[i][0].includes(allStudentBoxIds[boxid][1])){
+								//console.warn(nameIDArray.toString());
+								groupThenNameArray.push([JSON.stringify("Group "+parentnum), JSON.stringify(allStudentBoxIds[boxid][1]+"")]);
+							//}
+							// rowsInExport.push(["room"+i, (nameIDArray[i][1][0]+"@mcpsmd.net")]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
+						//}
+				// console.warn(nameIdArray.indexOf(allStudentBoxIds[boxid][1]
+			}
+		}
+		
+		
+	}
+			
+}
+for (var i = 0; i < groupThenNameArray.length; i++) {
+			// console.warn(nameIDArray[i][1]);
+			tempNameHere=groupThenNameArray[i][1];
+			groupThenNameArray[i][1] = tempNameHere.split(', ').slice(-1).join(' ')+ " " + tempNameHere.split(', ').slice(0, -1).join(' ');			
+           rowsInExport.push([groupThenNameArray[i][0], groupThenNameArray[i][1]]);//, groupThenNameArray[i][1]]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
+        }
+	// rowsInExport.sort();
+	rowsInExport.unshift(["Group", "Names"]);
+
+		breakoutfilename=prompt ("What would you like to call your breakout rooms pre-assign csv?")+".csv";
+ console.warn(groupThenNameArray.toString());
+		let csvContent = "data:text/csv;charset=utf-8," + rowsInExport.map(e => e.join(",")).join("\n").replace(/"/g,"");
+		var encodedUri = encodeURI(csvContent);
+var link = document.createElement("a");
+link.setAttribute("href", encodedUri);
+link.setAttribute("download", breakoutfilename);
+document.body.appendChild(link); // Required for FF
+
+link.click();
+        // $('#submitAssignment').click(function () {
+            // // alert ("hi");
+            // // if (true){
+            // for (var i = 2; i < dataArray[2].length; i++) {
+                // if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")))) {
+                    // columnOfStudy = i + 0;
+                // }
+            // }
+
+            // // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
+            // // }
+            // $(".pickassignment").slideToggle();
+            // generateSliders();
+        // });
+	}
 	var generateNameIDMatchArray = function (dataArray){
 		// document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:xx-large'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitAssignment' style='font-size: xx-large'>Submit</button></div>";
         // $('#assignmentSelect').empty();
@@ -178,7 +258,7 @@ document.getElementById('txtFileUpload2').addEventListener('change', upload2, fa
 				console.warn(allStudentBoxIds[boxid][1]);
 						for (var i = 0; i < nameIDArray.length; i++) {
 							if (nameIDArray[i][0].includes(allStudentBoxIds[boxid][1])){
-								// console.warn(nameIDArray.toString());
+								console.warn(nameIDArray.toString());
 								groupThenNameArray.push([JSON.stringify("room"+parentnum), JSON.stringify(allStudentBoxIds[boxid][1]+""), JSON.stringify(nameIDArray[i][1][0]+"@mcpsmd.net")]);
 							}
 							// rowsInExport.push(["room"+i, (nameIDArray[i][1][0]+"@mcpsmd.net")]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
@@ -736,7 +816,8 @@ let values = (largestScore - smallestScore + 1)
 
         for (var k = 0; k < groupOfGroupsArray.length; k++) {
             shuffle(groupOfGroupsArray[k]);
-            var testIdName = groupOfGroupsArray[k][0][0] + "";
+			var testTempIdName = groupOfGroupsArray[k][0][0]+""
+            var testIdName = testTempIdName.split(', ').slice(-1).join(' ')+ " " + testTempIdName.split(', ').slice(0, -1).join(' ');	
             var testIdTag = testIdName.replace(/\s+/g, '');
             var groupIdTag = "groupThing" + k;
             var groupIdTagNumber = "groupNumber" + k;
@@ -747,7 +828,9 @@ let values = (largestScore - smallestScore + 1)
             allStudentBoxIds.push([testIdTag + "", testIdName + "", (groupOfGroupsArray[k][0][2]) + ""]);
             for (var i = 1; i < groupOfGroupsArray[k].length; i++) {
                 // alert (groupOfGroupsArray[k].length+" of group " + k+ " person is "+testIdName);
-                var testIdName = groupOfGroupsArray[k][i][0] + "";
+              	var testTempIdName = groupOfGroupsArray[k][i][0]+""
+				var testIdName = testTempIdName.split(', ').slice(-1).join(' ')+ " " + testTempIdName.split(', ').slice(0, -1).join(' ');	
+           
                 var testIdTag = testIdName.replace(/\s+/g, '');
                 // document.getElementById(allGroupIds[k]).innerHTML = document.getElementById(allGroupIds[k]).innerHTML + "<div class='card'><div class='container'><input type='text'  name='organicCompoundCoefficient' id = '" + testIdTag + "' value='" + testIdName + "' style='background-color:" + groupOfGroupsArray[k][i][1] + "'></input></div></div>";
 
@@ -880,9 +963,10 @@ let values = (largestScore - smallestScore + 1)
                 document.getElementById(allStudentBoxIds[j][0]).classList.remove("nottargeted");
                 // document.getElementById('KARENBROWN').style.backgroundColor = "white";
             }
-				if (confirm("Are you hoping to export your groups to use with MCPS Zoom Breakout rooms?\n\nIf/when you press okay, you will need to select your 'class list' export file from synergy.")){
+				if (confirm("Do you want to export your groups to a spreadsheet?")){
 		
-			document.getElementById('txtFileUpload2').click();
+			//document.getElementById('txtFileUpload2').click();
+			generateNameIDMatchArray2();
 					}   
             $(".finalizeGroups").slideToggle();
         });
@@ -952,7 +1036,9 @@ let values = (largestScore - smallestScore + 1)
 
         for (var k = 0; k < groupOfGroupsArray.length; k++) {
             shuffle(groupOfGroupsArray[k]);
-            var testIdName = groupOfGroupsArray[k][0][0] + "";
+            var testTempIdName = groupOfGroupsArray[k][0][0]+""
+            var testIdName = testTempIdName.split(', ').slice(-1).join(' ')+ " " + testTempIdName.split(', ').slice(0, -1).join(' ');	
+           
             var testIdTag = testIdName.replace(/\s+/g, '');
             var groupIdTag = "groupThing" + k;
             var groupIdTagNumber = "groupNumber" + k;
@@ -963,7 +1049,12 @@ let values = (largestScore - smallestScore + 1)
             allStudentBoxIds.push([testIdTag + "", testIdName + "", (groupOfGroupsArray[k][0][2]) + ""]);
             for (var i = 1; i < groupOfGroupsArray[k].length; i++) {
                 // alert (groupOfGroupsArray[k].length+" of group " + k+ " person is "+testIdName);
-                var testIdName = groupOfGroupsArray[k][i][0] + "";
+                // var testIdName = groupOfGroupsArray[k][i][0] + "";
+				var testTempIdName = groupOfGroupsArray[k][i][0]+""
+				var testIdName = testTempIdName.split(', ').slice(-1).join(' ')+ " " + testTempIdName.split(', ').slice(0, -1).join(' ');	
+           
+            var testIdName = testTempIdName.split(', ').slice(-1).join(' ')+ " " + testTempIdName.split(', ').slice(0, -1).join(' ');	
+           
                 var testIdTag = testIdName.replace(/\s+/g, '');
                 // document.getElementById(allGroupIds[k]).innerHTML = document.getElementById(allGroupIds[k]).innerHTML + "<div class='card'><div class='container'><input type='text'  name='organicCompoundCoefficient' id = '" + testIdTag + "' value='" + testIdName + "' style='background-color:" + groupOfGroupsArray[k][i][1] + "'></input></div></div>";
 
@@ -1103,10 +1194,11 @@ let values = (largestScore - smallestScore + 1)
 			// console.log(groupOfGroupsArray[1]);
 			// console.log(groupOfGroupsArray[2]);
 			// console.log(groupOfGroupsArray[3]);
-					// if (confirm("Are you hoping to export your groups to use with MCPS Zoom Breakout rooms?\n\nIf/when you press okay, you will need to select your 'class list' export file from synergy.")){
+					if (confirm("Do you want to export your groups to a spreadsheet?")){
 		
 			// document.getElementById('txtFileUpload2').click();
-					// }        
+			generateNameIDMatchArray2();
+					}        
 		$(".finalizeGroups").slideToggle();
 
         });
