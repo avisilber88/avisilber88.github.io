@@ -428,15 +428,22 @@ let values = (largestScore - smallestScore + 1)
         var column = [];
 		
         for (var i = (startRow+1); i < matrix.length; i++) {
-			if (columnOfStudy==1){
-				// matrix[i][col]=((matrix[i][col]).replace(/[a-z]/gi, '' ));
-				// matrix[i][col]=Number((matrix[i][col]).replace(/\//g, ""));
+				try {
 				matrix[i][col]=matrix[i][col].substr(0,matrix[i][col].indexOf(' '));
-			
+				}
+				catch (error){
+				}
 				matrix[i][col]=Number((matrix[i][col]));
+		
+			// if (columnOfStudy==1){
+				// // matrix[i][col]=((matrix[i][col]).replace(/[a-z]/gi, '' ));
+				// // matrix[i][col]=Number((matrix[i][col]).replace(/\//g, ""));
+				// matrix[i][col]=matrix[i][col].substr(0,matrix[i][col].indexOf(' '));
 			
-				// console.log(matrix[i][col]);
-			}
+				// matrix[i][col]=Number((matrix[i][col]));
+			
+				// // console.log(matrix[i][col]);
+			// }
                 console.log(Number((matrix[i][col])));
             if (smallestScore > Number((matrix[i][col]))) {
 				
@@ -1096,10 +1103,10 @@ let values = (largestScore - smallestScore + 1)
 			// console.log(groupOfGroupsArray[1]);
 			// console.log(groupOfGroupsArray[2]);
 			// console.log(groupOfGroupsArray[3]);
-					if (confirm("Are you hoping to export your groups to use with MCPS Zoom Breakout rooms?\n\nIf/when you press okay, you will need to select your 'class list' export file from synergy.")){
+					// if (confirm("Are you hoping to export your groups to use with MCPS Zoom Breakout rooms?\n\nIf/when you press okay, you will need to select your 'class list' export file from synergy.")){
 		
-			document.getElementById('txtFileUpload2').click();
-					}        
+			// document.getElementById('txtFileUpload2').click();
+					// }        
 		$(".finalizeGroups").slideToggle();
 
         });
