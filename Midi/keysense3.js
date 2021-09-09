@@ -1270,6 +1270,14 @@ $('#talk').click(function () {
     playASongLink("talk.mp3");
     // playASong("stromae");
 });
+$('#samurai').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("samurai.mp3");
+    // playASong("stromae");
+});
 $('#takecare').click(function () {
     try {
         currentTag = this.id
@@ -1491,6 +1499,14 @@ $('#setfire').click(function () {
             currentSong.pause();
     } catch (error) {}
     playASongLink("setfire.mp3");
+    // playASong("stromae");
+});
+$('#1999').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("1999.mp3");
     // playASong("stromae");
 });
 $('#twicemore').click(function () {
@@ -1774,6 +1790,9 @@ function checkCurrentSongAnswer() {
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/wakemup.mp3") {
         currentSongKeys = ["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
     }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/samurai.mp3") {
+        currentSongKeys = ["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
+    }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/takecare.mp3") {
         currentSongKeys = ["A#/Bb", "G#/Ab", "C", "D", "D#/Eb", "F", "G"];
     }
@@ -1841,6 +1860,9 @@ function checkCurrentSongAnswer() {
         currentSongKeys = ["A", "A#/Bb", "C", "D", "E", "F", "G"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/setfire.mp3") {
+        currentSongKeys = ["A", "A#/Bb", "C", "D", "E", "F", "G"];
+    }
+	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/1999.mp3") {
         currentSongKeys = ["A", "A#/Bb", "C", "D", "E", "F", "G"];
     }
 	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/twicemore.mp3") {
