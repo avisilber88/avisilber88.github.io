@@ -442,11 +442,11 @@ async function playASongLink(songTitle) { // where we Play Notes  //important ch
     resetSwitches();
     if (playingState == "invisible") {
         document.getElementById('pausePlayButton').hidden = false;
-        document.getElementById('pausePlayButton').innerHTML = "&nbsp;&nbsp;&#9613;&#9613;";
+        document.getElementById('pausePlayButton').innerHTML = "&nbsp;&#9613;&#9613;";
         playingState = "playing";
     }
     if (playingState == "paused") {
-        document.getElementById('pausePlayButton').innerHTML = "&nbsp;&nbsp;&#9613;&#9613;";
+        document.getElementById('pausePlayButton').innerHTML = "&nbsp;&#9613;&#9613;";
         playingState = "playing";
     }
     var noteStr = songTitle;
@@ -1235,6 +1235,22 @@ $('#shatterme').click(function () {
     playASongLink("shatterme.mp3");
     // playASong("stromae");
 });
+$('#delilah').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("delilah.mp3");
+    // playASong("stromae");
+});
+$('#saymyname').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("saymyname.mp3");
+    // playASong("stromae");
+});
 $('#titanium').click(function () {
     try {
         currentTag = this.id
@@ -1593,7 +1609,7 @@ $('#pausePlayButton').click(function () {
     } else if (playingState == "paused") {
         currentSong.play();
         playingState = "playing";
-        document.getElementById('pausePlayButton').innerHTML = "&nbsp;&nbsp;&#9613;&#9613;";
+        document.getElementById('pausePlayButton').innerHTML = "&nbsp;&#9613;&#9613;";
     } else if (playingState == "playing") {
         // alert ("yo")
         currentSong.pause();
@@ -1808,6 +1824,9 @@ function checkCurrentSongAnswer() {
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/sendmylove.mp3") {
         currentSongKeys = ["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
     }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/delilah.mp3") {
+        currentSongKeys = ["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
+    }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/closer.mp3") {
         currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
     }
@@ -1878,6 +1897,9 @@ function checkCurrentSongAnswer() {
         currentSongKeys = ["A#/Bb", "F", "C#/Db", "C", "D#/Eb", "F#/Gb", "G#/Ab"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/lighters.mp3") {
+        currentSongKeys = ["A#/Bb", "C", "D#/Eb", "D", "F", "G", "G#/Ab"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/saymyname.mp3") {
         currentSongKeys = ["A#/Bb", "C", "D#/Eb", "D", "F", "G", "G#/Ab"];
     }
 	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/everytime.mp3") {
