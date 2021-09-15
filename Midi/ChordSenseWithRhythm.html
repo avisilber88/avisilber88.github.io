@@ -152,6 +152,26 @@ if (location.protocol != 'https:')
 	<option hidden value="dubB" class = "aChordOption" id = "doubleBass">Look for two additional root notes in the Bass</option>
     </select>
 </p></div>
+<div id ="otherapps2"><p><p><button type="button"  id = "othermusicapps2" onclick="myFunction2()">Other Music Apps</button></p></div>
+<script>
+function myFunction2() {
+  window.location.replace("https://www.nwhsaob.com/chordsensehome.html");
+}
+</script>
+<script>
+    $(function () {
+        $('select[multiple].active.3col').multiselect({
+            columns: 1,
+            placeholder: 'Select Chords',
+            search: true,
+            searchOptions: {
+                'default': 'Search Chords'
+            },
+            selectAll: true
+        });
+
+    });
+</script>
 <div hidden id ="octaveButtonLinks" class = "chickens"><p><p><button type="button" id = "octaveUp"> octave &#8593;</button></p></div>
 <div hidden id ="octaveButtonLinksTwo" class = "chickens"><p><p><button type="button" id = "octaveDown">octave &#8595;</button></p></div>
 <div hidden id ="octaveNumBox" class = "chickens" style="background: white">Octave 3</div>

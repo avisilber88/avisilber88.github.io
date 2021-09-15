@@ -383,7 +383,7 @@ async function getMidiFile(filepath) {
             for (var i = 0; i < trackList.length; i++) {
                 if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (trackList[i])) {
                     noteContainingTrack = i;
-					alert(noteContainingTrack);
+					//alert(noteContainingTrack);
                 }
 
 

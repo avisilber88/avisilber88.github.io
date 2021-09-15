@@ -60,6 +60,26 @@ body.gameover::after {
 	width: 30vw;
 	HEIGHT: 4vh;
 }
+#otherapps {
+	position: fixed;
+    z-index: 9;
+	right: 0vw;
+	width: 30vw;
+	HEIGHT: 4vh;
+	top:4vh;
+}
+
+#otherapps2 {
+	font-size:14px;
+	text-align: center;
+	/* background-color:white; */
+	font:black;
+	position: fixed;
+	z-index: 9;
+	left: 58vw;
+	width: 15vw;
+	top: 4vh
+}
 #submitAnswerDiv {
 	position: fixed;
 	z-index: 9;
@@ -82,6 +102,19 @@ body.gameover::after {
 	HEIGHT: 6vh;
 }
 #chordLink {
+position: right;
+    z-index: 9;
+    width: 30ch;
+	HEIGHT: 4ch;
+}
+
+#othermusicapps {
+position: right;
+    z-index: 9;
+    width: 30ch;
+	HEIGHT: 4ch;
+}
+#othermusicapps2 {
 position: right;
     z-index: 9;
     width: 30ch;
