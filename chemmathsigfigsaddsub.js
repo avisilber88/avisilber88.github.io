@@ -325,8 +325,8 @@ var setupAnswers=function(n1, n2, signI){
 //  " "+numSigs2+" "+answerOriginal+" "+answer);
 			if (Number((getSigDigits(answer))<(numSigFigs))&&(Number(answer)%1!=0)){
 				// if (Number(answer)%1!=0){  //the number contains a decimal.
-					answer=answer.Fixed(numSigFigs);
-					
+					//answer=answer.Fixed(numSigFigs);
+					resetQuestion();
 				// }
 			// else if (Number(answer)%10!=0){
 					// answer=answer+".0";
