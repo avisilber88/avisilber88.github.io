@@ -13,7 +13,7 @@ var auth = function () {
 	let password="nwhschem";
     firebase.auth().signInWithEmailAndPassword(email, password)
     .then(function (result) {
-		console.log("hi");
+		// console.log("hi");
         db = firebase.firestore();
         // db.settings({
             // timestampsInSnapshots: true
@@ -123,6 +123,8 @@ ourDate=m + " / " + d + " / " + y;
 					console.log(levelNumber);
                     ourLevelNumber = levelNumber + 0;
                     //updateTheLevel(levelNumber);
+					
+alert (Number(ourLevelNumber) +" on " + (ourDate));
                 } else {
                     console.error("No such record");
                 }
