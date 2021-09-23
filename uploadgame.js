@@ -398,9 +398,9 @@ let values = (largestScore - smallestScore + 1)
         // document.getElementByClassName('noUi-connects').width='500px';
         scoreCutoffOne = Number(slider.noUiSlider.get()[0]);
         scoreCutoffTwo = Number(slider.noUiSlider.get()[1]);
-        groupAArray = getBetween(columnArray, smallestScore, scoreCutoffOne);
-        groupBArray = getBetween(columnArray, scoreCutoffOne + .01, scoreCutoffTwo);
-        groupCArray = getBetween(columnArray, scoreCutoffTwo + .01, largestScore);
+        groupAArray = getBetween(columnArray, smallestScore-.01, scoreCutoffOne);
+        groupBArray = getBetween(columnArray, scoreCutoffOne, scoreCutoffTwo);
+        groupCArray = getBetween(columnArray, scoreCutoffTwo, largestScore+.01);
         document.getElementById("groupA").innerHTML = "Students scoring " + smallestScore + " to " + scoreCutoffOne + "<br>(" + groupAArray.length + " members)<p>";
         document.getElementById("groupB").innerHTML = "Students scoring " + scoreCutoffOne + ".01 to " + scoreCutoffTwo + "<br>(" + groupBArray.length + " members)<p>";
         document.getElementById("groupC").innerHTML = "Students scoring " + scoreCutoffTwo + ".01 to " + largestScore + "<br>(" + groupCArray.length + " members)<p>";
@@ -446,9 +446,9 @@ let values = (largestScore - smallestScore + 1)
             scoreCutoffTwo = Number(slider.noUiSlider.get()[1]);
 
             // var testIdName= "student";
-            groupAArray = getBetween(columnArray, smallestScore, scoreCutoffOne);
-            groupBArray = getBetween(columnArray, scoreCutoffOne + .01, scoreCutoffTwo);
-            groupCArray = getBetween(columnArray, scoreCutoffTwo + .01, largestScore);
+            groupAArray = getBetween(columnArray, smallestScore - .01, scoreCutoffOne);
+            groupBArray = getBetween(columnArray, scoreCutoffOne, scoreCutoffTwo);
+            groupCArray = getBetween(columnArray, scoreCutoffTwo, largestScore+.01);
             document.getElementById("groupA").innerHTML = "Students scoring " + smallestScore + " to " + scoreCutoffOne + "<br>(" + groupAArray.length + " members)<p>";
             document.getElementById("groupB").innerHTML = "Students scoring " + scoreCutoffOne + ".01 to " + scoreCutoffTwo + "<br>(" + groupBArray.length + " members)<p>";
             document.getElementById("groupC").innerHTML = "Students scoring " + scoreCutoffTwo + ".01 to " + largestScore + "<br>(" + groupCArray.length + " members)<p>";
@@ -554,9 +554,9 @@ let values = (largestScore - smallestScore + 1)
     }
     function getBetween(matrix, minScore, maxScore) { //put data in for matrix
         let columnLocal = [];
-
+		console.log(minScore+ " "+maxScore);
         for (var i = 0; i < matrix.length; i++) {
-            if ((minScore <= Number((matrix[i][1]))) && (maxScore >= Number((matrix[i][1])))) {
+            if ((minScore < Number((matrix[i][1]))) && (maxScore >= Number((matrix[i][1])))) {
                 columnLocal.push([matrix[i][0], Number(matrix[i][1])]);
             }
         }
