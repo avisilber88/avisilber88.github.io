@@ -93,7 +93,7 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
             // list();
         })
         .catch(function (error) {
-            console.warn("failed to save contact");
+            alert("failed to save contact");
         });
     }
 
