@@ -54,7 +54,8 @@ var smallestNoteDenominator = 8;
 var wholesToTieAtTheBeginning = 0;
 var sequenceOn = false;
 var isFlat = false;
-
+var romanKeyValue="C";
+var keyAmmend=0;
 
 var foreverNoteCounter=0;
 var scheduledNoteCounter=0;
@@ -155,6 +156,58 @@ function scheduler() {
 
 let isPlaying = false;
 
+    document.getElementById("dropdownKey").addEventListener("change", function () {
+		
+ if (document.getElementById("keyC").selected) { //checking to see if ________ is checked
+	keyAmmend=0;
+	romanKeyValue="C";
+ }
+ if (document.getElementById("keyCSharp").selected) { //checking to see if ________ is checked
+	keyAmmend=1;
+	romanKeyValue="C#";
+ }
+ if (document.getElementById("keyD").selected) { //checking to see if ________ is checked
+	keyAmmend=2;
+	romanKeyValue="D";
+ }
+ if (document.getElementById("keyDSharp").selected) { //checking to see if ________ is checked
+	keyAmmend=3;
+	romanKeyValue="Eb";
+ }
+ if (document.getElementById("keyE").selected) { //checking to see if ________ is checked
+	keyAmmend=4;
+	romanKeyValue="E";
+ }
+ if (document.getElementById("keyF").selected) { //checking to see if ________ is checked
+	keyAmmend=5;
+	romanKeyValue="F";
+ }
+ if (document.getElementById("keyFSharp").selected) { //checking to see if ________ is checked
+	keyAmmend=6;
+	romanKeyValue="F#";
+ }
+ if (document.getElementById("keyG").selected) { //checking to see if ________ is checked
+	keyAmmend=7;
+	romanKeyValue="G"
+ }
+ if (document.getElementById("keyGSharp").selected) { //checking to see if ________ is checked
+	keyAmmend=8;
+	romanKeyValue="G#";
+ }
+  if (document.getElementById("keyA").selected) { //checking to see if ________ is checked
+	keyAmmend=9;
+	romanKeyValue="A";
+ }
+  if (document.getElementById("keyASharp").selected) { //checking to see if ________ is checked
+	keyAmmend=10;
+	romanKeyValue="A#";
+ }
+  if (document.getElementById("keyB").selected) { //checking to see if ________ is checked
+	keyAmmend=11;
+	romanKeyValue="B";
+ }
+ resetChord();
+});
     document.getElementById("dropdown").addEventListener("change", function () {
         //	alert("got");
         if (score > 4) {
@@ -448,13 +501,20 @@ if (document.getElementById("jln").selected) { //checking to see if ________ is 
     if (document.getElementById("romanc").selected) { //checking to see if ________ is checked
         totalselected++;
 			   // insertHTML=insertHTML+"<td style = 'vertical-align:top'><strong>Roman Numeral Scale Chords in C:</strong> (Named 'root note' + '7' ex: C7)<br>&nbsp;1st note: The root note name <br>  &nbsp;2nd note: 4 semitones/half-steps above the root note<br>  &nbsp;Finger 4: 7 semitones/half-steps above the root note<br>&nbsp;Finger 5: 10 semitones/half-steps above the root note<br></td>";
-
+		
     }
     if (document.getElementById("romana").selected) { //checking to see if ________ is checked
         totalselected++;
 			   // $("#alertMessage").html(document.getElementById('alertMessage').innerHTML+"<td style = 'vertical-align:top'><strong>Dominant Sevenths:</strong> (Named 'root note' + '7' ex: C7)<br>&nbsp;1st note: The root note name <br>  &nbsp;2nd note: 4 semitones/half-steps above the root note<br>  &nbsp;Finger 4: 7 semitones/half-steps above the root note<br>&nbsp;Finger 5: 10 semitones/half-steps above the root note<br></td>");
 
     }
+	if ((!(document.getElementById("romanc").selected))&&(!(document.getElementById("romana").selected))){
+		
+		document.getElementById("dropdownKey").hidden=true;
+	}
+	else{
+		document.getElementById("dropdownKey").hidden=false;
+	}
 	// console.warn(insertHTML);
 	try{
 	document.getElementById('alertMessage').innerHTML="<table style = 'border: 1px solid black'><tr style = 'border: 1px solid black'>"+insertHTML+"</tr></table>";
@@ -2376,12 +2436,19 @@ function setupChord(rootNote) {
         break;
     case "romanC":
         //rootNote = fixNote(rootNote);
-        if (rootNote == 10 || rootNote == 22) {
+		// let keyAmmend=1;
+		// alert (rootNote);
+		//alert (keyAmmend);
+		// console.error(rootNote+" "+(keyAmmend+rootNote));
+       // if (rootNote == (keyAmmend-2) || rootNote == (10+keyAmmend) || rootNote == (22+keyAmmend) || rootNote == (34+keyAmmend)) {
+        if (rootNote == (10) || rootNote == (22)) {
             rootNote = 5;
             currentChordName = getNoteNameGeneral(rootNote);
             currentImageName = getNoteNameGeneral(rootNote);
-        } else if (rootNote == 1 || rootNote == 3 || rootNote == 6 || rootNote == 8 || rootNote == 11 || rootNote == 13 || rootNote == 15 || rootNote == 18 || rootNote == 20 || rootNote == 23) {
+	}// else if (rootNote ==(keyAmmend-11) || rootNote ==(keyAmmend-9) || rootNote ==(keyAmmend-6) || rootNote ==(keyAmmend) || rootNote == (1+keyAmmend) || rootNote == (3+keyAmmend) || rootNote == (6+keyAmmend) || rootNote == (8+keyAmmend) || rootNote == (11+keyAmmend) || rootNote == (13+keyAmmend) || rootNote == (15+keyAmmend) || rootNote == (18+keyAmmend) || rootNote == (20+keyAmmend) || rootNote == (23+keyAmmend)) {
+        else if (rootNote == (1) || rootNote == (3) || rootNote == (6) || rootNote == (8) || rootNote == (11) || rootNote == (13) || rootNote == (15) || rootNote == (18) || rootNote == (20) || rootNote == (23)) {
             rootNote++;
+			//alert (keyAmmend);
             rootNote = fixNote(rootNote);
 
             currentChordName = getNoteNameGeneral(rootNote);
@@ -2409,6 +2476,7 @@ function setupChord(rootNote) {
 
         //alert(rootNote);
         setupMinRoman(rootNote);
+		// console.error(currentImageName);
         //currentChordName = currentChordName + "m";
         break;
     case "Fifths":
@@ -2484,11 +2552,13 @@ function setupChord(rootNote) {
 }
 
 function setupMajRoman(rN) {
-    rN = fixNote(rN);
-    switch (rN) {
+	let temprN=rN+0;
+    rN = fixNote(rN+keyAmmend+12);
+	
+    switch (temprN) {
     case 12:
-        currentChordName = "I in C";
-        currentImageName = "I in C";
+        currentChordName = "I in "+romanKeyValue;
+        currentImageName = getNoteNameGeneral(rN)+"";
         rN = fixNote(rN);
         var third = fixNote(rN + 4);
         var fifth = fixNote(rN + 7);
@@ -2499,40 +2569,40 @@ function setupMajRoman(rN) {
         // correctChord = [majorChordRoot, third, fifth];
         break;
     case 2:
-        currentChordName = "ii in C"
-            currentImageName = "ii in C"
+        currentChordName = "ii in "+romanKeyValue;
+            currentImageName = getNoteNameGeneral(rN)+"m";//"ii in C"
             rN = fixNote(rN);
         var third = fixNote(rN + 3);
         var fifth = fixNote(rN + 7);
         correctChord = [rN, third, fifth];
         break;
     case 4:
-        currentChordName = "iii in C"
-            currentImageName = "iii in C"
+        currentChordName = "iii in "+romanKeyValue;
+            currentImageName = getNoteNameGeneral(rN)+"m";//"iii in C";
             rN = fixNote(rN);
         var third = fixNote(rN + 3);
         var fifth = fixNote(rN + 7);
         correctChord = [rN, third, fifth];
         break;
     case 5:
-        currentChordName = "IV in C"
-            currentImageName = "IV in C"
+        currentChordName = "IV in "+romanKeyValue;
+            currentImageName = getNoteNameGeneral(rN)+"";//"IV in C"
             rN = fixNote(rN);
         var third = fixNote(rN + 4);
         var fifth = fixNote(rN + 7);
         correctChord = [rN, third, fifth];
         break;
     case 7:
-        currentChordName = "V in C"
-            currentImageName = "V in C"
+        currentChordName = "V in "+romanKeyValue;
+            currentImageName = getNoteNameGeneral(rN)+"";//"V in C"
             rN = fixNote(rN);
         var third = fixNote(rN + 4);
         var fifth = fixNote(rN + 7);
         correctChord = [rN, third, fifth];
         break;
     case 9:
-        currentChordName = "vi in C"
-            currentImageName = "vi in C"
+        currentChordName = "vi in "+romanKeyValue;
+            currentImageName = getNoteNameGeneral(rN)+"m";//"vi in C"
             rN = fixNote(rN);
         var third = fixNote(rN + 3);
         var fifth = fixNote(rN + 7);
@@ -2542,18 +2612,21 @@ function setupMajRoman(rN) {
     //alert (currentChordName);
 }
 function setupMinRoman(rN) {
-    switch (rN) {
+let temprN=rN+0;
+    rN = fixNote(rN+keyAmmend+12+3);
+	
+    switch (temprN) {
     case 9:
-        currentChordName = "i in Am";
-        currentImageName = "i in Am";
+        currentChordName = "i in "+romanKeyValue+"m";
+        currentImageName = getNoteNameGeneral(rN)+"m";
         rN = fixNote(rN);
         var third = fixNote(rN + 3);
         var fifth = fixNote(rN + 7);
         correctChord = [rN, third, fifth];
         break;
     case 12:
-        currentChordName = "III in Am"
-            currentImageName = "III in Am"
+        currentChordName = "III in "+romanKeyValue+"m";
+            currentImageName = getNoteNameGeneral(rN)+"";
             rN = fixNote(rN);
         rN = fixNote(rN);
         var third = fixNote(rN + 4);
@@ -2561,32 +2634,32 @@ function setupMinRoman(rN) {
         correctChord = [rN, third, fifth];
         break;
     case 2:
-        currentChordName = "iv in Am"
-            currentImageName = "iv in Am"
+        currentChordName = "iv in "+romanKeyValue+"m";
+            currentImageName = getNoteNameGeneral(rN)+"m";
             rN = fixNote(rN);
         var third = fixNote(rN + 3);
         var fifth = fixNote(rN + 7);
         correctChord = [rN, third, fifth];
         break;
     case 4:
-        currentChordName = "v in Am"
-            currentImageName = "v in Am"
+        currentChordName = "v in "+romanKeyValue+"m";
+            currentImageName = getNoteNameGeneral(rN)+"m";
             rN = fixNote(rN);
         var third = fixNote(rN + 3);
         var fifth = fixNote(rN + 7);
         correctChord = [rN, third, fifth];
         break;
     case 5:
-        currentChordName = "VI in Am"
-            currentImageName = "VI in Am"
+        currentChordName = "VI in "+romanKeyValue+"m";
+            currentImageName = getNoteNameGeneral(rN)+"";
             rN = fixNote(rN);
         var third = fixNote(rN + 4);
         var fifth = fixNote(rN + 7);
         correctChord = [rN, third, fifth];
         break;
     case 7:
-        currentChordName = "VII in Am"
-            currentImageName = "VII in Am"
+        currentChordName = "VII in "+romanKeyValue+"m";
+            currentImageName = getNoteNameGeneral(rN)+"";
             rN = fixNote(rN);
         var third = fixNote(rN + 4);
         var fifth = fixNote(rN + 7);

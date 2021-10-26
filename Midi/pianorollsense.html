@@ -272,13 +272,28 @@ function Layout(k){
 	<option value="majorNinth" id = "maj9">Major Ninth</option>
 	<option value="dominantNinth" id = "d9">Dominant Ninth</option>
 	<option value="addNinth" id = "add9">Add Ninth</option>
-	<option value="romC" id = "romanc">Roman Numerals in C</option>
-	<option value="romA" id = "romana">Roman Numerals in Am</option>
+	<option value="romC" id = "romanc">Roman Numerals in Major Scales</option>
+	<option value="romA" id = "romana">Roman Numerals in Natural Minor Scales</option>
 	<option value="sChords" id = "slashChords">Require specific inversions as "Slash Chords"</option>
 	<option value="dubB" id = "doubleBass">Look for two additional root notes in the Bass</option>
     </select>
 </p></div>
-
+<div hidden id="dropdownKey"><p>
+  <select name="basic[]" class="3col active">
+	<option value="C" selected id = "keyC">C</option>
+	<option value="C#/Db" id = "keyCSharp" onclick = "resetChord()">C#/Db</option>
+	<option value="D" id = "keyD">D</option>
+	<option value="D#/Eb" id = "keyDSharp">D#/Eb</option>
+	<option value="E" id = "keyE">E</option>
+	<option value="F" id = "keyF">F</option>
+	<option value="F#/Gb" id = "keyFSharp">F#/Gb</option>
+	<option value="G" id = "keyG">G</option>
+	<option value="G#/Ab" id = "keyGSharp" >G#/Ab</option>
+	<option value="A" id = "keyA">A</option>
+	<option value="A#/Bb" id = "keyASharp">A#/Bb</option>
+	<option value="B" id = "keyB">B</option>
+    </select>
+</p></div>
 <div class= "chickens" id ="revealAnswerDiv"><button type="button" id="revealButton" >reveal answer</button></div>
 <div class= "chickens" id ="submitAnswerDiv"><button type="button" id="sequenceButton" >submit answer</button></div>
 <div class= "chickens" id ="playAnswerDiv"><button type="button" id="playButton" >play answer</button></div>
