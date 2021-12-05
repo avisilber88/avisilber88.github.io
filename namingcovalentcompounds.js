@@ -771,7 +771,7 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 
 	var resetQuestion = function () {
 		// the below code is for ion picking
-		console.error ("yo");
+		// console.error ("yo");
 		var randomunitnumprefix1 = (Math.floor(Math.random() * 10) + 1);
 		var randomunitnumprefix2 = (Math.floor(Math.random() * 10) + 1);
 		var randomunitnum5 = (Math.floor(Math.random() * 8) + 1);
@@ -835,12 +835,29 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 				romanNumeral = "(III)";
 			}
 			//$('#num1').text("What ionic compound do you get from " + cationArray[0] + romanNumeral+" and "+ anionArray[0]+"?");
+		
 		}
-		if (score>19){
-		document.getElementById("num1").innerHTML = "what is the name of the covalent compound: " + getCovalentSymbol(covalentArray[0]) + "<sub>"+randomunitnumprefix1+"</sub>" + getCovalentSymbol(covalentArray[1]) + "<sub>"+randomunitnumprefix2+"</sub>"+ "?"+"<p>"+"(disclaimer, not all the compounds here are real compounds)";
+		var randomunitnumprefixForQuestion1=""+randomunitnumprefix1;
+		if (randomunitnumprefix1==1){
+		randomunitnumprefixForQuestion1="";
 		}
 		else{
-		document.getElementById("num1").innerHTML = "What is the name of the covalent compound: " + getCovalentSymbol(covalentArray[0]) + "<sub>"+randomunitnumprefix1+"</sub>" + getCovalentSymbol(covalentArray[1]) + "<sub>"+randomunitnumprefix2+"</sub>"+ "?"+"<p>"+"<span style='font-size: 14px'>(disclaimer, not all the compounds here are real compounds)</span>";
+		randomunitnumprefixForQuestion1=""+ randomunitnumprefix1;
+		}
+		var randomunitnumprefixForQuestion2="";
+		if (randomunitnumprefix2==1){
+		randomunitnumprefixForQuestion2="";
+		}
+		else{
+		 randomunitnumprefixForQuestion2=""+ randomunitnumprefix2;
+		}
+		//alert("yo"+randomunitnumprefix1);
+		
+		if (score>19){
+		document.getElementById("num1").innerHTML = "what is the name of the covalent compound: " + getCovalentSymbol(covalentArray[0]) + "<sub>"+randomunitnumprefixForQuestion1+"</sub>" + getCovalentSymbol(covalentArray[1]) + "<sub>"+randomunitnumprefixForQuestion2+"</sub>"+ "?"+"<p>"+"<span style='font-size: 14px'>(disclaimer, not all the compounds here are real compounds)</span>";
+		}
+		else{
+		document.getElementById("num1").innerHTML = "What is the name of the covalent compound: " + getCovalentSymbol(covalentArray[0]) + "<sub>"+randomunitnumprefixForQuestion1+"</sub>" + getCovalentSymbol(covalentArray[1]) + "<sub>"+randomunitnumprefixForQuestion2+"</sub>"+ "?"+"<p>"+"<span style='font-size: 14px'>(disclaimer, not all the compounds here are real compounds)</span>";
 		}
 		// removed this because it didn't have the charges built in. $('#num1').text("What ionic compound do you get from " + cationArray[0] + cationCharge+ "+ and "+ anionArray[0]+anionCharge+"-?");
 
@@ -853,10 +870,10 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 		//$('#num1').text("What is the molarity of a "+formulaName+" solution do we get when we mix " +toOurExponential(sigFigs(coeff1, 3))+ units1 " of "+ formulaName + " in " +  toOurExponential(sigFigs(coeff1, 3)) + units2 " of //water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)");
 
 		//thisAnswer = cationArray[3] + " " + anionArray[3];
-		console.error(randomunitnumprefix1);
-		console.error(randomunitnumprefix2);
-		console.error(covalentArray[0]);
-		console.error(covalentArray[1]);
+		// console.error(randomunitnumprefix1);
+		// console.error(randomunitnumprefix2);
+		// console.error(covalentArray[0]);
+		// console.error(covalentArray[1]);
 		
 		thisAnswer=	getCovalentName(randomunitnumprefix1, covalentArray[0], randomunitnumprefix2, covalentArray[1]);
 		//alert(thisAnswer);
@@ -958,7 +975,7 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 	valueOne=valueOne;
 	}
 	if (prefixTwo==1){
-	if (valueTwo="oxide"){
+	if (valueTwo=="oxide"){
 	valueTwo="monoxide";
 	}
 	else{
