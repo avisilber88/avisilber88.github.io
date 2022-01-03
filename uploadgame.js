@@ -32,11 +32,32 @@ $(document).ready(function () {
     var groupNamesArray = [];
 	var nottargetednum=0;
 	var groupingMethod="heterogeneous";
+	var canvas=false;
     $(".studentsContainerOne").slideToggle();
     $(".studentsContainerTwo").slideToggle();
+	
+	
+	let board = document.getElementById("board");
+function resize() {
+
+  var height = window.innerHeight;
+
+  var ratio = 1;
+  board.width = height;
+  board.height = height;
+  board.style.width = height+'px';
+  board.style.height = height+'px';
+
+}
+
+window.addEventListener('load', resize, false);
+window.addEventListener('resize', resize, false);
     //Step 1 Upload the file!
     document.getElementById('txtFileUpload').addEventListener('change', upload, false);
     // Method that checks that the browser supports the HTML5 File API
+	
+	
+	
     function browserSupportFileUpload() {
         var isCompatible = false;
         if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -311,16 +332,52 @@ link.click();
     //Step 2: Generate dropdown menus.
     var generateDropdowns = function (dataArray) {
 		startRow=2;
-		if(dataArray[2][0].toString().includes('Student')){
-	
+		if(dataArray[0][0].toString().includes('Student')){
+		// alert ("Canvas!");
+		canvas=true;
+		startRow=0;
+		}
+		else if(dataArray[2][0].toString().includes('Student')){
+			
 		}
 		else if (dataArray[3][0].toString().includes('Student')){
 			startRow=3;
 		}
 		console.log(dataArray[startRow].toString());
-        document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:xx-large'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitAssignment' style='font-size: xx-large'>Submit</button></div>";
+        document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment' style = 'width:auto'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:large; width:auto; max-width:300px;'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitAssignment' style='font-size: xx-large'>Submit</button></div>";
         $('#assignmentSelect').empty();
-        for (var i = 1; i < dataArray[startRow].length; i++) {
+		if (canvas){
+			for (var i = 5; i < dataArray[startRow].length; i++) {
+			if (dataArray[startRow][i].includes("MAX")){
+				addAssignmentOption(dataArray[startRow][i].substring(0, dataArray[startRow][i].indexOf("MAX")));
+			}
+			else{
+				addAssignmentOption(dataArray[startRow][i]);
+			}
+        }
+        $('#submitAssignment').click(function () {
+            // alert ("hi");
+            // if (true){
+            for (var i = 5; i < dataArray[startRow].length; i++) {
+                if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[startRow][i].substring(0, dataArray[startRow][i].indexOf("MAX")))) {
+                    columnOfStudy = i + 0;
+                }
+				else if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[startRow][i])) {
+                    columnOfStudy = i + 0;
+                }
+				else if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == ("Grade")){
+				columnOfStudy = 1;
+				}
+            }
+
+            // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
+            // }
+            $(".pickassignment").slideToggle();
+            generateSliders();
+        });
+		}
+		else{
+	   for (var i = 1; i < dataArray[startRow].length; i++) {
 			if (dataArray[startRow][i].includes("MAX")){
             addAssignmentOption(dataArray[startRow][i].substring(0, dataArray[startRow][i].indexOf("MAX")));
 			}
@@ -348,6 +405,7 @@ link.click();
             $(".pickassignment").slideToggle();
             generateSliders();
         });
+		}
     }
 
     //Step 3: Generate Sliders
@@ -428,16 +486,28 @@ let values = (largestScore - smallestScore + 1)
         $('.noUi-connects').css("background", 'linear-gradient(to right, #FFBABA ' + percentA + '%, #77D5D5 ' + percentA + '%, #77D5D5 ' + percentA + '%, #77D5D5 ' + percentB + '%, #83EA83 ' + percentB + '%)');
         $('.noUi-connect').css("background", '#77D5D5');
 
-        for (var i = 0; i < groupAArray.length; i++) {
-            var testIdName = groupAArray[i][0] + "";
+        for (var i = 0; i < groupAArray.length; i++) {		
+		if (canvas){
+            groupAArray[i][0] = groupAArray[i][0].substr(0,groupAArray[i][0].indexOf('(')) + "";
+			}
+			var testIdName = groupAArray[i][0] + "";
+
             document.getElementById("groupA").innerHTML = document.getElementById("groupA").innerHTML + "<div class='card low' id = '" + testIdName + "'><div class='container'> <h4><b>" + testIdName + "</b></h4></div></div>";
         }
         for (var i = 0; i < groupBArray.length; i++) {
-            var testIdName = groupBArray[i][0] + "";
+ 			if (canvas){
+            groupBArray[i][0] = groupBArray[i][0].substr(0,groupBArray[i][0].indexOf('(')) + "";
+			}
+			var testIdName = groupBArray[i][0] + "";
+
             document.getElementById("groupB").innerHTML = document.getElementById("groupB").innerHTML + "<div class='card medium' id = '" + testIdName + "'><div class='container'> <h4><b>" + testIdName + "</b></h4></div></div>";
         }
         for (var i = 0; i < groupCArray.length; i++) {
-            var testIdName = groupCArray[i][0] + "";
+  						if (canvas){
+            groupCArray[i][0] = groupCArray[i][0].substr(0,groupCArray[i][0].indexOf('(')) + "";
+			}
+			var testIdName = groupCArray[i][0] + "";
+
             document.getElementById("groupC").innerHTML = document.getElementById("groupC").innerHTML + "<div class='card high' id = '" + testIdName + "'><div class='container'> <h4><b>" + testIdName + "</b></h4></div></div>";
 
         }
@@ -456,16 +526,34 @@ let values = (largestScore - smallestScore + 1)
             console.log("an array " + groupBArray.toString());
             console.log("an array " + groupCArray.toString());
             for (var i = 0; i < groupAArray.length; i++) {
+						if (canvas){
+            groupAArray[i][0] = groupAArray[i][0].substr(0,groupAArray[i][0].indexOf('(')) + "";
+			}
                 var testIdName = groupAArray[i][0] + "";
+			if (canvas){
+            // testIdName = groupAArray[i][0].substr(0,groupAArray[i][0].indexOf('(')) + "";
+			}
                 document.getElementById("groupA").innerHTML = document.getElementById("groupA").innerHTML + "<div class='card low' id = '" + testIdName + "'><div class='container'> <h4><b>" + testIdName + "</b></h4></div></div>";
             }
 
             for (var i = 0; i < groupBArray.length; i++) {
+				 			if (canvas){
+            groupBArray[i][0] = groupBArray[i][0].substr(0,groupBArray[i][0].indexOf('(')) + "";
+			}
                 var testIdName = groupBArray[i][0] + "";
+						if (canvas){
+            // testIdName = groupBArray[i][0].substr(0,groupBArray[i][0].indexOf('(')) + "";
+			}
                 document.getElementById("groupB").innerHTML = document.getElementById("groupB").innerHTML + "<div class='card medium' id = '" + testIdName + "'><div class='container'> <h4><b>" + testIdName + "</b></h4></div></div>";
             }
             for (var i = 0; i < groupCArray.length; i++) {
+				  						if (canvas){
+            groupCArray[i][0] = groupCArray[i][0].substr(0,groupCArray[i][0].indexOf('(')) + "";
+			}
                 var testIdName = groupCArray[i][0] + "";
+				if (canvas){
+            // testIdName = groupCArray[i][0].substr(0,groupCArray[i][0].indexOf('(')) + "";
+			}
                 document.getElementById("groupC").innerHTML = document.getElementById("groupC").innerHTML + "<div class='card high' id = '" + testIdName + "'><div class='container'> <h4><b>" + testIdName + "</b></h4></div></div>";
             }
 
@@ -506,7 +594,39 @@ let values = (largestScore - smallestScore + 1)
     }
     function getCol(matrix, col) { //put data in for matrix
         var column = [];
+		if (canvas){
+			for (var i = (startRow+2); i < matrix.length; i++) {
+				try {
+				//matrix[i][col]=matrix[i][col].substr(0,matrix[i][col].indexOf(' '));
+				}
+				catch (error){
+				}
+				matrix[i][col]=Number((matrix[i][col]));
 		
+			// if (columnOfStudy==1){
+				// // matrix[i][col]=((matrix[i][col]).replace(/[a-z]/gi, '' ));
+				// // matrix[i][col]=Number((matrix[i][col]).replace(/\//g, ""));
+				// matrix[i][col]=matrix[i][col].substr(0,matrix[i][col].indexOf(' '));
+			
+				// matrix[i][col]=Number((matrix[i][col]));
+			
+				// // console.log(matrix[i][col]);
+			// }
+                console.log(Number((matrix[i][col])));
+				largestScore=Number((matrix[startRow+1][col]));
+            if (smallestScore > Number((matrix[i][col]))) {
+				
+                console.log(Number((matrix[i][col])) + 0);
+                smallestScore = Number((matrix[i][col])) + 0;
+            }
+            if (largestScore < Number((matrix[i][col]))) {
+                largestScore = Number((matrix[i][col])) + 0;
+            }
+			console.log("largest score is "+largestScore);
+            column.push([matrix[i][0], Number(matrix[i][col])]);
+        }
+		}
+		else{
         for (var i = (startRow+1); i < matrix.length; i++) {
 				try {
 				matrix[i][col]=matrix[i][col].substr(0,matrix[i][col].indexOf(' '));
@@ -535,6 +655,7 @@ let values = (largestScore - smallestScore + 1)
             }
             column.push([matrix[i][0], Number(matrix[i][col])]);
         }
+		}
 
         return column;
     }
@@ -606,7 +727,7 @@ let values = (largestScore - smallestScore + 1)
 	}
     var generateGroupChoices = function () {
         document.getElementById('selectionsBox').innerHTML = "<div class = 'pickgroupstyle'> <button type ='button' id ='groupByNumGroupsButton' style = 'font-size: xx-large; margin-right: 50px; margin-left: 65px'>Option 1: Select Number Of Groups</button>    <button type ='button' id ='groupByNumStudentsButton' style = 'font-size: xx-large'>Option 2: Select Size of Groups</button> <br><span style = 'font-size: xx-large; margin-top: 10px'> Remove absent students by clicking their names below </span> <input id = 'nameSearch' style = 'font-size: xx-large; margin-top: 20px'' type='text' placeholder='Search names... '></div>";
-
+		console.log(groupAArray.toString());
 		for (var i = 0; i < groupAArray.length; i++) {
 
             (function (i) {
@@ -821,7 +942,7 @@ let values = (largestScore - smallestScore + 1)
             var testIdTag = testIdName.replace(/\s+/g, '');
             var groupIdTag = "groupThing" + k;
             var groupIdTagNumber = "groupNumber" + k;
-            document.getElementById(allGroupIds[k]).innerHTML = "<div id = '" + groupIdTag + "'>Group: <input type='text'  name='o' id = '" + groupIdTagNumber + "' value='" + (k + 1) + "' style='width: 35%'></input></div><br>" + "<div class='card' id = '" + testIdTag + "'><div class='container'> <h4><b>" + testIdName + "</b></h4></div></div>";
+            document.getElementById(allGroupIds[k]).innerHTML = "<div id = '" + groupIdTag + "'>Group: <input type='text'  name='o' id = '" + groupIdTagNumber + "' value='" + (k + 1) + "' style='width: 35%'></input></div>" + "<div class='card' id = '" + testIdTag + "'><div class='container'> <h4><b>" + testIdName + "</b></h4></div></div>";
             groupNamesArray.push([groupIdTag + "", groupIdTagNumber + ""]);
             document.getElementById(testIdTag + "").classList.add(groupOfGroupsArray[k][0][2]);
 
@@ -939,6 +1060,7 @@ let values = (largestScore - smallestScore + 1)
         // });
         $('#finalizeGroupsButton').click(function () {
             lockNames = true;
+			document.getElementById('studentContainerTwo').style.height='500px';
             // console.warn("yo yo yo "+allStudentBoxIds[5]);
             // document.getElementById(allStudentBoxIds[5]).style.="";
 
@@ -946,7 +1068,7 @@ let values = (largestScore - smallestScore + 1)
             for (var l = 0; l < groupNamesArray.length; l++) {
                 let tempnum = document.getElementById(groupNamesArray[l][1]).value + "";
                 document.getElementById(groupNamesArray[l][0]).innerHTML = "Group: " + tempnum + "";
-
+				document.getElementById("group"+l).style.paddingLeft='0px';
             }
             for (var j = 0; j < allStudentBoxIds.length; j++) {
                 // document.getElementById(allStudentBoxIds[0]).innerHTML="";
@@ -1042,7 +1164,7 @@ let values = (largestScore - smallestScore + 1)
             var testIdTag = testIdName.replace(/\s+/g, '');
             var groupIdTag = "groupThing" + k;
             var groupIdTagNumber = "groupNumber" + k;
-            document.getElementById(allGroupIds[k]).innerHTML = "<div id = '" + groupIdTag + "'>Group: <input type='text'  name='o' id = '" + groupIdTagNumber + "' value='" + (k + 1) + "' style='width: 35%'></input></div><br>" + "<div class='card' id = '" + testIdTag + "'><div class='container'> <h4><b>" + testIdName + "</b></h4></div></div>";
+            document.getElementById(allGroupIds[k]).innerHTML = "<div id = '" + groupIdTag + "'>Group: <input type='text'  name='o' id = '" + groupIdTagNumber + "' value='" + (k + 1) + "' style='width: 35%'></input></div>" + "<div class='card' id = '" + testIdTag + "'><div class='container'> <h4><b>" + testIdName + "</b></h4></div></div>";
             groupNamesArray.push([groupIdTag + "", groupIdTagNumber + ""]);
             document.getElementById(testIdTag + "").classList.add(groupOfGroupsArray[k][0][2]);
 
