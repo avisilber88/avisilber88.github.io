@@ -33,6 +33,8 @@ $(document).ready(function () {
 	var nottargetednum=0;
 	var groupingMethod="heterogeneous";
 	var canvas=false;
+	var selectedSection="none";
+		var sectionArray=[];
     $(".studentsContainerOne").slideToggle();
     $(".studentsContainerTwo").slideToggle();
 	
@@ -119,8 +121,28 @@ window.addEventListener('resize', resize, false);
                     // console.log (data[2].toString());
 
                     $(".fileupload").slideToggle();
-
-                    generateDropdowns(data);
+		startRow=2;
+		if(data[0][0].toString().includes('Student')){
+		// alert ("Canvas!");
+		canvas=true;
+	
+		for (var i = 2; i < data.length; i++){
+			if (!(sectionArray.includes(data[i][4]))){
+				sectionArray.push(data[i][4]);
+			}
+		// console.log(sectionArray);
+		}
+		
+		startRow=0;
+		if (sectionArray.length>1){
+		checkSections(data);
+		}
+			}
+		else{
+			
+		generateDropdowns(data);
+		}
+	
                 } else {
                     alert('No data to import!');
                 }
@@ -328,14 +350,43 @@ link.click();
 	
     // document.getElementById("coefficientNumOne").innerHTML = "<input type='text'  name='organicCompoundCoefficient' id = 'organicCompoundCoefficient' value='coefficient?'></input>"; //<font color= 'white'>";
 
+    var checkSections = function (data) {
+		document.getElementById('selectionsBox').innerHTML = "<div class = 'picksection' style = 'width:auto'><select id = 'sectionSelect' name = 'sectionSelect' style = 'font-size:large; width:auto; max-width:300px;'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitSection' style='font-size: xx-large'>Submit</button></div>";
+  				$('#sectionSelect').empty();
+				
+			for (var i = 0; i < sectionArray.length; i++) {
+				// alert(sectionArray.toString());
+				addSectionOption(sectionArray[i]);
+			}
+	
+        
+				$('#submitSection').click(function () {
+            // alert ("hi");
+            // if (true){
 
+            // for (var i = 5; i < data[startRow].length; i++) {
+                // if (document.getElementById("sectionSelect").options[document.getElementById("sectionSelect").selectedIndex].innerHTML == (dataArray[startRow][i].substring(0, dataArray[startRow][i].indexOf("MAX")))) {
+                    // columnOfStudy = i + 0;
+                // }
+				// else if (document.getElementById("sectionSelect").options[document.getElementById("sectionSelect").selectedIndex].innerHTML == (dataArray[startRow][i])) {
+                    // columnOfStudy = i + 0;
+                // }
+				// else if (document.getElementById("sectionSelect").options[document.getElementById("sectionSelect").selectedIndex].innerHTML == ("Grade")){
+				// columnOfStudy = 1;
+				// }
+			selectedSection=(document.getElementById("sectionSelect").options[document.getElementById("sectionSelect").selectedIndex].innerHTML);
+            // }
+
+            // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
+            // }
+            $(".picksection").slideToggle();
+		generateDropdowns(data);
+        });
+
+	};
     //Step 2: Generate dropdown menus.
     var generateDropdowns = function (dataArray) {
-		startRow=2;
-		if(dataArray[0][0].toString().includes('Student')){
-		// alert ("Canvas!");
-		canvas=true;
-		startRow=0;
+		if (canvas){
 		}
 		else if(dataArray[2][0].toString().includes('Student')){
 			
@@ -359,14 +410,16 @@ link.click();
             // alert ("hi");
             // if (true){
             for (var i = 5; i < dataArray[startRow].length; i++) {
-                if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[startRow][i].substring(0, dataArray[startRow][i].indexOf("MAX")))) {
+				// console.error(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML+" "+(dataArray[startRow][i]));
+				if (((document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML+"").replace('&amp;', '&'))==(dataArray[startRow][i].toString()+"")) {
                     columnOfStudy = i + 0;
-                }
-				else if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[startRow][i])) {
-                    columnOfStudy = i + 0;
+				// alert ("hi");
                 }
 				else if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == ("Grade")){
 				columnOfStudy = 1;
+				}
+				else{
+								
 				}
             }
 
@@ -411,9 +464,9 @@ link.click();
     //Step 3: Generate Sliders
 
     var generateSliders = function () {
-		
+		        console.log(columnOfStudy);
         columnArray = getCol(data, columnOfStudy);
-        console.log(columnOfStudy);
+
 	
         // alert(largestScore + " " + smallestScore);
         $(".studentsContainerOne").slideToggle();
@@ -514,7 +567,7 @@ let values = (largestScore - smallestScore + 1)
         slider.noUiSlider.on('change', function () {
             scoreCutoffOne = Number(slider.noUiSlider.get()[0]);
             scoreCutoffTwo = Number(slider.noUiSlider.get()[1]);
-
+			nottargetednum=0;
             // var testIdName= "student";
             groupAArray = getBetween(columnArray, smallestScore - .01, scoreCutoffOne);
             groupBArray = getBetween(columnArray, scoreCutoffOne, scoreCutoffTwo);
@@ -601,7 +654,13 @@ let values = (largestScore - smallestScore + 1)
 				}
 				catch (error){
 				}
-				matrix[i][col]=Number((matrix[i][col]));
+				try{
+				console.error(matrix[1][col]);
+				if (matrix[1][col]=='(read only)')
+				{
+				matrix[1][col]=100;
+					
+				}
 		
 			// if (columnOfStudy==1){
 				// // matrix[i][col]=((matrix[i][col]).replace(/[a-z]/gi, '' ));
@@ -612,8 +671,14 @@ let values = (largestScore - smallestScore + 1)
 			
 				// // console.log(matrix[i][col]);
 			// }
-                console.log(Number((matrix[i][col])));
-				largestScore=Number((matrix[startRow+1][col]));
+					console.log(col);
+							
+                console.log(Number((matrix[1][col])));
+		
+				largestScore=Number((matrix[1][col]));
+				}
+				catch (error){
+				}
             if (smallestScore > Number((matrix[i][col]))) {
 				
                 console.log(Number((matrix[i][col])) + 0);
@@ -623,7 +688,8 @@ let values = (largestScore - smallestScore + 1)
                 largestScore = Number((matrix[i][col])) + 0;
             }
 			console.log("largest score is "+largestScore);
-            column.push([matrix[i][0], Number(matrix[i][col])]);
+			console.error(matrix[i][4]);
+            column.push([matrix[i][0], Number(matrix[i][col]), matrix[i][4]]);
         }
 		}
 		else{
@@ -653,8 +719,12 @@ let values = (largestScore - smallestScore + 1)
             if (largestScore < Number((matrix[i][col]))) {
                 largestScore = Number((matrix[i][col])) + 0;
             }
+			if (canvas){
+			}
+			else{
             column.push([matrix[i][0], Number(matrix[i][col])]);
         }
+		}
 		}
 
         return column;
@@ -674,17 +744,37 @@ let values = (largestScore - smallestScore + 1)
         return column;
     }
     function getBetween(matrix, minScore, maxScore) { //put data in for matrix
-        let columnLocal = [];
+
+		let columnLocal = [];
 		console.log(minScore+ " "+maxScore);
         for (var i = 0; i < matrix.length; i++) {
             if ((minScore < Number((matrix[i][1]))) && (maxScore >= Number((matrix[i][1])))) {
+				if (canvas){
+					// alert(matrix[i][2]);
+				if ((selectedSection=="none")||(selectedSection==matrix[i][2])){
                 columnLocal.push([matrix[i][0], Number(matrix[i][1])]);
+				}
+				else{
+				nottargetednum++;
+				}
+				}
+				else{
+                columnLocal.push([matrix[i][0], Number(matrix[i][1])]);
+				}
             }
         }
 	
         return columnLocal;
     }
+    var addSectionOption = function (cationOption) {
+        var sel = document.getElementById("sectionSelect");
+        var opt = document.createElement('option');
+        opt.innerHTML = cationOption;
+        //		opt.appendChild(document.createTextNode((cationOption)));
+        opt.value = (cationOption);
+        sel.appendChild(opt);
 
+    }
     var addAssignmentOption = function (cationOption) {
         var sel = document.getElementById("assignmentSelect");
         var opt = document.createElement('option');
