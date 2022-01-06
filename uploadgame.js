@@ -139,7 +139,6 @@ window.addEventListener('resize', resize, false);
 		checkSections(data);
 		}		
 		else{
-			alert ("hi");
 		generateDropdowns(data);
 		}
 		}
