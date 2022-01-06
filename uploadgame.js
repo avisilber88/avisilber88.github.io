@@ -135,11 +135,16 @@ window.addEventListener('resize', resize, false);
 		
 		startRow=0;
 		if (sectionArray.length>1){
-		checkSections(data);
-		}
-			}
-		else{
 			
+		checkSections(data);
+		}		
+		else{
+			alert ("hi");
+		generateDropdowns(data);
+		}
+		}
+			
+		else{
 		generateDropdowns(data);
 		}
 	
