@@ -1024,7 +1024,16 @@ var roundTypeName;
 				$('#scoremessage').text(specialMessage(score));
 				document.getElementById("givenAnswer").value = "";
 			} else {
-				alert("You wrote: " + givenAnswer + ". The correct answer was " + thisAnswer);
+				let reason=" huh ";
+				
+				if (((Number(givenAnswer+0)/Number(thisAnswer+0))>1.5) || ((Number(givenAnswer+0)/Number(thisAnswer+0))<0.75)){
+				reason = "It seems like the reason was because of your math, not your rounding.";
+				}
+				else{
+				reason = "It seems like the reason was because of your rounding, not your math.";
+				
+				}
+				alert("You wrote: " + givenAnswer + ". The correct answer was " + thisAnswer+". \r\n \r\n"+reason);
 				score = score - 1;
 				$('#score').text("Score = " + score);
 				$('#scoremessage').text(specialMessage(score));
@@ -1058,7 +1067,16 @@ var roundTypeName;
 				$('#scoremessage').text(specialMessage(score));
 				document.getElementById("givenAnswer").value = "";
 			} else {
-				alert("You wrote: " + givenAnswer + ". The correct answer was " + thisAnswer);
+				let reason=" huh ";
+				
+				if (((Number(givenAnswer+0)/Number(thisAnswer+0))>1.5) || ((Number(givenAnswer+0)/Number(thisAnswer+0))<0.75)){
+				reason = "It seems like the reason was because of your math, not your rounding.";
+				}
+				else{
+				reason = "It seems like the reason was because of your rounding, not your math.";
+				
+				}
+				alert("You wrote: " + givenAnswer + ". The correct answer was " + thisAnswer+". \r\n \r\n"+reason);
 				score = score - 1;
 				$('#score').text("Score = " + score);
 				$('#scoremessage').text(specialMessage(score));
