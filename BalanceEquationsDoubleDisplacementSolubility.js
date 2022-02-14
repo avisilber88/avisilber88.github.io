@@ -1367,11 +1367,19 @@ var startedNumber = 0;
 			testingIt=true;
 		while (testingIt){
 			// console.error(testingIt);
-					// console.error(cationArray[0]+anionArray[0]+" "+checkState(cationArray[0], anionArray[0]));
+			// console.error(cationArray[0]+anionArray[0]+" "+checkState(cationArray[0], anionArray[0]));
 	
 			// console.error(cationTwoArray[0]+anionTwoArray[0]+" "+checkState(cationTwoArray[0], anionTwoArray[0])+checkReaction(cationTwoArray[0], cationArray[0], anionArray[0], anionTwoArray[0]));
-		
+			
+
+				
 			if (testingIt){
+			while ((cationTwoArray[0]=="Pb")&&(anionArray[0].replace(/[{()}]/g, '')=="NO&#8323")){
+				// alert("caught it");
+				randomunitnum6 = (Math.floor(Math.random() * 3) + 1);
+				cationTwoCharge = randomunitnum6;
+				cationTwoArray = getRandomCation(cationTwoCharge);
+			}
 				randomunitnum6 = (Math.floor(Math.random() * 4) + 1);
 				cationCharge = randomunitnum6;
 				cationArray = getRandomCation(cationCharge);
@@ -1729,6 +1737,7 @@ var startedNumber = 0;
 		//alert (thisAnswer);
 		if (getQuestionTypeFromName() == "selectAgain"){
 			alert ("You have not chosen whether there is a reaction or not. Will there be a reaction?");
+			// resetQuestion();
 		}
 		
 		else if (reactionStatus != getQuestionTypeFromName()) {
