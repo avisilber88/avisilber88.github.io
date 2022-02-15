@@ -858,7 +858,7 @@ var cation;
 			}
 		}
 		else if (thecation == "Ag"){
-			if ((theanion=="PO&#8324")||(theanion=="CO&#8323")||(theanion=="OH")||(theanion=="SO&#8324")||(theanion=="Cl")||(theanion=="I")||(theanion=="OH")){
+			if ((theanion=="PO&#8324")||(theanion=="CO&#8323")||(theanion=="OH")||(theanion=="SO&#8324")||(theanion=="Cl")||(theanion=="I")||(theanion=="Br")||(theanion=="OH")){
 				return "s";
 			}
 			else{
@@ -1374,7 +1374,7 @@ var startedNumber = 0;
 
 				
 			if (testingIt){
-			while ((cationTwoArray[0]=="Pb")&&(anionArray[0].replace(/[{()}]/g, '')=="NO&#8323")){
+			while (((cationTwoArray[0]=="Pb")||(cationTwoArray[0]=="Ag"))&&(anionArray[0].replace(/[{()}]/g, '')=="NO&#8323")){
 				// alert("caught it");
 				randomunitnum6 = (Math.floor(Math.random() * 3) + 1);
 				cationTwoCharge = randomunitnum6;
