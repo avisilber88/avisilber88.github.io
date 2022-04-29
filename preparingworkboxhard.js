@@ -1,4 +1,10 @@
 $(document).ready(function () {
+			$('#previousQuestion').click(function () {
+		alert (previousQuestionWas+"\r\n"+"You responded: "+previousAnswerGivenWas+"\r\n The correct answer was: "+previousAnswerWas);
+	});
+var previousQuestionWas="";
+var previousAnswerWas="";
+var previousAnswerGivenWas="";
 var roundType="decimal";
 var thisAnswer="4";
 var givenAnswer;
@@ -1236,7 +1242,10 @@ switch (questionType) {
 			$('#score').text("Score = " + score);
 			$('#scoremessage').text(specialMessage(score));
 			$(this).removeClass("highlighted");
-			resetQuestion();
+						previousQuestionWas=document.getElementById("num1").innerHTML+"";
+			previousAnswerGivenWas=givenAnswer+"";
+			previousAnswerWas=thisAnswer+"";
+		resetQuestion();
 			
 			// $('#bwordb').text(35);
 		} else if ($(this).hasClass('wrongAnswer')) { //children('p').contains(answer)){// p.text("hello"));
@@ -1244,6 +1253,9 @@ switch (questionType) {
 			$(this).addClass('wrong');
 			$(this).removeClass('wrongAnswer');
 			score = score - 2;
+					if (score<0){
+			score = 0;
+			}
 			$('#score').text("Score = " + score);
 			$('#scoremessage').text(specialMessage(score));
 			// $('#bwordb').text(35);
@@ -1322,12 +1334,18 @@ switch (questionType) {
 				}
 				alert("You wrote: " + givenAnswer + ". The correct answer was " + thisAnswer+". \r\n \r\n"+reason);
 				score = score - 2;
+						if (score<0){
+			score = 0;
+			}
 				$('#score').text("Score = " + score);
 				$('#scoremessage').text(specialMessage(score));
 				//anotherQuestion();
 				document.getElementById("givenAnswer").value = "";
 			}
-			resetQuestion();
+						previousQuestionWas=document.getElementById("num1").innerHTML+"";
+			previousAnswerGivenWas=givenAnswer+"";
+			previousAnswerWas=thisAnswer+"";
+		resetQuestion();
 			
 		}
 		}
@@ -1365,13 +1383,19 @@ switch (questionType) {
 				
 				}
 				alert("You wrote: " + givenAnswer + ". The correct answer was " + thisAnswer+". \r\n \r\n"+reason);
-				score = score - 1;
+				score = score - 2;
+						if (score<0){
+			score = 0;
+			}
 				$('#score').text("Score = " + score);
 				$('#scoremessage').text(specialMessage(score));
 				//anotherQuestion();
 				document.getElementById("givenAnswer").value = "";
 			}
-			resetQuestion();
+						previousQuestionWas=document.getElementById("num1").innerHTML+"";
+			previousAnswerGivenWas=givenAnswer+"";
+			previousAnswerWas=thisAnswer+"";
+		resetQuestion();
 				
 		}
 		}
