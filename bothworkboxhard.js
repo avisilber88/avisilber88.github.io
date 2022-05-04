@@ -312,6 +312,7 @@ var declength;
 		}
 		numSigs1 = parseInt(getSigDigits(molar));
 		numSigFigs = parseInt(numSigs1) + 0;
+		// console.error ("numSigs1: "+numSigs1+" NumSigFigs: "+NumSigFigs);
 		// if (numSigFigs>numSigs2){
 		// numSigFigs=(numSigs2)+0;
 		// }
@@ -362,7 +363,16 @@ var declength;
 			// console.error(tempThisAnswer.substring(thisAnswer.indexOf('.')+1, tempThisAnswer.length).length);
 			// console.warn("out of "+numberOfSigFigsToCount);
 			// if (tempThisAnswer.substring(thisAnswer.indexOf('.'), tempThisAnswer.length)<numberOfSigFigsToCount)
+				// console.error("numberofSigFigsToCount: "+numberOfSigFigsToCount);
+				if (tempThisAnswer.includes(".")){
+			}
+			else{
+			tempThisAnswer=tempThisAnswer+".";
+			
+			thisAnswer=thisAnswer+".";
+			}
 			while (tempThisAnswer.substring(thisAnswer.indexOf('.')+1, tempThisAnswer.length).length<numberOfSigFigsToCount){
+				// console.error("done");
 				tempThisAnswer=tempThisAnswer+"0";
 			}
 			// console.error("it is "+tempThisAnswer);
@@ -407,7 +417,7 @@ var declength;
 		wrongAnswer2 = (sigFigs(Number(1 / moles), 3)) + " " + getUnit(m4) + "L";
 		wrongAnswer3 = (sigFigs(Number(1 / molar), 3)) + " " + getUnit(m4) + "L";
 		}
-else{//percent solutions
+else{//preparing solutions
 					C1 = n1 * Math.pow(10, m1);
 		V2 = n2 * Math.pow(10, m3);
 		C2 = n3 * Math.pow(10, m2);
@@ -419,11 +429,11 @@ else{//percent solutions
 			}
 			molar = ((V2)*C2*deal)/Math.pow(10, m4);
 		declength = decimalPlaces(molar);
-		// console.error (molar);
+		// console.error ("molar: "+molar);
 		
-		// console.warn((molar+"").length);
-		// console.log(declength);
-		// console.error((molar+"").length-declength);
+		// console.warn("molar length = "+(molar+"").length);
+		// console.log("declength: "+declength);
+		// console.error("difference should be: "+(molar+"").length-declength);
 			//var concentrationQuantity = moles/(n2*Math.pow(10,m2));
 			
 if (roundType=="decimal"){
@@ -440,6 +450,8 @@ if (roundType=="decimal"){
 		}
 		numSigs1 = parseInt(getSigDigits(molar));
 		numSigFigs = parseInt(numSigs1) + 0;
+		
+		// console.error ("numSigs1: "+numSigs1+" NumSigFigs: "+numSigFigs);
 		// if (numSigFigs>numSigs2){
 		// numSigFigs=(numSigs2)+0;
 		// }
@@ -463,6 +475,7 @@ if (roundType=="decimal"){
 			//$('#score').text("Score = " +signI+" "+numSigFigs + " " + numSigs1 +
 			//" "+numSigs2+" "+answer);
 			molar = round(Number(molar), 1 * numberOfSigFigsToCount);
+			// console.error("molar after rounding = "+molar);
 			if (answer == 0) {
 				resetQuestion();
 			//console.error("here");
@@ -490,7 +503,17 @@ if (roundType=="decimal"){
 			// console.error(tempThisAnswer.substring(thisAnswer.indexOf('.')+1, tempThisAnswer.length).length);
 			// console.warn("out of "+numberOfSigFigsToCount);
 			// if (tempThisAnswer.substring(thisAnswer.indexOf('.'), tempThisAnswer.length)<numberOfSigFigsToCount)
+							// numberOfSigFigsToCount=2;	//TESTING 5/4/2022
+			if (tempThisAnswer.includes(".")){
+			}
+			else{
+			tempThisAnswer=tempThisAnswer+".";
+			
+			thisAnswer=thisAnswer+".";
+			}
 			while (tempThisAnswer.substring(thisAnswer.indexOf('.')+1, tempThisAnswer.length).length<numberOfSigFigsToCount){
+				// alert("done one");
+				// console.error("this was happening");
 				tempThisAnswer=tempThisAnswer+"0";
 			}
 			// console.error("it is "+tempThisAnswer);
@@ -965,7 +988,7 @@ var questionType;
 var resetQuestion = function () {
 			coinFlipQuestion= (Math.floor(Math.random()*2));
 		if (coinFlipQuestion==0){
-questionClass = "dilution";
+questionClass = "dilution"; //TESTING 5/4/22 changed from dilution to preparation
 		}
 else {
 questionClass = "preparation";
@@ -1050,7 +1073,10 @@ questionClass = "preparation";
 			number = Math.floor(number);
 			numberThree = 1;
 		}
-		//alert (questionType);
+		// //alert (questionType);
+		// number = 5;
+		// numbertwo = 100;
+		// numberThree = 10; //TESTING
 		switch (questionType) {
 		case 1:
 			if (score > 19) {
@@ -1100,13 +1126,14 @@ questionClass = "preparation";
 
 		//$('#num1').text("What is the molarity of a "+formulaName+" solution do we get when we mix " +toOurExponential(sigFigs(coeff1, 3))+ units1 " of "+ formulaName + " in " +  toOurExponential(sigFigs(coeff1, 3)) + units2 " of //water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)");
 
-
+		
 		setupAnswersDilution(mag1, mag2, mag3, mag4, number, numbertwo, numberThree, conctype, formulaName);
 	}
-	else {
+	else { //if there is a preparation question
 			// $('#boxb').text(35);
 		// $('#bwordb').text(35);
 		coinFlip= (Math.floor(Math.random()*2));
+		// coinFlip=0;//TESTING 5/4/2022
 		if (coinFlip==0){
 			roundType="decimal";
 			roundTypeName="decimal places";
@@ -1179,6 +1206,10 @@ questionClass = "preparation";
 
 questionType = Math.floor(Math.random()*1)+1;
 //alert (questionType);
+
+		// number = 5;
+		// numbertwo = 194;
+		// numberThree = 27;  //TESTING 5/4/2022
 switch (questionType) {
 	case 1:
 		

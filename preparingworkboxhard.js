@@ -359,9 +359,16 @@ var declength;
 				thisAnswer = molar + "";
 				let tempThisAnswer=thisAnswer+"";
 				// BELOW HERE substring of thisanswer after the decimal
-			console.error(tempThisAnswer.substring(thisAnswer.indexOf('.')+1, tempThisAnswer.length).length);
-			console.warn("out of "+numberOfSigFigsToCount);
+			// console.error(tempThisAnswer.substring(thisAnswer.indexOf('.')+1, tempThisAnswer.length).length);
+			// console.warn("out of "+numberOfSigFigsToCount);
 			// if (tempThisAnswer.substring(thisAnswer.indexOf('.'), tempThisAnswer.length)<numberOfSigFigsToCount)
+			if (tempThisAnswer.includes(".")){
+			}
+			else{
+			tempThisAnswer=tempThisAnswer+".";
+			
+			thisAnswer=thisAnswer+".";
+			}
 			while (tempThisAnswer.substring(thisAnswer.indexOf('.')+1, tempThisAnswer.length).length<numberOfSigFigsToCount){
 				tempThisAnswer=tempThisAnswer+"0";
 			}
@@ -490,7 +497,16 @@ if (roundType=="decimal"){
 			// console.error(tempThisAnswer.substring(thisAnswer.indexOf('.')+1, tempThisAnswer.length).length);
 			// console.warn("out of "+numberOfSigFigsToCount);
 			// if (tempThisAnswer.substring(thisAnswer.indexOf('.'), tempThisAnswer.length)<numberOfSigFigsToCount)
+			// numberOfSigFigsToCount=2;	//TESTING
+		if (tempThisAnswer.includes(".")){
+			}
+			else{
+			tempThisAnswer=tempThisAnswer+".";
+			
+			thisAnswer=thisAnswer+".";
+			}
 			while (tempThisAnswer.substring(thisAnswer.indexOf('.')+1, tempThisAnswer.length).length<numberOfSigFigsToCount){
+				alert("done one");
 				tempThisAnswer=tempThisAnswer+"0";
 			}
 			// console.error("it is "+tempThisAnswer);
