@@ -789,7 +789,7 @@ var setupAnswersAdd=function(n1, n2, signI){
 			
 			for (j=0; j<answers.length; j++){
 				if ((j!=i)&&(answers[i]===answers[j])){
-					setupAnswers(n1);
+					resetQuestion();//setupAnswersAdd(n1);
 				}	
 			}
 		}
