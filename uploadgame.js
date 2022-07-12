@@ -34,6 +34,7 @@ $(document).ready(function () {
 	var groupingMethod="heterogeneous";
 	var canvas=false;
 	var selectedSection="none";
+	var absentArray=[];
 		var sectionArray=[];
     $(".studentsContainerOne").slideToggle();
     $(".studentsContainerTwo").slideToggle();
@@ -468,6 +469,7 @@ link.click();
     //Step 3: Generate Sliders
 
     var generateSliders = function () {
+		nottargetednum=0;
 		        console.log(columnOfStudy);
         columnArray = getCol(data, columnOfStudy);
 
@@ -568,6 +570,7 @@ let values = (largestScore - smallestScore + 1)
             document.getElementById("groupC").innerHTML = document.getElementById("groupC").innerHTML + "<div class='card high' id = '" + testIdName + "'><div class='container'> <h4><b>" + testIdName + "</b></h4></div></div>";
 
         }
+		
         slider.noUiSlider.on('change', function () {
             scoreCutoffOne = Number(slider.noUiSlider.get()[0]);
             scoreCutoffTwo = Number(slider.noUiSlider.get()[1]);
@@ -819,13 +822,38 @@ let values = (largestScore - smallestScore + 1)
         }
 
 	}
+	
+	var clearHighlights= function () {
+			// for (var i = 1; i < groupOfGroupsArray[localGroupNumber].length; i++) {
+				
+				for (var j = 0; j < groupOfGroupsArray.length; j++) {
+				for (var i = 0; i < groupOfGroupsArray[j].length; i++) {
+					document.getElementById("group"+j).children[i+1].style.backgroundColor='white';
+				}
+			// }
+		}
+	}
+	    var highlightGroup = function (localGroupNumber) {
+			// for (var i = 1; i < groupOfGroupsArray[localGroupNumber].length; i++) {
+				for (var i = 0; i < groupOfGroupsArray[localGroupNumber].length; i++) {
+				document.getElementById("group"+localGroupNumber).children[i+1].style.backgroundColor='white';
+				}
+				let childNumber=Math.floor(Math.random() * groupOfGroupsArray[localGroupNumber].length)+1;
+				document.getElementById("group"+localGroupNumber).children[childNumber].style.backgroundColor='yellow';
+			// }
+		}
+	// Step 4: Generate Group Choices - Note, above is the method for attendance.
     var generateGroupChoices = function () {
         document.getElementById('selectionsBox').innerHTML = "<div class = 'pickgroupstyle'> <button type ='button' id ='groupByNumGroupsButton' style = 'font-size: xx-large; margin-right: 50px; margin-left: 65px'>Option 1: Select Number Of Groups</button>    <button type ='button' id ='groupByNumStudentsButton' style = 'font-size: xx-large'>Option 2: Select Size of Groups</button> <br><span style = 'font-size: xx-large; margin-top: 10px'> Remove absent students by clicking their names below </span> <input id = 'nameSearch' style = 'font-size: xx-large; margin-top: 20px'' type='text' placeholder='Search names... '></div>";
 		console.log(groupAArray.toString());
 		for (var i = 0; i < groupAArray.length; i++) {
 
             (function (i) {
-
+				// console.warn (absentArray.length + "and "+ groupAArray[i][0]);
+				if ((absentArray.includes(groupAArray[i][0]))&&(!(document.getElementById(groupAArray[i+0][0]).classList.contains("nottargeted")))){
+						document.getElementById(groupAArray[i+0][0]).classList.add("nottargeted");
+						nottargetednum++;
+				}
                 document.getElementById(groupAArray[i + 0][0]).addEventListener("click", function (e) {
                     if (!(document.getElementById(groupAArray[i+0][0]).classList.contains("nottargeted"))) {
 						
@@ -845,7 +873,10 @@ let values = (largestScore - smallestScore + 1)
 				for (var i = 0; i < groupBArray.length; i++) {
 
             (function (i) {
-
+				if ((absentArray.includes(groupBArray[i][0]))&&(!(document.getElementById(groupBArray[i+0][0]).classList.contains("nottargeted")))){
+						document.getElementById(groupBArray[i+0][0]).classList.add("nottargeted");
+						nottargetednum++;
+				}
                 document.getElementById(groupBArray[i + 0][0]).addEventListener("click", function (e) {
                     if (!(document.getElementById(groupBArray[i+0][0]).classList.contains("nottargeted"))) {
 						document.getElementById(groupBArray[i+0][0]).classList.add("nottargeted");
@@ -863,7 +894,10 @@ let values = (largestScore - smallestScore + 1)
 				for (var i = 0; i < groupCArray.length; i++) {
 
             (function (i) {
-
+				if ((absentArray.includes(groupCArray[i][0]))&&(!(document.getElementById(groupCArray[i+0][0]).classList.contains("nottargeted")))){
+						document.getElementById(groupCArray[i+0][0]).classList.add("nottargeted");
+						nottargetednum++;
+				}
                 document.getElementById(groupCArray[i + 0][0]).addEventListener("click", function (e) {
                     if (!(document.getElementById(groupCArray[i+0][0]).classList.contains("nottargeted"))) {
 						nottargetednum++;
@@ -952,7 +986,7 @@ let values = (largestScore - smallestScore + 1)
         $('#groupByNumStudentsButton').click(function () {
             // alert ("hi");
             // if (true){
-
+// alert(nottargetednum);
             // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
             // }
 				let groupnums=prompt("What is your group size? (no group will have larger than this size, and all of your groups will have this size or one less)");
@@ -969,10 +1003,14 @@ let values = (largestScore - smallestScore + 1)
         }
     }
     var groupByGroups = function (numberOfGroups) {
-		
+		lockNames=false;
+		allStudentBoxIds=[];
+		allGroupIds=[];
+		absentArray=[];
+		groupNamesArray=[];
             $(".pickgroupstyle").slideToggle();
             $(".studentsContainerOne").slideToggle();
-        document.getElementById('selectionsBox').innerHTML = "<div class = 'finalizeGroups'> <span style='font-size: xx-large'> Finalize Names as Necessary and then click Done:</span> <button type ='button' id ='finalizeGroupsButton' style = 'font-size: xx-large'>Finalize Groups</button></div>";
+        document.getElementById('selectionsBox').innerHTML = "<div class = 'finalizeGroups'> <span style='font-size: xx-large'> Finalize Names as Necessary and then click Done:</span> <button type ='button' id ='finalizeGroupsButton' style = 'font-size: xx-large'>Finalize Groups</button></div><div class = 'groupAgain'><button type ='button' id ='remakeGroupsButton' style = 'font-size: xx-large'>Remake Groups</button>   <button type ='button' id ='pickOneOverall' style = 'font-size: xx-large' hidden>Pick Random Student</button>    <button type ='button' id ='pickOneEach' style = 'font-size: xx-large' hidden>Pick One From Each Group</button>    <button type ='button' id ='exportGroups' style = 'font-size: xx-large' hidden>Export Groups</button></div>";
 
         $(".studentsContainerTwo").slideToggle();
         console.log(groupAArray.toString());
@@ -1005,6 +1043,10 @@ let values = (largestScore - smallestScore + 1)
             (groupOfGroupsArray[groupPlacement + 0]).push([groupCArray[g][0], "#83EA83", "high"]); //to later select the background color for highest groups
             groupPlacement++;
 			}
+			else{
+			absentArray.push(groupCArray[g][0]);
+			console.log("The absent list is now "+absentArray);
+			}
             if (groupPlacement > (numberOfGroups - 1)) {
                 // console.log(groupPlacement);
                 groupPlacement = 0;
@@ -1015,6 +1057,10 @@ let values = (largestScore - smallestScore + 1)
             groupOfGroupsArray[groupPlacement].push([groupBArray[g][0], "#77D5D5", "medium"]); //to later select the background color for highest groups
             groupPlacement++;
 			}
+						else{
+			absentArray.push(groupBArray[g][0]);
+			console.log("The absent list is now "+absentArray);
+			}
             if (groupPlacement > (numberOfGroups - 1)) {
                 groupPlacement = 0;
             }
@@ -1023,6 +1069,11 @@ let values = (largestScore - smallestScore + 1)
 			if (!(document.getElementById(groupAArray[g][0]).classList.contains("nottargeted"))){
             groupOfGroupsArray[groupPlacement].push([groupAArray[g][0], "#FFBABA", "low"]) //to later select the background color for highest groups
             groupPlacement++;
+			}
+						else{
+							
+			absentArray.push(groupAArray[g][0]+"");
+			console.log("The absent list is now "+absentArray);
 			}
             if (groupPlacement > (numberOfGroups - 1)) {
                 groupPlacement = 0;
@@ -1152,23 +1203,59 @@ let values = (largestScore - smallestScore + 1)
         // $(".pickgroupstyle").slideToggle();
         // groupByStudents();
         // });
+		        $('#remakeGroupsButton').click(function () { //go back to the beginning but see if attendance remains
+			generateDropdowns(data);
+			console.log("error of absent is "+absentArray);
+			$(".finalizeGroups").slideToggle();
+			$(".remakeGroups").slideToggle();
+			
+        $(".studentsContainerTwo").slideToggle();
+			console.log("error of absent is "+absentArray);
+			const objsArrStr = JSON.stringify(absentArray);
+			const objsArrDeepCopy = JSON.parse(objsArrStr);	
+			absentArray=objsArrDeepCopy;
+		});
+		 $('#pickOneEach').click(function () {
+			 for (var l = 0; l < groupNamesArray.length; l++) {
+				highlightGroup(l);
+			 }
+		 });
+		 		  $('#pickOneOverall').click(function () {
+			  let randomGroup = Math.floor(Math.random() * groupNamesArray.length);
+			  clearHighlights();
+				highlightGroup(randomGroup);
+		 });
+		  $('#exportGroups').click(function () {
+			generateNameIDMatchArray2();
+		 });
         $('#finalizeGroupsButton').click(function () {
             lockNames = true;
+			document.getElementById('pickOneEach').hidden=false;
+			
+			document.getElementById('pickOneOverall').hidden=false;
+			
+			document.getElementById('exportGroups').hidden=false;
 			document.getElementById('studentContainerTwo').style.height='500px';
             // console.warn("yo yo yo "+allStudentBoxIds[5]);
             // document.getElementById(allStudentBoxIds[5]).style.="";
-
+            
             // document.getElementById(allStudentBoxIds[0]).style.backgroundColor="gray";
             for (var l = 0; l < groupNamesArray.length; l++) {
+				(function (l) {
                 let tempnum = document.getElementById(groupNamesArray[l][1]).value + "";
-                document.getElementById(groupNamesArray[l][0]).innerHTML = "Group: " + tempnum + "";
+                document.getElementById(groupNamesArray[l][0]).innerHTML = "Group: " + tempnum + " " + "<button type ='button' id ='"+(groupNamesArray[l][0]+"button")+"' style='font-size: medium'>pick randomly </button>";
+				 // document.getE.click(function () {
+				document.getElementById(groupNamesArray[l][0]+"button").addEventListener("click", function (e) {
+					highlightGroup(l);
+					});
 				document.getElementById("group"+l).style.paddingLeft='0px';
-            }
+            })(l);
+				}
             for (var j = 0; j < allStudentBoxIds.length; j++) {
                 // document.getElementById(allStudentBoxIds[0]).innerHTML="";
                 // alert	(j);
                 // alert (allStudentBoxIds[j][0]);
-
+				
                 document.getElementById(allStudentBoxIds[j][0]).style.backgroundColor = "white";
 
                 document.getElementById(allStudentBoxIds[j][0]).style.borderColor = "white";
@@ -1189,13 +1276,17 @@ let values = (largestScore - smallestScore + 1)
     }
 
     var groupByStudents = function (maxStudents) {
-		
+		lockNames=false;
+		allGroupIds=[];
+		absentArray=[];
+		groupNamesArray=[];
             $(".pickgroupstyle").slideToggle();
             $(".studentsContainerOne").slideToggle();
-        document.getElementById('selectionsBox').innerHTML = "<div class = 'finalizeGroups'> <span style='font-size: xx-large'> Finalize Names as Necessary and then click Done:</span> <button type ='button' id ='finalizeGroupsButton' style = 'font-size: xx-large'>Finalize Groups</button></div>";
+        document.getElementById('selectionsBox').innerHTML = "<div class = 'finalizeGroups'> <span style='font-size: xx-large'> Finalize Names as Necessary and then click Done:</span> <button type ='button' id ='finalizeGroupsButton' style = 'font-size: xx-large'>Finalize Groups</button></div><div class = 'groupAgain'><button type ='button' id ='remakeGroupsButton' style = 'font-size: xx-large'>Remake Groups</button>   <button type ='button' id ='pickOneOverall' style = 'font-size: xx-large' hidden>Pick Random Student</button>    <button type ='button' id ='pickOneEach' style = 'font-size: xx-large' hidden>Pick One From Each Group</button>    <button type ='button' id ='exportGroups' style = 'font-size: xx-large' hidden>Export Groups</button></div>";
 
         $(".studentsContainerTwo").slideToggle();
         numberOfGroups = Math.ceil((columnArray.length-nottargetednum) / maxStudents);
+		
         console.log(groupAArray.toString());
         shuffle(groupAArray);
         console.log(groupAArray.toString());
@@ -1203,6 +1294,7 @@ let values = (largestScore - smallestScore + 1)
         shuffle(groupCArray);
         var testIdName = "group" + 0 + "";
         allGroupIds.push(testIdName + "");
+		
         document.getElementById("studentContainerTwo").innerHTML = "<div id = '" + testIdName + "'>" + testIdName + "</div>";
         for (var i = 1; i < numberOfGroups; i++) {
             var testIdName = "group" + i + "";
@@ -1226,6 +1318,10 @@ let values = (largestScore - smallestScore + 1)
             (groupOfGroupsArray[groupPlacement + 0]).push([groupCArray[g][0], "#83EA83", "high"]); //to later select the background color for highest groups
             groupPlacement++;
 			}
+						else{
+			absentArray.push(groupCArray[g][0]);
+			console.log("The absent list is now "+absentArray);
+			}
             if (groupPlacement > (numberOfGroups - 1)) {
                 // console.log(groupPlacement);
                 groupPlacement = 0;
@@ -1236,6 +1332,10 @@ let values = (largestScore - smallestScore + 1)
             groupOfGroupsArray[groupPlacement].push([groupBArray[g][0], "#77D5D5", "medium"]); //to later select the background color for highest groups
             groupPlacement++;
 			}
+						else{
+			absentArray.push(groupBArray[g][0]);
+			console.log("The absent list is now "+absentArray);
+			}
             if (groupPlacement > (numberOfGroups - 1)) {
                 groupPlacement = 0;
             }
@@ -1245,12 +1345,19 @@ let values = (largestScore - smallestScore + 1)
             groupOfGroupsArray[groupPlacement].push([groupAArray[g][0], "#FFBABA", "low"]) //to later select the background color for highest groups
             groupPlacement++;
 			}
+						else{
+			absentArray.push(groupAArray[g][0]);
+			console.log("The absent list is now "+absentArray);
+			}
             if (groupPlacement > (numberOfGroups - 1)) {
                 groupPlacement = 0;
             }
         }
 
+		console.error(groupOfGroupsArray.length);
+		allStudentBoxIds=[];
         for (var k = 0; k < groupOfGroupsArray.length; k++) {
+			
             shuffle(groupOfGroupsArray[k]);
             var testTempIdName = groupOfGroupsArray[k][0][0]+""
             var testIdName = testTempIdName.split(', ').slice(-1).join(' ')+ " " + testTempIdName.split(', ').slice(0, -1).join(' ');	
@@ -1286,11 +1393,11 @@ let values = (largestScore - smallestScore + 1)
             }
 
         }
-
+		console.error(allStudentBoxIds);
         for (var i = 0; i < allStudentBoxIds.length; i++) {
 
+				console.warn(document.getElementById(allStudentBoxIds[i + 0][0]));
             (function (i) {
-
                 document.getElementById(allStudentBoxIds[i + 0][0]).addEventListener("click", function (e) {
                     if ((!itSelected) && (!lockNames)) {
                         iOne = i;
@@ -1377,19 +1484,65 @@ let values = (largestScore - smallestScore + 1)
         // $(".pickgroupstyle").slideToggle();
         // groupByStudents();
         // });
+		
+        $('#remakeGroupsButton').click(function () { //go back to the beginning but see if attendance remains
+			generateDropdowns(data);
+			console.log("error of absent is "+absentArray);
+			$(".finalizeGroups").slideToggle();
+			$(".remakeGroups").slideToggle();
+			
+        $(".studentsContainerTwo").slideToggle();
+			// console.log("error of absent is "+absentArray);
+			const objsArrStr = JSON.stringify(absentArray);
+			const objsArrDeepCopy = JSON.parse(objsArrStr);	
+			absentArray=objsArrDeepCopy;
+		});
+				 $('#pickOneEach').click(function () {
+			 for (var l = 0; l < groupNamesArray.length; l++) {
+				highlightGroup(l);
+			 }
+		 });
+		  $('#pickOneOverall').click(function () {
+			  let randomGroup = Math.floor(Math.random() * groupNamesArray.length);
+			  clearHighlights();
+				highlightGroup(randomGroup);
+		 });
+		  $('#exportGroups').click(function () {
+			generateNameIDMatchArray2();
+		 });
         $('#finalizeGroupsButton').click(function () {
 			// alert ("hi")
 
+			document.getElementById('pickOneEach').hidden=false;
+			
+			document.getElementById('pickOneOverall').hidden=false;
+			
+			document.getElementById('exportGroups').hidden=false;
             lockNames = true;
             // console.warn("yo yo yo "+allStudentBoxIds[5]);
             // document.getElementById(allStudentBoxIds[5]).style.="";
 
             // document.getElementById(allStudentBoxIds[0]).style.backgroundColor="gray";
-            for (var l = 0; l < groupNamesArray.length; l++) {
-                let tempnum = document.getElementById(groupNamesArray[l][1]).value + "";
-                document.getElementById(groupNamesArray[l][0]).innerHTML = "Group: " + tempnum + "";
+            // for (var l = 0; l < groupNamesArray.length; l++) {
+                // let tempnum = document.getElementById(groupNamesArray[l][1]).value + "";
+                // document.getElementById(groupNamesArray[l][0]).innerHTML = "Group: " + tempnum + "";
 
-            }
+            // }
+			            for (var l = 0; l < groupNamesArray.length; l++) {
+				(function (l) {
+                let tempnum = document.getElementById(groupNamesArray[l][1]).value + "";
+                document.getElementById(groupNamesArray[l][0]).innerHTML = "Group: " + tempnum + " " + "<button type ='button' id ='"+(groupNamesArray[l][0]+"button")+"' style='font-size: medium'>pick randomly </button>";
+				 // document.getE.click(function () {
+				document.getElementById(groupNamesArray[l][0]+"button").addEventListener("click", function (f) {
+					highlightGroup(l);
+					});
+				document.getElementById("group"+l).style.paddingLeft='0px';
+            })(l);
+				}
+			
+			
+			
+			
             for (var j = 0; j < allStudentBoxIds.length; j++) {
                 // document.getElementById(allStudentBoxIds[0]).innerHTML="";
                 // alert	(j);
