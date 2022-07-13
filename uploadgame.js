@@ -5,6 +5,7 @@ $(document).ready(function () {
 	var breakoutfilename;
     var data = null;
     var data2 = null;
+	var dataImport = null;
     var columnOfStudy = 0;
     var columnArray = [];
     var nameArray = [];
@@ -34,10 +35,12 @@ $(document).ready(function () {
 	var groupingMethod="heterogeneous";
 	var canvas=false;
 	var selectedSection="none";
+	var onlyOneInput=true;
 	var absentArray=[];
 		var sectionArray=[];
     $(".studentsContainerOne").slideToggle();
     $(".studentsContainerTwo").slideToggle();
+	
 	
 	
 	let board = document.getElementById("board");
@@ -122,6 +125,8 @@ window.addEventListener('resize', resize, false);
                     // console.log (data[2].toString());
 
                     $(".fileupload").slideToggle();
+					
+		$(".fileuploadImport").slideToggle();
 		startRow=2;
 		if(data[0][0].toString().includes('Student')){
 		// alert ("Canvas!");
@@ -142,6 +147,11 @@ window.addEventListener('resize', resize, false);
 		else{
 		generateDropdowns(data);
 		}
+		}
+		else if (data[0][0]=="Group"){
+		onlyOneInput=true;
+		document.getElementById("dvImportSegments3").hidden=true;
+        generateImports(data);
 		}
 			
 		else{
@@ -222,11 +232,12 @@ document.getElementById('txtFileUpload2').addEventListener('change', upload2, fa
 				// console.log(allStudentBoxIds[boxid][0]);
 				// console.log(subgroup[childnum].id);
 			if (allStudentBoxIds[boxid][0]==subgroup[childnum].id){
-				console.warn(allStudentBoxIds[boxid][1]);
+				console.warn(allStudentBoxIds[boxid][0]);
+				console.warn(document.getElementById(groupNamesArray[parentnum][0]).innerHTML);
 						//for (var i = 0; i < nameIDArray.length; i++) {
 							//if (nameIDArray[i][0].includes(allStudentBoxIds[boxid][1])){
 								//console.warn(nameIDArray.toString());
-								groupThenNameArray.push([JSON.stringify("Group "+parentnum), JSON.stringify(allStudentBoxIds[boxid][1]+"")]);
+								groupThenNameArray.push([JSON.stringify("Group "+parentnum), JSON.stringify(allStudentBoxIds[boxid][1]+""), document.getElementById(groupNamesArray[parentnum][0]).innerHTML.substring(6, document.getElementById(groupNamesArray[parentnum][0]).innerHTML.indexOf("button")-1)]);
 							//}
 							// rowsInExport.push(["room"+i, (nameIDArray[i][1][0]+"@mcpsmd.net")]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
 						//}
@@ -242,7 +253,7 @@ for (var i = 0; i < groupThenNameArray.length; i++) {
 			// console.warn(nameIDArray[i][1]);
 			tempNameHere=groupThenNameArray[i][1];
 			groupThenNameArray[i][1] = tempNameHere.split(', ').slice(-1).join(' ')+ " " + tempNameHere.split(', ').slice(0, -1).join(' ');			
-           rowsInExport.push([groupThenNameArray[i][0], groupThenNameArray[i][1]]);//, groupThenNameArray[i][1]]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
+           rowsInExport.push([groupThenNameArray[i][0], groupThenNameArray[i][1],groupThenNameArray[i][2] ]);//, groupThenNameArray[i][1]]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
         }
 	// rowsInExport.sort();
 	rowsInExport.unshift(["Group", "Names"]);
@@ -1010,7 +1021,7 @@ let values = (largestScore - smallestScore + 1)
 		groupNamesArray=[];
             $(".pickgroupstyle").slideToggle();
             $(".studentsContainerOne").slideToggle();
-        document.getElementById('selectionsBox').innerHTML = "<div class = 'finalizeGroups'> <span style='font-size: xx-large'> Finalize Names as Necessary and then click Done:</span> <button type ='button' id ='finalizeGroupsButton' style = 'font-size: xx-large'>Finalize Groups</button></div><div class = 'groupAgain'><button type ='button' id ='remakeGroupsButton' style = 'font-size: xx-large'>Remake Groups</button>   <button type ='button' id ='pickOneOverall' style = 'font-size: xx-large' hidden>Pick Random Student</button>    <button type ='button' id ='pickOneEach' style = 'font-size: xx-large' hidden>Pick One From Each Group</button>    <button type ='button' id ='exportGroups' style = 'font-size: xx-large' hidden>Export Groups</button></div>";
+        document.getElementById('selectionsBox').innerHTML = "<div class = 'finalizeGroups'> <span style='font-size: xx-large'> Finalize Names as Necessary and then click Done:</span> <button type ='button' id ='finalizeGroupsButton' style = 'font-size: xx-large'>Finalize Groups</button></div><div class = 'groupAgain'><button type ='button' id ='remakeGroupsButton' style = 'font-size: xx-large'>Remake Groups</button>   <button type ='button' id ='pickOneOverall' style = 'font-size: xx-large' hidden>Pick Random Student</button>    <button type ='button' id ='pickOneEach' style = 'font-size: xx-large' hidden>Pick One From Each Group</button>    <button type ='button' id ='importGroups' style = 'font-size: xx-large' hidden>Import Groups</button>    <button type ='button' id ='exportGroups' style = 'font-size: xx-large' hidden>Export Groups</button></div>";
 
         $(".studentsContainerTwo").slideToggle();
         console.log(groupAArray.toString());
@@ -1228,6 +1239,19 @@ let values = (largestScore - smallestScore + 1)
 		  $('#exportGroups').click(function () {
 			generateNameIDMatchArray2();
 		 });
+		  $('#importGroups').click(function () {
+		$(".fileuploadImport").slideToggle();
+					document.getElementById('pickOneEach').hidden=true;
+			
+			document.getElementById('remakeGroupsButton').hidden=true;
+			document.getElementById('pickOneOverall').hidden=true;
+			
+			document.getElementById('exportGroups').hidden=true;
+			
+			document.getElementById('importGroups').hidden=true;
+		$(".fileupload").slideToggle();
+        $(".studentsContainerTwo").slideToggle();
+		 });
         $('#finalizeGroupsButton').click(function () {
             lockNames = true;
 			document.getElementById('pickOneEach').hidden=false;
@@ -1235,6 +1259,8 @@ let values = (largestScore - smallestScore + 1)
 			document.getElementById('pickOneOverall').hidden=false;
 			
 			document.getElementById('exportGroups').hidden=false;
+			
+			document.getElementById('importGroups').hidden=false;
 			document.getElementById('studentContainerTwo').style.height='500px';
             // console.warn("yo yo yo "+allStudentBoxIds[5]);
             // document.getElementById(allStudentBoxIds[5]).style.="";
@@ -1282,7 +1308,7 @@ let values = (largestScore - smallestScore + 1)
 		groupNamesArray=[];
             $(".pickgroupstyle").slideToggle();
             $(".studentsContainerOne").slideToggle();
-        document.getElementById('selectionsBox').innerHTML = "<div class = 'finalizeGroups'> <span style='font-size: xx-large'> Finalize Names as Necessary and then click Done:</span> <button type ='button' id ='finalizeGroupsButton' style = 'font-size: xx-large'>Finalize Groups</button></div><div class = 'groupAgain'><button type ='button' id ='remakeGroupsButton' style = 'font-size: xx-large'>Remake Groups</button>   <button type ='button' id ='pickOneOverall' style = 'font-size: xx-large' hidden>Pick Random Student</button>    <button type ='button' id ='pickOneEach' style = 'font-size: xx-large' hidden>Pick One From Each Group</button>    <button type ='button' id ='exportGroups' style = 'font-size: xx-large' hidden>Export Groups</button></div>";
+        document.getElementById('selectionsBox').innerHTML = "<div class = 'finalizeGroups'> <span style='font-size: xx-large'> Finalize Names as Necessary and then click Done:</span> <button type ='button' id ='finalizeGroupsButton' style = 'font-size: xx-large'>Finalize Groups</button></div><div class = 'groupAgain'><button type ='button' id ='remakeGroupsButton' style = 'font-size: xx-large'>Remake Groups</button>   <button type ='button' id ='pickOneOverall' style = 'font-size: xx-large' hidden>Pick Random Student</button>    <button type ='button' id ='pickOneEach' style = 'font-size: xx-large' hidden>Pick One From Each Group</button>    <button type ='button' id ='importGroups' style = 'font-size: xx-large' hidden>Import Groups</button>    <button type ='button' id ='exportGroups' style = 'font-size: xx-large' hidden>Export Groups</button></div>";
 
         $(".studentsContainerTwo").slideToggle();
         numberOfGroups = Math.ceil((columnArray.length-nottargetednum) / maxStudents);
@@ -1510,6 +1536,19 @@ let values = (largestScore - smallestScore + 1)
 		  $('#exportGroups').click(function () {
 			generateNameIDMatchArray2();
 		 });
+		  $('#importGroups').click(function () {
+		$(".fileuploadImport").slideToggle();
+					document.getElementById('pickOneEach').hidden=true;
+						document.getElementById('remakeGroupsButton').hidden=true;
+
+			document.getElementById('pickOneOverall').hidden=true;
+			
+			document.getElementById('exportGroups').hidden=true;
+			
+			document.getElementById('importGroups').hidden=true;
+		$(".fileupload").slideToggle();
+        $(".studentsContainerTwo").slideToggle();
+		 });
         $('#finalizeGroupsButton').click(function () {
 			// alert ("hi")
 
@@ -1518,6 +1557,8 @@ let values = (largestScore - smallestScore + 1)
 			document.getElementById('pickOneOverall').hidden=false;
 			
 			document.getElementById('exportGroups').hidden=false;
+			
+			document.getElementById('importGroups').hidden=false;
             lockNames = true;
             // console.warn("yo yo yo "+allStudentBoxIds[5]);
             // document.getElementById(allStudentBoxIds[5]).style.="";
@@ -1572,6 +1613,418 @@ let values = (largestScore - smallestScore + 1)
 
         });
     }
+	
+var generateImports = function (dataArray) {
+	
+        // $(".fileupload").slideToggle();
+		console.log(dataArray[0].toString());
+	
+        document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment' style = 'width:auto'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:large; width:auto; max-width:300px;'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitAssignment' style='font-size: xx-large'>Submit</button></div>";
+        // $('#assignmentSelect').empty();
+		// if (canvas){
+			// for (var i = 5; i < dataArray[startRow].length; i++) {
+			// if (dataArray[startRow][i].includes("MAX")){
+				// addAssignmentOption(dataArray[startRow][i].substring(0, dataArray[startRow][i].indexOf("MAX")));
+			// }
+			// else{
+				// addAssignmentOption(dataArray[startRow][i]);
+			// }
+        // }
+		// }
+		let arrayOfGroupNames=[];
+		let arrayOfGroupIndexes=[];
+		let tempGroupNum=-1;
+		for (var i = 1; i < dataArray.length; i++){
+			// console.log(dataArray[i]);
+			if (!(arrayOfGroupNames.includes(dataArray[i][0]))){
+				// tempGroupNum++;
+				arrayOfGroupNames.push(dataArray[i][0]);
+				arrayOfGroupIndexes.push(i);
+			}
+			// console.log(arrayOfGroupNames);
+			// console.log(dataArray[i]);
+			// groupOfGroupsArray[tempGroupNum].push([dataArray[i][1], "#77D5D5", "medium"]); //to later select the background color for highest groups
+
+		}
+
+
+		allGroupIds=[];
+		absentArray=[];
+		groupNamesArray=[];
+        document.getElementById('selectionsBox').innerHTML = "<div class = 'finalizeGroups'> <span style='font-size: xx-large'> Finalize Names as Necessary and then click Done:</span> <button type ='button' id ='finalizeGroupsButton' style = 'font-size: xx-large'>Finalize Groups</button></div><div class = 'groupAgain'><button type ='button' id ='remakeGroupsButton' style = 'font-size: xx-large'>Remake Groups</button>   <button type ='button' id ='pickOneOverall' style = 'font-size: xx-large' hidden>Pick Random Student</button>    <button type ='button' id ='pickOneEach' style = 'font-size: xx-large' hidden>Pick One From Each Group</button>    <button type ='button' id ='importGroups' style = 'font-size: xx-large' hidden>Import Groups</button>    <button type ='button' id ='exportGroups' style = 'font-size: xx-large' hidden>Export Groups</button></div>";
+
+        $(".studentsContainerTwo").slideToggle();
+        numberOfGroups = arrayOfGroupNames.length;
+
+        var testIdName = "group" + 0 + "";
+        allGroupIds.push(testIdName + "");
+		console.log(dataArray[1].length);
+        document.getElementById("studentContainerTwo").innerHTML = "<div id = '" + testIdName + "'>" + testIdName + "</div>";
+        for (var i = 1; i < numberOfGroups; i++) {
+			if (dataArray[1].length>2){
+			// var testIdName = "group" + dataArray[1][2]+"";
+            var testIdName = "group" + i + "";
+			}
+			else{
+            var testIdName = "group" + i + "";
+			}
+            document.getElementById("studentContainerTwo").innerHTML = document.getElementById("studentContainerTwo").innerHTML + "<div id = '" + testIdName + "'>" + testIdName + "</div>";
+            allGroupIds.push(testIdName + "");
+
+        }
+        groupOfGroupsArray = [];
+        for (var j = 0; j < numberOfGroups; j++) {
+            // alert (j);
+            groupOfGroupsArray.push(new Array());
+        }
+        console.log(groupOfGroupsArray.toString());
+        let groupPlacement = 0;
+		arrayOfGroupNames=[];
+		for (var i = 1; i < dataArray.length; i++){
+			console.log(dataArray[i]);
+			if (!(arrayOfGroupNames.includes(dataArray[i][0]))){
+				tempGroupNum++;
+				arrayOfGroupNames.push(dataArray[i][0]);
+			}
+			console.log(tempGroupNum);
+			console.log(arrayOfGroupNames);
+			console.log(dataArray[i]);
+			groupOfGroupsArray[tempGroupNum].push([dataArray[i][1], "#77D5D5", "medium"]); //to later select the background color for highest groups
+
+		}
+        // console.warn(groupCArray[0][0].toString());
+       // for (var g = 0; g < groupCArray.length; g++) {
+            // console.log(groupPlacement);
+			// // groupOfGroupsArray.push(
+            // // console.warn(groupCArray[g][0].toString());
+			// if (!(document.getElementById(groupCArray[g][0]).classList.contains("nottargeted"))){
+            // (groupOfGroupsArray[groupPlacement + 0]).push([groupCArray[g][0], "#83EA83", "high"]); //to later select the background color for highest groups
+            // groupPlacement++;
+			// }
+						// else{
+			// absentArray.push(groupCArray[g][0]);
+			// console.log("The absent list is now "+absentArray);
+			// }
+            // if (groupPlacement > (numberOfGroups - 1)) {
+                // // console.log(groupPlacement);
+                // groupPlacement = 0;
+            // }
+        // }
+        // for (var g = 0; g < groupBArray.length; g++) {
+			// if (!(document.getElementById(groupBArray[g][0]).classList.contains("nottargeted"))){
+            // groupOfGroupsArray[groupPlacement].push([groupBArray[g][0], "#77D5D5", "medium"]); //to later select the background color for highest groups
+            // groupPlacement++;
+			// }
+						// else{
+			// absentArray.push(groupBArray[g][0]);
+			// console.log("The absent list is now "+absentArray);
+			// }
+            // if (groupPlacement > (numberOfGroups - 1)) {
+                // groupPlacement = 0;
+            // }
+        // }
+        // for (var g = 0; g < groupAArray.length; g++) {
+			// if (!(document.getElementById(groupAArray[g][0]).classList.contains("nottargeted"))){
+            // groupOfGroupsArray[groupPlacement].push([groupAArray[g][0], "#FFBABA", "low"]) //to later select the background color for highest groups
+            // groupPlacement++;
+			// }
+						// else{
+			// absentArray.push(groupAArray[g][0]);
+			// console.log("The absent list is now "+absentArray);
+			// }
+            // if (groupPlacement > (numberOfGroups - 1)) {
+                // groupPlacement = 0;
+            // }
+        // }
+
+		console.error(groupOfGroupsArray.length);
+		allStudentBoxIds=[];
+		var spot=0;
+        for (var k = 0; k < groupOfGroupsArray.length; k++) {
+			
+            shuffle(groupOfGroupsArray[k]);
+            var testTempIdName = groupOfGroupsArray[k][0][0]+""
+            var testIdName = testTempIdName.split(', ').slice(-1).join(' ')+ " " + testTempIdName.split(', ').slice(0, -1).join(' ');	
+           
+            var testIdTag = testIdName.replace(/\s+/g, '');
+            var groupIdTag = "groupThing" + k;
+			
+			
+			// var testIdName = "group" + dataArray[1][2]+"";
+
+            var groupIdTagNumber = "groupNumber" + k;
+			spot = k+1;
+			console.error(spot);
+			if (dataArray[1].length>2){
+				spot = dataArray[arrayOfGroupIndexes[k]][2]+"";
+			}
+			console.warn(k+" "+spot);
+            document.getElementById(allGroupIds[k]).innerHTML = "<div id = '" + groupIdTag + "'>Group: <input type='text'  name='o' id = '" + groupIdTagNumber + "' value='" + spot + "' style='width: 35%'></input></div>" + "<div class='card' id = '" + testIdTag + "'><div class='container'> <h4><b>" + testIdName + "</b></h4></div></div>";
+            groupNamesArray.push([groupIdTag + "", groupIdTagNumber + ""]);
+            document.getElementById(testIdTag + "").classList.add(groupOfGroupsArray[k][0][2]);
+
+            allStudentBoxIds.push([testIdTag + "", testIdName + "", (groupOfGroupsArray[k][0][2]) + ""]);
+            for (var i = 1; i < groupOfGroupsArray[k].length; i++) {
+                // alert (groupOfGroupsArray[k].length+" of group " + k+ " person is "+testIdName);
+                // var testIdName = groupOfGroupsArray[k][i][0] + "";
+				var testTempIdName = groupOfGroupsArray[k][i][0]+""
+				var testIdName = testTempIdName.split(', ').slice(-1).join(' ')+ " " + testTempIdName.split(', ').slice(0, -1).join(' ');	
+           
+            var testIdName = testTempIdName.split(', ').slice(-1).join(' ')+ " " + testTempIdName.split(', ').slice(0, -1).join(' ');	
+           
+                var testIdTag = testIdName.replace(/\s+/g, '');
+                // document.getElementById(allGroupIds[k]).innerHTML = document.getElementById(allGroupIds[k]).innerHTML + "<div class='card'><div class='container'><input type='text'  name='organicCompoundCoefficient' id = '" + testIdTag + "' value='" + testIdName + "' style='background-color:" + groupOfGroupsArray[k][i][1] + "'></input></div></div>";
+
+                document.getElementById(allGroupIds[k]).innerHTML = document.getElementById(allGroupIds[k]).innerHTML + "<div class='card' id = '" + testIdTag + "'><div class='container'> <h4><b>" + testIdName + "</b></h4></div></div>";
+                document.getElementById(testIdTag + "").classList.add(groupOfGroupsArray[k][i][2]);
+                // if(groupOfGroupsArray[k].length
+                // alert(testIdTag);
+                allStudentBoxIds.push([testIdTag + "", testIdName + "", groupOfGroupsArray[k][i][2] + ""]);
+                // alert (groupOfGroupsArray[k].length+" of group " + k+ " person is "+testIdName);
+
+                // console.warn("yo yo yo "+allStudentBoxIds.toString());
+
+            }
+
+        }
+		console.error(allStudentBoxIds);
+        for (var i = 0; i < allStudentBoxIds.length; i++) {
+
+				console.warn(document.getElementById(allStudentBoxIds[i + 0][0]));
+            (function (i) {
+                document.getElementById(allStudentBoxIds[i + 0][0]).addEventListener("click", function (e) {
+                    if ((!itSelected) && (!lockNames)) {
+                        iOne = i;
+                        colorOne = document.getElementById(allStudentBoxIds[i + 0][0]).style.backgroundColor + "";
+                        for (var k = 0; k < allStudentBoxIds.length; k++) {
+                            if ((k != i) && ((allStudentBoxIds[i][2]) == allStudentBoxIds[k][2])) {
+                                document.getElementById(allStudentBoxIds[k][0]).classList.add("targeted");
+                            } else if ((k == iOne)) {}
+                            else {
+
+                                document.getElementById(allStudentBoxIds[k][0]).classList.add("nottargeted");
+                            }
+                        }
+
+                        document.getElementById(allStudentBoxIds[i][0]).classList.add("selected");
+
+                        nameOne = allStudentBoxIds[i][1] + "";
+                        itSelected = true;
+                        // alert (i+" "+nameOne);
+                    } else if ((!lockNames) && ((colorOne == (document.getElementById(allStudentBoxIds[i][0]).style.backgroundColor + "")) || (("white" == (document.getElementById(allStudentBoxIds[i][0]).style.backgroundColor + ""))))) {
+                        // alert (colorOne);
+                        for (var k = 0; k < allStudentBoxIds.length; k++) {
+                            if ((k != iOne) && ((allStudentBoxIds[iOne][2]) == allStudentBoxIds[k][2])) {
+
+                                document.getElementById(allStudentBoxIds[k][0]).classList.remove("targeted");
+                            } else if ((k == iOne)) {}
+                            else {
+
+                                document.getElementById(allStudentBoxIds[k][0]).classList.remove("nottargeted");
+                            }
+                        }
+                        document.getElementById(allStudentBoxIds[iOne][0]).classList.remove("selected");
+                        nameTwo = allStudentBoxIds[i][1] + "";
+                        document.getElementById(allStudentBoxIds[i][0]).innerHTML = "<div class='container'> <h4><b>" + nameOne + "</b></h4></div>";
+                        allStudentBoxIds[i][1] = nameOne;
+                        document.getElementById(allStudentBoxIds[iOne][0]).innerHTML = "<div class='container'> <h4><b>" + nameTwo + "</b></h4></div>";
+                        allStudentBoxIds[iOne][1] = nameTwo;
+
+                        // alert (i+" "+nameOne+" "+nameTwo);
+                        itSelected = false;
+
+                    }
+                });
+
+            })(i);
+        }
+        // alert ("hi");
+        // if (true){
+        // for (var i = 2; i < dataArray[2].length; i++) {
+        // if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML==(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")))) {
+        // columnOfStudy=i+0;
+        // }
+        // }
+
+
+        // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
+        // }
+
+
+        // alert(noteLengthMin+" sup " +noteLengthMax);
+
+        // allStudentBoxIds.push(testIdTag + "");
+
+        // document.getElementById(allStudentBoxIds[0]).style.backgroundColor="#77D5D5";
+        // document.getElementById('studentContainerTwo').innerHTML = "<div>hi</div><div>hi</div><div>hi</div>";
+        // document.getElementById('selectionsBox').innerHTML = "<div class = 'pickgroupstyle'> <button type ='button' id ='groupByNumGroupsButton'>Group by the Number of Students per Group</button></div> <button type ='button' id ='groupByNumStudentsButton'>Group by the Maximum Number of Groups</button></div>";
+
+        // $('#groupsByNumGroupsButton').click(function () {
+        // // alert ("hi");
+        // // if (true){
+
+        // // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
+        // // }
+        // $(".pickgroupstyle").slideToggle();
+        // groupByGroups();
+        // });
+
+        // $('#groupByNumStudentsButton').click(function () {
+        // // alert ("hi");
+        // // if (true){
+
+        // // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
+        // // }
+        // $(".pickgroupstyle").slideToggle();
+        // groupByStudents();
+        // });
+		// $(".fileupload").slideToggle();
+		
+
+        $('#remakeGroupsButton').click(function () { //go back to the beginning but see if attendance remains
+			generateDropdowns(data);
+			console.log("error of absent is "+absentArray);
+			$(".finalizeGroups").slideToggle();
+			$(".remakeGroups").slideToggle();
+			
+        $(".studentsContainerTwo").slideToggle();
+			// console.log("error of absent is "+absentArray);
+			const objsArrStr = JSON.stringify(absentArray);
+			const objsArrDeepCopy = JSON.parse(objsArrStr);	
+			absentArray=objsArrDeepCopy;
+		});
+				 $('#pickOneEach').click(function () {
+			 for (var l = 0; l < groupNamesArray.length; l++) {
+				highlightGroup(l);
+			 }
+		 });
+		  $('#pickOneOverall').click(function () {
+			  let randomGroup = Math.floor(Math.random() * groupNamesArray.length);
+			  clearHighlights();
+				highlightGroup(randomGroup);
+		 });
+		  $('#exportGroups').click(function () {
+			generateNameIDMatchArray2();
+		 });
+		  $('#importGroups').click(function () {
+		$(".fileuploadImport").slideToggle();
+		
+			// $(".remakeGroups").slideToggle();
+					document.getElementById('pickOneEach').hidden=true;
+						document.getElementById('remakeGroupsButton').hidden=true;
+
+			document.getElementById('pickOneOverall').hidden=true;
+			
+			document.getElementById('exportGroups').hidden=true;
+			
+			document.getElementById('importGroups').hidden=true;
+		$(".fileupload").slideToggle();
+        $(".studentsContainerTwo").slideToggle();
+		 });
+        $('#finalizeGroupsButton').click(function () {
+			// alert ("hi")
+
+			document.getElementById('pickOneEach').hidden=false;
+			
+			document.getElementById('pickOneOverall').hidden=false;
+			
+			document.getElementById('exportGroups').hidden=false;
+			
+			document.getElementById('importGroups').hidden=false;
+            lockNames = true;
+            // console.warn("yo yo yo "+allStudentBoxIds[5]);
+            // document.getElementById(allStudentBoxIds[5]).style.="";
+
+            // document.getElementById(allStudentBoxIds[0]).style.backgroundColor="gray";
+            // for (var l = 0; l < groupNamesArray.length; l++) {
+                // let tempnum = document.getElementById(groupNamesArray[l][1]).value + "";
+                // document.getElementById(groupNamesArray[l][0]).innerHTML = "Group: " + tempnum + "";
+
+            // }
+			            for (var l = 0; l < groupNamesArray.length; l++) {
+				(function (l) {
+                let tempnum = document.getElementById(groupNamesArray[l][1]).value + "";
+                document.getElementById(groupNamesArray[l][0]).innerHTML = "Group: " + tempnum + " " + "<button type ='button' id ='"+(groupNamesArray[l][0]+"button")+"' style='font-size: medium'>pick randomly </button>";
+				 // document.getE.click(function () {
+				document.getElementById(groupNamesArray[l][0]+"button").addEventListener("click", function (f) {
+					highlightGroup(l);
+					});
+				document.getElementById("group"+l).style.paddingLeft='0px';
+            })(l);
+				}
+			
+			
+			
+			
+            for (var j = 0; j < allStudentBoxIds.length; j++) {
+                // document.getElementById(allStudentBoxIds[0]).innerHTML="";
+                // alert	(j);
+                // alert (allStudentBoxIds[j][0]);
+
+                document.getElementById(allStudentBoxIds[j][0]).style.backgroundColor = "white";
+
+                document.getElementById(allStudentBoxIds[j][0]).style.borderColor = "white";
+
+                document.getElementById(allStudentBoxIds[j][0]).style.borderWidth = "1px";
+
+                document.getElementById(allStudentBoxIds[j][0]).classList.remove("targeted");
+                document.getElementById(allStudentBoxIds[j][0]).classList.remove("selected");
+                document.getElementById(allStudentBoxIds[j][0]).classList.remove("nottargeted");
+                // document.getElementById('KARENBROWN').style.backgroundColor = "white";
+            }
+						// console.log(groupNamesArray[1].toString());
+			// console.log(groupOfGroupsArray[1]);
+			// console.log(groupOfGroupsArray[2]);
+			// console.log(groupOfGroupsArray[3]);
+					// if (confirm("Do you want to export your groups to a spreadsheet?")){
+		
+			// // document.getElementById('txtFileUpload2').click();
+			// generateNameIDMatchArray2();
+					// }        
+		$(".finalizeGroups").slideToggle();
+		$(".fileuploadImport").slideToggle();
+		document.getElementById('remakeGroupsButton').hidden=true;
+		
+		document.getElementById('exportGroups').hidden=true;
+
+        });
+				let tempSetup=true;
+		if (tempSetup==true){
+		document.getElementById('finalizeGroupsButton').click();
+		// alert("done");
+		}
+}
+	
+function uploadImport(evt) {
+	// alert ("hi");
+	onlyOneInput=false;
+        if (!browserSupportFileUpload()) {
+            alert('The File APIs are not fully supported in this browser!');
+        } else {
+            dataImport = null;
+            var file = evt.target.files[0];
+            var reader = new FileReader();
+            reader.readAsText(file);
+            reader.onload = function (event) {
+                var csvData = event.target.result;
+                dataImport = $.csv.toArrays(csvData);
+                if (dataImport && dataImport.length > 0) {
+                    // alert('Imported -' + data.length + '- rows successfully!');
+                    generateImports(dataImport);
+              
+			  // console.log (data.toString());
+                } else {
+                    alert('No data to import!');
+                }
+            };
+            reader.onerror = function () {
+                alert('Unable to read ' + file.fileName);
+            };
+        }
+    }
+    // The event listener for the file upload
+    document.getElementById('txtFileUpload3').addEventListener('change', uploadImport, false);
+
 var exportBreakout = function(){
 	
 	
