@@ -151,14 +151,14 @@ window.addEventListener('resize', resize, false);
 		generateDropdowns(data);
 		}
 		}
-		else if (data[0][0]=="Group"){
+		else if (data[0][0]=="Group"){//this means it is an import of a groupmaker export
 		onlyOneInput=true;
 		document.getElementById("dvImportSegments3").hidden=true;
 		outside=true;
         generateImports(data);
 		}
 			
-		else{
+		else{ //this means that we are in a synergy export
 		outside=false;
 		generateDropdowns(data);
 		}
@@ -569,7 +569,7 @@ link.click();
 
     var generateSliders = function () {
 		nottargetednum=0;
-		        console.log(columnOfStudy);
+			console.log(columnOfStudy);
         columnArray = getCol(data, columnOfStudy);
 
 	
@@ -752,6 +752,8 @@ let values = (largestScore - smallestScore + 1)
         }
     }
     function getCol(matrix, col) { //put data in for matrix
+	largestScore=0;
+	smallestScore=1000;
         var column = [];
 		if (canvas){
 			for (var i = (startRow+2); i < matrix.length; i++) {
@@ -761,7 +763,7 @@ let values = (largestScore - smallestScore + 1)
 				catch (error){
 				}
 				try{
-				console.error(matrix[1][col]);
+				// console.error(matrix[1][col]);
 				if (matrix[1][col]=='(read only)')
 				{
 				matrix[1][col]=100;
@@ -800,13 +802,17 @@ let values = (largestScore - smallestScore + 1)
 		}
 		else{
         for (var i = (startRow+1); i < matrix.length; i++) {
+			console.log(matrix[i][col]);
 				try {
+				if (matrix[i][col].includes(" ")){
 				matrix[i][col]=matrix[i][col].substr(0,matrix[i][col].indexOf(' '));
 				}
+				}
 				catch (error){
+					console.error(error);
 				}
 				matrix[i][col]=Number((matrix[i][col]));
-		
+				console.log(matrix[i][col]);
 			// if (columnOfStudy==1){
 				// // matrix[i][col]=((matrix[i][col]).replace(/[a-z]/gi, '' ));
 				// // matrix[i][col]=Number((matrix[i][col]).replace(/\//g, ""));
@@ -1306,6 +1312,12 @@ let values = (largestScore - smallestScore + 1)
 		        $('#remakeGroupsButton').click(function () { //go back to the beginning but see if attendance remains
 			generateDropdowns(data);
 			console.log("error of absent is "+absentArray);
+			
+			document.getElementById('remakeGroupsButton').hidden=true;
+			document.getElementById('exportGroups').hidden=true;
+			
+			document.getElementById('importGroups').hidden=true;
+			document.getElementById('invertGroups').hidden=true;
 			$(".finalizeGroups").slideToggle();
 			$(".remakeGroups").slideToggle();
 			
@@ -1332,9 +1344,9 @@ let values = (largestScore - smallestScore + 1)
 		$(".fileuploadImport").slideToggle();
 					document.getElementById('pickOneEach').hidden=true;
 			
-			document.getElementById('remakeGroupsButton').hidden=true;
 			document.getElementById('pickOneOverall').hidden=true;
 			
+			document.getElementById('remakeGroupsButton').hidden=true;
 			document.getElementById('exportGroups').hidden=true;
 			
 			document.getElementById('importGroups').hidden=true;
@@ -1631,6 +1643,11 @@ let values = (largestScore - smallestScore + 1)
         $('#remakeGroupsButton').click(function () { //go back to the beginning but see if attendance remains
 			generateDropdowns(data);
 			console.log("error of absent is "+absentArray);
+						document.getElementById('remakeGroupsButton').hidden=true;
+			document.getElementById('exportGroups').hidden=true;
+			
+			document.getElementById('importGroups').hidden=true;
+			document.getElementById('invertGroups').hidden=true;
 			$(".finalizeGroups").slideToggle();
 			$(".remakeGroups").slideToggle();
 			
@@ -2028,6 +2045,11 @@ var generateImports = function (dataArray) {
         $('#remakeGroupsButton').click(function () { //go back to the beginning but see if attendance remains
 			generateDropdowns(data);
 			console.log("error of absent is "+absentArray);
+						document.getElementById('remakeGroupsButton').hidden=true;
+			document.getElementById('exportGroups').hidden=true;
+			
+			document.getElementById('importGroups').hidden=true;
+			document.getElementById('invertGroups').hidden=true;
 			$(".finalizeGroups").slideToggle();
 			$(".remakeGroups").slideToggle();
 			
@@ -2442,6 +2464,11 @@ var generateInvert = function (dataArray) {
         $('#remakeGroupsButton').click(function () { //go back to the beginning but see if attendance remains
 			generateDropdowns(data);
 			console.log("error of absent is "+absentArray);
+						document.getElementById('remakeGroupsButton').hidden=true;
+			document.getElementById('exportGroups').hidden=true;
+			
+			document.getElementById('importGroups').hidden=true;
+			document.getElementById('invertGroups').hidden=true;
 			$(".finalizeGroups").slideToggle();
 			$(".remakeGroups").slideToggle();
 			
