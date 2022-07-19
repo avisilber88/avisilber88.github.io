@@ -74,29 +74,29 @@ window.addEventListener('resize', resize, false);
     }
 
     // Method that reads and processes the selected file
-    function upload(evt) {
-        if (!browserSupportFileUpload()) {
-            alert('The File APIs are not fully supported in this browser!');
-        } else {
-            data = null;
-            var file = evt.target.files[0];
-            var reader = new FileReader();
-            reader.readAsText(file);
-            reader.onload = function (event) {
-                var csvData = event.target.result;
-                data = $.csv.toArrays(csvData);
-                if (data && data.length > 0) {
-                    alert('Imported -' + data.length + '- rows successfully!');
-                    // console.log (data.toString());
-                } else {
-                    alert('No data to import!');
-                }
-            };
-            reader.onerror = function () {
-                alert('Unable to read ' + file.fileName);
-            };
-        }
-    }
+    // function upload(evt) {
+        // if (!browserSupportFileUpload()) {
+            // alert('The File APIs are not fully supported in this browser!');
+        // } else {
+            // data = null;
+            // var file = evt.target.files[0];
+            // var reader = new FileReader();
+            // reader.readAsText(file);
+            // reader.onload = function (event) {
+                // var csvData = event.target.result;
+                // data = $.csv.toArrays(csvData);
+                // if (data && data.length > 0) {
+                    // alert('Imported -' + data.length + '- rows successfully!');
+                    // // console.log (data.toString());
+                // } else {
+                    // alert('No data to import!');
+                // }
+            // };
+            // reader.onerror = function () {
+                // alert('Unable to read ' + file.fileName);
+            // };
+        // }
+    // }
     // The event listener for the file upload
     document.getElementById('txtFileUpload').addEventListener('change', upload, false);
 
@@ -108,19 +108,334 @@ window.addEventListener('resize', resize, false);
         }
         return isCompatible;
     }
+var arrayTest=[];
+var ext="";
+async function CSV_XLSX_File_Selected_Event() {
+    var id = this.id
+    var inputElement = document.getElementById(id)
+    let ext = inputElement.value
+    ext = ext.split(".")
+    ext = ext[ext.length - 1]
+    var files = inputElement.files || [];
+    if (!files.length) return;
+    var file = files[0];
+    var reader = new FileReader();
+    reader.onloadend = async function (event) {
+        var arrayBuffer = reader.result;
+        var options = { type: 'array' };
+        var workbook = XLSX.read(arrayBuffer, options);
+        //console.timeEnd();
 
+        var sheetName = workbook.SheetNames
+        var sheet = workbook.Sheets[sheetName]
+        var sheet_to_html = XLSX.utils.sheet_to_html(sheet)
+        var sheet_to_json = XLSX.utils.sheet_to_json(sheet)
+
+        if (sheet_to_json.length === 0) {
+            var sheet_to_csv = [XLSX.utils.sheet_to_csv(sheet)]
+            var results = sheet_to_csv
+        }
+
+        if (sheet_to_json.length > 0) {
+            var results = sheet_to_json
+        }
+
+        let Parsed_File_Obj = {
+            "sheet_to_html": sheet_to_html,
+            "results": results,
+            "ext": ext,
+        }
+
+        console.log('Parsed_File_Obj')
+        console.log(Parsed_File_Obj)
+    };
+    reader.readAsArrayBuffer(file);
+}
     // Method that reads and processes the selected file
-    function upload(evt) {
+	
+	  function upload(evt) {
+		  absentArray=[];
+		  canvas=false;
+            data = null;
+		  var id = this.id
+    var inputElement = document.getElementById(id)
+    ext = inputElement.value
+    ext = ext.split(".")
+    ext = ext[ext.length - 1]
+	console.log(ext);	
+	// if (true){
+		// alert("hi");
+    var files = inputElement.files || [];
+    if (!files.length) return;
+    var file = files[0];
+    var reader = new FileReader();
+    reader.onloadend = async function (event) {
+		
+		if ((ext=='xls')||(ext=='xlsx')){
+        var arrayBuffer = reader.result;
+        var options = {type: 'array', codepage: false ? 65001 : void 0};
+        var workbook = XLSX.read(arrayBuffer, options);
+			console.log(workbook);
+        var sheetName = workbook.SheetNames
+        var sheet = workbook.Sheets[sheetName]
+		console.log(sheet["!ref"]);
+		let firstSet=sheet["!ref"].substr(0,sheet["!ref"].indexOf(':'));
+		let firstSetColumn=firstSet.substr(0,firstSet.search(/\d/));
+		let firstSetRow=firstSet.substr(firstSet.search(/\d/),firstSet.length);;
+		let secondSet=sheet["!ref"].substr(1+sheet["!ref"].indexOf(':'), sheet["!ref"].length);
+		let secondSetColumn=secondSet.substr(0,secondSet.search(/\d/));
+		let secondSetRow=(Number)(secondSet.substr(secondSet.search(/\d/),secondSet.length));
+console.log(firstSet+" "+firstSetColumn+" "+firstSetRow);
+console.log(secondSet+" "+secondSetColumn+" "+secondSetRow);	
+
+	// const indexFirstNumber = str.search(/\d/);
+		// console.log(sheet["!ref"].substr(sheet["!ref"].indexOf(':'), sheet["!ref"].indexOf
+		arrayTest=[];
+var alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ"]
+
+let columnLength = alphabet.indexOf(secondSetColumn);
+// console.log(columnLength);
+for (var j = 1; j<(secondSetRow+1); j++){
+	let newRow=[];
+for (var i = 0; i<columnLength; i++){
+	if (sheet[alphabet[i]+j]==null){
+		newRow.push("");	
+	}
+	else{
+		newRow.push(sheet[alphabet[i]+j].v);
+	}
+}
+	arrayTest.push(newRow);
+}
+console.log(arrayTest);
+		}
+		else{
+			 var csvData = event.target.result;
+                data = $.csv.toArrays(csvData);
+                if (data && data.length > 0) {
+                    // alert('Imported -' + data.length + '- rows successfully!');
+                    // console.log (data[2].toString());
+
+                    $(".fileupload").slideToggle();
+					
+		$(".fileuploadImport").slideToggle();
+		startRow=2;
+		if(data[0][0].toString().includes('Student')){
+		// alert ("Canvas!");
+		canvas=true;
+	
+		for (var i = 2; i < data.length; i++){
+			if (!(sectionArray.includes(data[i][4]))){
+				sectionArray.push(data[i][4]);
+			}
+		// console.log(sectionArray);
+		}
+		
+		startRow=0;
+		if (sectionArray.length>1){
+			
+		outside=false;
+		checkSections(data);
+		}		
+		else{
+		outside=false;
+		generateDropdowns(data);
+		}
+		}
+		else if (data[0][0]=="Group"){//this means it is an import of a groupmaker export
+		onlyOneInput=true;
+		document.getElementById("dvImportSegments3").hidden=true;
+		outside=true;
+        generateImports(data);
+		}
+			
+		else{ //this means that we are in a synergy export
+		outside=false;
+		generateDropdowns(data);
+		}
+	
+                } else {
+                    alert('No data to import!');
+                }
+            }
+
+
+        // var sheet_to_html = XLSX.utils.sheet_to_html(sheet)
+        // var sheet_to_json = XLSX.utils.sheet_to_json(sheet)
+		
+
+        // if (sheet_to_json.length === 0) {
+            // var sheet_to_csv = [XLSX.utils.sheet_to_csv(sheet)]
+            // var results = sheet_to_csv
+        // }
+
+        // if (sheet_to_json.length > 0) {
+            // var results = sheet_to_json
+        // }
+
+        // let Parsed_File_Obj = {
+            // "sheet_to_html": sheet_to_html,
+            // "results": results,
+            // "ext": ext,
+        // // }
+
+        // console.log('Parsed_File_Obj')
+        // console.log(Parsed_File_Obj)
+		if ((ext=='xls')||(ext=='xlsx')){
+					data=arrayTest;
+					
+outside=false;
+generateDropdowns(data);
+
+                    $(".fileupload").slideToggle();
+					// console.log(evt.target.result);
+				    // var tempData = new Uint8Array(evt.target.result);
+					// console.log(tempData);
+					// var workbook = XLSX.read(tempData, {type: 'array'});
+					// console.log(workbook);
+					// var firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+					 // var result = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+// console.log($.csv.toArrays(sheet_to_csv));
+// console.log(sheet_to_json);	
+					// console.log(typeof (Parsed_File_Obj.results));
+					// console.log(Parsed_File_Obj.results);
+					// console.log(results[0,0,4]);
+										// data=JSON.parse(results);
+     // header: 1 instructs xlsx to create an 'array of arrays'
+				}
+				else{
+				}
+    };
+	
+				if ((ext=='xls')||(ext=='xlsx')){
+				reader.readAsArrayBuffer(file);
+				}
+				else if (ext=='csv'){
+					// alert("HI");
+				reader.readAsText(file);
+				}
+	// }
+	if(false){
+	}
+	else{
+    // reader.readAsArrayBuffer(file);
+		// alert("hi");
+    
+            // var file = evt.target.files[0];
+            // reader = new FileReader();
+			
+			// reader.read(file);
+				// reader.readAsDataURL(file);
+            // reader.onload = function (event) {
+				
+			// }
+			}
+                
+	
+    };
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//old one
+    function uploadold(evt) {
+		  var id = this.id
+    var inputElement = document.getElementById(id)
+    let ext = inputElement.value
+    ext = ext.split(".")
+    ext = ext[ext.length - 1]
+	console.log(ext);	
+	if ((extension=='xls')||(extension=='xlsx')){
+    var files = inputElement.files || [];
+    if (!files.length) return;
+    var file = files[0];
+    var reader = new FileReader();
+    reader.onloadend = async function (event) {
+        var arrayBuffer = reader.result;
+        var options = { type: 'array' };
+        var workbook = XLSX.read(arrayBuffer, options);
+        //console.timeEnd();
+
+        var sheetName = workbook.SheetNames
+        var sheet = workbook.Sheets[sheetName]
+        var sheet_to_html = XLSX.utils.sheet_to_html(sheet)
+        var sheet_to_json = XLSX.utils.sheet_to_json(sheet)
+
+        if (sheet_to_json.length === 0) {
+            var sheet_to_csv = [XLSX.utils.sheet_to_csv(sheet)]
+            var results = sheet_to_csv
+        }
+
+        if (sheet_to_json.length > 0) {
+            var results = sheet_to_json
+        }
+
+        let Parsed_File_Obj = {
+            "sheet_to_html": sheet_to_html,
+            "results": results,
+            "ext": ext,
+        }
+
+        console.log('Parsed_File_Obj')
+        console.log(Parsed_File_Obj)
+    };
+	}
+	else{
+    // reader.readAsArrayBuffer(file);
+		var extension='csv';
         if (!browserSupportFileUpload()) {
             alert('The File APIs are not fully supported in this browser!');
         } else {
             data = null;
+			let fileLoaded=evt.target;
+		if (fileLoaded.files && fileLoaded.files[0]) {
+        extension = fileLoaded.files[0].name.split('.').pop().toLowerCase();  //file extension from input file
+            // isSuccess = fileTypes.indexOf(extension) > -1;  //is extension in acceptable types
+
+        // if (isSuccess) { //yes
+            // var reader = new FileReader();
+            // reader.onload = function (e) {
+                // alert('image has read completely!');
+            // }
+
+            // reader.readAsDataURL(fileLoaded.files[0]);
+        // }
+		}
+        else { //no
+            //warning
+        }
+    
             var file = evt.target.files[0];
-            var reader = new FileReader();
-            reader.readAsText(file);
+            reader = new FileReader();
+			
+				reader.readAsText(file);
+			// reader.read(file);
+				// reader.readAsDataURL(file);
             reader.onload = function (event) {
-                var csvData = event.target.result;
+				if ((extension=='xls')||(extension=='xlsx')){
+					console.log(evt.target.result);
+				    var tempData = new Uint8Array(evt.target.result);
+					console.log(tempData);
+					var workbook = XLSX.read(tempData, {type: 'array'});
+					console.log(workbook);
+					var firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+					 var result = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+					data=result;
+					console.log(data);
+     // header: 1 instructs xlsx to create an 'array of arrays'
+				}
+				else{
+					
+                var csvData = evt.target.result;
                 data = $.csv.toArrays(csvData);
+				}
+			}
                 if (data && data.length > 0) {
                     // alert('Imported -' + data.length + '- rows successfully!');
                     // console.log (data[2].toString());
@@ -535,8 +850,12 @@ link.click();
 		}
 		else{
 	   for (var i = 1; i < dataArray[startRow].length; i++) {
+		   console.log(dataArray[startRow][i]=="");
 			if (dataArray[startRow][i].includes("MAX")){
             addAssignmentOption(dataArray[startRow][i].substring(0, dataArray[startRow][i].indexOf("MAX")));
+			}
+			else if (dataArray[startRow][i]==("")){
+				// addAssignmentOption(dataArray[startRow][i]);
 			}
 			else{
 				addAssignmentOption(dataArray[startRow][i]);
@@ -2223,7 +2542,7 @@ var generateInvert = function (dataArray) {
 
 
 		allGroupIds=[];
-		absentArray=[];
+		// absentArray=[];
 		groupNamesArray=[];
         document.getElementById('selectionsBox').innerHTML = "<div class = 'finalizeGroups'> <span style='font-size: large'> Finalize Names as Necessary and then click Done:</span><button type ='button' id ='finalizeGroupsButton' style = 'font-size: large'>Finalize Groups</button></div>  <div class = 'groupAgain'><button type ='button' id ='pickOneOverall' style = 'font-size: large' hidden>Pick Random Student</button>    <button type ='button' id ='pickOneEach' style = 'font-size: large' hidden>Pick One From Each Group</button></div>";
         document.getElementById('underButtons').innerHTML =  "<div class = 'finalizeGroups'></div> <div class = 'groupAgain'><button type ='button' id ='remakeGroupsButton' style = 'font-size: large'>Remake Groups</button>   <button type ='button' id ='invertGroups' style = 'font-size: large' hidden>Invert Groups</button>    <button type ='button' id ='importGroups' style = 'font-size: large' hidden>Import Groups</button>    <button type ='button' id ='exportGroups' style = 'font-size: large' hidden>Export Groups</button></div>";
@@ -2618,6 +2937,7 @@ function uploadImport(evt) {
             var reader = new FileReader();
             reader.readAsText(file);
             reader.onload = function (event) {
+				
                 var csvData = event.target.result;
                 dataImport = $.csv.toArrays(csvData);
                 if (dataImport && dataImport.length > 0) {
