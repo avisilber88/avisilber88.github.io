@@ -9,6 +9,9 @@ $(document).ready(function () {
     var columnArray = [];
     var nameArray = [];
     var nameGradeArray = [];
+		var startRow=2;
+	var outside=false;
+		var sectionArray=[];
     var smallestScore = 1000;
 	var countedStudents=[];
     var largestScore = 0;
@@ -35,6 +38,7 @@ $(document).ready(function () {
 	var groupingMethod="heterogeneous";
     $(".studentsContainerOne").slideToggle();
     $(".studentsContainerTwo").slideToggle();
+		var sectionArray=[];
     //Step 1 Upload the file!
     document.getElementById('txtFileUpload').addEventListener('change', upload, false);
     // Method that checks that the browser supports the HTML5 File API
@@ -83,37 +87,233 @@ $(document).ready(function () {
     }
 
     // Method that reads and processes the selected file
-    function upload(evt) {
-        if (!browserSupportFileUpload()) {
-            alert('The File APIs are not fully supported in this browser!');
-        } else {
+    
+	  function upload(evt) {
+		  absentArray=[];
+		  canvas=false;
             data = null;
-            var file = evt.target.files[0];
-            var reader = new FileReader();
-            reader.readAsText(file);
-            reader.onload = function (event) {
-                var csvData = event.target.result;
+		  var id = this.id
+    var inputElement = document.getElementById(id)
+    ext = inputElement.value
+    ext = ext.split(".")
+    ext = ext[ext.length - 1]
+	console.log(ext);	
+	// if (true){
+		// alert("hi");
+    var files = inputElement.files || [];
+    if (!files.length) return;
+    var file = files[0];
+    var reader = new FileReader();
+    reader.onloadend = async function (event) {
+		
+		if ((ext=='xls')||(ext=='xlsx')){
+        var arrayBuffer = reader.result;
+        var options = {type: 'array', codepage: false ? 65001 : void 0};
+        var workbook = XLSX.read(arrayBuffer, options);
+			console.log(workbook);
+        var sheetName = workbook.SheetNames
+        var sheet = workbook.Sheets[sheetName]
+		console.log(sheet["!ref"]);
+		let firstSet=sheet["!ref"].substr(0,sheet["!ref"].indexOf(':'));
+		let firstSetColumn=firstSet.substr(0,firstSet.search(/\d/));
+		let firstSetRow=firstSet.substr(firstSet.search(/\d/),firstSet.length);;
+		let secondSet=sheet["!ref"].substr(1+sheet["!ref"].indexOf(':'), sheet["!ref"].length);
+		let secondSetColumn=secondSet.substr(0,secondSet.search(/\d/));
+		let secondSetRow=(Number)(secondSet.substr(secondSet.search(/\d/),secondSet.length));
+console.log(firstSet+" "+firstSetColumn+" "+firstSetRow);
+console.log(secondSet+" "+secondSetColumn+" "+secondSetRow);	
+
+	// const indexFirstNumber = str.search(/\d/);
+		// console.log(sheet["!ref"].substr(sheet["!ref"].indexOf(':'), sheet["!ref"].indexOf
+		arrayTest=[];
+var alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ"]
+
+let columnLength = alphabet.indexOf(secondSetColumn);
+// console.log(columnLength);
+for (var j = 1; j<(secondSetRow+1); j++){
+	let newRow=[];
+for (var i = 0; i<columnLength; i++){
+	if (sheet[alphabet[i]+j]==null){
+		newRow.push("");	
+	}
+	else{
+		newRow.push(sheet[alphabet[i]+j].v);
+	}
+}
+	arrayTest.push(newRow);
+}
+console.log(arrayTest);
+		}
+		else{
+			 var csvData = event.target.result;
                 data = $.csv.toArrays(csvData);
                 if (data && data.length > 0) {
                     // alert('Imported -' + data.length + '- rows successfully!');
                     // console.log (data[2].toString());
 
                     $(".fileupload").slideToggle();
-
-                    generateDropdowns(data);
+					
+		$(".fileuploadImport").slideToggle();
+		startRow=2;
+		if(data[0][0].toString().includes('Student')){
+		// alert ("Canvas!");
+		canvas=true;
+	
+		for (var i = 2; i < data.length; i++){
+			if (!(sectionArray.includes(data[i][4]))){
+				sectionArray.push(data[i][4]);
+			}
+		// console.log(sectionArray);
+		}
+		
+		startRow=0;
+		if (sectionArray.length>1){
+			
+		outside=false;
+		checkSections(data);
+		}		
+		else{
+		outside=false;
+		generateDropdowns(data);
+		}
+		}
+		else if (data[0][0]=="Group"){//this means it is an import of a groupmaker export
+		onlyOneInput=true;
+		document.getElementById("dvImportSegments3").hidden=true;
+		outside=true;
+        generateImports(data);
+		}
+			
+		else{ //this means that we are in a synergy export
+		outside=false;
+		generateDropdowns(data);
+		}
+	
                 } else {
                     alert('No data to import!');
                 }
-            };
-            reader.onerror = function () {
-                alert('Unable to read ' + file.fileName);
-            };
-        }
-    }
+            }
+
+
+        // var sheet_to_html = XLSX.utils.sheet_to_html(sheet)
+        // var sheet_to_json = XLSX.utils.sheet_to_json(sheet)
+		
+
+        // if (sheet_to_json.length === 0) {
+            // var sheet_to_csv = [XLSX.utils.sheet_to_csv(sheet)]
+            // var results = sheet_to_csv
+        // }
+
+        // if (sheet_to_json.length > 0) {
+            // var results = sheet_to_json
+        // }
+
+        // let Parsed_File_Obj = {
+            // "sheet_to_html": sheet_to_html,
+            // "results": results,
+            // "ext": ext,
+        // // }
+
+        // console.log('Parsed_File_Obj')
+        // console.log(Parsed_File_Obj)
+		if ((ext=='xls')||(ext=='xlsx')){
+					data=arrayTest;
+					
+outside=false;
+generateDropdowns(data);
+
+                    $(".fileupload").slideToggle();
+					// console.log(evt.target.result);
+				    // var tempData = new Uint8Array(evt.target.result);
+					// console.log(tempData);
+					// var workbook = XLSX.read(tempData, {type: 'array'});
+					// console.log(workbook);
+					// var firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+					 // var result = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+// console.log($.csv.toArrays(sheet_to_csv));
+// console.log(sheet_to_json);	
+					// console.log(typeof (Parsed_File_Obj.results));
+					// console.log(Parsed_File_Obj.results);
+					// console.log(results[0,0,4]);
+										// data=JSON.parse(results);
+     // header: 1 instructs xlsx to create an 'array of arrays'
+				}
+				else{
+				}
+    };
+	
+				if ((ext=='xls')||(ext=='xlsx')){
+				reader.readAsArrayBuffer(file);
+				}
+				else if (ext=='csv'){
+					// alert("HI");
+				reader.readAsText(file);
+				}
+	// }
+	if(false){
+	}
+	else{
+    // reader.readAsArrayBuffer(file);
+		// alert("hi");
+    
+            // var file = evt.target.files[0];
+            // reader = new FileReader();
+			
+			// reader.read(file);
+				// reader.readAsDataURL(file);
+            // reader.onload = function (event) {
+				
+			// }
+			}
+                
+	
+    };
 
 
 document.getElementById('txtFileUpload2').addEventListener('change', upload2, false);
+    var checkSections = function (data) {
+		document.getElementById('selectionsBox').innerHTML = "<div class = 'picksection' style = 'width:auto'><select id = 'sectionSelect' name = 'sectionSelect' style = 'font-size:large; width:auto; max-width:300px;'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitSection' style='font-size: xx-large'>Submit</button></div>";
+  				$('#sectionSelect').empty();
+				
+			for (var i = 0; i < sectionArray.length; i++) {
+				// alert(sectionArray.toString());
+				addSectionOption(sectionArray[i]);
+			}
+	
+        
+				$('#submitSection').click(function () {
+            // alert ("hi");
+            // if (true){
 
+            // for (var i = 5; i < data[startRow].length; i++) {
+                // if (document.getElementById("sectionSelect").options[document.getElementById("sectionSelect").selectedIndex].innerHTML == (dataArray[startRow][i].substring(0, dataArray[startRow][i].indexOf("MAX")))) {
+                    // columnOfStudy = i + 0;
+                // }
+				// else if (document.getElementById("sectionSelect").options[document.getElementById("sectionSelect").selectedIndex].innerHTML == (dataArray[startRow][i])) {
+                    // columnOfStudy = i + 0;
+                // }
+				// else if (document.getElementById("sectionSelect").options[document.getElementById("sectionSelect").selectedIndex].innerHTML == ("Grade")){
+				// columnOfStudy = 1;
+				// }
+			selectedSection=(document.getElementById("sectionSelect").options[document.getElementById("sectionSelect").selectedIndex].innerHTML);
+            // }
+
+            // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
+            // }
+            $(".picksection").slideToggle();
+		generateDropdowns(data);
+        });
+
+	};
+	var addSectionOption = function (cationOption) {
+        var sel = document.getElementById("sectionSelect");
+        var opt = document.createElement('option');
+        opt.innerHTML = cationOption;
+        //		opt.appendChild(document.createTextNode((cationOption)));
+        opt.value = (cationOption);
+        sel.appendChild(opt);
+
+    }
     // Method that checks that the browser supports the HTML5 File API
     // Method that reads and processes the selected file
     function upload2(evt) {
@@ -238,6 +438,7 @@ link.click();
 
 				   console.log(countedStudents.length+" "+countedStudents.toString());
 		// for (var i = 0; i < columnArray.length; i++) {
+			// alert(columnArray[randomStudentNum][0]);
 			var fullName = columnArray[randomStudentNum][0].split(', ');
             var testIdName = fullName[1] + " "+fullName[0];
 			// if ((i==randomStudentNum)){
@@ -510,13 +711,132 @@ let values = (largestScore - smallestScore + 1)
         }
     }
     function getCol(matrix, col) { //put data in for matrix
-        var column = [];
+        // var column = [];
 		
-        for (var i = 4; i < matrix.length; i++) {
-			if (columnOfStudy==1){
-				matrix[i][col]=((matrix[i][col]).replace(/[a-z]/gi, '' ));
-				matrix[i][col]=Number((matrix[i][col]).replace(/\//g, ""));
-			}
+        // for (var i = 4; i < matrix.length; i++) {
+			// if (columnOfStudy==1){
+				// matrix[i][col]=((matrix[i][col]).replace(/[a-z]/gi, '' ));
+				// matrix[i][col]=Number((matrix[i][col]).replace(/\//g, ""));
+			// }
+                // console.log(Number((matrix[i][col])));
+            // if (smallestScore > Number((matrix[i][col]))) {
+				
+                // console.log(Number((matrix[i][col])) + 0);
+                // smallestScore = Number((matrix[i][col])) + 0;
+            // }
+            // if (largestScore < Number((matrix[i][col]))) {
+                // largestScore = Number((matrix[i][col])) + 0;
+            // }
+            // column.push([matrix[i][0], Number(matrix[i][col])]);
+        // }
+
+        // return column;
+    // }
+    // function getNameIDCol(matrix, col) { //put data in for matrix
+        // var column = [];
+        // for (var i = 1; i < matrix.length; i++) {
+            // if (smallestScore > Number((matrix[i][col]))) {
+                // smallestScore = Number((matrix[i][col])) + 0;
+            // }
+            // if (largestScore < Number((matrix[i][col]))) {
+                // largestScore = Number((matrix[i][col])) + 0;
+            // }
+            // column.push([matrix[i][0], Number(matrix[i][col])]);
+        // }
+		// console.warn(column.toString());
+        // return column;
+    // }
+    // function getBetween(matrix, minScore, maxScore) { //put data in for matrix
+        // let columnLocal = [];
+
+        // for (var i = 0; i < matrix.length; i++) {
+            // if ((minScore <= Number((matrix[i][1]))) && (maxScore >= Number((matrix[i][1])))) {
+                // columnLocal.push([matrix[i][0], Number(matrix[i][1])]);
+            // }
+        // }
+	
+        // return columnLocal;
+		largestScore=0;
+	smallestScore=1000;
+        var column = [];
+		if (canvas){
+			for (var i = (startRow+2); i < matrix.length; i++) {
+				try {
+				//matrix[i][col]=matrix[i][col].substr(0,matrix[i][col].indexOf(' '));
+				}
+				catch (error){
+				}
+				try{
+				// console.error(matrix[1][col]);
+				if (matrix[1][col]=='(read only)')
+				{
+				matrix[1][col]=100;
+					
+				}
+		
+			// if (columnOfStudy==1){
+				// // matrix[i][col]=((matrix[i][col]).replace(/[a-z]/gi, '' ));
+				// // matrix[i][col]=Number((matrix[i][col]).replace(/\//g, ""));
+				// matrix[i][col]=matrix[i][col].substr(0,matrix[i][col].indexOf(' '));
+			
+				// matrix[i][col]=Number((matrix[i][col]));
+			
+				// // console.log(matrix[i][col]);
+			// }
+					console.log(col);
+							
+                console.log(Number((matrix[1][col])));
+		
+				largestScore=Number((matrix[1][col]));
+				}
+				catch (error){
+				}
+            if (smallestScore > Number((matrix[i][col]))) {
+				
+                console.log(Number((matrix[i][col])) + 0);
+                smallestScore = Number((matrix[i][col])) + 0;
+            }
+            if (largestScore < Number((matrix[i][col]))) {
+                largestScore = Number((matrix[i][col])) + 0;
+            }
+							try {
+				if (matrix[i][col].includes("(Student)")){
+					matrix[i][col]=(matrix[i][col].substr(0,matrix[i][col].indexOf("("))+matrix[i][col].substr(matrix[i][col].indexOf(")")+1, matrix[i][col].length));
+				// matrix[i][col]=matrix[i][col].substr(0,matrix[i][col].indexOf(' '));
+				}
+				}
+				catch (error){
+					console.error(error);
+				}
+			console.log("largest score is "+largestScore);
+			console.error(matrix[i][4]);
+            column.push([matrix[i][0], (matrix[i][col]), matrix[i][4]]);
+        }
+		}
+		else{
+        for (var i = (startRow+1); i < matrix.length; i++) {
+			console.log(matrix[i][col]);
+				try {
+				if (matrix[i][col].includes("(student)")){
+				// matrix[i][col]=matrix[i][col].substr(0,matrix[i][col].indexOf(' '));
+				}
+				}
+				catch (error){
+					console.error(error);
+				}
+				// matrix[i][col]=Number((matrix[i][col]));
+				console.log(matrix[i][col]);
+				
+				// console.log(matrix[i][
+			// if (columnOfStudy==1){
+				// // matrix[i][col]=((matrix[i][col]).replace(/[a-z]/gi, '' ));
+				// // matrix[i][col]=Number((matrix[i][col]).replace(/\//g, ""));
+				// matrix[i][col]=matrix[i][col].substr(0,matrix[i][col].indexOf(' '));
+			
+				// matrix[i][col]=Number((matrix[i][col]));
+			
+				// // console.log(matrix[i][col]);
+			// }
                 console.log(Number((matrix[i][col])));
             if (smallestScore > Number((matrix[i][col]))) {
 				
@@ -526,8 +846,13 @@ let values = (largestScore - smallestScore + 1)
             if (largestScore < Number((matrix[i][col]))) {
                 largestScore = Number((matrix[i][col])) + 0;
             }
-            column.push([matrix[i][0], Number(matrix[i][col])]);
+			if (canvas){
+			}
+			else{
+            column.push([matrix[i][0], (matrix[i][col])]);
         }
+		}
+		}
 
         return column;
     }
@@ -544,17 +869,6 @@ let values = (largestScore - smallestScore + 1)
         }
 		console.warn(column.toString());
         return column;
-    }
-    function getBetween(matrix, minScore, maxScore) { //put data in for matrix
-        let columnLocal = [];
-
-        for (var i = 0; i < matrix.length; i++) {
-            if ((minScore <= Number((matrix[i][1]))) && (maxScore >= Number((matrix[i][1])))) {
-                columnLocal.push([matrix[i][0], Number(matrix[i][1])]);
-            }
-        }
-	
-        return columnLocal;
     }
 
     var addAssignmentOption = function (cationOption) {
