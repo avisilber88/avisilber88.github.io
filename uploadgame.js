@@ -1,6 +1,7 @@
 $(document).ready(function () {
 	//The following are still unfinished: sing a sequence template; import a midi.
 	var studentSchoolNameIdsArray=[];
+	var canvasSectionColumn =4;
 	var startRow=2;
 	var breakoutfilename;
     var data = null;
@@ -154,6 +155,9 @@ async function CSV_XLSX_File_Selected_Event() {
     // Method that reads and processes the selected file
 	
 	  function upload(evt) {
+		  startRow=2;
+	 canvasSectionColumn =4;
+		  sectionArray=[];
 		  absentArray=[];
 		  canvas=false;
             data = null;
@@ -220,13 +224,25 @@ console.log(arrayTest);
 					
 		$(".fileuploadImport").slideToggle();
 		startRow=2;
+	console.log(data[0][2].toString().includes('Login'));
+
 		if(data[0][0].toString().includes('Student')){
+
+					if(data[0][2].toString().includes('Login')){
+			
+	 canvasSectionColumn =3;
+		}
+		else{
+		
+	 canvasSectionColumn =4;
+		}
 		// alert ("Canvas!");
+		console.log(canvasSectionColumn);
 		canvas=true;
 	
 		for (var i = 2; i < data.length; i++){
-			if (!(sectionArray.includes(data[i][4]))){
-				sectionArray.push(data[i][4]);
+			if (!(sectionArray.includes(data[i][canvasSectionColumn]))){
+				sectionArray.push(data[i][canvasSectionColumn]);
 			}
 		// console.log(sectionArray);
 		}
@@ -443,14 +459,26 @@ generateDropdowns(data);
                     $(".fileupload").slideToggle();
 					
 		$(".fileuploadImport").slideToggle();
+		// alert("yo");
 		startRow=2;
+		console.log(data[0][2].toString().includes('Login'));
+
 		if(data[0][0].toString().includes('Student')){
+
+					if(data[0][2].toString().includes('Login')){
+			
+	 canvasSectionColumn =3;
+		}
+		else{
+		
+	 canvasSectionColumn =4;
+		}
 		// alert ("Canvas!");
 		canvas=true;
 	
 		for (var i = 2; i < data.length; i++){
-			if (!(sectionArray.includes(data[i][4]))){
-				sectionArray.push(data[i][4]);
+			if (!(sectionArray.includes(data[i][canvasSectionColumn]))){
+				sectionArray.push(data[i][canvasSectionColumn]);
 			}
 		// console.log(sectionArray);
 		}
@@ -690,12 +718,12 @@ link.click();
 		// document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:xx-large'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitAssignment' style='font-size: xx-large'>Submit</button></div>";
         // $('#assignmentSelect').empty();
 		
-       let nameArray=getNameIDCol(data2+"", 4);// columnArray = getCol(data, columnOfStudy);
+       let nameArray=getNameIDCol(data2+"", canvasSectionColumn);// columnArray = getCol(data, columnOfStudy);
 		// console.log(nameArray.toString());
 	   let idArray=getNameIDCol(data2, 0);
 	   let nameIDArray=[]
         for (var i = 1; i < data2.length; i++) {
-           nameIDArray.push([data2[i][4]+"", idArray[i-1]]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
+           nameIDArray.push([data2[i][canvasSectionColumn]+"", idArray[i-1]]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
         }
 		console.log(nameIDArray.toString());
 		let rowsInExport = [];
@@ -805,6 +833,8 @@ link.click();
 	};
     //Step 2: Generate dropdown menus.
     var generateDropdowns = function (dataArray) {
+		console.log(dataArray[2][0]);
+		console.log(canvas);
 		if (canvas){
 		}
 		else if(dataArray[2][0].toString().includes('Student')){
@@ -817,9 +847,12 @@ link.click();
         document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment' style = 'width:auto'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:large; width:auto; max-width:300px;'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitAssignment' style='font-size: xx-large'>Submit</button></div>";
         $('#assignmentSelect').empty();
 		if (canvas){
-			for (var i = 5; i < dataArray[startRow].length; i++) {
+			for (var i = (canvasSectionColumn+1); i < dataArray[startRow].length; i++) {
 			if (dataArray[startRow][i].includes("MAX")){
 				addAssignmentOption(dataArray[startRow][i].substring(0, dataArray[startRow][i].indexOf("MAX")));
+			}			
+			else if (dataArray[startRow+1][i]==(0)){
+				// addAssignmentOption(dataArray[startRow][i]);
 			}
 			else{
 				addAssignmentOption(dataArray[startRow][i]);
@@ -828,8 +861,11 @@ link.click();
         $('#submitAssignment').click(function () {
             // alert ("hi");
             // if (true){
-            for (var i = 5; i < dataArray[startRow].length; i++) {
+            for (var i = (canvasSectionColumn+1); i < dataArray[startRow].length; i++) {
 				// console.error(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML+" "+(dataArray[startRow][i]));
+				
+				// console.log(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
+				// console.log(dataArray[startRow][i]);
 				if (((document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML+"").replace('&amp;', '&'))==(dataArray[startRow][i].toString()+"")) {
                     columnOfStudy = i + 0;
 				// alert ("hi");
@@ -850,7 +886,7 @@ link.click();
 		}
 		else{
 	   for (var i = 1; i < dataArray[startRow].length; i++) {
-		   console.log(dataArray[startRow][i]=="");
+		   // console.log(dataArray[startRow][i]=="");
 			if (dataArray[startRow][i].includes("MAX")){
             addAssignmentOption(dataArray[startRow][i].substring(0, dataArray[startRow][i].indexOf("MAX")));
 			}
@@ -864,6 +900,8 @@ link.click();
         $('#submitAssignment').click(function () {
             // alert ("hi");
             // if (true){
+				// console.log(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
+				// console.log(dataArray[startRow][i]);
             for (var i = 1; i < dataArray[startRow].length; i++) {
                 if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[startRow][i].substring(0, dataArray[startRow][i].indexOf("MAX")))) {
                     columnOfStudy = i + 0;
@@ -887,8 +925,9 @@ link.click();
     //Step 3: Generate Sliders
 
     var generateSliders = function () {
+		// largestScore=1;
+		// smallestScore=0;
 		nottargetednum=0;
-			console.log(columnOfStudy);
         columnArray = getCol(data, columnOfStudy);
 
 	
@@ -933,9 +972,12 @@ let values = (largestScore - smallestScore + 1)
         // document.getElementByClassName('noUi-connects').width='500px';
         scoreCutoffOne = Number(slider.noUiSlider.get()[0]);
         scoreCutoffTwo = Number(slider.noUiSlider.get()[1]);
+		console.log(groupAArray);
         groupAArray = getBetween(columnArray, smallestScore-.01, scoreCutoffOne);
         groupBArray = getBetween(columnArray, scoreCutoffOne, scoreCutoffTwo);
         groupCArray = getBetween(columnArray, scoreCutoffTwo, largestScore+.01);
+		
+		console.log(groupAArray);
         document.getElementById("groupA").innerHTML = "Students scoring " + smallestScore + " to " + scoreCutoffOne + "<br>(" + groupAArray.length + " members)<p>";
         document.getElementById("groupB").innerHTML = "Students scoring " + scoreCutoffOne + ".01 to " + scoreCutoffTwo + "<br>(" + groupBArray.length + " members)<p>";
         document.getElementById("groupC").innerHTML = "Students scoring " + scoreCutoffTwo + ".01 to " + largestScore + "<br>(" + groupCArray.length + " members)<p>";
@@ -994,9 +1036,11 @@ let values = (largestScore - smallestScore + 1)
             scoreCutoffTwo = Number(slider.noUiSlider.get()[1]);
 			nottargetednum=0;
             // var testIdName= "student";
+			console.warn(groupAArray);
             groupAArray = getBetween(columnArray, smallestScore - .01, scoreCutoffOne);
             groupBArray = getBetween(columnArray, scoreCutoffOne, scoreCutoffTwo);
             groupCArray = getBetween(columnArray, scoreCutoffTwo, largestScore+.01);
+			console.warn(groupAArray);
             document.getElementById("groupA").innerHTML = "Students scoring " + smallestScore + " to " + scoreCutoffOne + "<br>(" + groupAArray.length + " members)<p>";
             document.getElementById("groupB").innerHTML = "Students scoring " + scoreCutoffOne + ".01 to " + scoreCutoffTwo + "<br>(" + groupBArray.length + " members)<p>";
             document.getElementById("groupC").innerHTML = "Students scoring " + scoreCutoffTwo + ".01 to " + largestScore + "<br>(" + groupCArray.length + " members)<p>";
@@ -1115,10 +1159,10 @@ let values = (largestScore - smallestScore + 1)
                 largestScore = Number((matrix[i][col])) + 0;
             }
 			console.log("largest score is "+largestScore);
-			console.error(matrix[i][4]);
-            column.push([matrix[i][0], Number(matrix[i][col]), matrix[i][4]]);
+			console.error(matrix[i][canvasSectionColumn]);
+            column.push([matrix[i][0], Number(matrix[i][col]), matrix[i][canvasSectionColumn]]);
         }
-		}
+		}	
 		else{
         for (var i = (startRow+1); i < matrix.length; i++) {
 			console.log(matrix[i][col]);
@@ -1175,17 +1219,20 @@ let values = (largestScore - smallestScore + 1)
         return column;
     }
     function getBetween(matrix, minScore, maxScore) { //put data in for matrix
-
+		console.warn(matrix);
 		let columnLocal = [];
 		console.log(minScore+ " "+maxScore);
         for (var i = 0; i < matrix.length; i++) {
+			console.warn((matrix[i][1]));	
             if ((minScore < Number((matrix[i][1]))) && (maxScore >= Number((matrix[i][1])))) {
 				if (canvas){
-					// alert(matrix[i][2]);
+					console.error(selectedSection+" "+matrix[i][2]);
 				if ((selectedSection=="none")||(selectedSection==matrix[i][2])){
+					console.error(matrix[i][0]);
                 columnLocal.push([matrix[i][0], Number(matrix[i][1])]);
 				}
 				else{
+					console.error(matrix[i][0]);
 				nottargetednum++;
 				}
 				}
@@ -1194,7 +1241,8 @@ let values = (largestScore - smallestScore + 1)
 				}
             }
         }
-	
+		console.warn(columnLocal);
+		console.warn(nottargetednum);
         return columnLocal;
     }
     var addSectionOption = function (cationOption) {

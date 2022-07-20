@@ -1,6 +1,7 @@
 $(document).ready(function () {
 	//The following are still unfinished: sing a sequence template; import a midi.
 	var studentSchoolNameIdsArray=[];
+	var canvasSectionColumn =4;
 	var breakoutfilename;
 	var repeatingStudents=true;
     var data = null;
@@ -89,6 +90,8 @@ $(document).ready(function () {
     // Method that reads and processes the selected file
     
 	  function upload(evt) {
+		  startRow=2;
+	 canvasSectionColumn =4;
 		  absentArray=[];
 		  canvas=false;
             data = null;
@@ -155,13 +158,25 @@ console.log(arrayTest);
 					
 		$(".fileuploadImport").slideToggle();
 		startRow=2;
+		console.log(data[0][2].toString().includes('Login'));
+
 		if(data[0][0].toString().includes('Student')){
+
+					if(data[0][2].toString().includes('Login')){
+			
+	 canvasSectionColumn =3;
+		}
+		else{
+		
+	 canvasSectionColumn =4;
+		}
 		// alert ("Canvas!");
+		console.log(canvasSectionColumn);
 		canvas=true;
 	
 		for (var i = 2; i < data.length; i++){
-			if (!(sectionArray.includes(data[i][4]))){
-				sectionArray.push(data[i][4]);
+			if (!(sectionArray.includes(data[i][canvasSectionColumn]))){
+				sectionArray.push(data[i][canvasSectionColumn]);
 			}
 		// console.log(sectionArray);
 		}
@@ -809,8 +824,8 @@ let values = (largestScore - smallestScore + 1)
 					console.error(error);
 				}
 			console.log("largest score is "+largestScore);
-			console.error(matrix[i][4]);
-            column.push([matrix[i][0], (matrix[i][col]), matrix[i][4]]);
+			console.error(matrix[i][canvasSectionColumn]);
+            column.push([matrix[i][0], (matrix[i][col]), matrix[i][canvasSectionColumn]]);
         }
 		}
 		else{
