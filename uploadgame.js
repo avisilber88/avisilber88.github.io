@@ -219,13 +219,14 @@ console.log(arrayTest);
                 if (data && data.length > 0) {
                     // alert('Imported -' + data.length + '- rows successfully!');
                     // console.log (data[2].toString());
-
+					console.log(data);
                     $(".fileupload").slideToggle();
 					
 		$(".fileuploadImport").slideToggle();
 		startRow=2;
-	console.log(data[0][2].toString().includes('Login'));
-
+		
+		// console.log(data[0][2].toString().includes('Login'));
+// console.log("stillchugging");
 		if(data[0][0].toString().includes('Student')){
 
 					if(data[0][2].toString().includes('Login')){
