@@ -34,7 +34,7 @@ margin-top: 10px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
   border-radius: 5px;
-  width: 250px;
+  width: 300px;
   margin: 15px;
   padding: 5px;
 
@@ -185,6 +185,27 @@ padding-right: 10px;
 	
     </head>
 <body>
+<div id = "shuffleSection" hidden>
+<div style= "left: 50%"> <span id = "shuffleTitle" style = "text-align: horizontal;font-size: xx-large;"> <center>Shuffle Cards after pulling</center> </span></div> 
+<div id = "repeatsButton" style="width: 20vw; height: 10vh; border-width:1px; border-color:black; border-style:solid; left: 50%; margin-left: -10vw; position: relative">
+	<table id="buttonTable">
+	<tr>
+	<td>
+	<div id = "repeatsOff" style="width: 9.5vw; height: 9vh; margin-left: .3vw; margin-top:.3vh; background-color: white">
+	Shuffle Off
+	</div>
+	</td>
+	<td>
+	<div id = "repeatsOn" style="width: 9.5vw; height: 9vh; margin-left: .3vw; margin-top:.3vh;background-color: green">
+	Shuffle On
+	</div>
+	</td>
+	</tr>
+	</table>
+	</div>
+</div>
+	<div><center><span hidden id = "repeatingMessage" style: "font-size: large">Students names are currently able to repeat, they are being shuffled back in</span></center></div>
+		
 <div style= "display:flex; justify-content: center">
 <div>
 <link rel="stylesheet" href="Midi/vendor/nouislider.min.css" type="text/css">
@@ -205,9 +226,10 @@ padding-right: 10px;
         <input type="file" name="File Upload" style = 'font-size:xx-large' id="txtFileUpload2" accept=".csv" />
     </fieldset>
     </div>
-	<button hidden type ='button' id ='repeatsButton' style='font-size: xx-large'>Turn Student Repeating Off</button>
+	
+	<!-- <button hidden type ='button' id ='repeatsButton' style='font-size: xx-large'>Turn Student Repeating Off</button> -->
 	<br>
-	<div><span hidden id = "repeatingMessage">Students names are currently able to repeat, they are being shuffled back in</span></div>
+
 	
 	<div id ="selectionsBox" style= "display:flex; justify-content: center">
 	</div>
