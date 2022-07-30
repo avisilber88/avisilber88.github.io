@@ -483,7 +483,7 @@ link.click();
 		document.getElementById('repeatsButton').hidden=false;
 		document.getElementById('repeatingMessage').hidden=false;
         columnArray = getCol(data, columnOfStudy);
-		document.getElementById('selectionsBox').innerHTML = "<div class = 'scoreRangeSelected' style='padding-left:60px; padding-top:60px; font-size:xx-large; position: absolute'>Press New Card to pick a new random student<div class = 'sequence-mode row'> <div id='groupA'style = 'width: 100%'></div></div><div class='row' style = 'width: 100%;padding-top:10vh'><button type ='button' id ='submitAssignment' style='font-size: xx-large'>New Card</button> </div></div>";
+		document.getElementById('selectionsBox').innerHTML = "<div class = 'scoreRangeSelected row' style='padding-left:60px; padding-top:20px; font-size:xx-large'>Press New Card to pick a new random student<table><tr><td><div class='column' style = 'width: 100%;padding-top:20vh; margin-left: -30px; margin-right: 30px'><button type ='button' id ='submitAssignment' style='font-size: xx-large; padding-top:0px'>New Card</button> </div></td><td><div class = 'sequence-mode column'> <div id='groupA'style = 'width: 50%'></div></div></td></tr></table></div>";
 		let stillGotStudents=false;
 		// console.log(dataArray[3].toString());
       // document.getElementById("groupA").innerHTML = "Students scoring " + smallestScore + " to " + scoreCutoffOne + "<br>(" + groupAArray.length + " members)<p>";
