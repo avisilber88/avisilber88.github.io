@@ -159,6 +159,10 @@ background-color: blue;
     transition: color .15s ease-in-out,background-color .15s
 ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
   }
+  .buttonText {
+  font-size: 150%;
+  color:white;
+  }
 
 .name-title {
 padding-right: 10px;
@@ -192,12 +196,12 @@ padding-right: 10px;
 	<tr>
 	<td>
 	<div id = "repeatsOff" style="width: 9.5vw; height: 9vh; margin-left: .3vw; margin-top:.3vh; background-color: white">
-	Shuffle Off
+	<span class = "buttonText" id = "shuffleOffText">Shuffle is Off</span>
 	</div>
 	</td>
 	<td>
 	<div id = "repeatsOn" style="width: 9.5vw; height: 9vh; margin-left: .3vw; margin-top:.3vh;background-color: green">
-	Shuffle On
+	<span class = "buttonText" id = "shuffleOnText">Shuffle is On</span>
 	</div>
 	</td>
 	</tr>
