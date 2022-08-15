@@ -633,6 +633,95 @@ for (var i = 0; i < groupThenNameArray.length; i++) {
             // generateSliders();
         // });
 	}
+	
+	var generateNameIDArrayForZoom = function (){
+	// document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:xx-large'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitAssignment' style='font-size: xx-large'>Submit</button></div>";
+        // $('#assignmentSelect').empty();
+		console.warn(data);
+	
+       let nameArray=getNameIDCol(data+"", 4);// columnArray = getCol(data, columnOfStudy);
+if (canvas){
+nameArray=getNameIDCol(data+"", 4);
+}
+		console.log(nameArray.toString());
+	   let idArray=getNameIDCol(data, 1);
+	   let nameIDArray=[]
+        for (var i = 1; i < data.length; i++) {
+           nameIDArray.push([data[i][4]+"", idArray[i-1]]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
+        }
+		console.log(nameIDArray.toString());
+		let rowsInExport = [];
+	
+		
+		for (var i = 0; i < nameIDArray.length; i++) {
+			console.warn(nameIDArray[i][1]);
+           rowsInExport.push(["room"+i, (nameIDArray[i][1][0]+"@mcpsmd.net")]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
+        }
+		let groupThenNameArray=[];
+		for (let parentnum = 0; parentnum < groupOfGroupsArray.length; parentnum++){
+		let parentDiv = [];
+		console.warn(allGroupIds[parentnum]);
+	let subgroup = document.getElementById(allGroupIds[parentnum]).childNodes;
+	for (let childnum = 0; childnum < subgroup.length; childnum++){
+		// console.warn(subgroup[childnum].id);	
+		console.warn(allStudentBoxIds.length);
+		for (let boxid = 0; boxid < allStudentBoxIds.length; boxid++){
+				// console.log(allStudentBoxIds[boxid][0]);
+				// console.log(subgroup[childnum].id);
+			if (allStudentBoxIds[boxid][0]==subgroup[childnum].id){
+				console.warn(allStudentBoxIds[boxid][0]);
+				console.warn(document.getElementById(groupNamesArray[parentnum][0]).innerHTML);
+						for (var i = 0; i < nameIDArray.length; i++) {
+							if (nameIDArray[i][0].includes(allStudentBoxIds[boxid][1])){
+								console.warn(nameIDArray.toString());
+								groupThenNameArray.push([JSON.stringify("Group "+parentnum), JSON.stringify(allStudentBoxIds[boxid][1]+""), document.getElementById(groupNamesArray[parentnum][0]).innerHTML.substring(6, document.getElementById(groupNamesArray[parentnum][0]).innerHTML.indexOf("button")-1)]);
+							}
+							rowsInExport.push(["room"+i, (nameIDArray[i][1][0]+"@mcpsmd.net")]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
+						}
+				// console.warn(nameIdArray.indexOf(allStudentBoxIds[boxid][1]
+			}
+		}
+		
+		
+	}
+			
+}
+for (var i = 0; i < groupThenNameArray.length; i++) {
+			console.warn(nameIDArray[i][1]);
+			tempNameHere=groupThenNameArray[i][1];
+			groupThenNameArray[i][1] = tempNameHere.split(', ').slice(-1).join(' ')+ " " + tempNameHere.split(', ').slice(0, -1).join(' ');			
+           rowsInExport.push([groupThenNameArray[i][0], groupThenNameArray[i][1],groupThenNameArray[i][2]]);//, groupThenNameArray[i][1]]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
+        }
+	// rowsInExport.sort();
+	rowsInExport.unshift(["Group", "Names"]);
+
+		breakoutfilename=prompt ("What would you like to call your breakout rooms pre-assign csv?")+".csv";
+ console.warn(groupThenNameArray.toString());
+		let csvContent = "data:text/csv;charset=utf-8," + rowsInExport.map(e => e.join(",")).join("\n").replace(/"/g,"");
+		var encodedUri = encodeURI(csvContent);
+var link = document.createElement("a");
+link.setAttribute("href", encodedUri);
+link.setAttribute("download", breakoutfilename);
+document.body.appendChild(link); // Required for FF
+
+link.click();
+        // $('#submitAssignment').click(function () {
+            // // alert ("hi");
+            // // if (true){
+            // for (var i = 2; i < dataArray[2].length; i++) {
+                // if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")))) {
+                    // columnOfStudy = i + 0;
+                // }
+            // }
+
+            // // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
+            // // }
+            // $(".pickassignment").slideToggle();
+            // generateSliders();
+        // });
+	}
+	
+	
 	var generateNameIDMatchArray2 = function (){
 		// document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:xx-large'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitAssignment' style='font-size: xx-large'>Submit</button></div>";
         // $('#assignmentSelect').empty();
@@ -718,15 +807,35 @@ link.click();
 	var generateNameIDMatchArray = function (dataArray){
 		// document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:xx-large'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitAssignment' style='font-size: xx-large'>Submit</button></div>";
         // $('#assignmentSelect').empty();
-		
-       let nameArray=getNameIDCol(data2+"", canvasSectionColumn);// columnArray = getCol(data, columnOfStudy);
+		let nameIDArray=[]
+if (!canvas){
+       let nameArray=getNameIDColNew(data2+"", 0);// columnArray = getCol(data, columnOfStudy);
 		// console.log(nameArray.toString());
-	   let idArray=getNameIDCol(data2, 0);
-	   let nameIDArray=[]
+	   let idArray=getNameIDColNew(data2, 0);
+	   console.error(idArray);
+	   // let nameIDArray=[]
         for (var i = 1; i < data2.length; i++) {
-           nameIDArray.push([data2[i][canvasSectionColumn]+"", idArray[i-1]]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
+		  // let temporaryFullName = data2[i][canvasSectionColumn]+"";
+		  // let temporaryIdName = temporaryFullName.split(', ').slice(-1).join(' ')+ " " + temporaryFullName.split(', ').slice(0, -1).join(' ');	
+          // let temporaryIDTag = temporaryIdName.replace(/\s+/g, '');
+           nameIDArray.push([nameArray[i]+"", idArray[i-1]]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
         }
-		console.log(nameIDArray.toString());
+}
+else{
+	   let nameArray=getNameIDCol(data+"", canvasSectionColumn);// columnArray = getCol(data, columnOfStudy);
+		console.log(nameArray.toString());
+	   let idArray=getNameIDColNew(data, 3);
+	   console.error(idArray);
+	   
+        for (var i = 1; i < data.length; i++) {
+ 		  // let temporaryFullName = data[i][canvasSectionColumn]+"";
+		  // let temporaryIdName = temporaryFullName.split(', ').slice(-1).join(' ')+ " " + temporaryFullName.split(', ').slice(0, -1).join(' ');	
+          // let temporaryIDTag = temporaryIdName.replace(/\s+/g, '');
+           // nameIDArray.push([temporaryIDTag, idArray[i-1]]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
+          nameIDArray.push([data[i][canvasSectionColumn]+"", idArray[i-1]]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
+        }
+}
+		console.log(nameIDArray);
 		let rowsInExport = [];
 	
 		
@@ -740,17 +849,18 @@ link.click();
 		console.warn(allGroupIds[parentnum]);
 	let subgroup = document.getElementById(allGroupIds[parentnum]).childNodes;
 	for (let childnum = 0; childnum < subgroup.length; childnum++){
-		// console.warn(subgroup[childnum].id);	
+		console.warn(subgroup[childnum].id);	
 		console.warn(allStudentBoxIds.length);
 		for (let boxid = 0; boxid < allStudentBoxIds.length; boxid++){
-				// console.log(allStudentBoxIds[boxid][0]);
-				// console.log(subgroup[childnum].id);
+				console.log(allStudentBoxIds[boxid][0]);
+				console.log(subgroup[childnum].id);
 			if (allStudentBoxIds[boxid][0]==subgroup[childnum].id){
 				console.warn(allStudentBoxIds[boxid][1]);
 						for (var i = 0; i < nameIDArray.length; i++) {
-							if (nameIDArray[i][0].includes(allStudentBoxIds[boxid][1])){
+							if (nameIDArray[i][1].includes(allStudentBoxIds[boxid][0])){
 								console.warn(nameIDArray.toString());
-								groupThenNameArray.push([JSON.stringify("room"+parentnum), JSON.stringify(allStudentBoxIds[boxid][1]+""), JSON.stringify(nameIDArray[i][1][0]+"@mcpsmd.net")]);
+								// groupThenNameArray.push([JSON.stringify("room"+parentnum), JSON.stringify(allStudentBoxIds[boxid][1]+""), JSON.stringify(nameIDArray[i][1][0]+"@mcpsmd.net")]);
+								groupThenNameArray.push([JSON.stringify("room"+parentnum), JSON.stringify(allStudentBoxIds[boxid][1]+""), JSON.stringify(nameIDArray[i][1][1])]);
 							}
 							// rowsInExport.push(["room"+i, (nameIDArray[i][1][0]+"@mcpsmd.net")]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
 						}
@@ -763,7 +873,7 @@ link.click();
 			
 }
 for (var i = 0; i < groupThenNameArray.length; i++) {
-			// console.warn(nameIDArray[i][1]);
+			console.warn(nameIDArray[i][1]);
 			
            rowsInExport.push([groupThenNameArray[i][0], groupThenNameArray[i][2]]);//, groupThenNameArray[i][1]]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
         }
@@ -1216,6 +1326,43 @@ let values = (largestScore - smallestScore + 1)
             }
             column.push([matrix[i][0], Number(matrix[i][col])]);
         }
+		console.warn(column.toString());
+        return column;
+    }
+	    function getNameIDColNew(matrix, col) { //put data in for matrix
+        var column = [];
+		if (canvas){
+        for (var i = 1; i < matrix.length; i++) {
+		
+			let temporaryFullName = matrix[i][0]+"";
+		  let preTempIdName = temporaryFullName.split('(S').slice(0, -1).join(' ')
+		  let temporaryIdName = preTempIdName.split(', ').slice(-1).join(' ')+ " " + preTempIdName.split(', ').slice(0, -1).join(' ');	
+		  
+          let temporaryIDTag = temporaryIdName.replace(/\s+/g, '');
+           // nameIDArray.push([temporaryIDTag, idArray[i-1]]);
+		
+            column.push([temporaryIDTag, (matrix[i][col])]);
+        }
+		}
+		else{
+		        for (var i = 1; i < matrix.length; i++) {
+		
+			let temporaryFullName = matrix[i][4]+"";
+		let preTempIdName = temporaryFullName;
+		if (preTempIdName.includes('.')){
+			// alert ("yo");
+		  preTempIdName = temporaryFullName.substring (0, temporaryFullName.length-3);
+		  console.error(preTempIdName);
+		}
+		  let temporaryIdName = preTempIdName.split(', ').slice(-1).join(' ')+ " " + preTempIdName.split(', ').slice(0, -1).join(' ');	
+		  
+          let temporaryIDTag = temporaryIdName.replace(/\s+/g, '');
+           // nameIDArray.push([temporaryIDTag, idArray[i-1]]);
+		
+            column.push([temporaryIDTag, (matrix[i][0])+'@mcpsmd.net']);
+        }
+		
+		}
 		console.warn(column.toString());
         return column;
     }
@@ -1706,7 +1853,17 @@ let values = (largestScore - smallestScore + 1)
 				highlightGroup(randomGroup);
 		 });
 		  $('#exportGroups').click(function () {
-			generateNameIDMatchArray2();
+			  if (confirm('Is this for zoom breakout rooms (click OK) ? Or for your records (click cancel)')){
+				  			if (!canvas) {
+			document.getElementById('txtFileUpload2').click();
+				}
+			generateNameIDMatchArray();
+			  }
+			  else{
+				  
+			  generateNameIDMatchArray2();
+			  }
+			  
 		 });
 		  $('#importGroups').click(function () {
 		$(".fileuploadImport").slideToggle();
@@ -1788,11 +1945,18 @@ let values = (largestScore - smallestScore + 1)
                 document.getElementById(allStudentBoxIds[j][0]).classList.remove("nottargeted");
                 // document.getElementById('KARENBROWN').style.backgroundColor = "white";
             }
-				if (confirm("Do you want to export your groups to a spreadsheet?")){
-		
-			//document.getElementById('txtFileUpload2').click();
-			generateNameIDMatchArray2();
-					}   
+					if (confirm("Do you want to export your groups to a spreadsheet?")){
+						  if (confirm('Is this for zoom breakout rooms (click OK) ? Or for your records (click cancel)')){
+				  			if (!canvas) {
+			document.getElementById('txtFileUpload2').click();
+				}
+			generateNameIDMatchArray();
+			  }
+			  else{
+				  
+			  generateNameIDMatchArray2();
+			  }
+					}  
             $(".finalizeGroups").slideToggle();
         });
     }
@@ -2036,7 +2200,16 @@ let values = (largestScore - smallestScore + 1)
 				highlightGroup(randomGroup);
 		 });
 		  $('#exportGroups').click(function () {
-			generateNameIDMatchArray2();
+			  if (confirm('Is this for zoom breakout rooms (click OK) ? Or for your records (click cancel)')){
+				  			if (!canvas) {
+			document.getElementById('txtFileUpload2').click();
+				}
+			generateNameIDMatchArray();
+			  }
+			  else{
+				  generateNameIDMatchArray2();
+			  }
+			  
 		 });
 		  $('#importGroups').click(function () {
 		$(".fileuploadImport").slideToggle();
@@ -2133,9 +2306,16 @@ let values = (largestScore - smallestScore + 1)
 			// console.log(groupOfGroupsArray[2]);
 			// console.log(groupOfGroupsArray[3]);
 					if (confirm("Do you want to export your groups to a spreadsheet?")){
-		
-			// document.getElementById('txtFileUpload2').click();
-			generateNameIDMatchArray2();
+						  if (confirm('Is this for zoom breakout rooms (click OK) ? Or for your records (click cancel)')){
+				  			if (!canvas) {
+			document.getElementById('txtFileUpload2').click();
+				}
+			generateNameIDMatchArray();
+			  }
+			  else{
+				  
+			  generateNameIDMatchArray2();
+			  }
 					}        
 		$(".finalizeGroups").slideToggle();
 
@@ -2438,7 +2618,8 @@ var generateImports = function (dataArray) {
 				highlightGroup(randomGroup);
 		 });
 		  $('#exportGroups').click(function () {
-			generateNameIDMatchArray2();
+			
+			generateNameIDMatchArray();
 		 });
 		  $('#importGroups').click(function () {
 		$(".fileuploadImport").slideToggle();
@@ -2539,7 +2720,7 @@ var generateImports = function (dataArray) {
 					// if (confirm("Do you want to export your groups to a spreadsheet?")){
 		
 			// // document.getElementById('txtFileUpload2').click();
-			// generateNameIDMatchArray2();
+			// generateNameIDArrayForZoom();
 					// }        
 		$(".finalizeGroups").slideToggle();
 		$(".fileuploadImport").slideToggle();
@@ -2857,7 +3038,16 @@ var generateInvert = function (dataArray) {
 				highlightGroup(randomGroup);
 		 });
 		  $('#exportGroups').click(function () {
-			generateNameIDMatchArray2();
+			  if (confirm('Is this for zoom breakout rooms (click OK) ? Or for your records (click cancel)')){
+				  			if (!canvas) {
+			document.getElementById('txtFileUpload2').click();
+				}
+			generateNameIDMatchArray();
+			  }
+			  else{
+				  generateNameIDMatchArray2();
+			  }
+			  
 		 });
 		  $('#importGroups').click(function () {
 		$(".fileuploadImport").slideToggle();
