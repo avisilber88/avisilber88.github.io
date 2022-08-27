@@ -1118,7 +1118,8 @@ let values = (largestScore - smallestScore + 1)
 
         for (var i = 0; i < groupAArray.length; i++) {		
 		if (canvas){
-            groupAArray[i][0] = groupAArray[i][0].substr(0,groupAArray[i][0].indexOf('(')) + "";
+			if (groupAArray[i][0].includes('('))
+				groupAArray[i][0] = groupAArray[i][0].substr(0,groupAArray[i][0].indexOf('(')) + "";
 			}
 			var testIdName = groupAArray[i][0] + "";
 
@@ -1126,7 +1127,8 @@ let values = (largestScore - smallestScore + 1)
         }
         for (var i = 0; i < groupBArray.length; i++) {
  			if (canvas){
-            groupBArray[i][0] = groupBArray[i][0].substr(0,groupBArray[i][0].indexOf('(')) + "";
+			if (groupBArray[i][0].includes('('))
+				groupBArray[i][0] = groupBArray[i][0].substr(0,groupBArray[i][0].indexOf('(')) + "";
 			}
 			var testIdName = groupBArray[i][0] + "";
 
@@ -1134,7 +1136,8 @@ let values = (largestScore - smallestScore + 1)
         }
         for (var i = 0; i < groupCArray.length; i++) {
   						if (canvas){
-            groupCArray[i][0] = groupCArray[i][0].substr(0,groupCArray[i][0].indexOf('(')) + "";
+			if (groupCArray[i][0].includes('('))
+				groupCArray[i][0] = groupCArray[i][0].substr(0,groupCArray[i][0].indexOf('(')) + "";
 			}
 			var testIdName = groupCArray[i][0] + "";
 
@@ -1160,7 +1163,8 @@ let values = (largestScore - smallestScore + 1)
             console.log("an array " + groupCArray.toString());
             for (var i = 0; i < groupAArray.length; i++) {
 						if (canvas){
-            groupAArray[i][0] = groupAArray[i][0].substr(0,groupAArray[i][0].indexOf('(')) + "";
+			if (groupAArray[i][0].includes('('))
+				groupAArray[i][0] = groupAArray[i][0].substr(0,groupAArray[i][0].indexOf('(')) + "";
 			}
                 var testIdName = groupAArray[i][0] + "";
 			if (canvas){
@@ -1171,7 +1175,8 @@ let values = (largestScore - smallestScore + 1)
 
             for (var i = 0; i < groupBArray.length; i++) {
 				 			if (canvas){
-            groupBArray[i][0] = groupBArray[i][0].substr(0,groupBArray[i][0].indexOf('(')) + "";
+			if (groupBArray[i][0].includes('('))
+				groupBArray[i][0] = groupBArray[i][0].substr(0,groupBArray[i][0].indexOf('(')) + "";
 			}
                 var testIdName = groupBArray[i][0] + "";
 						if (canvas){
@@ -1181,7 +1186,8 @@ let values = (largestScore - smallestScore + 1)
             }
             for (var i = 0; i < groupCArray.length; i++) {
 				  						if (canvas){
-            groupCArray[i][0] = groupCArray[i][0].substr(0,groupCArray[i][0].indexOf('(')) + "";
+            			if (groupCArray[i][0].includes('('))
+							groupCArray[i][0] = groupCArray[i][0].substr(0,groupCArray[i][0].indexOf('(')) + "";
 			}
                 var testIdName = groupCArray[i][0] + "";
 				if (canvas){
@@ -1372,6 +1378,7 @@ let values = (largestScore - smallestScore + 1)
 		console.log(minScore+ " "+maxScore);
         for (var i = 0; i < matrix.length; i++) {
 			console.warn((matrix[i][1]));	
+			console.warn(minScore +" "+maxScore);
             if ((minScore < Number((matrix[i][1]))) && (maxScore >= Number((matrix[i][1])))) {
 				if (canvas){
 					console.error(selectedSection+" "+matrix[i][2]);
