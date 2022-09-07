@@ -47,10 +47,17 @@ async function getFile(audioContext, filepath) {
 
 let playbackRate = 1;
 function playSample(audioContext, audioBuffer, time) {
+  const gainNode = audioContext.createGain();
+  console.error(accompanimentVolume/100);
+  gainNode.gain.value = accompanimentVolume/100;
+  gainNode.connect(audioContext.destination);
   const sampleSource = audioContext.createBufferSource();
+  
   sampleSource.buffer = audioBuffer;
+  // sampleSource.buffer.volume
   sampleSource.playbackRate.value = playbackRate;
-  sampleSource.connect(audioContext.destination)
+  sampleSource.connect(gainNode);
+  // sampleSource.connect(audioContext.destination)
   sampleSource.start(time);
   return sampleSource;
 }
@@ -1235,6 +1242,14 @@ $('#shatterme').click(function () {
     playASongLink("shatterme.mp3");
     // playASong("stromae");
 });
+$('#round').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("round.mp3");
+    // playASong("stromae");
+});
 $('#delilah').click(function () {
     try {
         currentTag = this.id
@@ -1846,6 +1861,9 @@ function checkCurrentSongAnswer() {
         currentSongKeys = ["A", "D", "C#/Db", "E", "B", "F#/Gb", "G#/Ab"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/highhopes.mp3") {
+        currentSongKeys = ["A", "C", "D", "E", "G", "F", "A#/Bb"];
+    }
+	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/round.mp3") {
         currentSongKeys = ["A", "C", "D", "E", "G", "F", "A#/Bb"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/phoenix.mp3") {
