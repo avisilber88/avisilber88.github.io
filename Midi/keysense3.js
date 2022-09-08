@@ -1242,6 +1242,22 @@ $('#shatterme').click(function () {
     playASongLink("shatterme.mp3");
     // playASong("stromae");
 });
+$('#kenshi').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("kenshi.mp3");
+    // playASong("stromae");
+});
+$('#joji').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("joji.mp3");
+    // playASong("stromae");
+});
 $('#round').click(function () {
     try {
         currentTag = this.id
@@ -1814,7 +1830,9 @@ function checkCurrentSongAnswer() {
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/titanium.mp3") {
         currentSongKeys = ["A#/Bb", "C", "D", "D#/Eb", "F", "G", "G#/Ab"];
     }
-
+    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/joji.mp3") {
+        currentSongKeys = ["A#/Bb", "C", "D", "D#/Eb", "F", "G", "G#/Ab"];
+    }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/tiger.mp3") {
         currentSongKeys = ["A#/Bb", "C", "D", "D#/Eb", "F", "G", "G#/Ab"];
     }
@@ -1909,6 +1927,9 @@ function checkCurrentSongAnswer() {
         currentSongKeys = ["A", "B", "C", "D", "E", "F", "G"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/riseup.mp3") {
+        currentSongKeys = ["A#/Bb", "F", "C#/Db", "C", "D#/Eb", "F#/Gb", "G#/Ab"];
+    }    
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/kenshi.mp3") {
         currentSongKeys = ["A#/Bb", "F", "C#/Db", "C", "D#/Eb", "F#/Gb", "G#/Ab"];
     }
 	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/wait.mp3") {
