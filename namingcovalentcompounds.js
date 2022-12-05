@@ -931,7 +931,7 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 		eSymbol="Br"
 		}
 		
-		if (elementName=="Phosphorous"){
+		if (elementName=="Phosphorus"){
 		eSymbol="P"
 		}
 		
@@ -954,7 +954,7 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 		else if (valueTwo=="Chlorine"){
 			valueTwo="chloride";
 		}	
-		else if (valueTwo=="Phosphorous"){
+		else if (valueTwo=="Phosphorus"){
 			valueTwo="phosphide";
 		}	
 		else if (valueTwo=="Bromine"){
@@ -1067,10 +1067,10 @@ var generateCovalentCompoundStuff = function (randV1, randV2){
 			 localValueTwo="Nitrogen"
 		}	
 		if (randV1==5){
-			 localValueOne="Phosphorous"
+			 localValueOne="Phosphorus"
 		}
 		if (randV2==5){
-			 localValueTwo="Phosphorous"
+			 localValueTwo="Phosphorus"
 		}	
 		if (randV1==6){
 			 localValueOne="Iodine"
