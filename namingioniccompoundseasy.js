@@ -95,7 +95,7 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
             score: levelcomplete,
 			level: thisAppNum
         }
-        db.collection("chemtest").add(data).then(function (result) {
+        db.collection("chemscores").add(data).then(function (result) {
             // list();
         })
         .catch(function (error) {
