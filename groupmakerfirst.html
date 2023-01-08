@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<head>
+<style>
+
+head{
+  background-color: #f0f0f0;
+}
+body {
+  background-color: white;
+}
+
+.selectionsBox{
+margin-bottom: 3px;
+}
+.flex-container {
+margin-top: 10px;
+  display: flex;
+  background-color: white;
+  flex-wrap: wrap;
+}
+
+.flex-container > div {
+  background-color: #f0f0f5;
+  margin: 5px;
+  padding: 5px;
+  font-size: 23px;
+  border-width: 1px;
+  border-color: grey;
+  border-style: solid;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  border-radius: 5px;
+  width: 250px;
+  margin: 5px;
+  padding: 0px;
+
+
+}
+
+.card.low {
+  border-width: 1px;
+  border-style: solid;
+
+  border-color: #E7A2A2;
+  background-color: #E7A2A2;
+}
+
+.targeted >div >h4 >b{
+
+}
+
+.nottargeted >div >h4 >b{
+ font-weight: 100;
+}
+.selected >div >h4 >b{
+}
+
+.card.low.selected {
+  border-width: 3px;
+  border-style: solid;
+
+  border-color: black;
+  background-color: #E7A2A2;
+}
+.card.low.nottargeted {
+  border-width: 1px;
+  border-style: solid;
+
+  border-color: #FFD7D7;
+  background-color: #FFD7D7;
+}
+.card.medium {
+  border-width: 1px;
+  border-style: solid;
+
+  border-color: #77D5D5;
+  background-color: #77D5D5;
+}
+
+.card.medium.selected{
+  border-width: 3px;
+  border-style: solid;
+  
+  border-color: black;
+  background-color: #77D5D5;
+}
+.card.medium.nottargeted{
+  border-width: 1px;
+  border-style: solid;
+  
+  border-color: #ACEDED;
+  background-color: #ACEDED;
+}
+
+
+
+.card.high {
+  border-width: 1px;
+  border-style: solid;
+
+  border-color: #83EA83;
+  background-color: #83EA83;
+}
+.card.high.selected {
+  border-width: 3px;
+  border-style: solid;
+
+  border-color: black;
+  background-color: #83EA83;
+}
+
+.card.high.nottargeted {
+  border-width: 1px;
+  border-style: solid;
+
+  border-color: #B3F6B3;
+  background-color: #B3F6B3;
+}
+.card:hover {
+  border-width: 1px;
+  border-style: solid;
+  border-color: black;
+
+}
+
+img {
+  border-radius: 5px 5px 0 0;
+}
+
+.container {
+  padding: 2px 16px;
+  display: flex;
+
+  align-items: center;
+}
+
+.card-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+
+.badge {
+background-color: blue;
+    color: aqua;
+    display: inline-block;
+    padding: .25em .4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s
+ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  }
+
+.name-title {
+padding-right: 10px;
+    font-weight: bold;
+    font-size: 16px;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.5/xlsx.full.min.js"></script>
+    <script src="Midi/vendor/nouislider.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>	
+
+<!-- <script type="text/javascript" src="static/js/read-csv.js"></script> -->
+    <!-- <input type="file" id="load_data" onchange="handleFiles(this.files)" -->
+            <!-- accept=".csv"> -->
+<!-- <button type = "button" name="load_data" id="load_da
+    </head>ta" class = "btn btn-info">Load Data</button> -->
+	
+    </head>
+<body>
+<div style= "display:flex; justify-content: center">
+<div>
+<link rel="stylesheet" href="Midi/vendor/nouislider.min.css" type="text/css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+	    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+<script src="uploadgamefirstname.js"></script>
+    <div id="dvImportSegments" class="fileupload">
+    <fieldset>
+        <legend style='font-size: xx-large'>Upload your Synergy, Canvas, or GroupMaker Export</legend>
+        <input type="file" name="File Upload" style = 'font-size:xx-large' id="txtFileUpload" accept=".csv, .xlsx, .xls" />
+    </fieldset>
+    </div>
+	        <div id="dvImportSegments2" class="fileupload2">
+    <fieldset hidden>
+        <legend style='font-size: xx-large'>Upload your Synergy, Canvas, or GroupMaker Export</legend>
+        <input type="file" name="File Upload" style = 'font-size:xx-large' id="txtFileUpload2" accept=".csv" />
+    </fieldset>
+    </div>
+	
+	<div class="flex-container">
+	<div id ="selectionsBox" style= "border-width: 0px;     background-color: white; display:flex; justify-content: center; height: 5%">
+	</div>
+	     <div id="dvImportSegments3" class="fileuploadImport" hidden>
+    <fieldset >
+        <legend style='font-size: xx-large'>Or Import A Group List You Exported From Here Previously</legend>
+        <input type="file" name="File Upload" style = 'font-size:xx-large' id="txtFileUpload3" accept=".csv" />
+    </fieldset>
+    </div>
+
+	
+	
+	<div class="flex-container studentsContainerOne">
+
+    <div id='groupA'>
+      lowest score group
+    </div>
+    <div id='groupB'>
+      middle score group
+    </div>
+    <div id='groupC'>
+      highest score group
+
+  </div>
+</div>
+
+<!-- <a hidden id="a"></a> -->
+	<div class="flex-container studentsContainerTwo" id = "studentContainerTwo"style= "background-color: #bababa">
+	<div>hi</div>
+
+	</div>
+		<div id = "underButtons" style= "border-width: 0px;     background-color: white; display:flex; justify-content: center">
+	<div></div>
+
+	</div>
+	</div>
+	</div>
+	</div>
+    </body>
+
+
+
+</html>
