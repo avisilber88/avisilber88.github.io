@@ -1120,9 +1120,9 @@ let values = (largestScore - smallestScore + 1)
 					}
 			}
 		console.log(groupAArray);
-        document.getElementById("groupA").innerHTML = "Students scoring " + smallestScore + " to " + scoreCutoffOne + "<br>(" + (groupAArray.length-groupAAbsent) + " members)<p>";
-            document.getElementById("groupB").innerHTML = "Students scoring " + scoreCutoffOne + ".01 to " + scoreCutoffTwo + "<br>(" + (groupBArray.length-groupBAbsent) + " members)<p>";
-            document.getElementById("groupC").innerHTML = "Students scoring " + scoreCutoffTwo + ".01 to " + largestScore + "<br>(" + (groupCArray.length-groupCAbsent) + " members)<p>";
+        document.getElementById("groupA").innerHTML = "Students scoring " + smallestScore + " to " + scoreCutoffOne + "<br>(<span id = 'groupACount'>"+(groupAArray.length-groupAAbsent) + "</span> members)<p>";
+            document.getElementById("groupB").innerHTML = "Students scoring " + scoreCutoffOne + ".01 to " + scoreCutoffTwo + "<br>(<span id = 'groupBCount'>"+(groupBArray.length-groupBAbsent) + "</span> members)<p>";
+            document.getElementById("groupC").innerHTML = "Students scoring " + scoreCutoffTwo + ".01 to " + largestScore + "<br>(<span id = 'groupCCount'>"+(groupCArray.length-groupCAbsent) + "</span> members)<p>";
             console.log("an array " + groupAArray.toString());
         console.log("an array " + groupBArray.toString());
         console.log("an array " + groupCArray.toString());
@@ -1240,10 +1240,11 @@ let values = (largestScore - smallestScore + 1)
 					}
 			}
 			console.warn(groupAArray);
-            document.getElementById("groupA").innerHTML = "Students scoring " + smallestScore + " to " + scoreCutoffOne + "<br>(" + (groupAArray.length-groupAAbsent) + " members)<p>";
-            document.getElementById("groupB").innerHTML = "Students scoring " + scoreCutoffOne + ".01 to " + scoreCutoffTwo + "<br>(" + (groupBArray.length-groupBAbsent) + " members)<p>";
-            document.getElementById("groupC").innerHTML = "Students scoring " + scoreCutoffTwo + ".01 to " + largestScore + "<br>(" + (groupCArray.length-groupCAbsent) + " members)<p>";
-            console.log("an array " + groupAArray.toString());
+       
+        document.getElementById("groupA").innerHTML = "Students scoring " + smallestScore + " to " + scoreCutoffOne + "<br>(<span id = 'groupACount'>"+(groupAArray.length-groupAAbsent) + "</span> members)<p>";
+            document.getElementById("groupB").innerHTML = "Students scoring " + scoreCutoffOne + ".01 to " + scoreCutoffTwo + "<br>(<span id = 'groupBCount'>"+(groupBArray.length-groupBAbsent) + "</span> members)<p>";
+            document.getElementById("groupC").innerHTML = "Students scoring " + scoreCutoffTwo + ".01 to " + largestScore + "<br>(<span id = 'groupCCount'>"+(groupCArray.length-groupCAbsent) + "</span> members)<p>";
+			console.log("an array " + groupAArray.toString());
             console.log("an array " + groupBArray.toString());
             console.log("an array " + groupCArray.toString());
             for (var i = 0; i < groupAArray.length; i++) {
@@ -1608,6 +1609,9 @@ let values = (largestScore - smallestScore + 1)
     var generateGroupChoices = function () {
         document.getElementById('selectionsBox').innerHTML = "<div class = 'pickgroupstyle'> <button type ='button' id ='groupByNumGroupsButton' style = 'font-size: xx-large; margin-right: 50px; margin-left: 65px'>Option 1: Select Number Of Groups</button>    <button type ='button' id ='groupByNumStudentsButton' style = 'font-size: xx-large'>Option 2: Select Size of Groups</button> <br><span style = 'font-size: xx-large; margin-top: 10px'> Remove absent students by clicking their names below </span> <input id = 'nameSearch' style = 'font-size: xx-large; margin-top: 20px'' type='text' placeholder='Search names... '></div>";
 		console.log(groupAArray.toString());
+		
+				let groupAAbsentCount=0;
+				let temporaryTotalA=(Number)(document.getElementById("groupACount").innerHTML);
 		for (var i = 0; i < groupAArray.length; i++) {
 
             (function (i) {
@@ -1615,61 +1619,84 @@ let values = (largestScore - smallestScore + 1)
 				if ((absentArray.includes(groupAArray[i][0]))&&(!(document.getElementById(groupAArray[i+0][0]).classList.contains("nottargeted")))){
 						document.getElementById(groupAArray[i+0][0]).classList.add("nottargeted");
 						nottargetednum++;
+						groupAAbsentCount++;
 				}
                 document.getElementById(groupAArray[i + 0][0]).addEventListener("click", function (e) {
                     if (!(document.getElementById(groupAArray[i+0][0]).classList.contains("nottargeted"))) {
 						
 						document.getElementById(groupAArray[i+0][0]).classList.add("nottargeted");
 						nottargetednum++;
+						groupAAbsentCount++;
                     }
 					else{
 						// alert ('hi2');
 						nottargetednum=nottargetednum-1;
+						groupAAbsentCount=groupAAbsentCount-1;
 					document.getElementById(groupAArray[i+0][0]).classList.remove("nottargeted");
 					}
-					
+					document.getElementById("groupACount").innerHTML=temporaryTotalA-groupAAbsentCount;//tempHTML.substring(0, tempHTML.indexOf("members"));//"Students scoring " + smallestScore + " to " + scoreCutoffOne + "<br>(" + (groupAArray.length-groupAAbsent) + " 
+
                 });
 
             })(i);
         }
+				let groupBAbsentCount=0;
+				let temporaryTotalB=(Number)(document.getElementById("groupBCount").innerHTML);
 				for (var i = 0; i < groupBArray.length; i++) {
 
             (function (i) {
 				if ((absentArray.includes(groupBArray[i][0]))&&(!(document.getElementById(groupBArray[i+0][0]).classList.contains("nottargeted")))){
 						document.getElementById(groupBArray[i+0][0]).classList.add("nottargeted");
 						nottargetednum++;
+						groupBAbsentCount++;
 				}
                 document.getElementById(groupBArray[i + 0][0]).addEventListener("click", function (e) {
                     if (!(document.getElementById(groupBArray[i+0][0]).classList.contains("nottargeted"))) {
 						document.getElementById(groupBArray[i+0][0]).classList.add("nottargeted");
 						nottargetednum++;
+						
+						groupBAbsentCount++;
                     }
 					else{
 							nottargetednum=nottargetednum-1;
+						groupBAbsentCount=groupBAbsentCount-1;
 					document.getElementById(groupBArray[i+0][0]).classList.remove("nottargeted");
 					}
-					
+					document.getElementById("groupBCount").innerHTML=temporaryTotalB-groupBAbsentCount;//tempHTML.substring(0, tempHTML.indexOf("members"));//"Students scoring " + smallestScore + " to " + scoreCutoffOne + "<br>(" + (groupAArray.length-groupAAbsent) + " 
+
                 });
 
             })(i);
         }
+		
+				let groupCAbsentCount=0;
+				let temporaryTotalC=(Number)(document.getElementById("groupCCount").innerHTML);
 				for (var i = 0; i < groupCArray.length; i++) {
 console.log(groupCArray);
             (function (i) {
 				if ((absentArray.includes(groupCArray[i][0]))&&(!(document.getElementById(groupCArray[i+0][0]).classList.contains("nottargeted")))){
 						document.getElementById(groupCArray[i+0][0]).classList.add("nottargeted");
 						nottargetednum++;
+						groupCAbsentCount++;
 				}
                 document.getElementById(groupCArray[i + 0][0]).addEventListener("click", function (e) {
-                    if (!(document.getElementById(groupCArray[i+0][0]).classList.contains("nottargeted"))) {
+					//let tempHTML=document.getElementById("groupA").innerHTML;
+					//alert(tempHTML);
+					
+					 if (!(document.getElementById(groupCArray[i+0][0]).classList.contains("nottargeted"))) {
 						nottargetednum++;
 						document.getElementById(groupCArray[i+0][0]).classList.add("nottargeted");
+						
+						groupCAbsentCount++;
                     }
 					else{
 							nottargetednum=nottargetednum-1;
+							
+						groupCAbsentCount=groupCAbsentCount-1;
 					document.getElementById(groupCArray[i+0][0]).classList.remove("nottargeted");
 					}
-					
+					document.getElementById("groupCCount").innerHTML=temporaryTotalC-groupCAbsentCount;//tempHTML.substring(0, tempHTML.indexOf("members"));//"Students scoring " + smallestScore + " to " + scoreCutoffOne + "<br>(" + (groupAArray.length-groupAAbsent) + " 
+                   
                 });
 
             })(i);
