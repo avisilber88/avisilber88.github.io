@@ -1088,11 +1088,42 @@ let values = (largestScore - smallestScore + 1)
         groupBArray = getBetween(columnArray, scoreCutoffOne, scoreCutoffTwo);
         groupCArray = getBetween(columnArray, scoreCutoffTwo, largestScore+.01);
 		
+			let groupAAbsent=0;
+			let groupBAbsent=0;
+			let groupCAbsent=0;
+					for (var i = 0; i < groupAArray.length; i++) {
+										if (canvas){
+			if (groupAArray[i][0].includes('('))
+				groupAArray[i][0] = groupAArray[i][0].substr(0,groupAArray[i][0].indexOf('(')) + "";
+			}
+				if (absentArray.includes(groupAArray[i][0])){
+					groupAAbsent++;
+			}
+			}
+			for (var i = 0; i < groupBArray.length; i++) {
+				 			if (canvas){
+			if (groupBArray[i][0].includes('('))
+				groupBArray[i][0] = groupBArray[i][0].substr(0,groupBArray[i][0].indexOf('(')) + "";
+			}
+         		if (absentArray.includes(groupBArray[i][0])){
+				groupBAbsent++;
+				}
+
+			}
+				for (var i = 0; i < groupCArray.length; i++) {
+									  						if (canvas){
+            			if (groupCArray[i][0].includes('('))
+							groupCArray[i][0] = groupCArray[i][0].substr(0,groupCArray[i][0].indexOf('(')) + "";
+			}
+					if (absentArray.includes(groupCArray[i][0])){
+					groupCAbsent++;
+					}
+			}
 		console.log(groupAArray);
-        document.getElementById("groupA").innerHTML = "Students scoring " + smallestScore + " to " + scoreCutoffOne + "<br>(" + groupAArray.length + " members)<p>";
-        document.getElementById("groupB").innerHTML = "Students scoring " + scoreCutoffOne + ".01 to " + scoreCutoffTwo + "<br>(" + groupBArray.length + " members)<p>";
-        document.getElementById("groupC").innerHTML = "Students scoring " + scoreCutoffTwo + ".01 to " + largestScore + "<br>(" + groupCArray.length + " members)<p>";
-        console.log("an array " + groupAArray.toString());
+        document.getElementById("groupA").innerHTML = "Students scoring " + smallestScore + " to " + scoreCutoffOne + "<br>(" + (groupAArray.length-groupAAbsent) + " members)<p>";
+            document.getElementById("groupB").innerHTML = "Students scoring " + scoreCutoffOne + ".01 to " + scoreCutoffTwo + "<br>(" + (groupBArray.length-groupBAbsent) + " members)<p>";
+            document.getElementById("groupC").innerHTML = "Students scoring " + scoreCutoffTwo + ".01 to " + largestScore + "<br>(" + (groupCArray.length-groupCAbsent) + " members)<p>";
+            console.log("an array " + groupAArray.toString());
         console.log("an array " + groupBArray.toString());
         console.log("an array " + groupCArray.toString());
 
@@ -1144,8 +1175,29 @@ let values = (largestScore - smallestScore + 1)
             document.getElementById("groupC").innerHTML = document.getElementById("groupC").innerHTML + "<div class='card high' id = '" + testIdName + "'><div class='container'> <h4><b>" + testIdName + "</b></h4></div></div>";
 
         }
-		
+		for (var i = 0; i < groupAArray.length; i++) {
+				if ((absentArray.includes(groupAArray[i][0]))&&(!(document.getElementById(groupAArray[i+0][0]).classList.contains("nottargeted")))){
+						document.getElementById(groupAArray[i+0][0]).classList.add("nottargeted");
+						nottargetednum++;
+				}
+			}
+			for (var i = 0; i < groupBArray.length; i++) {
+
+         		if ((absentArray.includes(groupBArray[i][0]))&&(!(document.getElementById(groupBArray[i+0][0]).classList.contains("nottargeted")))){
+						document.getElementById(groupBArray[i+0][0]).classList.add("nottargeted");
+						nottargetednum++;
+				}
+
+			}
+				for (var i = 0; i < groupCArray.length; i++) {
+					if ((absentArray.includes(groupCArray[i][0]))&&(!(document.getElementById(groupCArray[i+0][0]).classList.contains("nottargeted")))){
+						document.getElementById(groupCArray[i+0][0]).classList.add("nottargeted");
+						nottargetednum++;
+					}
+
+			}
         slider.noUiSlider.on('change', function () {
+			
             scoreCutoffOne = Number(slider.noUiSlider.get()[0]);
             scoreCutoffTwo = Number(slider.noUiSlider.get()[1]);
 			nottargetednum=0;
@@ -1154,10 +1206,43 @@ let values = (largestScore - smallestScore + 1)
             groupAArray = getBetween(columnArray, smallestScore - .01, scoreCutoffOne);
             groupBArray = getBetween(columnArray, scoreCutoffOne, scoreCutoffTwo);
             groupCArray = getBetween(columnArray, scoreCutoffTwo, largestScore+.01);
+			
+			let groupAAbsent=0;
+			let groupBAbsent=0;
+			let groupCAbsent=0;
+			
+			for (var i = 0; i < groupAArray.length; i++) {
+										if (canvas){
+			if (groupAArray[i][0].includes('('))
+				groupAArray[i][0] = groupAArray[i][0].substr(0,groupAArray[i][0].indexOf('(')) + "";
+			}
+				if (absentArray.includes(groupAArray[i][0])){
+					groupAAbsent++;
+			}
+			}
+			for (var i = 0; i < groupBArray.length; i++) {
+				 			if (canvas){
+			if (groupBArray[i][0].includes('('))
+				groupBArray[i][0] = groupBArray[i][0].substr(0,groupBArray[i][0].indexOf('(')) + "";
+			}
+         		if (absentArray.includes(groupBArray[i][0])){
+				groupBAbsent++;
+				}
+
+			}
+				for (var i = 0; i < groupCArray.length; i++) {
+									  						if (canvas){
+            			if (groupCArray[i][0].includes('('))
+							groupCArray[i][0] = groupCArray[i][0].substr(0,groupCArray[i][0].indexOf('(')) + "";
+			}
+					if (absentArray.includes(groupCArray[i][0])){
+					groupCAbsent++;
+					}
+			}
 			console.warn(groupAArray);
-            document.getElementById("groupA").innerHTML = "Students scoring " + smallestScore + " to " + scoreCutoffOne + "<br>(" + groupAArray.length + " members)<p>";
-            document.getElementById("groupB").innerHTML = "Students scoring " + scoreCutoffOne + ".01 to " + scoreCutoffTwo + "<br>(" + groupBArray.length + " members)<p>";
-            document.getElementById("groupC").innerHTML = "Students scoring " + scoreCutoffTwo + ".01 to " + largestScore + "<br>(" + groupCArray.length + " members)<p>";
+            document.getElementById("groupA").innerHTML = "Students scoring " + smallestScore + " to " + scoreCutoffOne + "<br>(" + (groupAArray.length-groupAAbsent) + " members)<p>";
+            document.getElementById("groupB").innerHTML = "Students scoring " + scoreCutoffOne + ".01 to " + scoreCutoffTwo + "<br>(" + (groupBArray.length-groupBAbsent) + " members)<p>";
+            document.getElementById("groupC").innerHTML = "Students scoring " + scoreCutoffTwo + ".01 to " + largestScore + "<br>(" + (groupCArray.length-groupCAbsent) + " members)<p>";
             console.log("an array " + groupAArray.toString());
             console.log("an array " + groupBArray.toString());
             console.log("an array " + groupCArray.toString());
@@ -1204,8 +1289,51 @@ let values = (largestScore - smallestScore + 1)
             // var percentC=groupCArray.length/totalStudents*100+percentB+percentA;
             // alert (percentA+" "+percentB);
             $('.noUi-connects').css("background", 'linear-gradient(to right, #FFBABA ' + percentA + '%, #77D5D5 ' + percentA + '%, #77D5D5 ' + percentA + '%, #77D5D5 ' + percentB + '%, #83EA83 ' + percentB + '%)');
+			for (var i = 0; i < groupAArray.length; i++) {
+				if ((absentArray.includes(groupAArray[i][0]))&&(!(document.getElementById(groupAArray[i+0][0]).classList.contains("nottargeted")))){
+						document.getElementById(groupAArray[i+0][0]).classList.add("nottargeted");
+						nottargetednum++;
+				}
+			}
+			for (var i = 0; i < groupBArray.length; i++) {
 
+         		if ((absentArray.includes(groupBArray[i][0]))&&(!(document.getElementById(groupBArray[i+0][0]).classList.contains("nottargeted")))){
+						document.getElementById(groupBArray[i+0][0]).classList.add("nottargeted");
+						nottargetednum++;
+				}
+
+			}
+				for (var i = 0; i < groupCArray.length; i++) {
+					if ((absentArray.includes(groupCArray[i][0]))&&(!(document.getElementById(groupCArray[i+0][0]).classList.contains("nottargeted")))){
+						document.getElementById(groupCArray[i+0][0]).classList.add("nottargeted");
+						nottargetednum++;
+					}
+
+			}
         });
+		
+			for (var i = 0; i < groupAArray.length; i++) {
+				if ((absentArray.includes(groupAArray[i][0]))&&(!(document.getElementById(groupAArray[i+0][0]).classList.contains("nottargeted")))){
+						document.getElementById(groupAArray[i+0][0]).classList.add("nottargeted");
+						nottargetednum++;
+				}
+			}
+			for (var i = 0; i < groupBArray.length; i++) {
+
+         		if ((absentArray.includes(groupBArray[i][0]))&&(!(document.getElementById(groupBArray[i+0][0]).classList.contains("nottargeted")))){
+						document.getElementById(groupBArray[i+0][0]).classList.add("nottargeted");
+						nottargetednum++;
+				}
+
+			}
+				for (var i = 0; i < groupCArray.length; i++) {
+					if ((absentArray.includes(groupCArray[i][0]))&&(!(document.getElementById(groupCArray[i+0][0]).classList.contains("nottargeted")))){
+						document.getElementById(groupCArray[i+0][0]).classList.add("nottargeted");
+						nottargetednum++;
+					}
+					
+
+			}
         $('#submitScoreRange').click(function () {
             // alert ("hi");
             // if (true){
@@ -1277,6 +1405,8 @@ let values = (largestScore - smallestScore + 1)
             }
 			console.log("largest score is "+largestScore);
 			console.error(matrix[i][canvasSectionColumn]);
+			matrix[i][0]=matrix[i][0].replace(/'/g, '');
+			
             column.push([matrix[i][0], Number(matrix[i][col]), matrix[i][canvasSectionColumn]]);
         }
 		}	
@@ -1314,6 +1444,7 @@ let values = (largestScore - smallestScore + 1)
 			if (canvas){
 			}
 			else{
+				
             column.push([matrix[i][0], Number(matrix[i][col])]);
         }
 		}
@@ -1330,6 +1461,7 @@ let values = (largestScore - smallestScore + 1)
             if (largestScore < Number((matrix[i][col]))) {
                 largestScore = Number((matrix[i][col])) + 0;
             }
+			matrix[i][0]=matrix[i][0].replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
             column.push([matrix[i][0], Number(matrix[i][col])]);
         }
 		console.warn(column.toString());
@@ -1341,10 +1473,11 @@ let values = (largestScore - smallestScore + 1)
         for (var i = 1; i < matrix.length; i++) {
 		
 			let temporaryFullName = matrix[i][0]+"";
+			matrix[i][0]=matrix[i][0].replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
 		  let preTempIdName = temporaryFullName.split('(S').slice(0, -1).join(' ')
 		  let temporaryIdName = preTempIdName.split(', ').slice(-1).join(' ')+ " " + preTempIdName.split(', ').slice(0, -1).join(' ');	
-		  
-          let temporaryIDTag = temporaryIdName.replace(/\s+/g, '');
+		  //temporaryIdName = temporaryIdName.replace(/[^\p{L}\s]/gu,"");
+          let temporaryIDTag = temporaryIdName.replace(/-|\s+/g, '');
            // nameIDArray.push([temporaryIDTag, idArray[i-1]]);
 		
             column.push([temporaryIDTag, (matrix[i][col])]);
@@ -1354,6 +1487,8 @@ let values = (largestScore - smallestScore + 1)
 		        for (var i = 1; i < matrix.length; i++) {
 		
 			let temporaryFullName = matrix[i][4]+"";
+			
+			matrix[i][4]=matrix[i][4].replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
 		let preTempIdName = temporaryFullName;
 		if (preTempIdName.includes('.')){
 			// alert ("yo");
@@ -1361,7 +1496,7 @@ let values = (largestScore - smallestScore + 1)
 		  console.error(preTempIdName);
 		}
 		  let temporaryIdName = preTempIdName.split(', ').slice(-1).join(' ')+ " " + preTempIdName.split(', ').slice(0, -1).join(' ');	
-		  
+		  //temporaryIdName = temporaryIdName.replace(/[^\p{L}\s]/gu,"");
           let temporaryIDTag = temporaryIdName.replace(/\s+/g, '');
            // nameIDArray.push([temporaryIDTag, idArray[i-1]]);
 		
@@ -1519,7 +1654,7 @@ let values = (largestScore - smallestScore + 1)
             })(i);
         }
 				for (var i = 0; i < groupCArray.length; i++) {
-
+console.log(groupCArray);
             (function (i) {
 				if ((absentArray.includes(groupCArray[i][0]))&&(!(document.getElementById(groupCArray[i+0][0]).classList.contains("nottargeted")))){
 						document.getElementById(groupCArray[i+0][0]).classList.add("nottargeted");
