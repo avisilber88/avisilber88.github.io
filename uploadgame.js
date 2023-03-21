@@ -155,6 +155,7 @@ async function CSV_XLSX_File_Selected_Event() {
     // Method that reads and processes the selected file
 	
 	  function upload(evt) {
+		  //alert("YO");
 		  startRow=2;
 	 canvasSectionColumn =4;
 		  sectionArray=[];
@@ -166,15 +167,17 @@ async function CSV_XLSX_File_Selected_Event() {
     ext = inputElement.value
     ext = ext.split(".")
     ext = ext[ext.length - 1]
+	ext = ext.toLowerCase();
 	console.log(ext);	
 	// if (true){
 		// alert("hi");
     var files = inputElement.files || [];
     if (!files.length) return;
     var file = files[0];
+
     var reader = new FileReader();
     reader.onloadend = async function (event) {
-		
+	
 		if ((ext=='xls')||(ext=='xlsx')){
         var arrayBuffer = reader.result;
         var options = {type: 'array', codepage: false ? 65001 : void 0};
@@ -299,6 +302,7 @@ console.log(arrayTest);
         // console.log('Parsed_File_Obj')
         // console.log(Parsed_File_Obj)
 		if ((ext=='xls')||(ext=='xlsx')){
+			alert("xls");
 					data=arrayTest;
 					
 outside=false;
@@ -1414,6 +1418,8 @@ let values = (largestScore - smallestScore + 1)
 		else{
         for (var i = (startRow+1); i < matrix.length; i++) {
 			console.log(matrix[i][col]);
+			
+			matrix[i][0]=matrix[i][0].replace(/'/g, '');
 				try {
 				if (matrix[i][col].includes(" ")){
 				matrix[i][col]=matrix[i][col].substr(0,matrix[i][col].indexOf(' '));

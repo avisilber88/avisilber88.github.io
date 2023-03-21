@@ -166,6 +166,8 @@ async function CSV_XLSX_File_Selected_Event() {
     ext = inputElement.value
     ext = ext.split(".")
     ext = ext[ext.length - 1]
+	
+	ext = ext.toLowerCase();
 	console.log(ext);	
 	// if (true){
 		// alert("hi");
@@ -1277,14 +1279,19 @@ let values = (largestScore - smallestScore + 1)
             }
 			console.log("largest score is "+largestScore);
 			console.error(matrix[i][canvasSectionColumn]);
+			
+			matrix[i][0]=matrix[i][0].replace(/'/g, '');
             column.push([matrix[i][0], Number(matrix[i][col]), matrix[i][canvasSectionColumn]]);
         }
 		}	
 		else{
         for (var i = (startRow+1); i < matrix.length; i++) {
 			console.log(matrix[i][col]);
+			
+			matrix[i][0]=matrix[i][0].replace(/'/g, '');
 				try {
 				if (matrix[i][col].includes(" ")){
+					
 				matrix[i][col]=matrix[i][col].substr(0,matrix[i][col].indexOf(' '));
 				}
 				}
