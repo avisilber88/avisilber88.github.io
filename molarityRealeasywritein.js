@@ -737,6 +737,7 @@ document.getElementById("num1").innerHTML = "What is the molarity of a "+formula
 			if (("" + givenAnswer).toUpperCase().replace(/\s/g, '') == ("" + thisAnswer).toUpperCase().replace(/\s/g, '')) {
 				score = score + 1;
 				$('#score').text("Score = " + score);
+				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 				$('#scoremessage').text(specialMessage(score));
 				document.getElementById("givenAnswer").value = "";
 			} else {
