@@ -359,7 +359,7 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 		setupAnswersDecimals(input, 0);//numberOfDecimalsToCount);
 	};
 	var setupAnswersDecimals = function (answer1, n2) {
-		// 		console.log("step 3 "+answer1);
+		// 		// console.log("step 3 "+answer1);
 				thisAnswer = "1/"+answer1 + "";
 				
 		if (questionType==3){
@@ -581,7 +581,7 @@ var getCorrectChemicalFormula=function(moleculeName){
 		var mag1=getMagnitude(11);
 		var mag2=getMagnitude(mag1);
 		mathMultiplier=Math.pow(10, Math.floor(Math.random()*3));
-		console.log("multiplier is "+mathMultiplier);
+		// console.log("multiplier is "+mathMultiplier);
 		concentrateVolume=mathMultiplier*(Math.floor(Math.random()*9)+1);
 		diluentVolume=concentrateVolume*((Math.floor(Math.random()*8)+2));
 		//var mag1=0;
@@ -681,7 +681,7 @@ if (questionType==1){
 number=stepToCheckNumber;
 }
 if (questionType==2){
-	alert ("hi");
+	// alert ("hi");
 mag1=0;
 mag2=0;
 number=concentrateVolume;
