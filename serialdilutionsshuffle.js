@@ -132,7 +132,8 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 	var thisAnswer;
 	var givenAnswer;
 	var questionType;
-	var stepToCheck;
+	var 
+	ToCheck;
 	var stepToCheckNumber;
 	var diluentVolume;
 	var mathMultiplier;
@@ -359,7 +360,8 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 		setupAnswersDecimals(input, 0);//numberOfDecimalsToCount);
 	};
 	var setupAnswersDecimals = function (answer1, n2) {
-		// 		// console.log("step 3 "+answer1);
+		// 
+		// console.log("step 3 "+answer1);
 				thisAnswer = "1/"+answer1 + "";
 				
 		if (questionType==3){
@@ -368,7 +370,9 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 				//alert(thisAnswer);
 				//answer=getSigFigs(n1);
 				//alert (n1 + " who has " + numSigs1);
-			
+			
+
+
 		
 
 	};
@@ -646,7 +650,7 @@ document.getElementById("num1").innerHTML = "Your supervisor provides you with a
 }// Done Above
 else if (questionType==1){ // slightly tricky one where they ask you at a different step than the last one
 if (score>19){
-document.getElementById("num1").innerHTML = "your supervisor provides you with a "+numberThree+" "+units1+"/"+units2+" of " + formulaName + " solution, and asks you to make a "+number+"-step "+numbertwo+"-fold dilution ("+numbertwo+"<sup>-1</sup> at each step). <br><br> After you have performed the "+number+"-step "+numbertwo+"-fold dilution ("+numbertwo+"<sup>-1</sup> at each step) as requested, what is the dilution factor at the "+stepToCheck+" step (step "+number+")? <br>(make sure to frame it as a fraction ex: '1/4')";
+document.getElementById("num1").innerHTML = "your supervisor provides you with a "+numberThree+" "+units1+"/"+units2+" of " + formulaName + " solution, and asks you to make a "+number+"-step "+numbertwo+"-fold dilution ("+numbertwo+"<sup>-1</sup> at each step). <br><br> After you have performed the "+number+"-step "+numbertwo+"-fold dilution ("+numbertwo+"<sup>-1</sup> at each step) as requested, what is the dilution factor at the "+stepToCheck+" step? <br>(make sure to frame it as a fraction ex: '1/4')";
 }
 else {	
 document.getElementById("num1").innerHTML = "Your supervisor provides you with a "+numberThree+" "+units1+"/"+units2+" of " + formulaName + " solution, and asks you to make a "+number+"-step "+numbertwo+"-fold dilution ("+numbertwo+"<sup>-1</sup> at each step). <br><br> After you have performed the "+number+"-step "+numbertwo+"-fold dilution ("+numbertwo+"<sup>-1</sup> at each step) as requested, what is the dilution factor at the "+stepToCheck+" step (step "+number+")? <br>(make sure to frame it as a fraction ex: '1/4')";
