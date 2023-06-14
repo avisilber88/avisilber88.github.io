@@ -7,7 +7,7 @@ http://www.tooplate.com/view/2083-steak-house
 */
 
 body {
-		background: #ffffff;
+		background: rgba(232,233,201,255);
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 300;
 	}
@@ -108,7 +108,7 @@ a:focus {
 /* hover min css */
 .hvr-bounce-to-bottom:before,
 .hvr-bounce-to-top:before {
-  background-color: #ffffff;
+  background-color: rgba(232,233,201,255);
 }
 
 
@@ -136,7 +136,7 @@ a:focus {
 
 #feature,
 #team{
-  background: rgb(244, 225, 146);
+  background: rgb(133, 187, 101);
 }
 #joinus {
   background: rgb(0, 255, 200);
@@ -144,7 +144,7 @@ a:focus {
 #about,
 #menu,
 #gallery {
-	background-color: 	#FFFFFF;
+	background-color: 	rgba(232,233,201,255);
 }
 
 /* section title */
@@ -173,7 +173,7 @@ a:focus {
   flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
-  background: none repeat scroll 0 0 #ffffff;
+  background: none repeat scroll 0 0 rgba(232,233,201,255);
 }
 
 .sk-spinner-pulse {
@@ -205,7 +205,7 @@ a:focus {
 
 /* Home section */
 #home {
-  color: #ffffff;
+  color: rgba(232,233,201,255);
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -249,7 +249,7 @@ a:focus {
 
 /* Navigation section */
 .navbar-default {
-    background: #ffffff;
+    background: rgba(232,233,201,255);
     border: none;
     box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.04);
     margin: 0 !important;
