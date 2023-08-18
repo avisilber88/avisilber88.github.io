@@ -448,7 +448,10 @@ a:focus {
   padding-top: 0px;
   padding-bottom: 10px;
 }
-
+#team .team-des2 h4 {
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
 #team img {
   width: 100%;
 }
