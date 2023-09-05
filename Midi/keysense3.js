@@ -1391,6 +1391,14 @@ $('#closer').click(function () {
     playASongLink("closer.mp3");
     // playASong("stromae");
 });
+$('#griftwood').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("griftwood.mp3");
+    // playASong("stromae");
+});
 
 
 $('#blackparade').click(function () {
@@ -1861,6 +1869,9 @@ function checkCurrentSongAnswer() {
         currentSongKeys = ["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/closer.mp3") {
+        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/griftwood.mp3") {
         currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/hello.mp3") {
