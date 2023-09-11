@@ -1581,6 +1581,116 @@ $('#lovesong').click(function () {
     // playASong("stromae");
 });
 
+
+
+
+$('#takeonme').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("takeonme.mp3");
+    // playASong("stromae");
+});
+
+$('#besideyou').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("besideyou.mp3");
+    // playASong("stromae");
+});
+$('#befour').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("befour.mp3");
+    // playASong("stromae");
+});
+$('#lasttime').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("lasttime.mp3");
+    // playASong("stromae");
+});
+$('#kaisarion').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("kaisarion.mp3");
+    // playASong("stromae");
+});
+$('#notcalling').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("notcalling.mp3");
+    // playASong("stromae");
+});
+$('#smashing').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("smashing.mp3");
+    // playASong("stromae");
+});
+$('#girlthat').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("girlthat.mp3");
+    // playASong("stromae");
+});
+$('#tabu').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("tabu.mp3");
+    // playASong("stromae");
+});
+$('#harleys').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("harleys.mp3");
+    // playASong("stromae");
+});
+
+$('#danishsweet').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("danishsweet.mp3");
+    // playASong("stromae");
+});
+$('#linger').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("linger.mp3");
+    // playASong("stromae");
+});
+$('#hihigh').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("hihigh.mp3");
+    // playASong("stromae");
+});
+
 $('#wait').click(function () {
     try {
         currentTag = this.id
@@ -1820,6 +1930,15 @@ function checkCurrentSongAnswer() {
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/shatterme.mp3") {
         currentSongKeys = ["A", "B", "C", "D", "E", "F", "G"];
     }
+	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/besideyou.mp3") {
+        currentSongKeys = ["A", "B", "C", "D", "E", "F", "G"];
+    }
+	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/notcalling.mp3") {
+        currentSongKeys = ["A", "B", "C", "D", "E", "F", "G"];
+    }
+	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/hihigh.mp3") {
+        currentSongKeys = ["A", "B", "C", "D", "E", "F", "G"];
+    }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/quiet.mp3") {
         currentSongKeys = ["C", "D", "D#/Eb", "F", "G", "A", "A#/Bb"];
     }
@@ -1847,7 +1966,13 @@ function checkCurrentSongAnswer() {
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/wakemup.mp3") {
         currentSongKeys = ["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
     }
-	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/samurai.mp3") {
+	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/lasttime.mp3") {
+        currentSongKeys = ["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
+    }
+	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/linger.mp3") {
+        currentSongKeys = ["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
+    }
+		if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/samurai.mp3") {
         currentSongKeys = ["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/takecare.mp3") {
@@ -1880,13 +2005,28 @@ function checkCurrentSongAnswer() {
 	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/sprung.mp3") {
         currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
     }
-    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/stromae.mp3") {
+    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/stromae.mp3") { //Db major
+        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
+    }
+	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/harleys.mp3") {
+        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
+    }
+	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/danishsweet.mp3") {
+        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
+    }
+	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/tabu.mp3") {
         currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/oldtown.mp3") {
         currentSongKeys = ["A#/Bb", "E", "C#/Db", "D#/Eb", "B", "F#/Gb", "G#/Ab"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/ghost.mp3") {
+        currentSongKeys = ["A", "D", "C#/Db", "E", "B", "F#/Gb", "G#/Ab"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/kalisarion.mp3") { //A major
+        currentSongKeys = ["A", "D", "C#/Db", "E", "B", "F#/Gb", "G#/Ab"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/takeonme.mp3") {
         currentSongKeys = ["A", "D", "C#/Db", "E", "B", "F#/Gb", "G#/Ab"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/highhopes.mp3") {
@@ -1901,7 +2041,13 @@ function checkCurrentSongAnswer() {
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/attention.mp3") {
         currentSongKeys = ["A#/Bb", "B", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
     }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/girlthat.mp3") {
+        currentSongKeys = ["A#/Bb", "B", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
+    }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/centuries.mp3") {
+        currentSongKeys = ["A", "B", "C", "D", "E", "F#/Gb", "G"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/befour.mp3") {
         currentSongKeys = ["A", "B", "C", "D", "E", "F#/Gb", "G"];
     }
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/chungus.mp3") {
@@ -1949,6 +2095,11 @@ function checkCurrentSongAnswer() {
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/lighters.mp3") {
         currentSongKeys = ["A#/Bb", "C", "D#/Eb", "D", "F", "G", "G#/Ab"];
     }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/smashing.mp3") {
+        currentSongKeys = ["A#/Bb", "C", "D#/Eb", "D", "F", "G", "G#/Ab"];
+    }
+	
+	
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/saymyname.mp3") {
         currentSongKeys = ["A#/Bb", "C", "D#/Eb", "D", "F", "G", "G#/Ab"];
     }
