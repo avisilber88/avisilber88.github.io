@@ -33,13 +33,14 @@ $(document).ready(function () {
     var lockNames = false;
     var groupNamesArray = [];
 	var nottargetednum=0;
-	var groupingMethod="heterogeneous";
+	var groupingMethod="homogeneous";
 	var canvas=false;
 	var selectedSection="none";
 	var onlyOneInput=true;
 	var absentArray=[];
 	var outside=false;
 		var sectionArray=[];
+	//var groupingStyle="homogeneous";
     $(".studentsContainerOne").slideToggle();
     $(".studentsContainerTwo").slideToggle();
 	
@@ -1037,6 +1038,13 @@ link.click();
 		}
     }
 
+
+//Step 2B: Grouping Style
+
+
+
+
+
     //Step 3: Generate Sliders
 
     var generateSliders = function () {
@@ -1774,7 +1782,7 @@ console.log(groupCArray);
             // }
 			let groupnums=prompt("How many groups do you want?")
 			if (groupnums>0){
-            groupByGroups(groupnums);
+            groupByGroupsCheck(groupnums);
 			}
         });
 
@@ -1786,17 +1794,63 @@ console.log(groupCArray);
             // }
 				let groupnums=prompt("What is your group size? (no group will have larger than this size, and all of your groups will have this size or one less)");
 			if (groupnums>0){ 
-			groupByStudents(groupnums);
+				groupByStudentsCheck(groupnums);
 			}
 
         });
     }
+	
+
+	// function selectGroupByStudents(groupnums, secondsForAlert, nextAction) { //not setup yet
+    // $("#my-dialog-prev-next-timed").dialog({
+        // modal: false,
+        // autoOpen: false,
+        // buttons: [{
+                // text: "take: A look",
+                // click: function () {
+                    // $(this).dialog("close");
+                    // // window.setTimeout(reopenDialog, secondsForAlert * 1000);
+                    // // $("#alertMessage2").html(messageThis);
+                // }
+            // }, {
+                // text: "next:",
+                // click: function () {
+                    // $(this).dialog("close");
+                    // // window.setTimeout(nextAction, 200);
+                    // // $("#alertMessage2").html(messageThis);
+                // }
+            // }
+        // ]
+    // });
+    // $('.ui-dialog-buttonpane').find('button:contains("next")').focus();
+
+    // console.log($("#my-dialog-prev-next-timed").dialog.childElementCount);
+    // $("#my-dialog-prev-next-timed").dialog("open")
+
+    // // window.setTimeout($("#my-dialog-timed").dialog("open"), 5000);
+
+// }
+	
+	
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
             let j = Math.floor(Math.random() * (i + 1));
             [array[i], array[j]] = [array[j], array[i]];
         }
     }
+	
+	    var groupByGroupsCheck = function (numberOfGroups) {
+	 document.getElementById('selectionsBox').innerHTML = "<div class = 'groupMethodDecision'> <span style='font-size: large'> How would you like to sort your students into groups? </span> <br><button type ='button' id ='heterogeneousButtonByGroups' style = 'font-size: xx-large; margin-right: 50px; margin-left: 65px'>Option 1: Heterogeneous (each group has a mix of scores) </button>  <br><br>  <button type ='button' id ='homogeneousButtonByGroups' style = 'font-size: xx-large; margin-right: 50px; margin-left: 65px'>Option 2: Homogeneous (students with similar scores together)</button></div>";
+         
+		$('#heterogeneousButtonByGroups').click(function () {
+			groupingMethod="heterogeneous";
+			groupByGroups(numberOfGroups);
+		});
+		$('#homogeneousButtonByGroups').click(function () {
+			groupingMethod="homogeneous";
+			groupByGroups(numberOfGroups);
+		});
+	}
     var groupByGroups = function (numberOfGroups) {
 		lockNames=false;
 		allStudentBoxIds=[];
@@ -1815,6 +1869,11 @@ console.log(groupCArray);
         shuffle(groupBArray);
         shuffle(groupCArray);
         var testIdName = "group" + 0 + "";
+		let upperMaxStudents=Math.ceil((columnArray.length-nottargetednum) / numberOfGroups);
+		let lowerMaxStudents=Math.floor((columnArray.length-nottargetednum) / numberOfGroups);
+		let groupItSwitches=(columnArray.length-nottargetednum) % numberOfGroups;
+		
+					
         allGroupIds.push(testIdName + "");
         document.getElementById("studentContainerTwo").innerHTML = "<div id = '" + testIdName + "'>" + testIdName + "</div>";
         for (var i = 1; i < numberOfGroups; i++) {
@@ -1824,14 +1883,15 @@ console.log(groupCArray);
 
         }
         groupOfGroupsArray = [];
-        for (var j = 0; j < numberOfGroups; j++) {
+        for (var j = 0; j < numberOfGroups; j++) { //make the groupOfGroupsArray with empty arrays
             // alert (j);
             groupOfGroupsArray.push(new Array());
         }
         console.log(groupOfGroupsArray.toString());
         let groupPlacement = 0;
-        // console.warn(groupCArray[0][0].toString());
-        for (var g = 0; g < groupCArray.length; g++) {
+
+        for (var g = 0; g < groupCArray.length; g++) { //deal out the groupCArray into groups using groupPlacement
+		if (groupingMethod=="heterogeneous"){
             console.log(groupPlacement);
 
             console.warn(groupCArray[g][0].toString());
@@ -1847,8 +1907,34 @@ console.log(groupCArray);
                 // console.log(groupPlacement);
                 groupPlacement = 0;
             }
+		}
+		else{
+			if (!(document.getElementById(groupCArray[g][0]).classList.contains("nottargeted"))){
+            (groupOfGroupsArray[groupPlacement + 0]).push([groupCArray[g][0], "#83EA83", "high"]); //to later select the background color for highest groups
+			}
+			else{
+			absentArray.push(groupCArray[g][0]);
+			console.log("The absent list is now "+absentArray);
+			}
+			if (groupPlacement<(groupItSwitches)){ //if we are in the upperAmountOfGroups
+				if (groupOfGroupsArray[groupPlacement + 0].length>=upperMaxStudents){
+				groupPlacement++;
+				}
+			}
+			else{//if we are in the lowerAmountOfGroups
+				if (groupOfGroupsArray[groupPlacement + 0].length>=lowerMaxStudents){
+				groupPlacement++;
+				}
+			}
+            if (groupPlacement > (numberOfGroups - 1)) {
+                // console.log(groupPlacement);
+                groupPlacement = 0;
+            }
+			
+		}
         }
         for (var g = 0; g < groupBArray.length; g++) {
+			if (groupingMethod=="heterogeneous"){
 			if (!(document.getElementById(groupBArray[g][0]).classList.contains("nottargeted"))){
             groupOfGroupsArray[groupPlacement].push([groupBArray[g][0], "#77D5D5", "medium"]); //to later select the background color for highest groups
             groupPlacement++;
@@ -1860,8 +1946,34 @@ console.log(groupCArray);
             if (groupPlacement > (numberOfGroups - 1)) {
                 groupPlacement = 0;
             }
+			}
+		else{
+			if (!(document.getElementById(groupBArray[g][0]).classList.contains("nottargeted"))){
+            (groupOfGroupsArray[groupPlacement + 0]).push([groupBArray[g][0], "#77D5D5", "medium"]); //to later select the background color for highest groups
+			}
+			else{
+			absentArray.push(groupBArray[g][0]);
+			console.log("The absent list is now "+absentArray);
+			}
+			if (groupPlacement<(groupItSwitches)){ //if we are in the upperAmountOfGroups
+				if (groupOfGroupsArray[groupPlacement + 0].length>=upperMaxStudents){
+				groupPlacement++;
+				}
+			}
+			else{//if we are in the lowerAmountOfGroups
+				if (groupOfGroupsArray[groupPlacement + 0].length>=lowerMaxStudents){
+				groupPlacement++;
+				}
+			}
+            if (groupPlacement > (numberOfGroups - 1)) {
+                // console.log(groupPlacement);
+                groupPlacement = 0;
+            }
+			
+		}
         }
         for (var g = 0; g < groupAArray.length; g++) {
+			if (groupingMethod=="heterogeneous"){
 			if (!(document.getElementById(groupAArray[g][0]).classList.contains("nottargeted"))){
             groupOfGroupsArray[groupPlacement].push([groupAArray[g][0], "#FFBABA", "low"]) //to later select the background color for highest groups
             groupPlacement++;
@@ -1874,6 +1986,31 @@ console.log(groupCArray);
             if (groupPlacement > (numberOfGroups - 1)) {
                 groupPlacement = 0;
             }
+			}
+		else{
+			if (!(document.getElementById(groupAArray[g][0]).classList.contains("nottargeted"))){
+            (groupOfGroupsArray[groupPlacement + 0]).push([groupAArray[g][0], "#FFBABA", "low"]); //to later select the background color for highest groups
+			}
+			else{
+			absentArray.push(groupAArray[g][0]);
+			console.log("The absent list is now "+absentArray);
+			}
+			if (groupPlacement<(groupItSwitches)){ //if we are in the upperAmountOfGroups
+				if (groupOfGroupsArray[groupPlacement + 0].length>=upperMaxStudents){
+				groupPlacement++;
+				}
+			}
+			else{//if we are in the lowerAmountOfGroups
+				if (groupOfGroupsArray[groupPlacement + 0].length>=lowerMaxStudents){
+				groupPlacement++;
+				}
+			}
+            if (groupPlacement > (numberOfGroups - 1)) {
+                // console.log(groupPlacement);
+                groupPlacement = 0;
+            }
+			
+		}
         }
 
         for (var k = 0; k < groupOfGroupsArray.length; k++) {
@@ -2136,7 +2273,20 @@ console.log(groupCArray);
         });
     }
 
-    var groupByStudents = function (maxStudents) {
+    var groupByStudentsCheck = function (maxStudents) {
+		document.getElementById('selectionsBox').innerHTML = "<div class = 'groupMethodDecision'> <span style='font-size: large'> How would you like to sort your students into groups? </span> <br><button type ='button' id ='heterogeneousButtonByStudents' style = 'font-size: xx-large; margin-right: 50px; margin-left: 65px'>Option 1: Heterogeneous (each group has a mix of scores) </button>  <br><br>  <button type ='button' id ='homogeneousButtonByStudents' style = 'font-size: xx-large; margin-right: 50px; margin-left: 65px'>Option 2: Homogeneous (students with similar scores together)</button></div>";
+        
+		$('#heterogeneousButtonByStudents').click(function () {
+			groupingMethod="heterogeneous";
+			groupByStudents(maxStudents);
+		});
+		$('#homogeneousButtonByStudents').click(function () {
+			groupingMethod="homogeneous";
+			groupByStudents(maxStudents);
+		});
+	}
+		
+	var groupByStudents = function (maxStudents) {
 		lockNames=false;
 		allGroupIds=[];
 		absentArray=[];
@@ -2148,7 +2298,11 @@ console.log(groupCArray);
          
         $(".studentsContainerTwo").slideToggle();
         numberOfGroups = Math.ceil((columnArray.length-nottargetednum) / maxStudents);
-		
+		let upperMaxStudents=Math.ceil((columnArray.length-nottargetednum) / numberOfGroups);
+		let lowerMaxStudents=Math.floor((columnArray.length-nottargetednum) / numberOfGroups);
+		let groupItSwitches=(columnArray.length-nottargetednum) % numberOfGroups;
+
+
         console.log(groupAArray.toString());
         shuffle(groupAArray);
         console.log(groupAArray.toString());
@@ -2172,7 +2326,8 @@ console.log(groupCArray);
         console.log(groupOfGroupsArray.toString());
         let groupPlacement = 0;
         // console.warn(groupCArray[0][0].toString());
-       for (var g = 0; g < groupCArray.length; g++) {
+              for (var g = 0; g < groupCArray.length; g++) { //deal out the groupCArray into groups using groupPlacement
+		if (groupingMethod=="heterogeneous"){
             console.log(groupPlacement);
 
             console.warn(groupCArray[g][0].toString());
@@ -2180,7 +2335,7 @@ console.log(groupCArray);
             (groupOfGroupsArray[groupPlacement + 0]).push([groupCArray[g][0], "#83EA83", "high"]); //to later select the background color for highest groups
             groupPlacement++;
 			}
-						else{
+			else{
 			absentArray.push(groupCArray[g][0]);
 			console.log("The absent list is now "+absentArray);
 			}
@@ -2188,8 +2343,34 @@ console.log(groupCArray);
                 // console.log(groupPlacement);
                 groupPlacement = 0;
             }
+		}
+		else{
+			if (!(document.getElementById(groupCArray[g][0]).classList.contains("nottargeted"))){
+            (groupOfGroupsArray[groupPlacement + 0]).push([groupCArray[g][0], "#83EA83", "high"]); //to later select the background color for highest groups
+			}
+			else{
+			absentArray.push(groupCArray[g][0]);
+			console.log("The absent list is now "+absentArray);
+			}
+			if (groupPlacement<(groupItSwitches)){ //if we are in the upperAmountOfGroups
+				if (groupOfGroupsArray[groupPlacement + 0].length>=upperMaxStudents){
+				groupPlacement++;
+				}
+			}
+			else{//if we are in the lowerAmountOfGroups
+				if (groupOfGroupsArray[groupPlacement + 0].length>=lowerMaxStudents){
+				groupPlacement++;
+				}
+			}
+            if (groupPlacement > (numberOfGroups - 1)) {
+                // console.log(groupPlacement);
+                groupPlacement = 0;
+            }
+			
+		}
         }
         for (var g = 0; g < groupBArray.length; g++) {
+			if (groupingMethod=="heterogeneous"){
 			if (!(document.getElementById(groupBArray[g][0]).classList.contains("nottargeted"))){
             groupOfGroupsArray[groupPlacement].push([groupBArray[g][0], "#77D5D5", "medium"]); //to later select the background color for highest groups
             groupPlacement++;
@@ -2201,19 +2382,71 @@ console.log(groupCArray);
             if (groupPlacement > (numberOfGroups - 1)) {
                 groupPlacement = 0;
             }
+			}
+		else{
+			if (!(document.getElementById(groupBArray[g][0]).classList.contains("nottargeted"))){
+            (groupOfGroupsArray[groupPlacement + 0]).push([groupBArray[g][0], "#77D5D5", "medium"]); //to later select the background color for highest groups
+			}
+			else{
+			absentArray.push(groupBArray[g][0]);
+			console.log("The absent list is now "+absentArray);
+			}
+			if (groupPlacement<(groupItSwitches)){ //if we are in the upperAmountOfGroups
+				if (groupOfGroupsArray[groupPlacement + 0].length>=upperMaxStudents){
+				groupPlacement++;
+				}
+			}
+			else{//if we are in the lowerAmountOfGroups
+				if (groupOfGroupsArray[groupPlacement + 0].length>=lowerMaxStudents){
+				groupPlacement++;
+				}
+			}
+            if (groupPlacement > (numberOfGroups - 1)) {
+                // console.log(groupPlacement);
+                groupPlacement = 0;
+            }
+			
+		}
         }
         for (var g = 0; g < groupAArray.length; g++) {
+			if (groupingMethod=="heterogeneous"){
 			if (!(document.getElementById(groupAArray[g][0]).classList.contains("nottargeted"))){
             groupOfGroupsArray[groupPlacement].push([groupAArray[g][0], "#FFBABA", "low"]) //to later select the background color for highest groups
             groupPlacement++;
 			}
 						else{
-			absentArray.push(groupAArray[g][0]);
+							
+			absentArray.push(groupAArray[g][0]+"");
 			console.log("The absent list is now "+absentArray);
 			}
             if (groupPlacement > (numberOfGroups - 1)) {
                 groupPlacement = 0;
             }
+			}
+		else{
+			if (!(document.getElementById(groupAArray[g][0]).classList.contains("nottargeted"))){
+            (groupOfGroupsArray[groupPlacement + 0]).push([groupAArray[g][0], "#FFBABA", "low"]); //to later select the background color for highest groups
+			}
+			else{
+			absentArray.push(groupAArray[g][0]);
+			console.log("The absent list is now "+absentArray);
+			}
+			if (groupPlacement<(groupItSwitches)){ //if we are in the upperAmountOfGroups
+				if (groupOfGroupsArray[groupPlacement + 0].length>=upperMaxStudents){
+				groupPlacement++;
+				}
+			}
+			else{//if we are in the lowerAmountOfGroups
+				if (groupOfGroupsArray[groupPlacement + 0].length>=lowerMaxStudents){
+				groupPlacement++;
+				}
+			}
+            if (groupPlacement > (numberOfGroups - 1)) {
+                // console.log(groupPlacement);
+                groupPlacement = 0;
+            }
+			
+		}
         }
 
 		console.error(groupOfGroupsArray.length);
