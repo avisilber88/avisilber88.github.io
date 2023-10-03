@@ -104,7 +104,7 @@ y = n.getFullYear();
 m = n.getMonth() + 1;
 d = n.getDate();
 document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;		
-
+var questionType;
 	var times=0;
 	var numer1;
 	var numer2;
@@ -124,6 +124,30 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 	var mag1;
 	var coeff2;
 	var mag2;
+			var number;
+
+		var numbertwo;
+
+		var numberThree;
+
+		var coeff1;
+		var mag1;
+		var mag2;
+		var mag3;
+		var mag4;
+		
+		var solute;
+		var molarMass;
+		var formulaName;
+
+		var conctype;
+
+			
+			
+		var units1;
+		var units2;
+		var units3;
+		var units4;
 $(window).resize(function(){
 //$('.ansbox').css('width',window.innerWidth/4-2);
 //$('.ansbox').css('height',window.innerWidth/4-2);
@@ -729,37 +753,38 @@ var getCorrectChemicalFormula=function(moleculeName){
 	var resetQuestion=function(){
 		// $('#boxb').text(35);
 		// $('#bwordb').text(35);
-		var number=(Math.floor(Math.random()*200));
+		number=(Math.floor(Math.random()*200));
 		// var finalNum = number*Math.pow(10, -1*Math.floor(Math.random()*11));
 		// finalNum=Number(Math.round(finalNum+'e3')+'e-3');
-		var numbertwo=(Math.floor(Math.random()*200));
-		var numberThree=(Math.floor(Math.random()*200));
+		numbertwo=(Math.floor(Math.random()*200))+1;
+		//numbertwo=1;
+		numberThree=(Math.floor(Math.random()*200))+1;
 		// var finalNumtwo = numbertwo*Math.pow(10, -1*Math.floor(Math.random()*11));
 		// finalNumtwo=Number(Math.round(finalNumtwo+'e3')+'e-3');
 
-		var coeff1=((Math.random()*59.9999999-50));
-		var mag1=getMagnitude(11);
-		var mag2=getMagnitude(mag1);
-		var mag3=getMagnitude(11);
-		var mag4=getMagnitude(mag3);
+		coeff1=((Math.random()*59.9999999-50));
+		mag1=getMagnitude(11);
+		mag2=getMagnitude(mag1);
+		mag3=getMagnitude(11);
+		 mag4=getMagnitude(mag3);
 		
-		var solute = getRandomMolecule();
-		var molarMass = getMolarMassText(solute);
-		var formulaName = getCorrectChemicalFormula(solute);
+		solute = getRandomMolecule();
+		molarMass = getMolarMassText(solute);
+		formulaName = getCorrectChemicalFormula(solute);
 // the below text would have generated a random unit type.
 		//thisUnitType = getRandomUnit();
 		
-		var conctype = getRandomConcentrationType();
+		conctype = getRandomConcentrationType();
 		if (conctype != "M"){
 			mag1=0;
 			mag2=0;
 		}
 			
 			
-		var units1 = getUnit(mag1)+conctype;
-		var units2 = getUnit(mag2)+conctype;
-		var units3 = getUnit(mag3)+"L";
-		var units4 = getUnit(mag4) + "g";
+		units1 = getUnit(mag1)+conctype;
+		units2 = getUnit(mag2)+conctype;
+		units3 = getUnit(mag3)+"L";
+		units4 = getUnit(mag4) + "g";
 		//units1 = number+"grams";
 		//units2 = numbertwo+"Liters";
 //		var units3 = getMolaraMassText(getRandomMolecule());
@@ -768,7 +793,7 @@ var getCorrectChemicalFormula=function(moleculeName){
 		// $('#num1').text(toOurExponential(sigFigs(finalNum, 3)));		
 		// $('#den1').text(toOurExponential(sigFigs(finalNumtwo, 3)));
 //document.getElementById("num1").innerHTML = "What is the molarity of a "+formulaName+" solution do we get when we mix " + number +" "+ units1 +" of "+ formulaName + " in " +  numbertwo+" " + units2 + " of water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)";
-var questionType = Math.floor(Math.random()*1)+1;
+questionType = Math.floor(Math.random()*1)+1;
 //alert (questionType);
 switch (questionType) {
 	case 1:

@@ -124,6 +124,30 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 	var mag1;
 	var coeff2;
 	var mag2;
+	var number;
+		var numbertwo;
+		var numberThree;
+
+			var placeHolderNumber;
+		var coeff1;
+		var mag1;
+		var mag2;
+		var mag3;
+		var mag4;
+
+		var solute;
+		var molarMass;
+		var formulaName;
+
+		var conctype;
+
+
+		var units1;
+		var units2;
+		var units3;
+		var units4;
+		var answerStringFinal;
+var questionType;
 	$(window).resize(function () {
 		//$('.ansbox').css('width',window.innerWidth/4-2);
 		//$('.ansbox').css('height',window.innerWidth/4-2);
@@ -208,23 +232,23 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 	var toOurExponential = function (n1) { //returns a string including the *10^ exoitebct
 
 
-		var answerString = n1.toExponential() + "";
+		let answerString = n1.toExponential() + "";
 		//	answerString=round(answerString,3)+"";
-		var eSpot = answerString.indexOf("e");
+		let eSpot = answerString.indexOf("e");
 
-		var exponency = answerString.substring(eSpot + 1, answerString.length);
+		let exponency = answerString.substring(eSpot + 1, answerString.length);
 		if (exponency.substring(0, 1) === "+") {
 			exponency = exponency.substring(1, exponency.length);
 		}
 		if (eSpot > 5) {
-			var eSpot = 5;
+			let eSpot = 5;
 		}
-		var nakedAnswer = answerString.substring(0, eSpot);
+		let nakedAnswer = answerString.substring(0, eSpot);
 
-		var longerAnswer = nakedAnswer;
+		let longerAnswer = nakedAnswer;
 		nakedAnswer = Number(nakedAnswer);
 		nakedAnswer = nakedAnswer.toFixed(2);
-		var answerStringFinal = nakedAnswer + "*10^" + exponency;
+		answerStringFinal = nakedAnswer + "*10^" + exponency;
 		//alert (answerStringFinal + " " + exponency + " " + nakedAnswer + " " + eSpot + "longer "+longerAnswer);
 		return answerStringFinal;
 	};
@@ -269,16 +293,16 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 
 		//n1 is C1, n2 is V2, n3 is C2... m1 goes with n1, m2 goes with n3, m3 goes with n2, and m4 goes with unknown.
 		//var soluteUnit = "soluteUnitPlaceHolder"
-		var C1 = n1 * Math.pow(10, m1);
-		var V2 = n2 * Math.pow(10, m3);
-		var C2 = n3 * Math.pow(10, m2);
+		let C1 = n1 * Math.pow(10, m1);
+		let V2 = n2 * Math.pow(10, m3);
+		let C2 = n3 * Math.pow(10, m2);
 		//var concentrationQuantity = moles/(n2*Math.pow(10,m2));
-		var molar = ((C2 * V2) / C1) / Math.pow(10, m4);
-		var moles = molar * Math.pow(10, m4)
+		let molar = ((C2 * V2) / C1) / Math.pow(10, m4);
+		let moles = molar * Math.pow(10, m4)
 			if (m4 == 0) {
 				moles = molar * Math.pow(10, m3);
 			}
-			var answerString = (sigFigs(Number(molar), 3)) + "";
+		let answerString = (sigFigs(Number(molar), 3)) + "";
 		answer = answerString + " " + getUnit(m4) + "L";
 		wrongAnswer1 = (sigFigs(Number(moles), 3)) + " " + getUnit(m4) + "L";
 		wrongAnswer2 = (sigFigs(Number(1 / moles), 3)) + " " + getUnit(m4) + "L";
@@ -639,11 +663,11 @@ function addLevelCompleted(nameis, dateis, levelcomplete) {
 	var resetQuestion = function () {
 		// $('#boxb').text(35);
 		// $('#bwordb').text(35);
-		var number = (Math.floor(Math.random() * 200));
+		var number = (Math.floor(Math.random() * 200))+1;
 		// var finalNum = number*Math.pow(10, -1*Math.floor(Math.random()*11));
 		// finalNum=Number(Math.round(finalNum+'e3')+'e-3');
-		var numbertwo = (Math.floor(Math.random() * 200));
-		var numberThree = (Math.floor(Math.random() * 200));
+		var numbertwo = (Math.floor(Math.random() * 200))+1;
+		var numberThree = (Math.floor(Math.random() * 200))+1;
 		// var finalNumtwo = numbertwo*Math.pow(10, -1*Math.floor(Math.random()*11));
 		// finalNumtwo=Number(Math.round(finalNumtwo+'e3')+'e-3');
 		if (numberThree > number) {
