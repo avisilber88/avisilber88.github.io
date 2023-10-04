@@ -188,6 +188,9 @@ async function CSV_XLSX_File_Selected_Event() {
         var sheetName = workbook.SheetNames
         var sheet = workbook.Sheets[sheetName]
 		console.log(sheet["!ref"]);
+		console.log(Object.keys(sheet).length);
+		console.log(sheet[Object.keys(sheet)[Object.keys(sheet).length-10]]);
+		
 		let firstSet=sheet["!ref"].substr(0,sheet["!ref"].indexOf(':'));
 		let firstSetColumn=firstSet.substr(0,firstSet.search(/\d/));
 		let firstSetRow=firstSet.substr(firstSet.search(/\d/),firstSet.length);;
@@ -198,15 +201,37 @@ async function CSV_XLSX_File_Selected_Event() {
 		// console.log(sheetlength);
 		console.log(firstSet+" "+firstSetColumn+" "+firstSetRow);
 		console.log(secondSet+" "+secondSetColumn+" "+secondSetRow);	
-		
+	
 	// const indexFirstNumber = str.search(/\d/);
 		// console.log(sheet["!ref"].substr(sheet["!ref"].indexOf(':'), sheet["!ref"].indexOf
 		arrayTest=[];
-var alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ"]
 
-let columnLength = alphabet.indexOf(secondSetColumn);
-console.log(columnLength);
-for (var j = 1; j<(secondSetRow+1); j++){
+var alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ"]
+let alphabetlimit="";
+let alphabetlimitnum=0;
+for (var z = 0; z<alphabet.length; z++){
+
+if (sheet[alphabet[z]+"3"]!=null){
+	console.log(sheet[alphabet[z]+"3"]);
+	alphabetlimit=alphabet[z];
+	alphabetlimitnum=z;
+}
+}
+let numberlimit="";
+let numberlimitnum=0;
+for (var y = 3; y<200; y++){
+
+if (sheet["A"+y]!=null){
+	console.log(sheet["A"+y]);
+	//numberlimit=alphabet[z];
+	numberlimitnum=y;
+}
+}
+console.log(numberlimitnum); //rows
+console.log(alphabetlimit); //columns
+let columnLength = alphabetlimitnum+1;//alphabet.indexOf(secondSetColumn);
+console.log(columnLength); //columns
+for (var j = 1; j<(numberlimitnum+1); j++){
 	let newRow=[];
 for (var i = 0; i<columnLength; i++){
 	if (sheet[alphabet[i]+j]==null){
@@ -953,7 +978,7 @@ link.click();
     //Step 2: Generate dropdown menus.
     var generateDropdowns = function (dataArray) {
 		console.log(dataArray);
-		console.log(dataArray[2][0]);
+		//console.log(dataArray[2][0]);
 		console.log(canvas);
 		if (canvas){
 		}
@@ -965,6 +990,9 @@ link.click();
 		}
 		else if (dataArray[0][0].toString().includes('Student')){
 		console.error("OTHER SYNERGY");
+		otherSynergy=true;
+		startRow=1;
+		
 		}
 		console.log(dataArray[startRow].toString());
         document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment' style = 'width:auto'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:large; width:auto; max-width:300px;'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitAssignment' style='font-size: xx-large'>Submit</button></div>";
@@ -1008,6 +1036,21 @@ link.click();
         });
 		}
 		else{
+			if (otherSynergy){
+			for (var i = 3; i < dataArray[startRow].length; i++) {
+		   // console.log(dataArray[startRow][i]=="");
+			
+            // addAssignmentOption(dataArray[startRow][i].substring(0, dataArray[startRow][i].indexOf("MAX")));
+			
+			// if (dataArray[startRow][i]==("")){
+				// // addAssignmentOption(dataArray[startRow][i]);
+			// }
+			// else{
+				addAssignmentOption(dataArray[startRow][i]);
+			// }
+        }
+			}
+			else{
 	   for (var i = 1; i < dataArray[startRow].length; i++) {
 		   // console.log(dataArray[startRow][i]=="");
 			if (dataArray[startRow][i].includes("MAX")){
@@ -1020,6 +1063,7 @@ link.click();
 				addAssignmentOption(dataArray[startRow][i]);
 			}
         }
+			}
         $('#submitAssignment').click(function () {
             // alert ("hi");
             // if (true){
