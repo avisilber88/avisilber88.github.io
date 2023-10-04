@@ -668,6 +668,11 @@ var questionType;
 		// finalNum=Number(Math.round(finalNum+'e3')+'e-3');
 		var numbertwo = (Math.floor(Math.random() * 200))+1;
 		var numberThree = (Math.floor(Math.random() * 200))+1;
+		if (number<numberThree){
+		let tempNumberThree=numberThree+0.0;
+		numberThree=number+0.0;
+		number=tempNumberThree+0.0;
+		}
 		// var finalNumtwo = numbertwo*Math.pow(10, -1*Math.floor(Math.random()*11));
 		// finalNumtwo=Number(Math.round(finalNumtwo+'e3')+'e-3');
 		if (numberThree > number) {
