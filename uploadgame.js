@@ -39,6 +39,7 @@ $(document).ready(function () {
 	var onlyOneInput=true;
 	var absentArray=[];
 	var outside=false;
+	var otherSynergy=false;
 		var sectionArray=[];
 	//var groupingStyle="homogeneous";
     $(".studentsContainerOne").slideToggle();
@@ -193,16 +194,18 @@ async function CSV_XLSX_File_Selected_Event() {
 		let secondSet=sheet["!ref"].substr(1+sheet["!ref"].indexOf(':'), sheet["!ref"].length);
 		let secondSetColumn=secondSet.substr(0,secondSet.search(/\d/));
 		let secondSetRow=(Number)(secondSet.substr(secondSet.search(/\d/),secondSet.length));
-console.log(firstSet+" "+firstSetColumn+" "+firstSetRow);
-console.log(secondSet+" "+secondSetColumn+" "+secondSetRow);	
-
+		// let sheetlength=workbook.Sheets[sheetName].size;
+		// console.log(sheetlength);
+		console.log(firstSet+" "+firstSetColumn+" "+firstSetRow);
+		console.log(secondSet+" "+secondSetColumn+" "+secondSetRow);	
+		
 	// const indexFirstNumber = str.search(/\d/);
 		// console.log(sheet["!ref"].substr(sheet["!ref"].indexOf(':'), sheet["!ref"].indexOf
 		arrayTest=[];
 var alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ"]
 
 let columnLength = alphabet.indexOf(secondSetColumn);
-// console.log(columnLength);
+console.log(columnLength);
 for (var j = 1; j<(secondSetRow+1); j++){
 	let newRow=[];
 for (var i = 0; i<columnLength; i++){
@@ -303,7 +306,7 @@ console.log(arrayTest);
         // console.log('Parsed_File_Obj')
         // console.log(Parsed_File_Obj)
 		if ((ext=='xls')||(ext=='xlsx')){
-			alert("xls");
+			console.error("xls");
 					data=arrayTest;
 					
 outside=false;
@@ -949,6 +952,7 @@ link.click();
 	};
     //Step 2: Generate dropdown menus.
     var generateDropdowns = function (dataArray) {
+		console.log(dataArray);
 		console.log(dataArray[2][0]);
 		console.log(canvas);
 		if (canvas){
@@ -958,6 +962,9 @@ link.click();
 		}
 		else if (dataArray[3][0].toString().includes('Student')){
 			startRow=3;
+		}
+		else if (dataArray[0][0].toString().includes('Student')){
+		console.error("OTHER SYNERGY");
 		}
 		console.log(dataArray[startRow].toString());
         document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment' style = 'width:auto'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:large; width:auto; max-width:300px;'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitAssignment' style='font-size: xx-large'>Submit</button></div>";
@@ -1052,7 +1059,10 @@ link.click();
 		// smallestScore=0;
 		nottargetednum=0;
         columnArray = getCol(data, columnOfStudy);
-
+for(var i=0; i < columnArray.length; i++) {
+	console.warn(columnArray[i].toString());
+ //columnArray[i] = columnArray[i].replace('Ex', 0);
+}
 	
         // alert(largestScore + " " + smallestScore);
         $(".studentsContainerOne").slideToggle();
@@ -1215,6 +1225,7 @@ let values = (largestScore - smallestScore + 1)
 			nottargetednum=0;
             // var testIdName= "student";
 			console.warn(groupAArray);
+			console.warn(columnArray.toString());
             groupAArray = getBetween(columnArray, smallestScore - .01, scoreCutoffOne);
             groupBArray = getBetween(columnArray, scoreCutoffOne, scoreCutoffTwo);
             groupCArray = getBetween(columnArray, scoreCutoffTwo, largestScore+.01);
@@ -1408,6 +1419,9 @@ let values = (largestScore - smallestScore + 1)
 				}
 				catch (error){
 				}
+				console.error(matrix[i][col]);
+			matrix[i][col]=matrix[i][col].replace('EX', 0);
+			console.error(matrix[i][col]);
             if (smallestScore > Number((matrix[i][col]))) {
 				
                 console.log(Number((matrix[i][col])) + 0);
@@ -1419,7 +1433,7 @@ let values = (largestScore - smallestScore + 1)
 			console.log("largest score is "+largestScore);
 			console.error(matrix[i][canvasSectionColumn]);
 			matrix[i][0]=matrix[i][0].replace(/'/g, '');
-			
+			matrix[i][0]=matrix[i][0].replace('Ex', 0);
             column.push([matrix[i][0], Number(matrix[i][col]), matrix[i][canvasSectionColumn]]);
         }
 		}	
@@ -1527,8 +1541,10 @@ let values = (largestScore - smallestScore + 1)
 		let columnLocal = [];
 		console.log(minScore+ " "+maxScore);
         for (var i = 0; i < matrix.length; i++) {
-			console.warn((matrix[i][1]));	
+			console.warn((matrix[i][1]).toString());
+			console.warn(" "+matrix[i][1]);
 			console.warn(minScore +" "+maxScore);
+			
             if ((minScore < Number((matrix[i][1]))) && (maxScore >= Number((matrix[i][1])))) {
 				if (canvas){
 					console.error(selectedSection+" "+matrix[i][2]);
@@ -1871,9 +1887,12 @@ console.log(groupCArray);
         var testIdName = "group" + 0 + "";
 		let upperMaxStudents=Math.ceil((columnArray.length-nottargetednum) / numberOfGroups);
 		let lowerMaxStudents=Math.floor((columnArray.length-nottargetednum) / numberOfGroups);
-		let groupItSwitches=(columnArray.length-nottargetednum) % numberOfGroups;
+		let groupItSwitches=((columnArray.length-nottargetednum) % numberOfGroups);
+		console.log("array length is "+columnArray.length);
+		console.warn("nottargetednum is "+nottargetednum);
 		
-					
+		console.error("total size is "+ (columnArray.length-nottargetednum)+" and upperMaxStudents is " + upperMaxStudents +" and lowerMaxStudents is "+lowerMaxStudents+" and groupItSwitchesIs "+ groupItSwitches + " and numberOfGroupsIs "+numberOfGroups);
+		console.log(columnArray);
         allGroupIds.push(testIdName + "");
         document.getElementById("studentContainerTwo").innerHTML = "<div id = '" + testIdName + "'>" + testIdName + "</div>";
         for (var i = 1; i < numberOfGroups; i++) {
@@ -2300,9 +2319,13 @@ console.log(groupCArray);
         numberOfGroups = Math.ceil((columnArray.length-nottargetednum) / maxStudents);
 		let upperMaxStudents=Math.ceil((columnArray.length-nottargetednum) / numberOfGroups);
 		let lowerMaxStudents=Math.floor((columnArray.length-nottargetednum) / numberOfGroups);
-		let groupItSwitches=(columnArray.length-nottargetednum) % numberOfGroups;
+		let groupItSwitches=((columnArray.length-nottargetednum) % numberOfGroups);
 
-
+		console.log("array length is "+columnArray.length);
+		console.warn("nottargetednum is "+nottargetednum);
+		
+		console.error("total size is "+ (columnArray.length-nottargetednum)+" and upperMaxStudents is " + upperMaxStudents +" and lowerMaxStudents is "+lowerMaxStudents+" and groupItSwitchesIs "+ groupItSwitches + " and numberOfGroupsIs "+numberOfGroups);
+		console.log(columnArray);
         console.log(groupAArray.toString());
         shuffle(groupAArray);
         console.log(groupAArray.toString());
