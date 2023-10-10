@@ -156,7 +156,7 @@ async function CSV_XLSX_File_Selected_Event() {
 }
     // Method that reads and processes the selected file
 	
-	  function upload(evt) {
+	  function upload(evt) { //realOne
 		  //alert("YO");
 		  startRow=2;
 	 canvasSectionColumn =4;
@@ -209,10 +209,10 @@ async function CSV_XLSX_File_Selected_Event() {
 var alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ"]
 let alphabetlimit="";
 let alphabetlimitnum=0;
-for (var z = 0; z<alphabet.length; z++){
-
-if (sheet[alphabet[z]+"3"]!=null){
-	console.log(sheet[alphabet[z]+"3"]);
+for (var z = 3; z<alphabet.length; z++){
+console.log(sheet[alphabet[z]+"2"]);
+if (sheet[alphabet[z]+"2"]!=null){
+	console.log(sheet[alphabet[z]+"2"]);
 	alphabetlimit=alphabet[z];
 	alphabetlimitnum=z;
 }
@@ -238,7 +238,8 @@ for (var i = 0; i<columnLength; i++){
 		newRow.push("");	
 	}
 	else{
-		newRow.push(sheet[alphabet[i]+j].v);
+		console.log(sheet[alphabet[i]+j].v);
+		newRow.push(sheet[alphabet[i]+j].v+"");
 	}
 }
 	arrayTest.push(newRow);
@@ -335,6 +336,7 @@ console.log(arrayTest);
 					data=arrayTest;
 					
 outside=false;
+console.log(data);
 generateDropdowns(data);
 
                     $(".fileupload").slideToggle();
@@ -1037,8 +1039,10 @@ link.click();
 		}
 		else{
 			if (otherSynergy){
+				console.log(startRow);
+				console.log(dataArray[startRow]);
 			for (var i = 3; i < dataArray[startRow].length; i++) {
-		   // console.log(dataArray[startRow][i]=="");
+		   console.log(dataArray[startRow][i]=="");
 			
             // addAssignmentOption(dataArray[startRow][i].substring(0, dataArray[startRow][i].indexOf("MAX")));
 			
@@ -1069,18 +1073,25 @@ link.click();
             // if (true){
 				// console.log(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
 				// console.log(dataArray[startRow][i]);
-            for (var i = 1; i < dataArray[startRow].length; i++) {
+			let startingRow=1;
+			if (otherSynergy){
+			startingRow=3;
+			}
+			
+            for (var i = startingRow; i < dataArray[startRow].length; i++) {
+				console.log(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML.replace('&amp;', '&'));
+				console.log((dataArray[startRow][i]));
                 if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[startRow][i].substring(0, dataArray[startRow][i].indexOf("MAX")))) {
                     columnOfStudy = i + 0;
                 }
-				else if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[startRow][i])) {
+				else if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML.replace('&amp;', '&') == (dataArray[startRow][i])) {
                     columnOfStudy = i + 0;
                 }
 				else if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == ("Grade")){
 				columnOfStudy = 1;
 				}
             }
-
+			console.log(columnOfStudy);
             // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
             // }
             $(".pickassignment").slideToggle();
@@ -1102,6 +1113,8 @@ link.click();
 		// largestScore=1;
 		// smallestScore=0;
 		nottargetednum=0;
+		console.log(data);
+		console.log(columnOfStudy);
         columnArray = getCol(data, columnOfStudy);
 for(var i=0; i < columnArray.length; i++) {
 	console.warn(columnArray[i].toString());
@@ -1428,6 +1441,9 @@ let values = (largestScore - smallestScore + 1)
         }
     }
     function getCol(matrix, col) { //put data in for matrix
+	// if (otherSynergy){
+	// col=col+3;
+	// }
 	largestScore=0;
 	smallestScore=1000;
         var column = [];
