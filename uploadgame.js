@@ -40,7 +40,11 @@ $(document).ready(function () {
 	var absentArray=[];
 	var outside=false;
 	var otherSynergy=false;
-		var sectionArray=[];
+	var sectionArray=[];
+	var apClassroom=false;
+	var apClassroomAllUnits=false;
+	var apClassroomAllAssignments=false;
+	var startingColumn=0;
 	//var groupingStyle="homogeneous";
     $(".studentsContainerOne").slideToggle();
     $(".studentsContainerTwo").slideToggle();
@@ -260,6 +264,7 @@ console.log(arrayTest);
 		
 		// console.log(data[0][2].toString().includes('Login'));
 // console.log("stillchugging");
+console.log(data[0][0].toString());
 		if(data[0][0].toString().includes('Student')){
 
 					if(data[0][2].toString().includes('Login')){
@@ -298,7 +303,36 @@ console.log(arrayTest);
 		outside=true;
         generateImports(data);
 		}
-			
+		else if (data[0][0].toUpperCase().includes("ACADEMIC YEAR")){
+			canvasSectionColumn =5;
+	 apClassroom=true;
+	 apClassroomAllUnits=false;
+	 apClassroomAllAssignments=true;
+	console.log("district ap");
+			for (var i = 1; i < data.length; i++){
+			if (!(sectionArray.includes(data[i][canvasSectionColumn]))){
+				sectionArray.push(data[i][canvasSectionColumn]);
+			}
+		// console.log(sectionArray);
+		}
+				outside=false;
+		checkSections(data);
+		}
+		else if (data[0][0].toUpperCase().includes("SUBJECT")){
+			canvasSectionColumn =5;
+	 apClassroom=true;
+	 apClassroomAllUnits=true;
+	 apClassroomAllAssignments=false;
+	console.log("subject ap");
+			for (var i = 1; i < data.length; i++){
+			if (!(sectionArray.includes(data[i][canvasSectionColumn]))){
+				sectionArray.push(data[i][canvasSectionColumn]);
+			}
+		// console.log(sectionArray);
+		}
+				outside=false;
+		checkSections(data);
+		}
 		else{ //this means that we are in a synergy export
 		outside=false;
 		generateDropdowns(data);
@@ -996,6 +1030,10 @@ link.click();
 		startRow=1;
 		
 		}
+		if (apClassroom){
+			startRow=0;
+			console.log(startRow);
+		}
 		console.log(dataArray[startRow].toString());
         document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment' style = 'width:auto'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:large; width:auto; max-width:300px;'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitAssignment' style='font-size: xx-large'>Submit</button></div>";
         $('#assignmentSelect').empty();
@@ -1011,12 +1049,16 @@ link.click();
 				addAssignmentOption(dataArray[startRow][i]);
 			}
         }
+		
+		
         $('#submitAssignment').click(function () {
             // alert ("hi");
             // if (true){
+				
             for (var i = (canvasSectionColumn+1); i < dataArray[startRow].length; i++) {
 				// console.error(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML+" "+(dataArray[startRow][i]));
 				
+					console.log(dataArray[startRow][i].toString()+"");
 				// console.log(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
 				// console.log(dataArray[startRow][i]);
 				if (((document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML+"").replace('&amp;', '&'))==(dataArray[startRow][i].toString()+"")) {
@@ -1029,8 +1071,19 @@ link.click();
 				else{
 								
 				}
-            }
-
+				
+			
+				}
+			
+				
+				
+				if (apClassroomAllAssignments){
+				
+				}
+				else if (apClassroomAllUnits){
+				
+				}
+				
             // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
             // }
             $(".pickassignment").slideToggle();
@@ -1077,7 +1130,10 @@ link.click();
 			if (otherSynergy){
 			startingRow=3;
 			}
-			
+			if (apClassroom){
+				startingRow=0;
+			}
+			console.error(startingRow + " and start row is "+startRow);
             for (var i = startingRow; i < dataArray[startRow].length; i++) {
 				console.log(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML.replace('&amp;', '&'));
 				console.log((dataArray[startRow][i]));
@@ -1090,6 +1146,25 @@ link.click();
 				else if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == ("Grade")){
 				columnOfStudy = 1;
 				}
+				if (apClassroom){
+					console.log(dataArray[startRow][i].toString()+"");
+            if ((dataArray[startRow][i].toString()+"").toUpperCase().includes("POINTS EARNED")){
+				if (apClassroomAllAssignments){
+					if ((dataArray[startRow][i].toString()+"").includes("(teacher scored)")){
+						columnOfStudy=i+0;
+					}
+				console.error("Points Earned");
+				
+				}
+				else{
+					columnOfStudy=i+0;
+				}
+			}
+			else if ((dataArray[startRow][i].toString()+"").toUpperCase().includes("LAST NAME")){
+				console.error("Last Name");
+				startingColumn=i;
+			}
+				}
             }
 			console.log(columnOfStudy);
             // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
@@ -1097,7 +1172,12 @@ link.click();
             $(".pickassignment").slideToggle();
             generateSliders();
         });
+
 		}
+				if (apClassroom){
+		document.getElementById('submitAssignment').click();
+		}
+		
     }
 
 
@@ -1502,6 +1582,11 @@ let values = (largestScore - smallestScore + 1)
 			console.log(matrix[i][col]);
 			
 			matrix[i][0]=matrix[i][0].replace(/'/g, '');
+			if (apClassroom){
+				
+				matrix[i][startingColumn]=matrix[i][startingColumn].replace(/'/g, '');
+				matrix[i][startingColumn+1]=matrix[i][startingColumn+1].replace(/'/g, '');
+			}
 				try {
 				if (matrix[i][col].includes(" ")){
 				matrix[i][col]=matrix[i][col].substr(0,matrix[i][col].indexOf(' '));
@@ -1533,8 +1618,13 @@ let values = (largestScore - smallestScore + 1)
 			if (canvas){
 			}
 			else{
-				
+			if (!apClassroom){	
             column.push([matrix[i][0], Number(matrix[i][col])]);
+			}
+			else{
+			console.log(""+matrix[i][startingColumn+1]+" "+matrix[i][startingColumn]);
+            column.push([matrix[i][startingColumn+1]+" "+matrix[i][startingColumn], Number(matrix[i][col]), matrix[i][canvasSectionColumn]]);
+			}
         }
 		}
 		}
@@ -1609,6 +1699,17 @@ let values = (largestScore - smallestScore + 1)
 				if (canvas){
 					console.error(selectedSection+" "+matrix[i][2]);
 				if ((selectedSection=="none")||(selectedSection==matrix[i][2])){
+					console.error(matrix[i][0]);
+                columnLocal.push([matrix[i][0], Number(matrix[i][1])]);
+				}
+				else{
+					console.error(matrix[i][0]);
+				nottargetednum++;
+				}
+				}
+				else if (apClassroom){
+					console.error(selectedSection+" "+matrix[i][2]);
+				if ((selectedSection=="none")||(selectedSection.replace('&amp;', '&')==matrix[i][2])){
 					console.error(matrix[i][0]);
                 columnLocal.push([matrix[i][0], Number(matrix[i][1])]);
 				}
