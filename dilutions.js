@@ -2,14 +2,24 @@ $(document).ready(function () {
 
 //beginning of the things to replace
 	var whatnameis = ""// prompt ("What is your name?");
+
+
+var endSpace="";
+
 	var askagain = function (whatnameis){
 	whatnameis = prompt ("What is your full name (first and last)?");
+	whatnameis.replace(/\s+/g, ' ');
+	endSpace = whatnameis.slice(-1);
 	if (whatnameis.length<2){
 		askagain();
 	}
 	else if (!(/\s/.test(whatnameis))) {
     // It has any kind of whitespace
-		askagain()
+		askagain();
+	}
+	else if(endSpace==" ") {
+        console.log("ends with space");
+		askagain();
 	}
 	else{
 	document.getElementById("nameis").innerHTML = whatnameis;
