@@ -1,3 +1,5 @@
+$(document).ready(function () {
+
 //beginning of the things to replace
 	var whatnameis = ""// prompt ("What is your name?");
 
