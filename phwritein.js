@@ -8,16 +8,33 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 	var firstpH=1.0;
 	var secondpH=14.0;
 	var pWhat="pH";
-	//beginning of the things to replace
+	
+//beginning of the things to replace
 	var whatnameis = ""// prompt ("What is your name?");
+
+
+var endSpace="";
+
 	var askagain = function (whatnameis){
 	whatnameis = prompt ("What is your full name (first and last)?");
+	whatnameis=whatnameis.replace(/\s+/g, ' ');
+	// console.error(whatnameis);
+	// console.log(whatnameis.slice(0, 1));
+	// alert("hello"+whatnameis);
+	if (whatnameis.slice(0, 1)==' '){
+	whatnameis=whatnameis.slice(1);
+	}
+	endSpace = whatnameis.slice(-1);
 	if (whatnameis.length<2){
 		askagain();
 	}
 	else if (!(/\s/.test(whatnameis))) {
     // It has any kind of whitespace
-		askagain()
+		askagain();
+	}
+	else if(endSpace==" ") {
+        console.log("ends with space");
+		askagain();
 	}
 	else{
 	document.getElementById("nameis").innerHTML = whatnameis;
@@ -26,7 +43,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 	askagain();
 	whatnameis=document.getElementById("nameis").innerHTML;
 	var loadDatabase = [];
-var db;
+		var db;
 var loginMessageShown = true;
 	var auth = function () {
     // alert ("auth");
