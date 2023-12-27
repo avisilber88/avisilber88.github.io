@@ -719,9 +719,10 @@ $('#sheetButton').click(function () {
 	// console.warn("restchordfromsheetbutton");
     // resetChord();
 	//specificActiveChord=[48, 52, 55];
-	noteOnListener(60, 17);
+	noteOnListener(48, 17);
 	noteOnListener(52, 17);
 	noteOnListener(55, 17);
+	noteOnListener(59, 17);
 	
 });
 
@@ -1798,10 +1799,12 @@ function noteOnListener(note, velocity) {
 			for (var indices = 1; indices < specificActiveChord.length; indices++){
 				activeIntervals.push(specificActiveChord[indices]-specificActiveChord[indices-1]);
 			}
+			console.log("Active Interval is " + activeIntervals.toString());
+			console.log("Correct Interval is " + correctChord.toString());
             // for (var index = 0; index < activeChord.length; index++) { //PRESTON MAYBE I SHOULD UNCOMMENT
                 // if (correctChord.indexOf(activeChord[index]) < 0) { //PRESTON MAYBE I SHOULD UNCOMMENT
             for (var index = 0; index < activeIntervals.length; index++) { //PRESTON MAYBE I SHOULD UNCOMMENT
-                if (correctChord.indexOf(activeIntervals[index]) < 0) { //PRESTON MAYBE I SHOULD UNCOMMENT
+                if (!(JSON.stringify(activeIntervals) === JSON.stringify(correctChord))) { //PRESTON MAYBE I SHOULD UNCOMMENT
 					document.getElementById("warning").innerHTML = document.getElementById("warning").innerHTML+"<style='fontSize:15px;'>-Incorrect Chord, see notes below.</style><br>"; //(arrangeNote(specificActiveChord[0]));
                     match = false;
                     break;
