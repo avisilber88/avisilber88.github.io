@@ -269,7 +269,7 @@ var questionType;
 		return answerStringFinal;
 	};
 
-	var setupAnswers = function (m1, m2, m3, m4, n1, n2, n3, ct, fN) {
+	var setupAnswers = function (m1, m2, m3, m4, n1, n2, n3, ct, fN, n4) {
 
 		//$('#scoremessage').text(n1 +" " + n2 + " " +Number(n1)/Number(n2));
 		// var answerString=Number(sigFigs(Number(n1/n2),3)).toExponential()+"";
@@ -333,11 +333,11 @@ var questionType;
 		let quadD = spec * (1.0-prev);
 		let quadB = (1.0-prev) - quadD;
 		let pvn = quadD/(quadC+quadD);
-		answer = Math.floor(quadD/(quadD+quadC)*100)+"%";
+		answer = Math.round(quadD/(quadD+quadC)*100)+"%";
 		console.log(quadA+" "+quadB+" "+quadC+" "+quadD);
-		wrongAnswer1 = Math.floor(quadC/(quadD+quadC)*100)+"%";
-		wrongAnswer2 = Math.floor(quadD/(quadD+quadB)*100)+"%";
-		wrongAnswer3 - Math.floor(quadB/(quadB+quadA)*100)+"%";
+		wrongAnswer1 = Math.round(quadC/(quadD+quadC)*100)+"%";
+		wrongAnswer2 = Math.round(quadD/(quadD+quadB)*100)+"%";
+		wrongAnswer3 - Math.round(quadB/(quadB+quadA)*100)+"%";
 		}
 		if (fN==2){ // If you have sensitivity, specificity, and prevalence, solve predictive value positive
 		let sens = n1/100.0;
@@ -349,11 +349,11 @@ var questionType;
 		let quadD = spec * (1.0-prev);
 		let quadB = (1.0-prev) - quadD;
 		let pvn = quadD/(quadC+quadD);
-		wrongAnswer3 = Math.floor(quadD/(quadD+quadC)*100)+"%";
+		wrongAnswer3 = Math.round(quadD/(quadD+quadC)*100)+"%";
 		console.log(quadA+" "+quadB+" "+quadC+" "+quadD);
-		wrongAnswer1 = Math.floor(quadC/(quadD+quadC)*100)+"%";
-		wrongAnswer2 = Math.floor(quadD/(quadD+quadB)*100)+"%";
-		answer = Math.floor(quadB/(quadB+quadA)*100)+"%";
+		wrongAnswer1 = Math.round(quadC/(quadD+quadC)*100)+"%";
+		wrongAnswer2 = Math.round(quadD/(quadD+quadB)*100)+"%";
+		answer = Math.round(quadB/(quadB+quadA)*100)+"%";
 		}
 		
 		if (fN==3){ // If you have the predivictive positive, prevalance, and specificity, solve for sensitivity
@@ -379,6 +379,116 @@ var questionType;
 		answer = Math.floor(sens*100)+"%";
 		}
 		
+		if (fN==4){ // If you are only given the table information.
+		let quadA = n1/100.0;
+		let quadB = n2/100.0;
+		let quadC = n3/100.0;
+		let quadD = n4/100.0;
+		
+		//let quadA = sens*prev;
+		//let quadC = prev-quadA;
+		let prev = (quadA+quadC)/(quadA+quadB+quadC+quadD);
+		console.error("rev is "+prev);
+		let spec = quadD/(quadB+quadD);
+		let sens = quadA/(quadA+quadC);
+		let pvp = quadA/(quadA+quadB);
+		let pnp = quadD/(quadC+quadD);
+		//prev*sens=quada
+		// let quadD = spec * (1.0-prev);
+		// let quadB = (1.0-prev) - quadD;
+		//let pvn = quadD/(quadC+quadD);
+		//let pvp = sens*prev/(sens*prev+quadB);
+
+		
+		wrongAnswer3 = Math.round((prev)*100)+"%";
+		//console.log(quadA+" "+quadB+" "+quadC+" "+quadD);
+		wrongAnswer1 = Math.round((pnp)*100)+"%";
+		wrongAnswer2 = Math.round(sens*100)+"%";
+		answer = Math.round(spec*100)+"%";
+		}
+		
+		if (fN==5){ // If you are only given the table information.
+		let quadA = n1/100.0;
+		let quadB = n2/100.0;
+		let quadC = n3/100.0;
+		let quadD = n4/100.0;
+		
+		//let quadA = sens*prev;
+		//let quadC = prev-quadA;
+		let prev = (quadA+quadC)/(quadA+quadB+quadC+quadD);
+		console.error("rev is "+prev);
+		let spec = quadD/(quadB+quadD);
+		let sens = quadA/(quadA+quadC);
+		let pvp = quadA/(quadA+quadB);
+		let pnp = quadD/(quadC+quadD);
+		//prev*sens=quada
+		// let quadD = spec * (1.0-prev);
+		// let quadB = (1.0-prev) - quadD;
+		//let pvn = quadD/(quadC+quadD);
+		//let pvp = sens*prev/(sens*prev+quadB);
+
+		
+		 answer = Math.round((prev)*100)+"%";
+		//console.log(quadA+" "+quadB+" "+quadC+" "+quadD);
+		wrongAnswer1 = Math.round((pnp)*100)+"%";
+		wrongAnswer2 = Math.round(sens*100)+"%";
+		wrongAnswer3 = Math.round(spec*100)+"%";
+		}
+		
+		if (fN==6){ // If you are only given the table information.
+		let quadA = n1/100.0;
+		let quadB = n2/100.0;
+		let quadC = n3/100.0;
+		let quadD = n4/100.0;
+		
+		//let quadA = sens*prev;
+		//let quadC = prev-quadA;
+		let prev = (quadA+quadC)/(quadA+quadB+quadC+quadD);
+		console.error("rev is "+prev);
+		let spec = quadD/(quadB+quadD);
+		let sens = quadA/(quadA+quadC);
+		let pvp = quadA/(quadA+quadB);
+		let pnp = quadD/(quadC+quadD);
+		//prev*sens=quada
+		// let quadD = spec * (1.0-prev);
+		// let quadB = (1.0-prev) - quadD;
+		//let pvn = quadD/(quadC+quadD);
+		//let pvp = sens*prev/(sens*prev+quadB);
+
+		
+		 wrongAnswer2 = Math.round((prev)*100)+"%";
+		//console.log(quadA+" "+quadB+" "+quadC+" "+quadD);
+		wrongAnswer1 = Math.round((pnp)*100)+"%";
+		answer = Math.round(sens*100)+"%";
+		wrongAnswer3 = Math.round(spec*100)+"%";
+		}
+		if (fN==7){ // If you are only given the table information.
+		let quadA = n1/100.0;
+		let quadB = n2/100.0;
+		let quadC = n3/100.0;
+		let quadD = n4/100.0;
+		
+		//let quadA = sens*prev;
+		//let quadC = prev-quadA;
+		let prev = (quadA+quadC)/(quadA+quadB+quadC+quadD);
+		console.error("rev is "+prev);
+		let spec = quadD/(quadB+quadD);
+		let sens = quadA/(quadA+quadC);
+		let pvp = quadA/(quadA+quadB);
+		let pnp = quadD/(quadC+quadD);
+		//prev*sens=quada
+		// let quadD = spec * (1.0-prev);
+		// let quadB = (1.0-prev) - quadD;
+		//let pvn = quadD/(quadC+quadD);
+		//let pvp = sens*prev/(sens*prev+quadB);
+
+		
+		wrongAnswer1 = Math.floor((prev)*100)+"%";
+		//console.log(quadA+" "+quadB+" "+quadC+" "+quadD);
+		answer = Math.round((pnp)*100)+"%";
+		wrongAnswer2 = Math.round(sens*100)+"%";
+		wrongAnswer3 = Math.round(spec*100)+"%";
+		}
 		// var moles = n1*Math.pow(10, m1)/mW;
 		// var molar = moles/(n2*Math.pow(10,m2));
 		// var answerString=Number(sigFigs(Number(molar),3))+"";
@@ -753,10 +863,12 @@ var questionType;
 		// finalNum=Number(Math.round(finalNum+'e3')+'e-3');
 		var numbertwo = (Math.floor(Math.random() * 100))+1;
 		var numberThree = (Math.floor(Math.random() * 100))+1;
+		var numberFour = (Math.floor(Math.random() * 100))+1;
+
 		// $('#num1').text(toOurExponential(sigFigs(finalNum, 3)));
 		// $('#den1').text(toOurExponential(sigFigs(finalNumtwo, 3)));
 		//document.getElementById("num1").innerHTML = "What is the molarity of a "+formulaName+" solution do we get when we mix " + number +" "+ units1 +" of "+ formulaName + " in " +  numbertwo+" " + units2 + " of water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)";
-		var questionType = 3;//Math.floor(Math.random() * 3) + 1;
+		var questionType = Math.floor(Math.random() * 7) + 1;
 
 		//alert (questionType);
 		switch (questionType) {
@@ -787,11 +899,37 @@ var questionType;
 			break;
 		case 4:
 			if (score > 19) {
-				document.getElementById("num1").innerHTML = "a technician is asked to prepare a dilution of a common laboratory disinfectant. The label indicates that a " + numberThree + ":" + number + " dilution in water is required prior to use. Calculate the volume in " + units4 + " of disinfectant required to make " + numbertwo + "" + units3;
+				document.getElementById("num1").innerHTML = "a practice is using an FeLV test finding that there are " +number+" true positives, " +numbertwo+" false positives, "+numberThree +" false negatives, and "+numberFour+" true negatives. What was the specificity of this test?";
 
 			} else {
-				document.getElementById("num1").innerHTML = "A technician is asked to prepare a dilution of a common laboratory disinfectant. The label indicates that a " + numberThree + ":" + number + " dilution in water is required prior to use. Calculate the volume in " + units4 + " of disinfectant required to make " + numbertwo + "" + units3;
+				document.getElementById("num1").innerHTML = "A practice is using an FeLV test finding that there are " +number+" true positives, " +numbertwo+" false positives, "+numberThree +" false negatives, and "+numberFour+" true negatives. What was the specificity of this test?";
+			}
+			break;
+			
+		case 5:
+			if (score > 19) {
+				document.getElementById("num1").innerHTML = "a practice is using an FeLV test finding that there are " +number+" true positives, " +numbertwo+" false positives, "+numberThree +" false negatives, and "+numberFour+" true negatives. What was the prevalence of this test?";
 
+			} else {
+				document.getElementById("num1").innerHTML = "A practice is using an FeLV test finding that there are " +number+" true positives, " +numbertwo+" false positives, "+numberThree +" false negatives, and "+numberFour+" true negatives. What was the prevalence of this test?";
+			}
+			break;
+			
+			case 6:
+			if (score > 19) {
+				document.getElementById("num1").innerHTML = "a practice is using an FeLV test finding that there are " +number+" true positives, " +numbertwo+" false positives, "+numberThree +" false negatives, and "+numberFour+" true negatives. What was the sensitivity of this test?";
+
+			} else {
+				document.getElementById("num1").innerHTML = "A practice is using an FeLV test finding that there are " +number+" true positives, " +numbertwo+" false positives, "+numberThree +" false negatives, and "+numberFour+" true negatives. What was the sensitivity of this test?";
+			}
+			break;
+			
+			case 7:
+			if (score > 19) {
+				document.getElementById("num1").innerHTML = "a practice is using an FeLV test finding that there are " +number+" true positives, " +numbertwo+" false positives, "+numberThree +" false negatives, and "+numberFour+" true negatives. What was the PNP of this test?";
+
+			} else {
+				document.getElementById("num1").innerHTML = "A practice is using an FeLV test finding that there are " +number+" true positives, " +numbertwo+" false positives, "+numberThree +" false negatives, and "+numberFour+" true negatives. What was the PNP of this test?";
 			}
 			break;
 		}
@@ -807,7 +945,7 @@ var questionType;
 		//$('#num1').text("What is the molarity of a "+formulaName+" solution do we get when we mix " +toOurExponential(sigFigs(coeff1, 3))+ units1 " of "+ formulaName + " in " +  toOurExponential(sigFigs(coeff1, 3)) + units2 " of //water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)");
 
 
-		setupAnswers(mag1, mag2, mag3, mag4, number, numbertwo, numberThree, conctype, questionType);
+		setupAnswers(mag1, mag2, mag3, mag4, number, numbertwo, numberThree, conctype, questionType, numberFour);
 	};
 
 	if ($('#num1:contains(704)')) {
