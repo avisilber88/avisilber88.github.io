@@ -1523,6 +1523,14 @@ $('#day5').click(function () {
     playASongLink("day5.mp3");
     // playASong("stromae");
 });
+$('#wildfree').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("wildfree.mp3");
+    // playASong("stromae");
+});
 $('#sadipop').click(function () {
     try {
         currentTag = this.id
@@ -1987,6 +1995,9 @@ function checkCurrentSongAnswer() {
         currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
     }
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/tabu.mp3") {
+        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/wildfree.mp3") {
         currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/linger.mp3") { // D Major
