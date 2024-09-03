@@ -1515,6 +1515,14 @@ $('#breathe').click(function () {
     playASongLink("breathe.mp3");
     // playASong("stromae");
 });
+$('#day5').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("day5.mp3");
+    // playASong("stromae");
+});
 $('#sadipop').click(function () {
     try {
         currentTag = this.id
@@ -2021,6 +2029,9 @@ function checkCurrentSongAnswer() {
         currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
     }
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/kalisarion.mp3") { //A major
+        currentSongKeys = ["A", "D", "C#/Db", "E", "B", "F#/Gb", "G#/Ab"];
+    }	
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/day5.mp3") { //A major
         currentSongKeys = ["A", "D", "C#/Db", "E", "B", "F#/Gb", "G#/Ab"];
     }
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/takeonme.mp3") {
