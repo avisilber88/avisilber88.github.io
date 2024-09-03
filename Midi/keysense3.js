@@ -1633,6 +1633,30 @@ $('#notcalling').click(function () {
     playASongLink("notcalling.mp3");
     // playASong("stromae");
 });
+$('#heartless').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("heartless.mp3");
+    // playASong("stromae");
+});
+$('#waitforyou').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("waitforyou.mp3");
+    // playASong("stromae");
+});
+$('#dream').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("dream.mp3");
+    // playASong("stromae");
+});
 $('#smashing').click(function () {
     try {
         currentTag = this.id
@@ -1927,35 +1951,96 @@ function seektimeupdate() {
 
 function checkCurrentSongAnswer() {
     currentSongKeys = [];
-    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/shatterme.mp3") {
+    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/shatterme.mp3") {  //C major
         currentSongKeys = ["A", "B", "C", "D", "E", "F", "G"];
     }
-	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/besideyou.mp3") {
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/besideyou.mp3") {
         currentSongKeys = ["A", "B", "C", "D", "E", "F", "G"];
     }
-	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/notcalling.mp3") {
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/notcalling.mp3") {
         currentSongKeys = ["A", "B", "C", "D", "E", "F", "G"];
     }
-	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/hihigh.mp3") {
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/hihigh.mp3") {
         currentSongKeys = ["A", "B", "C", "D", "E", "F", "G"];
     }
-    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/quiet.mp3") {
-        currentSongKeys = ["C", "D", "D#/Eb", "F", "G", "A", "A#/Bb"];
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/stromae.mp3") { //Db major
+        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
+    }	
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/heartless.mp3") {
+        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
+    }	
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/waitforyou.mp3") {
+        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
     }
-	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/vacant.mp3") {
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/harleys.mp3") {
+        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/danishsweet.mp3") {
+        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/tabu.mp3") {
+        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
+    }
+    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/linger.mp3") { // D Major
+        currentSongKeys = ["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
+    }
+		if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/samurai.mp3") {
+        currentSongKeys = ["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
+    }
+    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/titanium.mp3") { // Eb
+        currentSongKeys = ["A#/Bb", "C", "D", "D#/Eb", "F", "G", "G#/Ab"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/vacant.mp3") { // E Major
         currentSongKeys = ["A", "E", "C#/Db", "D#/Eb", "B", "F#/Gb", "G#/Ab"];
     }
-	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/lethergo.mp3") {
+    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/highhopes.mp3") { // F Major
+        currentSongKeys = ["A", "C", "D", "E", "G", "F", "A#/Bb"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/round.mp3") {
+        currentSongKeys = ["A", "C", "D", "E", "G", "F", "A#/Bb"];
+    }	
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/attention.mp3") { // F#
+        currentSongKeys = ["A#/Bb", "B", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/girlthat.mp3") {
+        currentSongKeys = ["A#/Bb", "B", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/lethergo.mp3") { //G
         currentSongKeys = ["A", "B", "C", "D", "E", "F#/Gb", "G"];
     }
+    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/closer.mp3") { // Ab
+        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/griftwood.mp3") {
+        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
+    }
+    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/hello.mp3") {
+        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/sprung.mp3") {
+        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/kalisarion.mp3") { //A major
+        currentSongKeys = ["A", "D", "C#/Db", "E", "B", "F#/Gb", "G#/Ab"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/takeonme.mp3") {
+        currentSongKeys = ["A", "D", "C#/Db", "E", "B", "F#/Gb", "G#/Ab"];
+    }
+    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/oldtown.mp3") { //B
+        currentSongKeys = ["A#/Bb", "E", "C#/Db", "D#/Eb", "B", "F#/Gb", "G#/Ab"];
+    }    
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/dream.mp3") {
+        currentSongKeys = ["A#/Bb", "E", "C#/Db", "D#/Eb", "B", "F#/Gb", "G#/Ab"];
+    }
+    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/quiet.mp3") { // Bb
+        currentSongKeys = ["C", "D", "D#/Eb", "F", "G", "A", "A#/Bb"];
+    }
+
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/talk.mp3") {
         currentSongKeys = ["A", "A#/Bb", "C", "D", "E", "F", "G"];
     }
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/breathe.mp3") {
         currentSongKeys = ["C", "D", "D#/Eb", "F", "G", "A", "A#/Bb"];
-    }
-    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/titanium.mp3") {
-        currentSongKeys = ["A#/Bb", "C", "D", "D#/Eb", "F", "G", "G#/Ab"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/joji.mp3") {
         currentSongKeys = ["A#/Bb", "C", "D", "D#/Eb", "F", "G", "G#/Ab"];
@@ -1967,12 +2052,6 @@ function checkCurrentSongAnswer() {
         currentSongKeys = ["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
     }
 	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/lasttime.mp3") {
-        currentSongKeys = ["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
-    }
-	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/linger.mp3") {
-        currentSongKeys = ["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
-    }
-		if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/samurai.mp3") {
         currentSongKeys = ["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/takecare.mp3") {
@@ -1993,47 +2072,8 @@ function checkCurrentSongAnswer() {
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/delilah.mp3") {
         currentSongKeys = ["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
     }
-    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/closer.mp3") {
-        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
-    }
-	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/griftwood.mp3") {
-        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
-    }
-    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/hello.mp3") {
-        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
-    }
-	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/sprung.mp3") {
-        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
-    }
-    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/stromae.mp3") { //Db major
-        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
-    }
-	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/harleys.mp3") {
-        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
-    }
-	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/danishsweet.mp3") {
-        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
-    }
-	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/tabu.mp3") {
-        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
-    }
-    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/oldtown.mp3") {
-        currentSongKeys = ["A#/Bb", "E", "C#/Db", "D#/Eb", "B", "F#/Gb", "G#/Ab"];
-    }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/ghost.mp3") {
         currentSongKeys = ["A", "D", "C#/Db", "E", "B", "F#/Gb", "G#/Ab"];
-    }
-	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/kalisarion.mp3") { //A major
-        currentSongKeys = ["A", "D", "C#/Db", "E", "B", "F#/Gb", "G#/Ab"];
-    }
-	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/takeonme.mp3") {
-        currentSongKeys = ["A", "D", "C#/Db", "E", "B", "F#/Gb", "G#/Ab"];
-    }
-    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/highhopes.mp3") {
-        currentSongKeys = ["A", "C", "D", "E", "G", "F", "A#/Bb"];
-    }
-	    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/round.mp3") {
-        currentSongKeys = ["A", "C", "D", "E", "G", "F", "A#/Bb"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/phoenix.mp3") {
         currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
