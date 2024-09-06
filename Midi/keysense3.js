@@ -1539,6 +1539,14 @@ $('#day5').click(function () {
     playASongLink("day5.mp3");
     // playASong("stromae");
 });
+$('#schoolyard').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("schoolyard.mp3");
+    // playASong("stromae");
+});
 $('#wildfree').click(function () {
     try {
         currentTag = this.id
@@ -2070,6 +2078,9 @@ function checkCurrentSongAnswer() {
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/takeonme.mp3") {
         currentSongKeys = ["A", "D", "C#/Db", "E", "B", "F#/Gb", "G#/Ab"];
     }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/schoolyard.mp3") {
+        currentSongKeys = ["A", "D", "C#/Db", "E", "B", "F#/Gb", "G#/Ab"];
+    }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/oldtown.mp3") { //B
         currentSongKeys = ["A#/Bb", "E", "C#/Db", "D#/Eb", "B", "F#/Gb", "G#/Ab"];
     }    
@@ -2121,12 +2132,6 @@ function checkCurrentSongAnswer() {
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/phoenix.mp3") {
         currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
-    }
-	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/attention.mp3") {
-        currentSongKeys = ["A#/Bb", "B", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
-    }
-	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/girlthat.mp3") {
-        currentSongKeys = ["A#/Bb", "B", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/centuries.mp3") {
         currentSongKeys = ["A", "B", "C", "D", "E", "F#/Gb", "G"];
@@ -2182,8 +2187,6 @@ function checkCurrentSongAnswer() {
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/smashing.mp3") {
         currentSongKeys = ["A#/Bb", "C", "D#/Eb", "D", "F", "G", "G#/Ab"];
     }
-	
-	
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/saymyname.mp3") {
         currentSongKeys = ["A#/Bb", "C", "D#/Eb", "D", "F", "G", "G#/Ab"];
     }
