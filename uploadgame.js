@@ -3,6 +3,7 @@ $(document).ready(function () {
 	var studentSchoolNameIdsArray=[];
 	var canvasSectionColumn =4;
 	var startRow=2;
+	var talieSheet=false;
 	var breakoutfilename;
     var data = null;
     var data2 = null;
@@ -191,7 +192,7 @@ async function CSV_XLSX_File_Selected_Event() {
 			console.log(workbook);
         var sheetName = workbook.SheetNames
         var sheet = workbook.Sheets[sheetName]
-		console.log(sheet["!ref"]);
+		//console.log(sheet["!ref"]);
 		console.log(Object.keys(sheet).length);
 		console.log(sheet[Object.keys(sheet)[Object.keys(sheet).length-10]]);
 		
@@ -302,6 +303,14 @@ console.log(data[0][0].toString());
 		document.getElementById("dvImportSegments3").hidden=true;
 		outside=true;
         generateImports(data);
+		}
+		else if (data[0][0]=="Roster #"){//this means it is an import of talie's trackers
+		canvasSectionColumn =1;
+		startRow=0;
+		console.log("This is Talie");
+		talieSheet=true;
+		generateDropdowns(data);
+		
 		}
 		else if (data[0][0].toUpperCase().includes("ACADEMIC YEAR")){
 			canvasSectionColumn =5;
@@ -1116,6 +1125,9 @@ link.click();
 			else if (dataArray[startRow][i]==("")){
 				// addAssignmentOption(dataArray[startRow][i]);
 			}
+						else if (dataArray[startRow][i]==("Name")){
+				// addAssignmentOption(dataArray[startRow][i]);
+			}
 			else{
 				addAssignmentOption(dataArray[startRow][i]);
 			}
@@ -1549,7 +1561,7 @@ let values = (largestScore - smallestScore + 1)
 			
 				// matrix[i][col]=Number((matrix[i][col]));
 			
-				// // console.log(matrix[i][col]);
+				console.log(matrix[i][0]);
 			// }
 					console.log(col);
 							
@@ -1580,7 +1592,7 @@ let values = (largestScore - smallestScore + 1)
 		else{
         for (var i = (startRow+1); i < matrix.length; i++) {
 			console.log(matrix[i][col]);
-			
+			console.log(matrix[i][1]);
 			matrix[i][0]=matrix[i][0].replace(/'/g, '');
 			if (apClassroom){
 				
@@ -1618,7 +1630,14 @@ let values = (largestScore - smallestScore + 1)
 			if (canvas){
 			}
 			else{
-			if (!apClassroom){	
+				console.log("text");
+				if (talieSheet){
+				
+			console.log("THIS IS TALIE's");
+			
+				column.push([matrix[i][1], Number(matrix[i][col])]);
+				}
+			else if (!apClassroom){	
             column.push([matrix[i][0], Number(matrix[i][col])]);
 			}
 			else{
@@ -1708,6 +1727,17 @@ let values = (largestScore - smallestScore + 1)
 				}
 				}
 				else if (apClassroom){
+					console.error(selectedSection+" "+matrix[i][2]);
+				if ((selectedSection=="none")||(selectedSection.replace('&amp;', '&')==matrix[i][2])){
+					console.error(matrix[i][0]);
+                columnLocal.push([matrix[i][0], Number(matrix[i][1])]);
+				}
+				else{
+					console.error(matrix[i][0]);
+				nottargetednum++;
+				}
+				}
+				else if (talieSheet){
 					console.error(selectedSection+" "+matrix[i][2]);
 				if ((selectedSection=="none")||(selectedSection.replace('&amp;', '&')==matrix[i][2])){
 					console.error(matrix[i][0]);
