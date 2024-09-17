@@ -205,16 +205,22 @@ function sigFigs(n, sig) {
 	}
 
     var mult = Math.pow(10, sig - Math.floor(Math.log(n) / Math.LN10) - 1);
-    mult=Math.round(n * mult) / mult;
+  
+	 //console.error("9-17 testing sigfigs "+mult);
+	 mult=Math.round(n * mult) / mult;
 
+	 //console.error("9-17 testing sigfigs "+mult);
     if (isNeg==1){
     	mult=-1*mult;
     }
+	
+	// console.error("9-17 testing sigfigs "+mult);
     return mult;
 
 
 }
 	function round(value, exp) {
+	if (value.includes("e")){
 		var valueSign=1;
 		if (value<0){
 		value = -1*value;
@@ -239,13 +245,17 @@ function sigFigs(n, sig) {
 		value = value.toString().split('e');
 		return  + (value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp));
 	}
+	else{
+	return value;
+	}
+	}
 	var setupAnswers=function(n1, n2){
 
 			if ((getSigFigs(n1) >= 15)||(getSigFigs(n1).toString().length >=12)){
 			    resetQuestion();
 			}
 			else{
-			    
+			    //console.error("9-17 testing "+n1+" "+n2);
 			//answer=round(Number(n1), 1*n2);
 				answer=sigFigs(Number(n1), n2);
 // $('#score').text("Score = " +getSigFigs(answer)+" "+numSigFigs + " " + numSigs1 +
@@ -258,8 +268,10 @@ function sigFigs(n, sig) {
 					answer=answer+".0";
 				}
 			}//answer=getSigFigs(n1);
+			
 			thisAnswer=answer+"";
-			//alert ("The answer is: "+answer);
+			
+				//alert ("The answer is: "+answer);
 	
 		// for (i=0; i<answers.length; i++){
 			
@@ -281,14 +293,15 @@ function sigFigs(n, sig) {
 		// $('#boxb').text(35);
 		// $('#bwordb').text(35);
 		number=(Math.floor(Math.random()*200000000-100000000));
-	
+		
 
 		finalNum = number//*Math.pow(10, -1*Math.floor(Math.random()*0))
 		//finalNum=Number(round(finalNum, Math.floor(Math.random()*5)))*Math.pow(10, -1*Math.floor(Math.random()*10)-3);
 		finalNum=Number(finalNum.toPrecision(Math.floor(Math.random()*7)+1))*Math.pow(10, -1*Math.floor(Math.random()*10)-3);
-
+		//finalNum = -0.0000686147;
 			thisisanswer=getSigFigs(finalNum);
 			numberOfSigFigsToCount = (Math.floor(Math.random()*thisisanswer));
+		//numberOfSigFigsToCount = 4;
 		//	alert (finalNum+" has "+thisisanswer + " and " + numberOfSigFigsToCount);
 			if ((numberOfSigFigsToCount==null)||(numberOfSigFigsToCount==0)){
 			//	alert ("ahaha!");
@@ -407,8 +420,11 @@ else {
 		if (givenAnswer != null) {
 			//alert (givenAnswer.substring(0, 1)+ " and "+ thisAnswer.substring(0, 1));
 if (thisAnswer.length>10){
+	
+			//	console.error("9-17 testing sigfigs "+thisAnswer);
 thisAnswer=""+round(thisAnswer, 0);
-}	
+
+				}	
 		if (((givenAnswer.substring(0, 1) != "0")&&(givenAnswer.substring(0,1) !="-")) && (thisAnswer.substring(0, 1) == "0")) {
 				givenAnswer = "0"+givenAnswer;
 			}
