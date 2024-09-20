@@ -220,7 +220,8 @@ function sigFigs(n, sig) {
 
 }
 	function round(value, exp) {
-	if (value.includes("e")){
+		//console.error(value.toString().slice(-3));
+	if (value.includes("e")||(value.toString().slice(-3)=="001")){
 		var valueSign=1;
 		if (value<0){
 		value = -1*value;
@@ -246,6 +247,7 @@ function sigFigs(n, sig) {
 		return  + (value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp));
 	}
 	else{
+	//if (value.toString().slice(-3)
 	return value;
 	}
 	}
@@ -302,7 +304,7 @@ function sigFigs(n, sig) {
 			thisisanswer=getSigFigs(finalNum);
 			numberOfSigFigsToCount = (Math.floor(Math.random()*thisisanswer));
 		//numberOfSigFigsToCount = 4;
-		//	alert (finalNum+" has "+thisisanswer + " and " + numberOfSigFigsToCount);
+		//alert (finalNum+" has "+thisisanswer + " and " + numberOfSigFigsToCount);
 			if ((numberOfSigFigsToCount==null)||(numberOfSigFigsToCount==0)){
 			//	alert ("ahaha!");
 				resetQuestion();
