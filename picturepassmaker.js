@@ -991,7 +991,7 @@ link.click();
     // document.getElementById("coefficientNumOne").innerHTML = "<input type='text'  name='organicCompoundCoefficient' id = 'organicCompoundCoefficient' value='coefficient?'></input>"; //<font color= 'white'>";
 
     var checkSections = function (data) {
-		document.getElementById('selectionsBox').innerHTML = "<div class = 'picksection' style = 'width:auto'><select id = 'sectionSelect' name = 'sectionSelect' style = 'font-size:large; width:auto; max-width:300px;'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitSection' style='font-size: xx-large'>Submit</button></div>";
+		document.getElementById('selectionsBox').innerHTML = "<div class = 'picksection' style = 'width:auto'>What Period do you want the passes delivered to?<br><select id = 'sectionSelect' name = 'sectionSelect' style = 'font-size:large; width:auto; max-width:300px;'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitSection' style='font-size: xx-large'>Submit</button></div>";
   				$('#sectionSelect').empty();
 				
 			for (var i = 0; i < sectionArray.length; i++) {
@@ -1026,7 +1026,7 @@ link.click();
 	};
 	
 	 var checkSemester = function (data) {
-		document.getElementById('selectionsBox').innerHTML = "<div class = 'picksection' style = 'width:auto'><select id = 'sectionSelect' name = 'sectionSelect' style = 'font-size:large; width:auto; max-width:300px;'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitSection' style='font-size: xx-large'>Submit</button></div>";
+		document.getElementById('selectionsBox').innerHTML = "<div class = 'picksection' style = 'width:auto'>What Semester do you want?<br><select id = 'sectionSelect' name = 'sectionSelect' style = 'font-size:large; width:auto; max-width:300px;'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitSection' style='font-size: xx-large'>Submit</button></div>";
   				$('#sectionSelect').empty();
 				
 addSectionOption('S1');
@@ -1096,7 +1096,6 @@ addSectionOption('S2');
 				addAssignmentOption(dataArray[startRow][i]);
 			}
         }
-		
 		
         $('#submitAssignment').click(function () {
             // alert ("hi");
@@ -1233,6 +1232,7 @@ addSectionOption('S2');
         });
 
 		}
+		document.getElementById('submitAssignment').click();
 				if (apClassroom){
 		document.getElementById('submitAssignment').click();
 		}
@@ -1254,7 +1254,7 @@ addSectionOption('S2');
 		let timeName=document.getElementById("timeAnswer").value;
 	
 		for (var i=0; i < passArray.length; i++){
-		tableWriter=tableWriter+'\n'+'<tr  '+tableStyle+">"+'<td '+tableStyle+">"+"Dear "+passArray[i][0] +" please give this pass to "+passArray[i][1]+ " "+passArray[i][2]+" to take pictures for "+programName+" on " + dateName + " at " + timeName + "."+'</td></tr>';
+		tableWriter=tableWriter+'\n'+'<tr  '+tableStyle+">"+'<td '+tableStyle+">"+"Dear "+passArray[i][0] +" please give this pass to "+passArray[i][1]+ " "+passArray[i][2]+" to take pictures for "+programName+" on " + dateName + " at " + timeName + " in the Auditorium."+ '</td></tr>';
 		console.warn("Dear "+passArray[i][0] +" please give this pass to "+passArray[i][1]+ " "+passArray[i][2]+" to take pictures on date ");
 		}
 		tableWriter=tableWriter+'</table>';
