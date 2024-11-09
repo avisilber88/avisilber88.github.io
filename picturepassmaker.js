@@ -1244,7 +1244,7 @@ addSectionOption('S2');
 
 
     var generatePasses = function () {
-		document.getElementById('selectionsBox').innerHTML = '<div class="col-xs-8 col-xs-offset-2" >		<font color= "Black"> Write Program Name Here:<br>	<font color= "black">		<input type="text" name="programAnswer" id = "programAnswer" value=""><br><br>	Write Date of Picture Here:<br>	<font color= "black">		<input type="text" name="dayAnswer" id = "dayAnswer" value=""><br><br>	Write Time Here:<br>	<font color= "black">		<input type="text" name="timeAnswer" id = "timeAnswer" value=""><br><br>		<button type ="button" id ="submitAssignment">submit</button>	</div>'
+		document.getElementById('selectionsBox').innerHTML = '<div class="col-xs-8 col-xs-offset-2" >		<font color= "Black"> Write Program Name Here:<br>	<font color= "black">		<input type="text" name="programAnswer" id = "programAnswer" value=""><br><br>	Write Date of Picture Here:<br>	<font color= "black">		<input type="text" name="dayAnswer" id = "dayAnswer" value=""><br><br>	Write Time Here:<br>	<font color= "black">		<input type="text" name="timeAnswer" id = "timeAnswer" value=""><br><br>		<button type ="button" id ="submitAssignment">submit</button> <br><br>Below is an example of what each pass will look like based on your above inputs: <br><br> <span id="textExample"></span>	</div>'
 		let tableStyle= "style = 'border-style: dashed; border-width:1px; padding: 20px '";
         let tableWriter="<table "+tableStyle+">";
 		passArray.sort();
@@ -1261,6 +1261,24 @@ addSectionOption('S2');
 		
 		document.getElementById('selectionsBox').innerHTML = tableWriter;
 		})
+		document.getElementsByName("programAnswer")[0].addEventListener('input', doThing);
+		document.getElementsByName("dayAnswer")[0].addEventListener('input', doThing);
+		document.getElementsByName("timeAnswer")[0].addEventListener('input', doThing);
+		
+
+/* Function */
+		function doThing(){
+		let programName2=document.getElementById("programAnswer").value;
+		let dateName2=document.getElementById("dayAnswer").value;
+		let timeName2=document.getElementById("timeAnswer").value;
+			document.getElementById("textExample").innerHTML="Dear [Teacher Name] please give this pass to [Student Name] to take pictures for "+programName2+" on " + dateName2 + " at " + timeName2 + " in the Auditorium. ";
+		}
+			$('#timeAnswer').keypress(function (e) {
+		if (e.keyCode == 13)
+			$('#submitAssignment').click();
+		
+		$('#timeAnswer')
+	});
 		
 	}
 
