@@ -933,7 +933,7 @@ document.getElementById("date").innerHTML ="</sub>"+ m + " / " + d + " / " + y;
 		var givenAnswer = document.getElementById("givenAnswer").value;
 
 		if (givenAnswer != null) {
-			if (("" + givenAnswer).toUpperCase().replace(/\s/g, '') == ("" + thisAnswer).toUpperCase().replace(/\s/g, '')) {
+			if (("" + givenAnswer).toUpperCase().replace(/\s/g, '').replace('LUMINIUM', 'LUMINUM') == ("" + thisAnswer).toUpperCase().replace(/\s/g, '')) {
 				score = score + 1;
 				addLevelCompleted(whatnameis, m+"/"+d+"/"+y, parseInt(score));
 				$('#score').text("Score = " + score);
