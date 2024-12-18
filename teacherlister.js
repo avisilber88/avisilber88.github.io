@@ -929,7 +929,7 @@ else{
 		let groupThenNameArray=[];
 		for (var i = 0; i < data.length; i++){
 			if ((data[i][50]=="S1")&&(data[i][43].includes(selectedSection))){
-			groupThenNameArray.push([data[i][2], data[i][41], data[i][0], data[i][3], data[i][4]]);
+			groupThenNameArray.push([data[i][2], data[i][41], data[i][0], data[i][38],data[i][42],data[i][45], data[i][3], data[i][4]]);
 			}
 		}
 		console.log(data);
@@ -970,7 +970,7 @@ for (var i = 0; i < groupThenNameArray.length; i++) {
 	
 	// rowsInExport.sort();
 	groupThenNameArray.sort(compareSecondColumn)
-	groupThenNameArray.unshift(["Grade", "ID", "Teacher Last", "Teacher First", "First Name", "Last Name"]);
+	groupThenNameArray.unshift(["Grade", "Teacher Last", "Teacher First", "ID", "Pd", "Class", "Room", "First Name", "Last Name"]);
 
 		breakoutfilename=prompt ("What would you like to call exported spreadsheet csv?")+".csv";
  console.warn(groupThenNameArray.toString());
