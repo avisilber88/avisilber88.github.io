@@ -785,7 +785,7 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 			} else if (randomunitnum == 3) {
 				cation = ["Cu", 63.546, false, "Copper (I)", ["Cu"]];
 			} else if (randomunitnum == 4) {
-				cation = ["NH&#8324", 80.043, true, "Ammonium", ["NH&#8324", "N", "H"]];
+				cation = ["NH&#8324", 18.04, true, "Ammonium", ["NH&#8324", "N", "H"]];
 			} else if (randomunitnum == 5) {
 				cation = ["Ag", 107.87, false, "Silver", ["Ag"]];
 			} else if (randomunitnum == 5) {
@@ -812,7 +812,7 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 			} else if (randomunitnum == 8) {
 				cation = ["Co", 58.93, false, "Cobalt (II)", ["Co"]];
 			} else if (randomunitnum == 9) {
-				cation = ["Cu", 63.546, false, "Copper (II)", ["Cu"]];
+				cation = ["Cu", 63.55, false, "Copper (II)", ["Cu"]];
 			} else if (randomunitnum == 10) {
 				cation = ["Au", 196.97, false, "Gold (II)", ["Au"]];
 			}
@@ -844,9 +844,9 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 			} else if (randomunitnum == 1) {
 				anion = ["Cl", 39.10, false, "Chloride", ["Cl"]];
 			} else if (randomunitnum == 2) {
-				anion = ["Br", 18.05, false, "Bromide", ["Br"]];
+				anion = ["Br", 79.90, false, "Bromide", ["Br"]];
 			} else if (randomunitnum == 3) {
-				anion = ["I", 18.05, false, "Iodide", ["I"]];
+				anion = ["I", 126.90, false, "Iodide", ["I"]];
 			}
 		} else if (charge == 2) {
 			randomunitnum = (Math.floor(Math.random() * 1));
@@ -867,15 +867,15 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 		if (charge == 1) {
 			randomunitnum = (Math.floor(Math.random() * 12));
 			if (randomunitnum == 0) {
-				anion = ["F", 22.99, false, "Fluoride", ["F"]];
+				anion = ["F", 19.00, false, "Fluoride", ["F"]];
 			} else if (randomunitnum == 1) {
-				anion = ["Cl", 39.10, false, "Chloride", ["Cl"]];
+				anion = ["Cl", 35.45, false, "Chloride", ["Cl"]];
 			} else if (randomunitnum == 2) {
 				anion = ["NO&#8323", 62.01, true, "Nitrate", ["NO&#8323", "N", "O"]];
 			} else if (randomunitnum == 3) {
 				anion = ["NO&#8322", 46.01, true, "Nitrite", ["NO&#8322", "N", "O"]];
 			} else if (randomunitnum == 4) {
-				anion = ["Br", 18.05, false, "Bromide", ["Br"]];
+				anion = ["Br", 79.90, false, "Bromide", ["Br"]];
 			} else if (randomunitnum == 5) {
 				anion = ["CN", 26.02, true, "Cyanide", ["CN", "C", "N"]];
 			} else if (randomunitnum == 6) {
