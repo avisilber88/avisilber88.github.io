@@ -840,7 +840,7 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 		if (charge == 1) {
 			randomunitnum = (Math.floor(Math.random() * 4));
 			if (randomunitnum == 0) {
-				anion = ["F", 22.99, false, "Fluoride", ["F"]];
+				anion = ["F", 19.00, false, "Fluoride", ["F"]];
 			} else if (randomunitnum == 1) {
 				anion = ["Cl", 39.10, false, "Chloride", ["Cl"]];
 			} else if (randomunitnum == 2) {
@@ -881,7 +881,7 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 			} else if (randomunitnum == 6) {
 				anion = ["ClO", 51.45, true, "Hypochlorite", ["ClO", "Cl", "O"]];
 			} else if (randomunitnum == 7) {
-				anion = ["OH", 18.05, true, "Hydroxide", ["OH", "O", "H"]];
+				anion = ["OH", 17.01, true, "Hydroxide", ["OH", "O", "H"]];
 			} else if (randomunitnum == 8) {
 				anion = ["ClO&#8324", 99.45, true, "Perchlorate", ["ClO&#8324", "Cl", "O"]];
 			} else if (randomunitnum == 9) {
