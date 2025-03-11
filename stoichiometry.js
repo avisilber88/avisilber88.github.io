@@ -883,7 +883,7 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 			} else if (randomunitnum == 6) {
 				anion = ["ClO", 51.45, true, "Hypochlorite", ["ClO", "Cl", "O"]];
 			} else if (randomunitnum == 7) {
-				anion = ["OH", 18.05, true, "Hydroxide", ["OH", "O", "H"]];
+				anion = ["OH", 17.01, true, "Hydroxide", ["OH", "O", "H"]];
 			} else if (randomunitnum == 8) {
 				anion = ["ClO&#8324", 99.45, true, "Perchlorate", ["ClO&#8324", "Cl", "O"]];
 			} else if (randomunitnum == 9) {
