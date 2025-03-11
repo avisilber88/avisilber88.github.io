@@ -844,7 +844,7 @@ var toOurExponential=function(n1){ //returns a string including the *10^ exoiteb
 			if (randomunitnum == 0) {
 				anion = ["F", 19.00, false, "Fluoride", ["F"]];
 			} else if (randomunitnum == 1) {
-				anion = ["Cl", 39.10, false, "Chloride", ["Cl"]];
+				anion = ["Cl", 35.45, false, "Chloride", ["Cl"]];
 			} else if (randomunitnum == 2) {
 				anion = ["Br", 79.90, false, "Bromide", ["Br"]];
 			} else if (randomunitnum == 3) {
