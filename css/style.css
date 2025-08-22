@@ -146,7 +146,8 @@ a:focus {
   background: rgb(133, 187, 101);
 }
 #joinus {
-  background: rgb(0, 255, 200);
+  background-color: #256532;
+  color:white;
 }
 #about,
 #menu,
@@ -859,3 +860,4 @@ footer strong {
   footer {text-align: center;}
 
 }
+
