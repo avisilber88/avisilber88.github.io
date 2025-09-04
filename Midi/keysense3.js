@@ -1266,6 +1266,78 @@ $('#round').click(function () {
     playASongLink("round.mp3");
     // playASong("stromae");
 });
+$('#letlovego').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("letlovego.mp3");
+    // playASong("stromae");
+});
+$('#everlong').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("everlong.mp3");
+    // playASong("stromae");
+});
+$('#deltarunecover').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("deltarunecover.mp3");
+    // playASong("stromae");
+});
+$('#massive').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("massive.mp3");
+    // playASong("stromae");
+});
+$('#skymightfall').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("skymightfall.mp3");
+    // playASong("stromae");
+});
+$('#bestfriendsonly').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("bestfriendsonly.mp3");
+    // playASong("stromae");
+});
+$('#whatdoyoumean').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("whatdoyoumean.mp3");
+    // playASong("stromae");
+});
+$('#viva').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("viva.mp3");
+    // playASong("stromae");
+});
+$('#hours').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("hours.mp3");
+    // playASong("stromae");
+});
 $('#delilah').click(function () {
     try {
         currentTag = this.id
@@ -2033,7 +2105,16 @@ function checkCurrentSongAnswer() {
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/starships.mp3") {
         currentSongKeys = ["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
     }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/everlong.mp3") {
+        currentSongKeys = ["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/deltarunecover.mp3") {
+        currentSongKeys = ["A", "B", "C#/Db", "D", "E", "F#/Gb", "G"];
+    }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/titanium.mp3") { // Eb
+        currentSongKeys = ["A#/Bb", "C", "D", "D#/Eb", "F", "G", "G#/Ab"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/bestfriendsonly.mp3") { 
         currentSongKeys = ["A#/Bb", "C", "D", "D#/Eb", "F", "G", "G#/Ab"];
     }
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/vacant.mp3") { // E Major
@@ -2045,13 +2126,25 @@ function checkCurrentSongAnswer() {
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/round.mp3") {
         currentSongKeys = ["A", "C", "D", "E", "G", "F", "A#/Bb"];
     }	
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/letlovego.mp3") {
+        currentSongKeys = ["A", "C", "D", "E", "G", "F", "A#/Bb"];
+    }	
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/attention.mp3") { // F#
         currentSongKeys = ["A#/Bb", "B", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
     }
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/girlthat.mp3") {
         currentSongKeys = ["A#/Bb", "B", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
     }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/skymightfall.mp3") {
+        currentSongKeys = ["A#/Bb", "B", "C#/Db", "D#/Eb", "F", "F#/Gb", "G#/Ab"];
+    }
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/lethergo.mp3") { //G
+        currentSongKeys = ["A", "B", "C", "D", "E", "F#/Gb", "G"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/massive.mp3") {
+        currentSongKeys = ["A", "B", "C", "D", "E", "F#/Gb", "G"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/hours.mp3") {
         currentSongKeys = ["A", "B", "C", "D", "E", "F#/Gb", "G"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/closer.mp3") { // Ab
@@ -2061,6 +2154,12 @@ function checkCurrentSongAnswer() {
         currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/hello.mp3") {
+        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
+    }
+    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/whatdoyoumean.mp3") {
+        currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
+    }
+    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/viva.mp3") {
         currentSongKeys = ["A#/Bb", "C", "C#/Db", "D#/Eb", "G", "F", "G#/Ab"];
     }
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/glimpse.mp3") {
