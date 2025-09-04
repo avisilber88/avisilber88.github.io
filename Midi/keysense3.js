@@ -1290,6 +1290,14 @@ $('#deltarunecover').click(function () {
     playASongLink("deltarunecover.mp3");
     // playASong("stromae");
 });
+$('#darkthoughts').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("darkthoughts.mp3");
+    // playASong("stromae");
+});
 $('#massive').click(function () {
     try {
         currentTag = this.id
@@ -2171,6 +2179,9 @@ function checkCurrentSongAnswer() {
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/kalisarion.mp3") { //A major
         currentSongKeys = ["A", "D", "C#/Db", "E", "B", "F#/Gb", "G#/Ab"];
     }	
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/darkthoughts.mp3") {
+        currentSongKeys = ["A", "B", "C#/Db", "D", "E", "F#/Gb", "G#/Ab"];
+    }
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/day5.mp3") { //A major
         currentSongKeys = ["A", "D", "C#/Db", "E", "B", "F#/Gb", "G#/Ab"];
     }
