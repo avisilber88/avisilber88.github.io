@@ -1,7 +1,6 @@
 // Variable which tell us what step of the game we're on.
 // We'll use this later when we parse noteOn/Off messages
 var arraySpot=0;
-var transposeOffset=0; //Allows you to transpose everything a certain amount of notes.
 var metronome=false;
 var inversions = false;
 var ezmajon=false;
@@ -356,9 +355,9 @@ async function getMidiFile(filepath) {
 
         }
 		
-//transplanted from uploadgame
-document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment'><select id = 'assignmentSelectGroup' name = 'assignmentSelectGroup' style = 'font-size:large'> <optgroup id = 'assignmentSelect' label='Practice by Dylan'><option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </optgroup><optgroup id = 'otherMusic' label = 'Other Selections'><option value = 'window'>Waving Through a Window</option><option value = 'hercules'>Go the Distance</option><option value = 'satisfied'>Satisfied</option></optgroup></select>  </div>";
-            $('#assignmentSelect').empty();
+		//transplanted from uploadgame
+		document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:large'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  </div>";
+        $('#assignmentSelect').empty();
 		console.log(trackList);
         for (var i = 0; i < trackList.length; i++) {
 			//if (dataArray[startRow][i].includes("MAX")){
@@ -368,24 +367,10 @@ document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignme
 			//addAssignmentOption(dataArray[startRow][i]);
 			//}
         }
-		document.getElementById("assignmentSelectGroup").selectedIndex=(0);
-        $('#assignmentSelectGroup').change(function () {
-			// alert ("yo");
-			if (document.getElementById("assignmentSelectGroup").options[document.getElementById("assignmentSelectGroup").selectedIndex].innerHTML == "Waving Through a Window") {
-                   let something = getMidiFile("https://www.nwhsaob.com/Midi/waving.mid")
-				   releaseEarly=15;
-					//alert(noteContainingTrack);
-             }						
-			 else if (document.getElementById("assignmentSelectGroup").options[document.getElementById("assignmentSelectGroup").selectedIndex].innerHTML == "Go the Distance") {
-                   let something = getMidiFile("https://www.nwhsaob.com/Midi/distance.mid")
-					//alert(noteContainingTrack);
-					releaseEarly=15;
-             }					
-			 else if (document.getElementById("assignmentSelectGroup").options[document.getElementById("assignmentSelectGroup").selectedIndex].innerHTML == "Satisfied") {
-                   let something = getMidiFile("https://www.nwhsaob.com/Midi/satisfied.mid")
-				   releaseEarly=15;
-					//alert(noteContainingTrack);
-             }
+		document.getElementById("assignmentSelect").selectedIndex=(0);
+        $('#assignmentSelect').change(function () {
+			
+				correctComplexChordQueue=[];
 	
 	specificComplexChordQueue=[];
 	let importArray = [];
@@ -440,7 +425,6 @@ document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignme
                 // alert (lastNote);
 				//console.warn(lastNote);
                 if (lastNote != 0) {
-					lastNote=lastNote+transposeOffset;
 					console.error(lastNote);
                     singingTimeArray.push([lastNote - 24, ticksOfThisNote]);
 					let beatsOfThisNotes = (ticksOfThisNote + 0) / importTicksPerBeat;
@@ -482,7 +466,6 @@ document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignme
 
         if (lastNote != 0) {
 			
-					lastNote=lastNote+transposeOffset;
 					// console.error(lastNote);
             // singingTimeArray.push([(lastNote-1)%12+1 - 24, (60 * (ticksOfThisNote + 0) / importTicksPerBeat) / currentBPM, 0]);
 			// correctComplexChordQueue.push([[(lastNote-1)%12+1], 4*(ticksOfThisNote + 0) / importTicksPerBeat]);
@@ -591,8 +574,6 @@ console.log(obj.tracks[noteContainingTrack].notes[i].name+ " "+obj.tracks[noteCo
                 // alert (lastNote);
 				//console.warn(lastNote);
                 if (lastNote != 0) {
-					
-					lastNote=lastNote+transposeOffset;
 					console.error(lastNote);
                     singingTimeArray.push([lastNote - 24, ticksOfThisNote]);
 					
@@ -636,7 +617,6 @@ console.log(obj.tracks[noteContainingTrack].notes[i].name+ " "+obj.tracks[noteCo
 
         if (lastNote != 0) {
 			
-					lastNote=lastNote+transposeOffset;
 					// console.error(lastNote);
             // singingTimeArray.push([(lastNote-1)%12+1 - 24, (60 * (ticksOfThisNote + 0) / importTicksPerBeat) / currentBPM, 0]);
 			// correctComplexChordQueue.push([[(lastNote-1)%12+1], 4*(ticksOfThisNote + 0) / importTicksPerBeat]);
@@ -784,8 +764,8 @@ MidiParser.parse(sourceofmidi, function (obj) {
         }
 		
 		//transplanted from uploadgame
-		document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment'><select id = 'assignmentSelectGroup' name = 'assignmentSelectGroup' style = 'font-size:large'> <optgroup id = 'assignmentSelect' label='Practice by Dylan'><option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </optgroup><optgroup id = 'otherMusic' label = 'Other Selections'><option value = 'window'>Waving Through a Window</option><option value = 'hercules'>Go the Distance</option><option value = 'satisfied'>Satisfied</option></optgroup></select>  </div>";
-       $('#assignmentSelect').empty();
+		document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:large'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  </div>";
+        $('#assignmentSelect').empty();
         for (var i = 0; i < trackList.length; i++) {
 			//if (dataArray[startRow][i].includes("MAX")){
             addAssignmentOption(trackList[i]);
@@ -794,29 +774,9 @@ MidiParser.parse(sourceofmidi, function (obj) {
 			//addAssignmentOption(dataArray[startRow][i]);
 			//}
         }
-		
-				
-
-		document.getElementById("assignmentSelectGroup").selectedIndex=(noteContainingTrack-1);
-	
-        $('#assignmentSelectGroup').change(function () {
-			// alert ("yo");	alert (currentBPM);
+		document.getElementById("assignmentSelect").selectedIndex=(noteContainingTrack-1);
+        $('#assignmentSelect').change(function () {
 			
-			if (document.getElementById("assignmentSelectGroup").options[document.getElementById("assignmentSelectGroup").selectedIndex].innerHTML == "Waving Through a Window") {
-                   let something = getMidiFile("https://www.nwhsaob.com/Midi/waving.mid")
-					//alert(noteContainingTrack);
-					releaseEarly=15;
-             }						
-			 else if (document.getElementById("assignmentSelectGroup").options[document.getElementById("assignmentSelectGroup").selectedIndex].innerHTML == "Go the Distance") {
-                   let something = getMidiFile("https://www.nwhsaob.com/Midi/distance.mid")
-					//alert(noteContainingTrack);
-					releaseEarly=15;
-             }					
-			 else if (document.getElementById("assignmentSelectGroup").options[document.getElementById("assignmentSelectGroup").selectedIndex].innerHTML == "Satisfied") {
-                   let something = getMidiFile("https://www.nwhsaob.com/Midi/satisfied.mid")
-					//alert(noteContainingTrack);
-					releaseEarly=15;
-             }
 				correctComplexChordQueue=[];
 	
 	specificComplexChordQueue=[];
@@ -870,8 +830,6 @@ MidiParser.parse(sourceofmidi, function (obj) {
                 // alert (lastNote);
 				//console.warn(lastNote);
                 if (lastNote != 0) {
-					
-					lastNote=lastNote+transposeOffset;
 					console.error(lastNote);
                     singingTimeArray.push([lastNote - 24, (60 * (ticksOfThisNote + 0) / importTicksPerBeat) / currentBPM, 0]);
 					let beatsOfThisNotes = (ticksOfThisNote + 0) / importTicksPerBeat;
@@ -913,7 +871,6 @@ MidiParser.parse(sourceofmidi, function (obj) {
 
         if (lastNote != 0) {
 			
-					lastNote=lastNote+transposeOffset;
 					// console.error(lastNote);
             // singingTimeArray.push([(lastNote-1)%12+1 - 24, (60 * (ticksOfThisNote + 0) / importTicksPerBeat) / currentBPM, 0]);
 			// correctComplexChordQueue.push([[(lastNote-1)%12+1], 4*(ticksOfThisNote + 0) / importTicksPerBeat]);
@@ -1020,7 +977,6 @@ MidiParser.parse(sourceofmidi, function (obj) {
                 // alert (lastNote);
 				//console.warn(lastNote);
                 if (lastNote != 0) {
-					lastNote=lastNote+transposeOffset;
                     singingTimeArray.push([lastNote - 24, (60 * (ticksOfThisNote + 0) / importTicksPerBeat) / currentBPM, 0]);
 					let beatsOfThisNotes = (ticksOfThisNote + 0) / importTicksPerBeat;
 					// if (beatsOfThisNotes ==0){
@@ -1059,7 +1015,6 @@ MidiParser.parse(sourceofmidi, function (obj) {
         // alert (lastNote);
 
         if (lastNote != 0) {
-					lastNote=lastNote+transposeOffset;
 			let beatsOfThisNotes = (ticksOfThisNote + 0) / importTicksPerBeat;
 					
  						loadingChord.push((lastNote-1)%12+1);
