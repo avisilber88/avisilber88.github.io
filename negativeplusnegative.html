@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<title>Chemistry Math Practice</title>
+<header>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-firestore.js"></script>
+    <script>
+       <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyD8HtP73rHKqt9klRdMCWQ2InBM5lhrWXc",
+    authDomain: "testproject-a9c91.firebaseapp.com",
+    databaseURL: "https://testproject-a9c91.firebaseio.com",
+    projectId: "testproject-a9c91",
+    storageBucket: "testproject-a9c91.appspot.com",
+    messagingSenderId: "493063455089",
+    appId: "1:493063455089:web:e94890481f804b85fbf6d0",
+    measurementId: "G-P4484M15K4"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+        firebase.initializeApp(config);
+    
+    </script>
+</header>
+<html>
+<link type="text/css" rel="stylesheet" href="chemmathstylesheet2.css">
+<body style="background-color:#5e6aeb;">
+
+
+
+<div class="row">
+<h2 style="background-color:white; color:#f7050d; text-shadow: 2px 1px black; text-align:center;"><hr> Current Question:<hr></h2>
+
+</div>
+
+<div class = "container">
+<div class="row">
+<div class="col-xs-10 col-xs-offset-1 col-lg-8 col-lg-offset-2"> 
+<div id = "footer" >
+
+<div class="row">
+<div class="col-xs-10 col-xs-offset-1" >
+		<p id = "num1" class = "theQuestion"style="font-size:25px">704</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+<ul></ul>
+</div>
+</div>
+</div>
+</div>
+
+
+</div>
+
+<style>
+  body { margin: 0; overflow: hidden; } /* Remove default body margin and hide overflow */
+  svg { display: block; } /* Ensure SVG takes full width and height */
+</style>
+
+<svg id="numberLineSvg" width="100%" height="100%" viewBox="0 0 1000 100">
+  <!-- Main line -->
+  <line x1="50" y1="50" x2="950" y2="50" stroke="black" stroke-width="2" />
+
+  <!-- Ticks and Labels -->
+  <script>
+    const svg = document.getElementById('numberLineSvg');
+    const minVal = -25;
+    const maxVal = 25;
+    const svgWidth = 1000; // Corresponds to the viewBox width
+    const startX = 50;    // Corresponds to the x1 of the main line
+    const endX = 950;     // Corresponds to the x2 of the main line
+    const range = maxVal - minVal;
+    const pixelPerUnit = (endX - startX) / range;
+
+    for (let i = minVal; i <= maxVal; i++) {
+      const xPos = startX + (i - minVal) * pixelPerUnit;
+
+      // Small ticks for every unit
+      const tickHeight = (i % 5 === 0) ? 15 : 8; // Longer tick for multiples of 5
+      const tickY1 = 50 - tickHeight / 2;
+      const tickY2 = 50 + tickHeight / 2;
+      const tickLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      tickLine.setAttribute("x1", xPos);
+      tickLine.setAttribute("y1", tickY1);
+      tickLine.setAttribute("x2", xPos);
+      tickLine.setAttribute("y2", tickY2);
+      tickLine.setAttribute("stroke", "black");
+      tickLine.setAttribute("stroke-width", "1");
+      svg.appendChild(tickLine);
+
+      // Labels for every 5 units
+      if (i % 5 === 0) {
+        const textElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        textElement.setAttribute("x", xPos);
+        textElement.setAttribute("y", 75); // Position below the line
+        textElement.setAttribute("text-anchor", "middle");
+        textElement.setAttribute("font-size", "14");
+        textElement.textContent = i;
+        svg.appendChild(textElement);
+      }
+    }
+  </script>
+</svg>
+<div class="container">
+<div class="row">
+<div class="col-xs-8 col-xs-offset-2" >
+ <font color= "white"> Type your Answer Below:<br>
+ 
+   <font color= "black">
+ <input type="text" name="givenAnswer" id = "givenAnswer" value=""><br><br>
+
+ <button type ='button' id ="submitButton">submit</button>
+</div>
+</div>
+</div>
+</div>
+
+<div class="container">
+<div class="row">
+<h4 style="background-color:#5e6aec; color:white; text-shadow: 2px 1px black; text-align:left;"><hr><span id = "score" class = "col-xs-6">Score = </span> <span id = "scoremessage" class = "col-xs-5"> 
+</h4>
+<p>
+<h4 style="background-color:#5e6aec; color:white; text-shadow: 2px 1px black; text-align:left;"><span id = "date" class = "col-xs-6">Date</span> <span id = "scoremessage" class = "col-xs-5"> 
+</h4>
+<p>
+<h4 style="background-color:#5e6aec; color:white; text-shadow: 2px 1px black; text-align:left;"><span id = "nameis" class = "col-xs-6"></span> <span id = "scoremessage" class = "col-xs-5"> 
+</h4>
+<button type ='button' id ="scoreButton">Get Score Report</button>
+</div>
+</div>
+
+<script src = "negativeplusnegative.js"></script>
+
+</body>
+
+
+</html>
+ 
