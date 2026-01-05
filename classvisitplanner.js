@@ -1176,12 +1176,16 @@ const cleanData = givenData.slice(1);
 
     stops.push({
       pd: bestClassKey.split('|')[1],
+      room: bestClassKey.split('|')[0],
       roster: bestRoster
     });
 
     bestRoster.forEach(s => seenStudents.add(String(s[COL.ID]).trim()));
   }
 
+  // 2. SORT STOPS BY ROOM
+  stops.sort((a, b) => a.room.localeCompare(b.room, undefined));
+  
   // 2. SORT STOPS BY PERIOD
   stops.sort((a, b) => a.pd.localeCompare(b.pd, undefined, {numeric: true}));
 
