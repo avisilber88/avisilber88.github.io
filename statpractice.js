@@ -356,7 +356,9 @@ var sumForSD=0;
 			resetQuestion();
 		}
 		numSigs1 = parseInt(getSigDigits(molar));
+
 		numSigFigs = parseInt(numSigs1) + 0;
+	
 		// if (numSigFigs>numSigs2){
 		// numSigFigs=(numSigs2)+0;
 		// }
@@ -967,6 +969,7 @@ var roundTypeName;
 			}
 			break;
 		case 3:
+			numberOfSigFigsToCount=2;
 			if (score > 19) {
 				document.getElementById("num1").innerHTML = "during a pilot run of vaccine vials, the quality control team inspected 20 vials per day over "+numOfNums+" days, for a total of "+(numOfNums*20)+" vials. The number of defects recorded each day was as follows: "+stringOfNums+" each value was for a different day. Calculate the median of the defects data. Record your answer to "+numberOfSigFigsToCount+" "+roundTypeName+" below.";
 
