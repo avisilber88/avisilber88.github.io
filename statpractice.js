@@ -17,6 +17,8 @@ var givenAnswer;
 var	finalNum = 0;
 var thisisanswer = 0;
 var numberOfSigFigsToCount =0;
+var questionType=1;
+var arrayForMode=[[0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0], [8,0], [9, 0], [10, 0]];
 //beginning of the things to replace
 	var whatnameis = ""// prompt ("What is your name?");
 	var askagain = function (whatnameis){
@@ -291,6 +293,8 @@ var molar;
 var declength;
 var sumForSD=0;
 	var setupAnswers = function (m1, m2, m3, m4, n1, n2, n3, ct, fN) {
+		arrayForMode=[[0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0], [8,0], [9, 0], [10, 0]];
+
 		sumForSD=0;
 				C1 = n1 * Math.pow(10, m1);
 		V2 = n2 * Math.pow(10, m3);
@@ -301,7 +305,40 @@ var sumForSD=0;
 			sumForSD=sumForSD+Math.pow((1.0*arrayOfNums[i]-averageNum),2);
 			//console.log(sumForSD);
 		}
+	
+	
+	if (questionType==1){
 		molar = Math.pow(sumForSD/numOfNums, .5);
+	}
+	else if (questionType==2){
+		molar = averageNum;
+	}
+	else if (questionType==3){ //median
+		arrayOfNums.sort((a, b) => a - b);
+		//console.log(arrayOfNums);
+		if (((arrayOfNums.length)%2.0)==0){//IS event
+			
+			molar=((arrayOfNums[((arrayOfNums.length)/2)])+(arrayOfNums[Math.floor((arrayOfNums.length)/2)-1]))/2;
+		}
+		else{
+			molar=arrayOfNums[Math.floor((arrayOfNums.length)/2)];
+		}
+	}
+	else if (questionType==4){ //mode
+		arrayOfNums.sort((a, b) => a - b);
+		molar = 0;
+		maxMode = 0;
+		for (i=0; i< numOfNums; i++){
+			arrayForMode[arrayOfNums[i]][1]=arrayForMode[arrayOfNums[i]][1]+1;
+		}
+		for (j=0; j< 11; j++){
+			if ((arrayForMode[j][1])>maxMode){
+				maxMode = arrayForMode[j][1]
+				molar = j;
+			}
+		}
+		
+	}
 		//console.log("Sum is "+sumForSD+",Answer should be "+molar);
 		declength = decimalPlaces(molar);
 		// console.error (molar);
@@ -902,7 +939,7 @@ var roundTypeName;
 		// $('#num1').text(toOurExponential(sigFigs(finalNum, 3)));
 		// $('#den1').text(toOurExponential(sigFigs(finalNumtwo, 3)));
 		//document.getElementById("num1").innerHTML = "What is the molarity of a "+formulaName+" solution do we get when we mix " + number +" "+ units1 +" of "+ formulaName + " in " +  numbertwo+" " + units2 + " of water? (" +formulaName+" has a molar mass of " + molarMass+" grams/mole)";
-		var questionType =1;// Math.floor(Math.random() * 3) + 1;
+		questionType =Math.floor(Math.random() * 4) + 1;
 		// if (conctype == ":") {
 			// //alert ("it");
 			// questionType = 4;
@@ -922,29 +959,28 @@ var roundTypeName;
 			break;
 		case 2:
 			if (score > 19) {
-				document.getElementById("num1").innerHTML = "calculate the volume in " + units4 + " of " + number + units1 + " " + formulaName + " required to make " + numbertwo + " " + units3 + " of a " + numberThree + "" + units2 + " solution of " + formulaName + " in water? Please round your final answer to "+numberOfSigFigsToCount+" "+roundTypeName+" below.";
+				document.getElementById("num1").innerHTML = "during a pilot run of vaccine vials, the quality control team inspected 20 vials per day over "+numOfNums+" days, for a total of "+(numOfNums*20)+" vials. The number of defects recorded each day was as follows: "+stringOfNums+" each value was for a different day. Calculate the mean of the defects data. Record your answer to "+numberOfSigFigsToCount+" "+roundTypeName+" below.";
 
 			} else {
-				document.getElementById("num1").innerHTML = "Calculate the volume in " + units4 + " of " + number + units1 + " " + formulaName + " required to make " + numbertwo + " " + units3 + " of a " + numberThree + "" + units2 + " solution of " + formulaName + " in water? Please round your final answer to "+numberOfSigFigsToCount+" "+roundTypeName+" below.";
+				document.getElementById("num1").innerHTML = "During a pilot run of vaccine vials, the quality control team inspected 20 vials per day over "+numOfNums+" days, for a total of "+(numOfNums*20)+" vials. The number of defects recorded each day was as follows: "+stringOfNums+" each value was for a different day. Calculate the mean of the defects data. Record your answer to "+numberOfSigFigsToCount+" "+roundTypeName+" below.";
 
 			}
 			break;
 		case 3:
 			if (score > 19) {
-				document.getElementById("num1").innerHTML = "calculate the volume in " + units4 + " of a " + number + units1 + " " + formulaName + " stock solution required to make " + numbertwo + "" + units3 + " with a final concentration of " + formulaName + " at " + numberThree + "" + units2 + ". Please round your final answer to "+numberOfSigFigsToCount+" "+roundTypeName+" below.";
+				document.getElementById("num1").innerHTML = "during a pilot run of vaccine vials, the quality control team inspected 20 vials per day over "+numOfNums+" days, for a total of "+(numOfNums*20)+" vials. The number of defects recorded each day was as follows: "+stringOfNums+" each value was for a different day. Calculate the median of the defects data. Record your answer to "+numberOfSigFigsToCount+" "+roundTypeName+" below.";
 
 			} else {
-				document.getElementById("num1").innerHTML = "Calculate the volume in " + units4 + " of a " + number + units1 + " " + formulaName + " stock solution required to make " + numbertwo + "" + units3 + " with a final concentration of " + formulaName + " at " + numberThree + "" + units2 + ". Please round your final answer to "+numberOfSigFigsToCount+" "+roundTypeName+" below.";
+				document.getElementById("num1").innerHTML = "During a pilot run of vaccine vials, the quality control team inspected 20 vials per day over "+numOfNums+" days, for a total of "+(numOfNums*20)+" vials. The number of defects recorded each day was as follows: "+stringOfNums+" each value was for a different day. Calculate the median of the defects data. Record your answer to "+numberOfSigFigsToCount+" "+roundTypeName+" below.";
 
 			}
 			break;
 		case 4:
 			if (score > 19) {
-				document.getElementById("num1").innerHTML = "a technician is asked to prepare a dilution of a common laboratory disinfectant. The label indicates that a " + numberThree + ":" + number + " dilution in water is required prior to use. Calculate the volume in " + units4 + " of disinfectant required to make " + numbertwo + "" + units3+". Please round your final answer to "+numberOfSigFigsToCount+" "+roundTypeName+" below.";
+				document.getElementById("num1").innerHTML = "during a pilot run of vaccine vials, the quality control team inspected 20 vials per day over "+numOfNums+" days, for a total of "+(numOfNums*20)+" vials. The number of defects recorded each day was as follows: "+stringOfNums+" each value was for a different day. Calculate the mode of the defects data. (If there are more than one mode, write in the numerically lowest one) Record your answer to "+numberOfSigFigsToCount+" "+roundTypeName+" below.";
 
 			} else {
-				document.getElementById("num1").innerHTML = "A technician is asked to prepare a dilution of a common laboratory disinfectant. The label indicates that a " + numberThree + ":" + number + " dilution in water is required prior to use. Calculate the volume in " + units4 + " of disinfectant required to make " + numbertwo + "" + units3+". Please round your final answer to "+numberOfSigFigsToCount+" "+roundTypeName+" below.";
-
+				document.getElementById("num1").innerHTML = "During a pilot run of vaccine vials, the quality control team inspected 20 vials per day over "+numOfNums+" days, for a total of "+(numOfNums*20)+" vials. The number of defects recorded each day was as follows: "+stringOfNums+" each value was for a different day. Calculate the mode of the defects data. (If there are more than one mode, write in the numerically lowest one) Record your answer to "+numberOfSigFigsToCount+" "+roundTypeName+" below.";
 			}
 			break;
 		}
