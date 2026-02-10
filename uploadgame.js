@@ -46,6 +46,7 @@ $(document).ready(function () {
 	var apClassroomAllUnits=false;
 	var apClassroomAllAssignments=false;
 	var startingColumn=0;
+	var possiblePointsRow=1;
 	//var groupingStyle="homogeneous";
     $(".studentsContainerOne").slideToggle();
     $(".studentsContainerTwo").slideToggle();
@@ -279,8 +280,12 @@ console.log(data[0][0].toString());
 		// alert ("Canvas!");
 		console.log(canvasSectionColumn);
 		canvas=true;
-	
-		for (var i = 2; i < data.length; i++){
+		for (var h = 0; h < data.length; h++){
+			if (data[h][0].includes('Points')){
+			possiblePointsRow=h;
+			}
+		}
+		for (var i = possiblePointsRow+1; i < data.length; i++){
 			if (!(sectionArray.includes(data[i][canvasSectionColumn]))){
 				sectionArray.push(data[i][canvasSectionColumn]);
 			}
@@ -288,6 +293,7 @@ console.log(data[0][0].toString());
 		}
 		
 		startRow=0;
+		
 		if (sectionArray.length>1){
 			
 		outside=false;
@@ -1023,9 +1029,21 @@ link.click();
     //Step 2: Generate dropdown menus.
     var generateDropdowns = function (dataArray) {
 		console.log(dataArray);
+		// for (var h = 0; h < data.length; h++){
+			// if (data[h][0].includes('Points')){
+			// possiblePointsRow=h;
+			// alert (possiblePointsRow);
+			// }
+		// }
+		// alert (possiblePointsRow);
+		// if (dataArray[2][0].toString().includes('Possible')){
+			// startRow=0;
+			// alert ("yes");
+		// }
 		//console.log(dataArray[2][0]);
 		console.log(canvas);
 		if (canvas){
+
 		}
 		else if(dataArray[2][0].toString().includes('Student')){
 			
@@ -1051,7 +1069,7 @@ link.click();
 			if (dataArray[startRow][i].includes("MAX")){
 				addAssignmentOption(dataArray[startRow][i].substring(0, dataArray[startRow][i].indexOf("MAX")));
 			}			
-			else if (dataArray[startRow+1][i]==(0)){
+			else if (dataArray[startRow+possiblePointsRow][i]==(0)){
 				// addAssignmentOption(dataArray[startRow][i]);
 			}
 			else{
@@ -1540,7 +1558,7 @@ let values = (largestScore - smallestScore + 1)
 	smallestScore=1000;
         var column = [];
 		if (canvas){
-			for (var i = (startRow+2); i < matrix.length; i++) {
+			for (var i = (startRow+possiblePointsRow+1); i < matrix.length; i++) {
 				try {
 				//matrix[i][col]=matrix[i][col].substr(0,matrix[i][col].indexOf(' '));
 				}
@@ -1548,9 +1566,9 @@ let values = (largestScore - smallestScore + 1)
 				}
 				try{
 				// console.error(matrix[1][col]);
-				if (matrix[1][col]=='(read only)')
+				if (matrix[possiblePointsRow][col]=='(read only)')
 				{
-				matrix[1][col]=100;
+				matrix[possiblePointsRow][col]=100;
 					
 				}
 		
@@ -1565,9 +1583,9 @@ let values = (largestScore - smallestScore + 1)
 			// }
 					console.log(col);
 							
-                console.log(Number((matrix[1][col])));
+                console.log(Number((matrix[possiblePointsRow][col])));
 		
-				largestScore=Number((matrix[1][col]));
+				largestScore=Number((matrix[possiblePointsRow][col]));
 				}
 				catch (error){
 				}
