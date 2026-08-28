@@ -684,39 +684,156 @@ document.getElementById('txtFileUpload2').addEventListener('change', upload2, fa
 			
 }
 for (var i = 0; i < groupThenNameArray.length; i++) {
-			// console.warn(nameIDArray[i][1]);
 			tempNameHere=groupThenNameArray[i][1];
 			groupThenNameArray[i][1] = tempNameHere.split(', ').slice(-1).join(' ')+ " " + tempNameHere.split(', ').slice(0, -1).join(' ');			
            rowsInExport.push([groupThenNameArray[i][0], groupThenNameArray[i][1]]);//, groupThenNameArray[i][1]]); //addAssignmentOption(dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")));
         }
-	// rowsInExport.sort();
 	rowsInExport.unshift(["Group", "Names"]);
 	generateInvert(rowsInExport);
-		// breakoutfilename=prompt ("What would you like to call your breakout rooms pre-assign csv?")+".csv";
- // console.warn(groupThenNameArray.toString());
-		// let csvContent = "data:text/csv;charset=utf-8," + rowsInExport.map(e => e.join(",")).join("\n").replace(/"/g,"");
-		// var encodedUri = encodeURI(csvContent);
-// var link = document.createElement("a");
-// link.setAttribute("href", encodedUri);
-// link.setAttribute("download", breakoutfilename);
-// document.body.appendChild(link); // Required for FF
 
-// link.click();
-        // $('#submitAssignment').click(function () {
-            // // alert ("hi");
-            // // if (true){
-            // for (var i = 2; i < dataArray[2].length; i++) {
-                // if (document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML == (dataArray[2][i].substring(0, dataArray[2][i].indexOf("MAX")))) {
-                    // columnOfStudy = i + 0;
-                // }
-            // }
+}
+// Global variable to remember past pairings across multiple shuffles
+window.studentPairHistory = window.studentPairHistory || new Map();
 
-            // // alert(document.getElementById("assignmentSelect").options[document.getElementById("assignmentSelect").selectedIndex].innerHTML);
-            // // }
-            // $(".pickassignment").slideToggle();
-            // generateSliders();
-        // });
-	}
+function getPairKey(name1, name2) {
+    // Alphabetize so "Alice|Bob" is the same key as "Bob|Alice"
+    return name1 < name2 ? name1 + "|" + name2 : name2 + "|" + name1;
+}
+
+/**
+ * Reshuffles students into new group pairings without repeating partners.
+ * Works via DOM scraping with fallback to in-memory arrays if DOM nodes aren't found.
+ */
+var makeListForShuffle = (function() {
+let currentGroups = []; 
+    let allStudents = [];
+
+    // 1. READ CURRENT GROUPS FROM THE DOM
+    for (let parentnum = 0; parentnum < groupOfGroupsArray.length; parentnum++) {
+        let groupId = allGroupIds[parentnum];
+        if (!groupId) continue;
+        
+        let subgroupNodes = document.getElementById(groupId).childNodes;
+        let studentsInThisGroup = [];
+        
+        for (let childnum = 0; childnum < subgroupNodes.length; childnum++) {
+            let childId = subgroupNodes[childnum].id;
+            for (let boxid = 0; boxid < allStudentBoxIds.length; boxid++) {
+                if (allStudentBoxIds[boxid][0] === childId) {
+                    let rawName = allStudentBoxIds[boxid][1];
+                    
+                    // Format Name (Last, First -> First Last) just like your old code
+                    let nameParts = rawName.split(', ');
+                    let formattedName = rawName;
+                    if (nameParts.length > 1) {
+                        let firstName = nameParts.pop(); 
+                        formattedName = `${firstName} ${nameParts.join(', ')}`;
+                    }
+                    
+                    studentsInThisGroup.push(formattedName);
+                    if (!allStudents.includes(formattedName)) {
+                        allStudents.push(formattedName);
+                    }
+                }
+            }
+        }
+        if (studentsInThisGroup.length > 0) {
+            currentGroups.push(studentsInThisGroup);
+        }
+    }
+
+    let numGroups = currentGroups.length;
+    if (numGroups === 0 || allStudents.length === 0) return;
+
+    // 2. RECORD CURRENT PAIRS INTO HISTORY
+    for (let g = 0; g < currentGroups.length; g++) {
+        let grp = currentGroups[g];
+        for (let i = 0; i < grp.length; i++) {
+            for (let j = i + 1; j < grp.length; j++) {
+                let key = getPairKey(grp[i], grp[j]);
+                window.studentPairHistory.set(key, (window.studentPairHistory.get(key) || 0) + 1);
+            }
+        }
+    }
+
+    // 3. CREATE NEW RANDOM GROUPS
+    let newGroups = [];
+    for (let i = 0; i < numGroups; i++) newGroups.push([]);
+
+    let shuffled = allStudents.slice().sort(() => Math.random() - 0.5);
+    for (let idx = 0; idx < shuffled.length; idx++) {
+        newGroups[idx % numGroups].push(shuffled[idx]);
+    }
+
+    // 4. OPTIMIZE TO AVOID PAST PARTNERS
+    function getScore(groups) {
+        let score = 0;
+        for (let g = 0; g < groups.length; g++) {
+            let grp = groups[g];
+            for (let i = 0; i < grp.length; i++) {
+                for (let j = i + 1; j < grp.length; j++) {
+                    let key = getPairKey(grp[i], grp[j]);
+                    let pastCount = window.studentPairHistory.get(key) || 0;
+                    score += pastCount * pastCount; // Penalize heavy repeats
+                }
+            }
+        }
+        return score;
+    }
+
+    let bestScore = getScore(newGroups);
+    let maxIterations = 2000; 
+
+    for (let iter = 0; iter < maxIterations && bestScore > 0; iter++) {
+        let g1Idx = Math.floor(Math.random() * numGroups);
+        let g2Idx = Math.floor(Math.random() * numGroups);
+        if (g1Idx === g2Idx) continue;
+
+        let g1 = newGroups[g1Idx];
+        let g2 = newGroups[g2Idx];
+        if (g1.length === 0 || g2.length === 0) continue;
+
+        let s1Idx = Math.floor(Math.random() * g1.length);
+        let s2Idx = Math.floor(Math.random() * g2.length);
+
+        let temp = g1[s1Idx];
+        g1[s1Idx] = g2[s2Idx];
+        g2[s2Idx] = temp;
+
+        let newScore = getScore(newGroups);
+        if (newScore < bestScore) {
+            bestScore = newScore; 
+        } else {
+            g2[s2Idx] = g1[s1Idx];
+            g1[s1Idx] = temp;
+        }
+    }
+
+    // 5. FORMAT FOR generateInvert (THE FIX)
+    // generateInvert calculates the number of groups by counting "Group 0"
+    // and then deals students like cards: (i-1)%numberOfGroups
+    // So we must interleave the array to match its dealing pattern!
+    const rowsInExport = [["Group", "Names"]];
+    
+    let maxGroupSize = 0;
+    for (let i = 0; i < numGroups; i++) {
+        if (newGroups[i].length > maxGroupSize) {
+            maxGroupSize = newGroups[i].length;
+        }
+    }
+
+    // Interleave: pull the 1st person from every group, then 2nd person, etc.
+    for (let round = 0; round < maxGroupSize; round++) {
+        for (let g = 0; g < numGroups; g++) {
+            if (newGroups[g][round]) { // If this group has a student in this round
+                rowsInExport.push(["Group " + round, newGroups[g][round]]);
+            }
+        }
+    }
+
+    // 6. SEND TO YOUR EXISTING UI BUILDER
+    generateInvert(rowsInExport);
+});
 	
 	var generateNameIDArrayForZoom = function (){
 	// document.getElementById('selectionsBox').innerHTML = "<div class = 'pickassignment'><select id = 'assignmentSelect' name = 'assignmentSelect' style = 'font-size:xx-large'> <option value = 'cation1'> cation1 </option> <option value = 'cation2'> cation2 </option><option value = 'cation3'> cation3 </option><option value = 'cation4'> cation4 </option> </select>  <button type ='button' id ='submitAssignment' style='font-size: xx-large'>Submit</button></div>";
@@ -2085,7 +2202,7 @@ console.log(groupCArray);
             $(".pickgroupstyle").slideToggle();
             $(".studentsContainerOne").slideToggle();
         document.getElementById('selectionsBox').innerHTML = "<div class = 'finalizeGroups'> <span style='font-size: large'> Finalize Names as Necessary and then click Done:</span><button type ='button' id ='finalizeGroupsButton' style = 'font-size: large'>Finalize Groups</button></div>  <div class = 'groupAgain'><button type ='button' id ='pickOneOverall' style = 'font-size: large' hidden>Pick Random Student</button>    <button type ='button' id ='pickOneEach' style = 'font-size: large' hidden>Pick One From Each Group</button></div>";
-        document.getElementById('underButtons').innerHTML =  "<div class = 'finalizeGroups'></div> <div class = 'groupAgain'><button type ='button' id ='remakeGroupsButton' style = 'font-size: large'>Remake Groups</button>   <button type ='button' id ='invertGroups' style = 'font-size: large' hidden>Invert Groups</button>    <button type ='button' id ='importGroups' style = 'font-size: large' hidden>Import Groups</button>    <button type ='button' id ='exportGroups' style = 'font-size: large' hidden>Export Groups</button></div>";
+        document.getElementById('underButtons').innerHTML =  "<div class = 'finalizeGroups'></div> <div class = 'groupAgain'><button type ='button' id ='remakeGroupsButton' style = 'font-size: large'>Remake Groups</button>   <button type ='button' id ='invertGroups' style = 'font-size: large' hidden>Invert Groups</button>  <button type ='button' id ='shuffleGroups' style = 'font-size: large' hidden>Shuffle Groups</button>  <button type ='button' id ='importGroups' style = 'font-size: large' hidden>Import Groups</button>    <button type ='button' id ='exportGroups' style = 'font-size: large' hidden>Export Groups</button></div>";
         
         $(".studentsContainerTwo").slideToggle();
         console.log(groupAArray.toString());
@@ -2373,6 +2490,7 @@ console.log(groupCArray);
 			
 			document.getElementById('importGroups').hidden=true;
 			document.getElementById('invertGroups').hidden=true;
+			document.getElementById('shuffleGroups').hidden=true;
 			$(".finalizeGroups").slideToggle();
 			$(".remakeGroups").slideToggle();
 			
@@ -2416,7 +2534,34 @@ console.log(groupCArray);
 			
 			document.getElementById('importGroups').hidden=true;
 			document.getElementById('invertGroups').hidden=true;
+			document.getElementById('shuffleGroups').hidden=true;
 		$(".fileupload").slideToggle();
+        $(".studentsContainerTwo").slideToggle();
+		 });
+		 
+		 		 		 		 		  $('#shuffleGroups').click(function () {
+		// $(".fileuploadImport").slideToggle();
+		
+
+		makeListForShuffle();
+			// $(".remakeGroups").slideToggle();
+					document.getElementById('pickOneEach').hidden=false;
+					
+					if (outside){
+						document.getElementById('remakeGroupsButton').hidden=true;
+					}
+					else{
+						document.getElementById('remakeGroupsButton').hidden=false;			
+					}
+					
+			document.getElementById('pickOneOverall').hidden=false;
+			
+			document.getElementById('exportGroups').hidden=false;
+			
+			document.getElementById('importGroups').hidden=false;
+			document.getElementById('invertGroups').hidden=false;
+			document.getElementById('shuffleGroups').hidden=false;
+		// $(".fileupload").slideToggle();
         $(".studentsContainerTwo").slideToggle();
 		 });
 		 
@@ -2441,6 +2586,7 @@ console.log(groupCArray);
 			
 			document.getElementById('importGroups').hidden=false;
 			document.getElementById('invertGroups').hidden=false;
+			document.getElementById('shuffleGroups').hidden=false;
 		// $(".fileupload").slideToggle();
         $(".studentsContainerTwo").slideToggle();
 		 });
@@ -2454,6 +2600,7 @@ console.log(groupCArray);
 			
 			document.getElementById('importGroups').hidden=false;
 			document.getElementById('invertGroups').hidden=false;
+			document.getElementById('shuffleGroups').hidden=false;
 			document.getElementById('studentContainerTwo').style.height='80%';
             // console.warn("yo yo yo "+allStudentBoxIds[5]);
             // document.getElementById(allStudentBoxIds[5]).style.="";
@@ -2522,7 +2669,7 @@ console.log(groupCArray);
             $(".pickgroupstyle").slideToggle();
             $(".studentsContainerOne").slideToggle();
         document.getElementById('selectionsBox').innerHTML = "<div class = 'finalizeGroups'> <span style='font-size: large'> Finalize Names as Necessary and then click Done:</span><button type ='button' id ='finalizeGroupsButton' style = 'font-size: large'>Finalize Groups</button></div>  <div class = 'groupAgain'><button type ='button' id ='pickOneOverall' style = 'font-size: large' hidden>Pick Random Student</button>    <button type ='button' id ='pickOneEach' style = 'font-size: large' hidden>Pick One From Each Group</button></div>";
-        document.getElementById('underButtons').innerHTML =  "<div class = 'finalizeGroups'></div> <div class = 'groupAgain'><button type ='button' id ='remakeGroupsButton' style = 'font-size: large'>Remake Groups</button>   <button type ='button' id ='invertGroups' style = 'font-size: large' hidden>Invert Groups</button>    <button type ='button' id ='importGroups' style = 'font-size: large' hidden>Import Groups</button>    <button type ='button' id ='exportGroups' style = 'font-size: large' hidden>Export Groups</button></div>";
+        document.getElementById('underButtons').innerHTML =  "<div class = 'finalizeGroups'></div> <div class = 'groupAgain'><button type ='button' id ='remakeGroupsButton' style = 'font-size: large'>Remake Groups</button>   <button type ='button' id ='invertGroups' style = 'font-size: large' hidden>Invert Groups</button> <button type ='button' id ='shuffleGroups' style = 'font-size: large' hidden>Shuffle Groups</button>   <button type ='button' id ='importGroups' style = 'font-size: large' hidden>Import Groups</button>    <button type ='button' id ='exportGroups' style = 'font-size: large' hidden>Export Groups</button></div>";
          
         $(".studentsContainerTwo").slideToggle();
         numberOfGroups = Math.ceil((columnArray.length-nottargetednum) / maxStudents);
@@ -2820,6 +2967,7 @@ console.log(groupCArray);
 			
 			document.getElementById('importGroups').hidden=true;
 			document.getElementById('invertGroups').hidden=true;
+			document.getElementById('shuffleGroups').hidden=true;
 			$(".finalizeGroups").slideToggle();
 			$(".remakeGroups").slideToggle();
 			
@@ -2862,7 +3010,34 @@ console.log(groupCArray);
 			
 			document.getElementById('importGroups').hidden=true;
 			document.getElementById('invertGroups').hidden=true;
+			document.getElementById('shuffleGroups').hidden=true;
 		$(".fileupload").slideToggle();
+        $(".studentsContainerTwo").slideToggle();
+		 });
+		 
+		 		 		 		 		  $('#shuffleGroups').click(function () {
+		// $(".fileuploadImport").slideToggle();
+		
+
+		makeListForShuffle();
+			// $(".remakeGroups").slideToggle();
+					document.getElementById('pickOneEach').hidden=false;
+					
+					if (outside){
+						document.getElementById('remakeGroupsButton').hidden=true;
+					}
+					else{
+						document.getElementById('remakeGroupsButton').hidden=false;			
+					}
+					
+			document.getElementById('pickOneOverall').hidden=false;
+			
+			document.getElementById('exportGroups').hidden=false;
+			
+			document.getElementById('importGroups').hidden=false;
+			document.getElementById('invertGroups').hidden=false;
+			document.getElementById('shuffleGroups').hidden=false;
+		// $(".fileupload").slideToggle();
         $(".studentsContainerTwo").slideToggle();
 		 });
 		 		 		  $('#invertGroups').click(function () {
@@ -2886,9 +3061,37 @@ console.log(groupCArray);
 			
 			document.getElementById('importGroups').hidden=false;
 			document.getElementById('invertGroups').hidden=false;
+			document.getElementById('shuffleGroups').hidden=false;
 		// $(".fileupload").slideToggle();
         $(".studentsContainerTwo").slideToggle();
 		 });
+		 
+		 		 		 		  $('#shuffleGroups').click(function () {
+		// $(".fileuploadImport").slideToggle();
+		
+
+		makeListForShuffle();
+			// $(".remakeGroups").slideToggle();
+					document.getElementById('pickOneEach').hidden=false;
+					
+					if (outside){
+						document.getElementById('remakeGroupsButton').hidden=true;
+					}
+					else{
+						document.getElementById('remakeGroupsButton').hidden=false;			
+					}
+					
+			document.getElementById('pickOneOverall').hidden=false;
+			
+			document.getElementById('exportGroups').hidden=false;
+			
+			document.getElementById('importGroups').hidden=false;
+			document.getElementById('invertGroups').hidden=false;
+			document.getElementById('shuffleGroups').hidden=false;
+		// $(".fileupload").slideToggle();
+        $(".studentsContainerTwo").slideToggle();
+		 });
+		 
         $('#finalizeGroupsButton').click(function () {
 			// alert ("hi")
 
@@ -2900,6 +3103,7 @@ console.log(groupCArray);
 			
 			document.getElementById('importGroups').hidden=false;
 			document.getElementById('invertGroups').hidden=false;
+			document.getElementById('shuffleGroups').hidden=false;
             lockNames = true;
             // console.warn("yo yo yo "+allStudentBoxIds[5]);
             // document.getElementById(allStudentBoxIds[5]).style.="";
@@ -3000,7 +3204,7 @@ var generateImports = function (dataArray) {
 		absentArray=[];
 		groupNamesArray=[];
         document.getElementById('selectionsBox').innerHTML = "<div class = 'finalizeGroups'> <span style='font-size: large'> Finalize Names as Necessary and then click Done:</span><button type ='button' id ='finalizeGroupsButton' style = 'font-size: large'>Finalize Groups</button></div>  <div class = 'groupAgain'><button type ='button' id ='pickOneOverall' style = 'font-size: large' hidden>Pick Random Student</button>    <button type ='button' id ='pickOneEach' style = 'font-size: large' hidden>Pick One From Each Group</button></div>";
-        document.getElementById('underButtons').innerHTML =  "<div class = 'finalizeGroups'></div> <div class = 'groupAgain'><button type ='button' id ='remakeGroupsButton' style = 'font-size: large'>Remake Groups</button>   <button type ='button' id ='invertGroups' style = 'font-size: large' hidden>Invert Groups</button>    <button type ='button' id ='importGroups' style = 'font-size: large' hidden>Import Groups</button>    <button type ='button' id ='exportGroups' style = 'font-size: large' hidden>Export Groups</button></div>";
+        document.getElementById('underButtons').innerHTML =  "<div class = 'finalizeGroups'></div> <div class = 'groupAgain'><button type ='button' id ='remakeGroupsButton' style = 'font-size: large'>Remake Groups</button>   <button type ='button' id ='invertGroups' style = 'font-size: large' hidden>Invert Groups</button>  <button type ='button' id ='shuffleGroups' style = 'font-size: large' hidden>Shuffle Groups</button>  <button type ='button' id ='importGroups' style = 'font-size: large' hidden>Import Groups</button>    <button type ='button' id ='exportGroups' style = 'font-size: large' hidden>Export Groups</button></div>";
           
         $(".studentsContainerTwo").slideToggle();
         numberOfGroups = arrayOfGroupNames.length;
@@ -3238,6 +3442,7 @@ var generateImports = function (dataArray) {
 			
 			document.getElementById('importGroups').hidden=true;
 			document.getElementById('invertGroups').hidden=true;
+			document.getElementById('shuffleGroups').hidden=true;
 			$(".finalizeGroups").slideToggle();
 			$(".remakeGroups").slideToggle();
 			
@@ -3274,7 +3479,34 @@ var generateImports = function (dataArray) {
 			
 			document.getElementById('importGroups').hidden=true;
 			document.getElementById('invertGroups').hidden=true;
+			document.getElementById('shuffleGroups').hidden=true;
 		$(".fileupload").slideToggle();
+        $(".studentsContainerTwo").slideToggle();
+		 });
+		 
+		 		 		 		 		  $('#shuffleGroups').click(function () {
+		// $(".fileuploadImport").slideToggle();
+		
+
+		makeListForShuffle();
+			// $(".remakeGroups").slideToggle();
+					document.getElementById('pickOneEach').hidden=false;
+					
+					if (outside){
+						document.getElementById('remakeGroupsButton').hidden=true;
+					}
+					else{
+						document.getElementById('remakeGroupsButton').hidden=false;			
+					}
+					
+			document.getElementById('pickOneOverall').hidden=false;
+			
+			document.getElementById('exportGroups').hidden=false;
+			
+			document.getElementById('importGroups').hidden=false;
+			document.getElementById('invertGroups').hidden=false;
+			document.getElementById('shuffleGroups').hidden=false;
+		// $(".fileupload").slideToggle();
         $(".studentsContainerTwo").slideToggle();
 		 });
 		 $('#invertGroups').click(function () {
@@ -3298,6 +3530,7 @@ var generateImports = function (dataArray) {
 			
 			document.getElementById('importGroups').hidden=false;
 			document.getElementById('invertGroups').hidden=false;
+			document.getElementById('shuffleGroups').hidden=false;
 		// $(".fileupload").slideToggle();
         $(".studentsContainerTwo").slideToggle();
 		 });
@@ -3312,6 +3545,7 @@ var generateImports = function (dataArray) {
 			
 			document.getElementById('importGroups').hidden=false;
 			document.getElementById('invertGroups').hidden=false;
+			document.getElementById('shuffleGroups').hidden=false;
             lockNames = true;
             // console.warn("yo yo yo "+allStudentBoxIds[5]);
             // document.getElementById(allStudentBoxIds[5]).style.="";
@@ -3415,7 +3649,7 @@ var generateInvert = function (dataArray) {
 		// absentArray=[];
 		groupNamesArray=[];
         document.getElementById('selectionsBox').innerHTML = "<div class = 'finalizeGroups'> <span style='font-size: large'> Finalize Names as Necessary and then click Done:</span><button type ='button' id ='finalizeGroupsButton' style = 'font-size: large'>Finalize Groups</button></div>  <div class = 'groupAgain'><button type ='button' id ='pickOneOverall' style = 'font-size: large' hidden>Pick Random Student</button>    <button type ='button' id ='pickOneEach' style = 'font-size: large' hidden>Pick One From Each Group</button></div>";
-        document.getElementById('underButtons').innerHTML =  "<div class = 'finalizeGroups'></div> <div class = 'groupAgain'><button type ='button' id ='remakeGroupsButton' style = 'font-size: large'>Remake Groups</button>   <button type ='button' id ='invertGroups' style = 'font-size: large' hidden>Invert Groups</button>    <button type ='button' id ='importGroups' style = 'font-size: large' hidden>Import Groups</button>    <button type ='button' id ='exportGroups' style = 'font-size: large' hidden>Export Groups</button></div>";
+        document.getElementById('underButtons').innerHTML =  "<div class = 'finalizeGroups'></div> <div class = 'groupAgain'><button type ='button' id ='remakeGroupsButton' style = 'font-size: large'>Remake Groups</button>   <button type ='button' id ='invertGroups' style = 'font-size: large' hidden>Invert Groups</button>  <button type ='button' id ='shuffleGroups' style = 'font-size: large' hidden>Shuffle Groups</button>  <button type ='button' id ='importGroups' style = 'font-size: large' hidden>Import Groups</button>    <button type ='button' id ='exportGroups' style = 'font-size: large' hidden>Export Groups</button></div>";
           
         $(".studentsContainerTwo").slideToggle();
         numberOfGroups = arrayOfGroupNames.length;
@@ -3658,6 +3892,7 @@ var generateInvert = function (dataArray) {
 			
 			document.getElementById('importGroups').hidden=true;
 			document.getElementById('invertGroups').hidden=true;
+			document.getElementById('shuffleGroups').hidden=true;
 			$(".finalizeGroups").slideToggle();
 			$(".remakeGroups").slideToggle();
 			
@@ -3703,7 +3938,34 @@ var generateInvert = function (dataArray) {
 			
 			document.getElementById('importGroups').hidden=true;
 			document.getElementById('invertGroups').hidden=true;
+			document.getElementById('shuffleGroups').hidden=true;
 		$(".fileupload").slideToggle();
+        $(".studentsContainerTwo").slideToggle();
+		 });
+		 
+		 		 		 		 		  $('#shuffleGroups').click(function () {
+		// $(".fileuploadImport").slideToggle();
+		
+
+		makeListForShuffle();
+			// $(".remakeGroups").slideToggle();
+					document.getElementById('pickOneEach').hidden=false;
+					
+					if (outside){
+						document.getElementById('remakeGroupsButton').hidden=true;
+					}
+					else{
+						document.getElementById('remakeGroupsButton').hidden=false;			
+					}
+					
+			document.getElementById('pickOneOverall').hidden=false;
+			
+			document.getElementById('exportGroups').hidden=false;
+			
+			document.getElementById('importGroups').hidden=false;
+			document.getElementById('invertGroups').hidden=false;
+			document.getElementById('shuffleGroups').hidden=false;
+		// $(".fileupload").slideToggle();
         $(".studentsContainerTwo").slideToggle();
 		 });
 		$('#invertGroups').click(function () {
@@ -3727,6 +3989,7 @@ var generateInvert = function (dataArray) {
 			
 			document.getElementById('importGroups').hidden=false;
 			document.getElementById('invertGroups').hidden=false;
+			document.getElementById('shuffleGroups').hidden=false;
 		// $(".fileupload").slideToggle();
         $(".studentsContainerTwo").slideToggle();
 		 });
@@ -3741,6 +4004,7 @@ var generateInvert = function (dataArray) {
 			
 			document.getElementById('importGroups').hidden=false;
 			document.getElementById('invertGroups').hidden=false;
+			document.getElementById('shuffleGroups').hidden=false;
             lockNames = true;
             // console.warn("yo yo yo "+allStudentBoxIds[5]);
             // document.getElementById(allStudentBoxIds[5]).style.="";
