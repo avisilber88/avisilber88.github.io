@@ -50,7 +50,14 @@ $(document).ready(function () {
 	//var groupingStyle="homogeneous";
     $(".studentsContainerOne").slideToggle();
     $(".studentsContainerTwo").slideToggle();
-	
+	if (!window.studentPairHistory) {
+    window.studentPairHistory = new Map();
+}
+
+function getPairKey(studentA, studentB) {
+    // Sort names alphabetically so pair direction never breaks the lookup
+    return [studentA, studentB].sort().join("::");
+}
 	
 	
 	let board = document.getElementById("board");
@@ -704,11 +711,31 @@ function getPairKey(name1, name2) {
  * Reshuffles students into new group pairings without repeating partners.
  * Works via DOM scraping with fallback to in-memory arrays if DOM nodes aren't found.
  */
-var makeListForShuffle = (function() {
-let currentGroups = []; 
+makeListForShuffle = (function() {
+    let currentGroups = []; 
     let allStudents = [];
 
-    // 1. READ CURRENT GROUPS FROM THE DOM
+    if (!window.studentPairHistory) {
+        window.studentPairHistory = new Map();
+    }
+
+    // Helper to sanitize names & strip trailing spaces added by generateInvert
+    function cleanName(rawName) {
+        if (!rawName) return "";
+        let trimmed = rawName.trim();
+        if (trimmed.includes(',')) {
+            let parts = trimmed.split(',').map(p => p.trim());
+            let firstName = parts.pop();
+            return `${firstName} ${parts.join(' ')}`.trim().replace(/\s+/g, ' ');
+        }
+        return trimmed.replace(/\s+/g, ' ');
+    }
+
+    function getPairKey(a, b) {
+        return [cleanName(a), cleanName(b)].sort().join("::");
+    }
+
+    // 1. READ CURRENT DOM TO GET ALL UNIQUE STUDENTS
     for (let parentnum = 0; parentnum < groupOfGroupsArray.length; parentnum++) {
         let groupId = allGroupIds[parentnum];
         if (!groupId) continue;
@@ -720,15 +747,7 @@ let currentGroups = [];
             let childId = subgroupNodes[childnum].id;
             for (let boxid = 0; boxid < allStudentBoxIds.length; boxid++) {
                 if (allStudentBoxIds[boxid][0] === childId) {
-                    let rawName = allStudentBoxIds[boxid][1];
-                    
-                    // Format Name (Last, First -> First Last) just like your old code
-                    let nameParts = rawName.split(', ');
-                    let formattedName = rawName;
-                    if (nameParts.length > 1) {
-                        let firstName = nameParts.pop(); 
-                        formattedName = `${firstName} ${nameParts.join(', ')}`;
-                    }
+                    let formattedName = cleanName(allStudentBoxIds[boxid][1]);
                     
                     studentsInThisGroup.push(formattedName);
                     if (!allStudents.includes(formattedName)) {
@@ -745,27 +764,7 @@ let currentGroups = [];
     let numGroups = currentGroups.length;
     if (numGroups === 0 || allStudents.length === 0) return;
 
-    // 2. RECORD CURRENT PAIRS INTO HISTORY
-    for (let g = 0; g < currentGroups.length; g++) {
-        let grp = currentGroups[g];
-        for (let i = 0; i < grp.length; i++) {
-            for (let j = i + 1; j < grp.length; j++) {
-                let key = getPairKey(grp[i], grp[j]);
-                window.studentPairHistory.set(key, (window.studentPairHistory.get(key) || 0) + 1);
-            }
-        }
-    }
-
-    // 3. CREATE NEW RANDOM GROUPS
-    let newGroups = [];
-    for (let i = 0; i < numGroups; i++) newGroups.push([]);
-
-    let shuffled = allStudents.slice().sort(() => Math.random() - 0.5);
-    for (let idx = 0; idx < shuffled.length; idx++) {
-        newGroups[idx % numGroups].push(shuffled[idx]);
-    }
-
-    // 4. OPTIMIZE TO AVOID PAST PARTNERS
+    // SCORING FUNCTION
     function getScore(groups) {
         let score = 0;
         for (let g = 0; g < groups.length; g++) {
@@ -774,47 +773,103 @@ let currentGroups = [];
                 for (let j = i + 1; j < grp.length; j++) {
                     let key = getPairKey(grp[i], grp[j]);
                     let pastCount = window.studentPairHistory.get(key) || 0;
-                    score += pastCount * pastCount; // Penalize heavy repeats
+                    score += pastCount * pastCount; 
                 }
             }
         }
         return score;
     }
 
-    let bestScore = getScore(newGroups);
-    let maxIterations = 2000; 
+    // 2. CREATE AND OPTIMIZE GROUPS
+    let bestOverallGroups = [];
+    let bestOverallScore = Infinity;
+    let maxRestarts = 50; 
 
-    for (let iter = 0; iter < maxIterations && bestScore > 0; iter++) {
-        let g1Idx = Math.floor(Math.random() * numGroups);
-        let g2Idx = Math.floor(Math.random() * numGroups);
-        if (g1Idx === g2Idx) continue;
+    for (let restart = 0; restart < maxRestarts; restart++) {
+        let newGroups = [];
+        for (let i = 0; i < numGroups; i++) newGroups.push([]);
 
-        let g1 = newGroups[g1Idx];
-        let g2 = newGroups[g2Idx];
-        if (g1.length === 0 || g2.length === 0) continue;
+        let shuffled = allStudents.slice().sort(() => Math.random() - 0.5);
+        for (let idx = 0; idx < shuffled.length; idx++) {
+            newGroups[idx % numGroups].push(shuffled[idx]);
+        }
 
-        let s1Idx = Math.floor(Math.random() * g1.length);
-        let s2Idx = Math.floor(Math.random() * g2.length);
+        let bestScore = getScore(newGroups);
+        let maxIterations = 2000; 
 
-        let temp = g1[s1Idx];
-        g1[s1Idx] = g2[s2Idx];
-        g2[s2Idx] = temp;
+        for (let iter = 0; iter < maxIterations && bestScore > 0; iter++) {
+            let g1Idx = Math.floor(Math.random() * numGroups);
+            let g2Idx = Math.floor(Math.random() * numGroups);
+            if (g1Idx === g2Idx) continue;
 
-        let newScore = getScore(newGroups);
-        if (newScore < bestScore) {
-            bestScore = newScore; 
-        } else {
-            g2[s2Idx] = g1[s1Idx];
-            g1[s1Idx] = temp;
+            let g1 = newGroups[g1Idx];
+            let g2 = newGroups[g2Idx];
+            if (g1.length === 0 || g2.length === 0) continue;
+
+            let s1Idx = Math.floor(Math.random() * g1.length);
+            let s2Idx = Math.floor(Math.random() * g2.length);
+
+            let temp = g1[s1Idx];
+            g1[s1Idx] = g2[s2Idx];
+            g2[s2Idx] = temp;
+
+            let newScore = getScore(newGroups);
+            if (newScore < bestScore) {
+                bestScore = newScore; 
+            } else {
+                g2[s2Idx] = g1[s1Idx];
+                g1[s1Idx] = temp;
+            }
+        }
+
+        if (bestScore < bestOverallScore) {
+            bestOverallScore = bestScore; 
+            bestOverallGroups = newGroups.map(g => g.slice()); 
+        }
+
+        if (bestOverallScore === 0) break; 
+    }
+
+    let newGroups = bestOverallGroups;
+
+    // 3. TALLY REPEATS FOR USER NOTIFICATION
+    let totalRepeats = 0;
+    for (let g = 0; g < newGroups.length; g++) {
+        let grp = newGroups[g];
+        for (let i = 0; i < grp.length; i++) {
+            for (let j = i + 1; j < grp.length; j++) {
+                let key = getPairKey(grp[i], grp[j]);
+                let pastCount = window.studentPairHistory.get(key) || 0;
+                if (pastCount > 0) {
+                    totalRepeats++;
+                }
+            }
         }
     }
 
-    // 5. FORMAT FOR generateInvert (THE FIX)
-    // generateInvert calculates the number of groups by counting "Group 0"
-    // and then deals students like cards: (i-1)%numberOfGroups
-    // So we must interleave the array to match its dealing pattern!
+    // 4. RECORD NEW PAIRS INTO PERMANENT HISTORY
+    for (let g = 0; g < newGroups.length; g++) {
+        let grp = newGroups[g];
+        for (let i = 0; i < grp.length; i++) {
+            for (let j = i + 1; j < grp.length; j++) {
+                let key = getPairKey(grp[i], grp[j]);
+                window.studentPairHistory.set(key, (window.studentPairHistory.get(key) || 0) + 1);
+            }
+        }
+    }
+
+    // Debugging info in Console
+    console.log(`Total tracked unique pairs in history: ${window.studentPairHistory.size}`);
+
+    // Notify User
+    if (totalRepeats === 0) {
+        //alert("Shuffle complete! Perfect groups: 0 repeat pairings relative to past shuffles.");
+    } else {
+        alert(`Shuffle complete! But there are ${totalRepeats} repeat pairing(s) relative to past shuffles.`);
+    }
+
+    // 5. FORMAT FOR generateInvert
     const rowsInExport = [["Group", "Names"]];
-    
     let maxGroupSize = 0;
     for (let i = 0; i < numGroups; i++) {
         if (newGroups[i].length > maxGroupSize) {
@@ -822,16 +877,15 @@ let currentGroups = [];
         }
     }
 
-    // Interleave: pull the 1st person from every group, then 2nd person, etc.
     for (let round = 0; round < maxGroupSize; round++) {
         for (let g = 0; g < numGroups; g++) {
-            if (newGroups[g][round]) { // If this group has a student in this round
+            if (newGroups[g][round]) { 
                 rowsInExport.push(["Group " + round, newGroups[g][round]]);
             }
         }
     }
 
-    // 6. SEND TO YOUR EXISTING UI BUILDER
+    // 6. SEND TO UI BUILDER
     generateInvert(rowsInExport);
 });
 	
@@ -2482,6 +2536,9 @@ console.log(groupCArray);
         // groupByStudents();
         // });
 		        $('#remakeGroupsButton').click(function () { //go back to the beginning but see if attendance remains
+				if (window.studentPairHistory) {
+    window.studentPairHistory.clear();
+}
 			generateDropdowns(data);
 			console.log("error of absent is "+absentArray);
 			
@@ -2525,6 +2582,9 @@ console.log(groupCArray);
 		 });
 		  $('#importGroups').click(function () {
 		$(".fileuploadImport").slideToggle();
+		if (window.studentPairHistory) {
+    window.studentPairHistory.clear();
+}
 					document.getElementById('pickOneEach').hidden=true;
 			
 			document.getElementById('pickOneOverall').hidden=true;
@@ -2568,7 +2628,9 @@ console.log(groupCArray);
 		 		 		  $('#invertGroups').click(function () {
 		// $(".fileuploadImport").slideToggle();
 		
-
+if (window.studentPairHistory) {
+    window.studentPairHistory.clear();
+}
 		makeListForInvert();
 			// $(".remakeGroups").slideToggle();
 					document.getElementById('pickOneEach').hidden=false;
@@ -2960,6 +3022,9 @@ console.log(groupCArray);
         // });
 		
         $('#remakeGroupsButton').click(function () { //go back to the beginning but see if attendance remains
+		if (window.studentPairHistory) {
+    window.studentPairHistory.clear();
+}
 			generateDropdowns(data);
 			console.log("error of absent is "+absentArray);
 						document.getElementById('remakeGroupsButton').hidden=true;
@@ -3000,6 +3065,9 @@ console.log(groupCArray);
 			  
 		 });
 		  $('#importGroups').click(function () {
+			  if (window.studentPairHistory) {
+    window.studentPairHistory.clear();
+}
 		$(".fileuploadImport").slideToggle();
 					document.getElementById('pickOneEach').hidden=true;
 						document.getElementById('remakeGroupsButton').hidden=true;
@@ -3043,7 +3111,9 @@ console.log(groupCArray);
 		 		 		  $('#invertGroups').click(function () {
 		// $(".fileuploadImport").slideToggle();
 		
-
+if (window.studentPairHistory) {
+    window.studentPairHistory.clear();
+}
 		makeListForInvert();
 			// $(".remakeGroups").slideToggle();
 					document.getElementById('pickOneEach').hidden=false;
@@ -3435,6 +3505,9 @@ var generateImports = function (dataArray) {
 		
 
         $('#remakeGroupsButton').click(function () { //go back to the beginning but see if attendance remains
+		if (window.studentPairHistory) {
+    window.studentPairHistory.clear();
+}
 			generateDropdowns(data);
 			console.log("error of absent is "+absentArray);
 						document.getElementById('remakeGroupsButton').hidden=true;
@@ -3467,6 +3540,9 @@ var generateImports = function (dataArray) {
 			generateNameIDMatchArray();
 		 });
 		  $('#importGroups').click(function () {
+			  if (window.studentPairHistory) {
+    window.studentPairHistory.clear();
+}
 		$(".fileuploadImport").slideToggle();
 		
 			// $(".remakeGroups").slideToggle();
@@ -3510,6 +3586,9 @@ var generateImports = function (dataArray) {
         $(".studentsContainerTwo").slideToggle();
 		 });
 		 $('#invertGroups').click(function () {
+			 if (window.studentPairHistory) {
+    window.studentPairHistory.clear();
+}
 		// $(".fileuploadImport").slideToggle();
 		
 
@@ -3885,6 +3964,9 @@ var generateInvert = function (dataArray) {
 		
 
         $('#remakeGroupsButton').click(function () { //go back to the beginning but see if attendance remains
+		if (window.studentPairHistory) {
+    window.studentPairHistory.clear();
+}
 			generateDropdowns(data);
 			console.log("error of absent is "+absentArray);
 						document.getElementById('remakeGroupsButton').hidden=true;
@@ -3925,6 +4007,9 @@ var generateInvert = function (dataArray) {
 			  
 		 });
 		  $('#importGroups').click(function () {
+			  if (window.studentPairHistory) {
+    window.studentPairHistory.clear();
+}
 		$(".fileuploadImport").slideToggle();
 		
 		// alert("hi2");
@@ -3969,6 +4054,9 @@ var generateInvert = function (dataArray) {
         $(".studentsContainerTwo").slideToggle();
 		 });
 		$('#invertGroups').click(function () {
+			if (window.studentPairHistory) {
+    window.studentPairHistory.clear();
+}
 		// $(".fileuploadImport").slideToggle();
 		
 
