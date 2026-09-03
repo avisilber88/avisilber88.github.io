@@ -1226,12 +1226,36 @@ $('#quiet').click(function () {
     // playASong("stromae");
 });
 
-$('#quiet').click(function () {
+$('#thethe').click(function () {
     try {
         currentTag = this.id
             currentSong.pause();
     } catch (error) {}
-    playASongLink("quiet.mp3");
+    playASongLink("thethe.mp3");
+    // playASong("stromae");
+});
+$('#youlike').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("youlike.mp3");
+    // playASong("stromae");
+});
+$('#beach').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("beach.mp3");
+    // playASong("stromae");
+});
+$('#hollywood').click(function () {
+    try {
+        currentTag = this.id
+            currentSong.pause();
+    } catch (error) {}
+    playASongLink("hollywood.mp3");
     // playASong("stromae");
 });
 $('#shatterme').click(function () {
@@ -2080,6 +2104,9 @@ function checkCurrentSongAnswer() {
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/notcalling.mp3") {
         currentSongKeys = ["A", "B", "C", "D", "E", "F", "G"];
     }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/hollywood.mp3") {
+        currentSongKeys = ["A", "B", "C", "D", "E", "F", "G"];
+    }
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/hihigh.mp3") {
         currentSongKeys = ["A", "B", "C", "D", "E", "F", "G"];
     }
@@ -2126,6 +2153,9 @@ function checkCurrentSongAnswer() {
         currentSongKeys = ["A#/Bb", "C", "D", "D#/Eb", "F", "G", "G#/Ab"];
     }
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/vacant.mp3") { // E Major
+        currentSongKeys = ["A", "E", "C#/Db", "D#/Eb", "B", "F#/Gb", "G#/Ab"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/beach.mp3") { // E Major
         currentSongKeys = ["A", "E", "C#/Db", "D#/Eb", "B", "F#/Gb", "G#/Ab"];
     }
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/highhopes.mp3") { // F Major
@@ -2200,7 +2230,12 @@ function checkCurrentSongAnswer() {
     if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/quiet.mp3") { // Bb
         currentSongKeys = ["C", "D", "D#/Eb", "F", "G", "A", "A#/Bb"];
     }
-
+    if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/youlike.mp3") { // Bb
+        currentSongKeys = ["C", "D", "D#/Eb", "F", "G", "A", "A#/Bb"];
+    }
+	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/thethe.mp3") { // Bb
+        currentSongKeys = ["C", "D", "D#/Eb", "F", "G", "A", "A#/Bb"];
+    }
 	if (currentSong.src == "https://www.nwhsaob.com/Midi/samplestwo/talk.mp3") {
         currentSongKeys = ["A", "A#/Bb", "C", "D", "E", "F", "G"];
     }
