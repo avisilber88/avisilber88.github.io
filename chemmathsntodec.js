@@ -456,7 +456,7 @@ else {
 	if(($('#num1:contains(704)')) ||($('#num1:contains("e-")')) ||($('#num1:contains("is 0*")'))|| (finalNum==0)){
 		// $('#bwordb').text(35);
 		resetQuestion();
-		alert ("reset");
+		//alert ("reset");
 	};
 
 
